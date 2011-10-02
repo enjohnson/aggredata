@@ -17,7 +17,7 @@
 
 package server.com.ted.aggredata.services;
 
-import server.com.ted.aggredata.model.User;
+import client.com.ted.aggredata.model.User;
 
 /**
  * Public interface to the user management service

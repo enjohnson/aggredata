@@ -18,7 +18,7 @@
 package server.com.ted.aggredata.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import server.com.ted.aggredata.model.User;
+import client.com.ted.aggredata.model.User;
 
 public class UserValidator {
 

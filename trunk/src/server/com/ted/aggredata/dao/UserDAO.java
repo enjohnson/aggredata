@@ -17,12 +17,9 @@
 
 package server.com.ted.aggredata.dao;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import server.com.ted.aggredata.model.Group;
-import server.com.ted.aggredata.model.User;
+import client.com.ted.aggredata.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

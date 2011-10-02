@@ -17,8 +17,8 @@
 
 package server.com.ted.aggredata.services;
 
-import server.com.ted.aggredata.model.Group;
-import server.com.ted.aggredata.model.User;
+import client.com.ted.aggredata.model.Group;
+import client.com.ted.aggredata.model.User;
 
 import java.util.List;
 
@@ -39,6 +39,14 @@ public interface GroupService {
      * @param group
      */
     public void deleteGroup(Group group);
+
+    /**
+     * Returns the group for the given user and description
+     * @param user
+     * @param description
+     * @return
+     */
+    public Group getGroup(User user, String description);
 
     /**
      * Returns all groups for the specified user

@@ -17,13 +17,15 @@
 
 package server.com.ted.aggredata.services.impl;
 
+import org.junit.runner.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import server.com.ted.aggredata.dao.GroupDAO;
-import server.com.ted.aggredata.model.Group;
-import server.com.ted.aggredata.model.User;
+import client.com.ted.aggredata.model.Group;
+import client.com.ted.aggredata.model.User;
+import server.com.ted.aggredata.dao.LocationDAO;
 import server.com.ted.aggredata.services.GroupService;
 
 import java.util.List;
@@ -37,6 +39,11 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     protected GroupDAO groupDAO;
+
+    @Autowired
+    protected LocationDAO locationDAO;
+
+
     Logger logger = LoggerFactory.getLogger(getClass());
 
     public void createGroup(User user, String description) {
@@ -56,8 +63,13 @@ public class GroupServiceImpl implements GroupService {
 
     public void deleteGroup(Group group) {
         logger.info("Deleting group " + group);
+        locationDAO.removeGroupLocations(group);
         groupDAO.deleteGroupMemberships(group);
         groupDAO.delete(group);
+    }
+
+    public Group getGroup(User user, String description) {
+        return groupDAO.getGroup(user, description);
     }
 
     public List<Group> getByUser(User user) {

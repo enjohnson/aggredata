@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import server.com.ted.aggredata.dao.UserDAO;
-import server.com.ted.aggredata.model.User;
+import client.com.ted.aggredata.model.User;
 import server.com.ted.aggredata.services.UserService;
 
 @Transactional

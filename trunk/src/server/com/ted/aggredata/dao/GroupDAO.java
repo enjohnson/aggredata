@@ -19,8 +19,8 @@ package server.com.ted.aggredata.dao;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import server.com.ted.aggredata.model.Group;
-import server.com.ted.aggredata.model.User;
+import client.com.ted.aggredata.model.Group;
+import client.com.ted.aggredata.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,6 +30,17 @@ import java.util.List;
  * DAO for accessing the user object
  */
 public class GroupDAO extends AggreDataDAO<Group> {
+
+    public static String CREATE_GROUP_QUERY = "insert into aggredata.group (ownerUserId, description) values (?,?)";
+    public static String COUNT_GROUP_QUERY = "select count(*) from aggredata.group where ownerUserId=? and description=?";
+    public static String SAVE_GROUP_QUERY = "update aggredata.group set ownerUserId=?, description=? where id=?";
+    public static String GET_GROUP_QUERY = "select g.id, g.ownerUserId, g.description, ? as role from aggredata.group g where g.description=? and g.ownerUserId=?";
+    public static String GET_GROUPS_BY_USER_QUERY= "select g.id, g.ownerUserId, g.description, ug.role from aggredata.group g, aggredata.usergroup ug where ug.groupId = g.id and ug.userId=?";
+    public static String ADD_GROUP_MEMBERSHIP_QUERY= "insert into aggredata.usergroup(userId, groupId, role) values (?,?,?)";
+    public static String ADD_GROUP_MEMBERSHIP_COUNT_QUERY= "select count(*) from aggredata.usergroup where userId=? and groupId=?";
+    public static String UPDATE_GROUP_MEMBERSHIP_QUERY = "update aggredata.usergroup set role = ? where userId=? and groupId=?";
+    public static String REMOVE_GROUP_MEMBERSHIP_QUERY = "delete from aggredata.usergroup where userId=? and groupId=?";
+    public static String DELETE_GROUPS_FROM_MEMBERSHIP_QUERY=  "delete from aggredata.usergroup where groupId=?";
 
 
 
@@ -49,14 +60,16 @@ public class GroupDAO extends AggreDataDAO<Group> {
     };
 
     public void create(Group group) {
-        String query = "insert into aggredata.group (ownerUserId, description) values (?,?)";
-        getJdbcTemplate().update(query, group.getOwnerUserId(), group.getDescription());
+        if (getJdbcTemplate().queryForInt(COUNT_GROUP_QUERY, group.getOwnerUserId(), group.getDescription()) == 0)
+        {
+            getJdbcTemplate().update(CREATE_GROUP_QUERY, group.getOwnerUserId(), group.getDescription());
+        }
     }
 
     @Override
     public void save(Group group) {
-        String query = "update aggredata.group set ownerUserId=?, description=? where id=?";
-        getJdbcTemplate().update(query, group.getOwnerUserId(), group.getDescription(), group.getId());
+
+        getJdbcTemplate().update(SAVE_GROUP_QUERY, group.getOwnerUserId(), group.getDescription(), group.getId());
     }
 
     /**
@@ -65,8 +78,7 @@ public class GroupDAO extends AggreDataDAO<Group> {
      */
     public void deleteGroupMemberships(Group group)
     {
-        String query = "delete from aggredata.usergroup where groupId=?";
-        getJdbcTemplate().update(query,  group.getId());
+        getJdbcTemplate().update(DELETE_GROUPS_FROM_MEMBERSHIP_QUERY,  group.getId());
     }
 
     /**
@@ -76,8 +88,7 @@ public class GroupDAO extends AggreDataDAO<Group> {
      */
     public void removeGroupMembership(User user, Group group)
     {
-        String query = "delete from aggredata.usergroup where userId=? and groupId=?";
-        getJdbcTemplate().update(query, user.getId(), group.getId());
+        getJdbcTemplate().update(REMOVE_GROUP_MEMBERSHIP_QUERY, user.getId(), group.getId());
     }
 
 
@@ -88,8 +99,7 @@ public class GroupDAO extends AggreDataDAO<Group> {
         */
        public void updateGroupMembership(User user, Group group, Group.Role role)
        {
-           String query = "update aggredata.usergroup set role = ? where userId=? and groupId=?";
-           getJdbcTemplate().update(query, role.ordinal(), user.getId(), group.getId());
+           getJdbcTemplate().update(UPDATE_GROUP_MEMBERSHIP_QUERY, role.ordinal(), user.getId(), group.getId());
        }
 
     /**
@@ -100,8 +110,13 @@ public class GroupDAO extends AggreDataDAO<Group> {
      */
     public void addGroupMembership(User user, Group group, Group.Role role)
     {
-        String query = "insert into aggredata.usergroup(userId, groupId, role) values (?,?,?)";
-        getJdbcTemplate().update(query, user.getId(), group.getId(), role.ordinal());
+        if (getJdbcTemplate().queryForInt(ADD_GROUP_MEMBERSHIP_COUNT_QUERY,  user.getId(), group.getId()) == 0)
+        {
+            getJdbcTemplate().update(ADD_GROUP_MEMBERSHIP_QUERY, user.getId(), group.getId(), role.ordinal());
+        }  else
+        {
+            updateGroupMembership(user, group, role);
+        }
     }
 
     /**
@@ -113,8 +128,7 @@ public class GroupDAO extends AggreDataDAO<Group> {
     public List<Group> getGroups(User user) {
         try
         {
-            String query = "select g.id, g.ownerUserId, g.description, ug.role from aggredata.group g, aggredata.usergroup ug where ug.groupId = g.id and ug.userId=?";
-            return getJdbcTemplate().query(query, new Object[]{user.getId()}, getRowMapper());
+            return getJdbcTemplate().query(GET_GROUPS_BY_USER_QUERY, new Object[]{user.getId()}, getRowMapper());
         } catch (EmptyResultDataAccessException ex)
         {
             logger.debug("No Results returned");
@@ -126,8 +140,7 @@ public class GroupDAO extends AggreDataDAO<Group> {
     {
         try
         {
-            String query = "select g.id, g.ownerUserId, g.description, ? as role from aggredata.group g where g.description=? and g.ownerUserId=?";
-            return getJdbcTemplate().queryForObject(query, new Object[]{ Group.Role.ADMIN.ordinal(), description, user.getId()}, getRowMapper()) ;
+            return getJdbcTemplate().queryForObject(GET_GROUP_QUERY, new Object[]{ Group.Role.ADMIN.ordinal(), description, user.getId()}, getRowMapper()) ;
         } catch (EmptyResultDataAccessException ex)
         {
             logger.debug("No Results returned");

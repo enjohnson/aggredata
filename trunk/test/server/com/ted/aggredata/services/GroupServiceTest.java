@@ -22,8 +22,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import server.com.ted.aggredata.model.Group;
-import server.com.ted.aggredata.model.User;
+import client.com.ted.aggredata.model.Group;
+import client.com.ted.aggredata.model.User;
 
 import java.util.List;
 
