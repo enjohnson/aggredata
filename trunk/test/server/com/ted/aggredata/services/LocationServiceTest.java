@@ -17,13 +17,17 @@
 
 package server.com.ted.aggredata.services;
 
-import org.junit.*;
+import client.com.ted.aggredata.model.Group;
+import client.com.ted.aggredata.model.Location;
+import client.com.ted.aggredata.model.User;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import client.com.ted.aggredata.model.Group;
-import client.com.ted.aggredata.model.User;
 
 import java.util.List;
 
@@ -32,7 +36,7 @@ import java.util.List;
                                    "classpath:resources/applicationContext-Test.xml"
                     })
 
-public class GroupServiceTest
+public class LocationServiceTest
 {
     @Autowired
     protected  UserService userService;
@@ -40,9 +44,13 @@ public class GroupServiceTest
     @Autowired
     protected GroupService groupService;
 
+    @Autowired
+    protected LocationService locationService;
+
+
     public static User testUser;
-    public static User testUserMember;
     public static Group testGroup;
+    public static Location testLocation;
 
 
     @Before
@@ -56,43 +64,47 @@ public class GroupServiceTest
         userService.createUser(testUser);
         testUser = userService.getUserByUserName("grouptestuser@theenergydetective.com");
 
-        testUserMember = new User();
-        testUserMember.setUsername("grouptestmember@theenergydetective.com");
-        testUserMember.setPassword("aggredata");
-        testUserMember.setDefaultGroupId(0);
-        testUserMember.setRole(User.Role.MEMBER);
-        testUserMember.setState(true);
-        userService.createUser(testUserMember);
-        testUserMember = userService.getUserByUserName("grouptestmember@theenergydetective.com");
-
         groupService.createGroup(testUser, "Test Group");
         testGroup = groupService.getByUser(testUser).get(0);
+
+        testLocation = new Location();
+        testLocation.setUserId(testUser.getId());
+        testLocation.setAddress1("1 Address Way");
+        testLocation.setAddress2("");
+        testLocation.setCity("Charleston");
+        testLocation.setStateOrProvince("South Carolina");
+        testLocation.setPostal("29401");
+        testLocation.setState(true);
+        testLocation.setCountry("USA");
+        testLocation.setDescription("Test Location");
+
+        locationService.addLocation(testUser, testLocation);
+        testLocation = locationService.getLocation(testUser, testLocation.getDescription());
      }
 
      @After
      public void tearDown() throws Exception {
+         locationService.removeLocation(testLocation);
          groupService.deleteGroup(testGroup);
-         userService.deleteUser(testUserMember);
          userService.deleteUser(testUser);
      }
 
+    @Test
+    public void testFindByUser()
+    {
+        List<Location> locationList =  locationService.getLocations(testUser);
+        System.out.println(locationList.size());
+        Assert.assertTrue(locationList.contains(testLocation));
+    }
+
 
     @Test
-    public void testAddMember()
+    public void testAddLocationToGroup()
     {
-        groupService.addUserToGroup(testUserMember, testGroup, Group.Role.MEMBER);
-
-        Group testGroup2 = groupService.getByUser(testUserMember).get(0);
-        Assert.assertEquals(testGroup2.getDescription(), "Test Group");
-        Assert.assertEquals(testGroup2.getRole(), Group.Role.MEMBER);
-
-        groupService.changeUserRole(testUserMember, testGroup, Group.Role.READONLY);
-        Group testGroup3 = groupService.getByUser(testUserMember).get(0);
-        Assert.assertEquals(testGroup3.getDescription(), "Test Group");
-        Assert.assertEquals(testGroup3.getRole(), Group.Role.READONLY);
-
-        groupService.removeUserFromGroup(testUserMember, testGroup);
-        Assert.assertEquals(groupService.getByUser(testUserMember).size(), 0);
+        locationService.addLocationToGroup(testLocation, testGroup);
+        List<Location> locationList =  locationService.getLocations(testGroup);
+        System.out.println(locationList.size());
+        Assert.assertTrue(locationList.contains(testLocation));
     }
 
 }

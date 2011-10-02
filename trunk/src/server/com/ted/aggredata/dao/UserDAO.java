@@ -29,6 +29,10 @@ import java.sql.SQLException;
  */
 public class UserDAO extends AggreDataDAO<User>{
 
+    public static final String GET_BY_USERNAME_QUERY = "select id, username, activationKey, defaultGroupId, role, password, state from aggredata.user where username= ?";
+    public static final String CREATE_USER_QUERY = "insert into aggredata.user (username, activationKey, defaultGroupId, role, password, state) values (?,?,?,?,?,?)";
+    public static final String COUNT_USER_QUERY = "select count(*) from  aggredata.user where username=?";
+    public static final String SAVE_USER_QUERY  = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?, password=?, state=? where id = ?";
 
 
     public UserDAO()
@@ -57,8 +61,7 @@ public class UserDAO extends AggreDataDAO<User>{
 
         try
         {
-            String query = "select id, username, activationKey, defaultGroupId, role, password, state from aggredata.user where username= ?";
-            return getJdbcTemplate().queryForObject(query, new Object[]{username}, rowMapper);
+            return getJdbcTemplate().queryForObject(GET_BY_USERNAME_QUERY, new Object[]{username}, rowMapper);
         } catch (EmptyResultDataAccessException ex)
         {
             logger.debug("No Results returned");
@@ -75,14 +78,16 @@ public class UserDAO extends AggreDataDAO<User>{
 
     public void create(User user)
     {
-        String query = "insert into aggredata.user (username, activationKey, defaultGroupId, role, password, state) values (?,?,?,?,?,?)";
-        getJdbcTemplate().update(query, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole().ordinal(), user.getPassword(), user.isState());
+        if (getJdbcTemplate().queryForInt(COUNT_USER_QUERY, user.getUsername()) == 0)
+        {
+            getJdbcTemplate().update(CREATE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole().ordinal(), user.getPassword(), user.isState());
+        }
     }
 
     public void save(User user)
     {
-        String query = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?, password=?, state=? where id = ?";
-        getJdbcTemplate().update(query, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole().ordinal(), user.getPassword(), user.isState(), user.getId());
+
+        getJdbcTemplate().update(SAVE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole().ordinal(), user.getPassword(), user.isState(), user.getId());
     }
 
 }

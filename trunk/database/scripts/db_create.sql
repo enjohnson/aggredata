@@ -32,7 +32,7 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`Location` (
   `address1` VARCHAR(200) NULL ,
   `address2` VARCHAR(200) NULL ,
   `city` VARCHAR(200) NULL ,
-  `stateOrProvice` VARCHAR(200) NULL ,
+  `stateOrProvince` VARCHAR(200) NULL ,
   `postal` VARCHAR(200) NULL ,
   `country` VARCHAR(3) NULL ,
   `weatherLocationId` INT NULL ,
