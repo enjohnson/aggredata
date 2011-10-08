@@ -21,6 +21,6 @@
 
     <inherits name='com.google.gwt.user.User'/>
 
-    <entry-point class='client.Aggredata'/>
+    <entry-point class='com.ted.aggredata.client.Aggredata'/>
 
 </module>

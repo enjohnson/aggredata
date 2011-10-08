@@ -53,13 +53,13 @@
 
 
     <!-- Application Beans -->
-    <bean name="userDAO" class=" server.com.ted.aggredata.dao.UserDAO" />
-    <bean name="groupDAO" class=" server.com.ted.aggredata.dao.GroupDAO" />
-    <bean name="locationDAO" class=" server.com.ted.aggredata.dao.LocationDAO" />
+    <bean name="userDAO" class=" com.ted.aggredata.server.dao.UserDAO" />
+    <bean name="groupDAO" class=" com.ted.aggredata.server.dao.GroupDAO" />
+    <bean name="locationDAO" class=" com.ted.aggredata.server.dao.LocationDAO" />
 
- 	<bean name="userService" class="server.com.ted.aggredata.services.impl.UserServiceImpl" scope="session" />
-    <bean name="groupService" class="server.com.ted.aggredata.services.impl.GroupServiceImpl" scope="session" />
-    <bean name="locationService" class="server.com.ted.aggredata.services.impl.LocationServiceImpl" scope="session" />
+ 	<bean name="userService" class="com.ted.aggredata.server.services.impl.UserServiceImpl" scope="session" />
+    <bean name="groupService" class="com.ted.aggredata.server.services.impl.GroupServiceImpl" scope="session" />
+    <bean name="locationService" class="com.ted.aggredata.server.services.impl.LocationServiceImpl" scope="session" />
 
 
 
