@@ -56,10 +56,14 @@
     <bean name="userDAO" class=" com.ted.aggredata.server.dao.UserDAO"/>
     <bean name="groupDAO" class=" com.ted.aggredata.server.dao.GroupDAO"/>
     <bean name="locationDAO" class=" com.ted.aggredata.server.dao.LocationDAO"/>
+    <bean name="mtuDAO" class=" com.ted.aggredata.server.dao.MTUDAO"/>
+    <bean name="gatewayDAO" class=" com.ted.aggredata.server.dao.GatewayDAO"/>
+    <bean name="energyDataDAO" class=" com.ted.aggredata.server.dao.EnergyDataDAO"/>
 
     <bean name="userService" class="com.ted.aggredata.server.services.impl.UserServiceImpl" scope="session"/>
     <bean name="groupService" class="com.ted.aggredata.server.services.impl.GroupServiceImpl" scope="session"/>
     <bean name="locationService" class="com.ted.aggredata.server.services.impl.LocationServiceImpl" scope="session"/>
+    <bean name="gatewayService" class="com.ted.aggredata.server.services.impl.GatewayServiceImpl" scope="session"/>
 
 
 </beans>

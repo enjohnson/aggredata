@@ -18,6 +18,9 @@
 package com.ted.aggredata.server.dao;
 
 import com.ted.aggredata.model.EnergyData;
+import com.ted.aggredata.model.Group;
+import com.ted.aggredata.model.MTU;
+import com.ted.aggredata.model.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -30,6 +33,7 @@ public class EnergyDataDAO extends AggreDataDAO<EnergyData> {
 
     public static String POST_ENERGY_DATA = "insert into aggredata.energyData (mtuId, timestamp, rate, energy) values (?,?,?,?)";
     public static String SAVE_ENERGY_DATA = "update aggredata.energyData set mtuId=?, timestamp=?, rate=?, energy=? where id = ?";
+    public static String DELETE_ENERGY_DATA = "delete from aggredata.energyData where mtuId=?";
 
 
     public EnergyDataDAO() {
@@ -61,5 +65,15 @@ public class EnergyDataDAO extends AggreDataDAO<EnergyData> {
     public RowMapper<EnergyData> getRowMapper() {
         return rowMapper;
     }
+
+    /**
+     * Removes data for the given MTU
+     *
+     * @param mtu
+     */
+    public void removeEnergyData(MTU mtu) {
+        getJdbcTemplate().update(DELETE_ENERGY_DATA, mtu.getId());
+    }
+
 
 }
