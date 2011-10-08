@@ -20,7 +20,6 @@ package com.ted.aggredata.server.dao;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.Location;
 import com.ted.aggredata.model.User;
-import com.ted.aggredata.server.dao.AggreDataDAO;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -128,10 +127,10 @@ public class LocationDAO extends AggreDataDAO<Location> {
     }
 
     public void removeGroupLocations(Group group) {
-         getJdbcTemplate().update(DELETE_GROUP_QUERY,  group.getId());
+        getJdbcTemplate().update(DELETE_GROUP_QUERY, group.getId());
     }
 
-        public void removeGroupLocations(Location location) {
-         getJdbcTemplate().update(DELETE_LOCATION_FROM_GROUP_QUERY,  location.getId());
+    public void removeGroupLocations(Location location) {
+        getJdbcTemplate().update(DELETE_LOCATION_FROM_GROUP_QUERY, location.getId());
     }
 }

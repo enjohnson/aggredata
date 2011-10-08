@@ -19,34 +19,35 @@ package com.ted.aggredata.model;
 
 import java.io.Serializable;
 
-/***
+/**
  * Single entry of power com.ted.aggredata.dao
  */
-public class EnergyData  extends AggreDataModel implements Serializable {
-    private Integer mtuId;
+public class EnergyData extends AggreDataModel implements Serializable {
+    private Long mtuId;
     private Integer timestamp;
-    private double rate;
-    private double energy;
+    private Double rate;
+    private Double energy;
 
-    public EnergyData()
-    {
+    public EnergyData() {
 
     }
 
     /**
      * unique id of the mtu that logged this com.ted.aggredata.dao point
+     *
      * @return
      */
-    public Integer getMtuId() {
+    public Long getMtuId() {
         return mtuId;
     }
 
-    public void setMtuId(Integer mtuId) {
+    public void setMtuId(Long mtuId) {
         this.mtuId = mtuId;
     }
 
     /**
      * unix epoch timestamp of the entr
+     *
      * @return
      */
     public Integer getTimestamp() {
@@ -59,25 +60,27 @@ public class EnergyData  extends AggreDataModel implements Serializable {
 
     /**
      * rat e in effect when the energy value was stored.
+     *
      * @return
      */
-    public double getRate() {
+    public Double getRate() {
         return rate;
     }
 
-    public void setRate(double rate) {
+    public void setRate(Double rate) {
         this.rate = rate;
     }
 
     /**
      * total cumulative watt hours recorded by the mtu for the specified time
+     *
      * @return
      */
-    public double getEnergy() {
+    public Double getEnergy() {
         return energy;
     }
 
-    public void setEnergy(double energy) {
+    public void setEnergy(Double energy) {
         this.energy = energy;
     }
 

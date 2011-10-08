@@ -22,9 +22,10 @@ import com.ted.aggredata.model.User;
 /**
  * Public interface to the user management service
  */
-public interface UserService{
+public interface UserService {
     /**
      * Creates a new entity in the database
+     *
      * @param entity
      * @return
      */
@@ -33,6 +34,7 @@ public interface UserService{
 
     /**
      * Deletes a user from the database
+     *
      * @param entity
      * @return
      */
@@ -40,6 +42,7 @@ public interface UserService{
 
     /**
      * Changes a user password
+     *
      * @param entity  the user to be modified
      * @param enabled true if enabled, false otherwise
      * @return
@@ -49,6 +52,7 @@ public interface UserService{
 
     /**
      * Changes the role of the user int he system
+     *
      * @param entity
      * @param role
      * @return
@@ -56,9 +60,9 @@ public interface UserService{
     public User changeUserRole(User entity, User.Role role);
 
 
-
     /**
      * Changes a users's password
+     *
      * @param entity
      * @return
      */
@@ -66,6 +70,7 @@ public interface UserService{
 
     /**
      * Changes changes the user's username
+     *
      * @param entity
      * @return
      */
@@ -74,6 +79,7 @@ public interface UserService{
 
     /**
      * Returns a user object with the given username
+     *
      * @param username
      * @return
      */

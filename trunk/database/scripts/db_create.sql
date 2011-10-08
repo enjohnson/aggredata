@@ -55,7 +55,7 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`Gateway` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `locationId` INT NOT NULL ,
   `userAccountId` INT NOT NULL ,
-  `gateway` VARCHAR(6) NOT NULL ,
+  `gatewaySerialNumber` VARCHAR(6) NOT NULL ,
   `state` INT(1) NOT NULL ,
   `securityKey` VARCHAR(20) NULL ,
   `description` VARCHAR(1000) NULL ,
@@ -75,6 +75,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `aggredata`.`MTU` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `gatewayId` INT NOT NULL ,
+  `mtuSerialNumber` VARCHAR(6) NOT NULL ,
   `type` INT NULL ,
   `description` VARCHAR(1000) NULL ,
   PRIMARY KEY (`id`) ,

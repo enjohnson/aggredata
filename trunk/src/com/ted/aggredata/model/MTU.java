@@ -22,11 +22,13 @@ import java.io.Serializable;
 /**
  * Represents a single unique MTU
  */
-public class MTU  extends AggreDataModel implements Serializable {
+public class MTU extends AggreDataModel implements Serializable {
 
-    public static enum MTUType {LOAD, GENERATION, ADJUSTED_NET, STAND_ALONE, STAND_ALONE_NET};
+    public static enum MTUType {LOAD, GENERATION, ADJUSTED_NET, STAND_ALONE, STAND_ALONE_NET}
 
-    Integer gatewayId;
+    ;
+
+    Long gatewayId;
     MTUType type;
     String mtuSerialNumber;
     String description;
@@ -37,11 +39,11 @@ public class MTU  extends AggreDataModel implements Serializable {
      *
      * @return
      */
-    public Integer getGatewayId() {
+    public Long getGatewayId() {
         return gatewayId;
     }
 
-    public void setGatewayId(Integer gatewayId) {
+    public void setGatewayId(Long gatewayId) {
         this.gatewayId = gatewayId;
     }
 

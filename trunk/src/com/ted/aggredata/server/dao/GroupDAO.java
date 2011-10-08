@@ -19,7 +19,6 @@ package com.ted.aggredata.server.dao;
 
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
-import com.ted.aggredata.server.dao.AggreDataDAO;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -36,13 +35,12 @@ public class GroupDAO extends AggreDataDAO<Group> {
     public static String COUNT_GROUP_QUERY = "select count(*) from aggredata.group where ownerUserId=? and description=?";
     public static String SAVE_GROUP_QUERY = "update aggredata.group set ownerUserId=?, description=? where id=?";
     public static String GET_GROUP_QUERY = "select g.id, g.ownerUserId, g.description, ? as role from aggredata.group g where g.description=? and g.ownerUserId=?";
-    public static String GET_GROUPS_BY_USER_QUERY= "select g.id, g.ownerUserId, g.description, ug.role from aggredata.group g, aggredata.usergroup ug where ug.groupId = g.id and ug.userId=?";
-    public static String ADD_GROUP_MEMBERSHIP_QUERY= "insert into aggredata.usergroup(userId, groupId, role) values (?,?,?)";
-    public static String ADD_GROUP_MEMBERSHIP_COUNT_QUERY= "select count(*) from aggredata.usergroup where userId=? and groupId=?";
+    public static String GET_GROUPS_BY_USER_QUERY = "select g.id, g.ownerUserId, g.description, ug.role from aggredata.group g, aggredata.usergroup ug where ug.groupId = g.id and ug.userId=?";
+    public static String ADD_GROUP_MEMBERSHIP_QUERY = "insert into aggredata.usergroup(userId, groupId, role) values (?,?,?)";
+    public static String ADD_GROUP_MEMBERSHIP_COUNT_QUERY = "select count(*) from aggredata.usergroup where userId=? and groupId=?";
     public static String UPDATE_GROUP_MEMBERSHIP_QUERY = "update aggredata.usergroup set role = ? where userId=? and groupId=?";
     public static String REMOVE_GROUP_MEMBERSHIP_QUERY = "delete from aggredata.usergroup where userId=? and groupId=?";
-    public static String DELETE_GROUPS_FROM_MEMBERSHIP_QUERY=  "delete from aggredata.usergroup where groupId=?";
-
+    public static String DELETE_GROUPS_FROM_MEMBERSHIP_QUERY = "delete from aggredata.usergroup where groupId=?";
 
 
     public GroupDAO() {
@@ -61,8 +59,7 @@ public class GroupDAO extends AggreDataDAO<Group> {
     };
 
     public void create(Group group) {
-        if (getJdbcTemplate().queryForInt(COUNT_GROUP_QUERY, group.getOwnerUserId(), group.getDescription()) == 0)
-        {
+        if (getJdbcTemplate().queryForInt(COUNT_GROUP_QUERY, group.getOwnerUserId(), group.getDescription()) == 0) {
             getJdbcTemplate().update(CREATE_GROUP_QUERY, group.getOwnerUserId(), group.getDescription());
         }
     }
@@ -75,47 +72,45 @@ public class GroupDAO extends AggreDataDAO<Group> {
 
     /**
      * Delete's all memberships for a selected group/
+     *
      * @param group
      */
-    public void deleteGroupMemberships(Group group)
-    {
-        getJdbcTemplate().update(DELETE_GROUPS_FROM_MEMBERSHIP_QUERY,  group.getId());
+    public void deleteGroupMemberships(Group group) {
+        getJdbcTemplate().update(DELETE_GROUPS_FROM_MEMBERSHIP_QUERY, group.getId());
     }
 
     /**
      * Removes a group from the membership table
+     *
      * @param user
      * @param group
      */
-    public void removeGroupMembership(User user, Group group)
-    {
+    public void removeGroupMembership(User user, Group group) {
         getJdbcTemplate().update(REMOVE_GROUP_MEMBERSHIP_QUERY, user.getId(), group.getId());
     }
 
 
     /**
-        * Removes a group from the membership table
-        * @param user
-        * @param group
-        */
-       public void updateGroupMembership(User user, Group group, Group.Role role)
-       {
-           getJdbcTemplate().update(UPDATE_GROUP_MEMBERSHIP_QUERY, role.ordinal(), user.getId(), group.getId());
-       }
+     * Removes a group from the membership table
+     *
+     * @param user
+     * @param group
+     */
+    public void updateGroupMembership(User user, Group group, Group.Role role) {
+        getJdbcTemplate().update(UPDATE_GROUP_MEMBERSHIP_QUERY, role.ordinal(), user.getId(), group.getId());
+    }
 
     /**
      * updates a group
+     *
      * @param user
      * @param group
      * @param role
      */
-    public void addGroupMembership(User user, Group group, Group.Role role)
-    {
-        if (getJdbcTemplate().queryForInt(ADD_GROUP_MEMBERSHIP_COUNT_QUERY,  user.getId(), group.getId()) == 0)
-        {
+    public void addGroupMembership(User user, Group group, Group.Role role) {
+        if (getJdbcTemplate().queryForInt(ADD_GROUP_MEMBERSHIP_COUNT_QUERY, user.getId(), group.getId()) == 0) {
             getJdbcTemplate().update(ADD_GROUP_MEMBERSHIP_QUERY, user.getId(), group.getId(), role.ordinal());
-        }  else
-        {
+        } else {
             updateGroupMembership(user, group, role);
         }
     }
@@ -127,23 +122,18 @@ public class GroupDAO extends AggreDataDAO<Group> {
      * @return
      */
     public List<Group> getGroups(User user) {
-        try
-        {
+        try {
             return getJdbcTemplate().query(GET_GROUPS_BY_USER_QUERY, new Object[]{user.getId()}, getRowMapper());
-        } catch (EmptyResultDataAccessException ex)
-        {
+        } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");
             return null;
         }
     }
 
-    public Group getGroup(User user, String description)
-    {
-        try
-        {
-            return getJdbcTemplate().queryForObject(GET_GROUP_QUERY, new Object[]{ Group.Role.ADMIN.ordinal(), description, user.getId()}, getRowMapper()) ;
-        } catch (EmptyResultDataAccessException ex)
-        {
+    public Group getGroup(User user, String description) {
+        try {
+            return getJdbcTemplate().queryForObject(GET_GROUP_QUERY, new Object[]{Group.Role.ADMIN.ordinal(), description, user.getId()}, getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");
             return null;
         }

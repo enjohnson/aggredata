@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/***
+/**
  * Implementation of the GroupService interface
  */
 
@@ -37,8 +37,8 @@ import java.util.List;
 public class LocationServiceImpl implements LocationService {
 
     @Autowired
-      protected LocationDAO locationDAO;
-      Logger logger = LoggerFactory.getLogger(getClass());
+    protected LocationDAO locationDAO;
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     public void addLocation(User user, Location location) {
         logger.info("User " + user + " + is adding " + location);

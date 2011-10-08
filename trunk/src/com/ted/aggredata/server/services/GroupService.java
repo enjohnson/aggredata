@@ -29,19 +29,22 @@ public interface GroupService {
 
     /**
      * Creates a new group
-     * @param user The user creating the group. This user will be added as a ADMIN of the group.
+     *
+     * @param user        The user creating the group. This user will be added as a ADMIN of the group.
      * @param description
      */
     public void createGroup(User user, String description);
 
     /**
      * Deletes a group from the system
+     *
      * @param group
      */
     public void deleteGroup(Group group);
 
     /**
      * Returns the group for the given user and description
+     *
      * @param user
      * @param description
      * @return
@@ -50,6 +53,7 @@ public interface GroupService {
 
     /**
      * Returns all groups for the specified user
+     *
      * @param user
      * @return
      */
@@ -57,6 +61,7 @@ public interface GroupService {
 
     /**
      * Adds a user w/ the specified role in the group;
+     *
      * @param user
      * @param group
      * @param role
@@ -65,6 +70,7 @@ public interface GroupService {
 
     /**
      * Removes the user from the group
+     *
      * @param user
      * @param group
      */
@@ -72,6 +78,7 @@ public interface GroupService {
 
     /**
      * Changes the role of the user
+     *
      * @param user
      * @param group
      * @param role

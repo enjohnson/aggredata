@@ -18,7 +18,6 @@
 package com.ted.aggredata.server.dao;
 
 import com.ted.aggredata.model.User;
-import com.ted.aggredata.server.dao.AggreDataDAO;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -33,38 +32,34 @@ public class UserDAO extends AggreDataDAO<User> {
     public static final String GET_BY_USERNAME_QUERY = "select id, username, activationKey, defaultGroupId, role, password, state from aggredata.user where username= ?";
     public static final String CREATE_USER_QUERY = "insert into aggredata.user (username, activationKey, defaultGroupId, role, password, state) values (?,?,?,?,?,?)";
     public static final String COUNT_USER_QUERY = "select count(*) from  aggredata.user where username=?";
-    public static final String SAVE_USER_QUERY  = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?, password=?, state=? where id = ?";
+    public static final String SAVE_USER_QUERY = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?, password=?, state=? where id = ?";
 
 
-    public UserDAO()
-    {
+    public UserDAO() {
         super("aggredata.user");
     }
 
 
-
     private RowMapper<User> rowMapper = new RowMapper<User>() {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-              User user = new User();
-                        user.setId(rs.getLong("id"));
-                        user.setUsername(rs.getString("username"));
-                        user.setActivationKey(rs.getString("activationKey"));
-                        user.setDefaultGroupId(rs.getShort("defaultGroupId"));
-                        user.setRole(User.Role.values()[rs.getInt("role")]);
-                        user.setPassword(rs.getString("password"));
-                        user.setState(rs.getBoolean("state"));
-                        return user;
+            User user = new User();
+            user.setId(rs.getLong("id"));
+            user.setUsername(rs.getString("username"));
+            user.setActivationKey(rs.getString("activationKey"));
+            user.setDefaultGroupId(rs.getShort("defaultGroupId"));
+            user.setRole(User.Role.values()[rs.getInt("role")]);
+            user.setPassword(rs.getString("password"));
+            user.setState(rs.getBoolean("state"));
+            return user;
         }
     };
 
 
     public User getUserByUserName(String username) {
 
-        try
-        {
+        try {
             return getJdbcTemplate().queryForObject(GET_BY_USERNAME_QUERY, new Object[]{username}, rowMapper);
-        } catch (EmptyResultDataAccessException ex)
-        {
+        } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");
             return null;
         }
@@ -77,16 +72,13 @@ public class UserDAO extends AggreDataDAO<User> {
         return rowMapper;
     }
 
-    public void create(User user)
-    {
-        if (getJdbcTemplate().queryForInt(COUNT_USER_QUERY, user.getUsername()) == 0)
-        {
+    public void create(User user) {
+        if (getJdbcTemplate().queryForInt(COUNT_USER_QUERY, user.getUsername()) == 0) {
             getJdbcTemplate().update(CREATE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole().ordinal(), user.getPassword(), user.isState());
         }
     }
 
-    public void save(User user)
-    {
+    public void save(User user) {
 
         getJdbcTemplate().update(SAVE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole().ordinal(), user.getPassword(), user.isState(), user.getId());
     }

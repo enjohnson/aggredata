@@ -20,12 +20,13 @@ package com.ted.aggredata.model;
 public abstract class AggreDataModel {
 
     private Long id;
+
     public Long getId() {
-	    return id;
+        return id;
     }
 
     public void setId(Long id) {
-	    this.id = id;
+        this.id = id;
     }
 
 

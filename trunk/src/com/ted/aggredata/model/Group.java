@@ -23,8 +23,9 @@ import java.io.Serializable;
 public class Group extends AggreDataModel implements Serializable {
 
 
+    public static enum Role {READONLY, MEMBER, ADMIN}
 
-    public static enum Role { READONLY, MEMBER, ADMIN };
+    ;
 
 
     private String description;

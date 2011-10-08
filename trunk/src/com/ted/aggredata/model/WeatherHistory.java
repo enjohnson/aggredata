@@ -19,7 +19,7 @@ package com.ted.aggredata.model;
 
 import java.io.Serializable;
 
-public class WeatherHistory  extends AggreDataModel implements Serializable {
+public class WeatherHistory extends AggreDataModel implements Serializable {
     private Integer weatherLocationId;
     private Integer timestamp;
     private Integer temperature;

@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * Represents a single gateway enrolled in the system
  */
-public class Gateway   extends AggreDataModel implements Serializable {
+public class Gateway extends AggreDataModel implements Serializable {
 
     public Integer locationId;
     public Integer userAccountId;

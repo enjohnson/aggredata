@@ -24,9 +24,11 @@ import java.io.Serializable;
  * Represents a user enrolled in the aggredata system.
  */
 
-public class User extends AggreDataModel implements Serializable{
+public class User extends AggreDataModel implements Serializable {
 
-    public static enum Role {MEMBER, ADMIN};
+    public static enum Role {MEMBER, ADMIN}
+
+    ;
 
     private String username;
     private String password;
@@ -76,10 +78,10 @@ public class User extends AggreDataModel implements Serializable{
         return activationKey.trim().equals(activationKey);
     }
 
-    public String getActivationKey()
-    {
+    public String getActivationKey() {
         return this.activationKey;
     }
+
     public void setActivationKey(String activationKey) {
         this.activationKey = activationKey;
     }
@@ -91,7 +93,6 @@ public class User extends AggreDataModel implements Serializable{
     public void setDefaultGroupId(int defaultGroupId) {
         this.defaultGroupId = defaultGroupId;
     }
-
 
 
     @Override

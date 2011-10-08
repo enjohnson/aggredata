@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/***
+/**
  * Implementation of the GroupService interface
  */
 
@@ -49,8 +49,7 @@ public class GroupServiceImpl implements GroupService {
         logger.debug("Creating new group w/ description " + description + " for user " + user);
         logger.debug("Checking for existing group");
         Group oldGroup = groupDAO.getGroup(user, description);
-        if (oldGroup == null)
-        {
+        if (oldGroup == null) {
             Group group = new Group();
             group.setDescription(description);
             group.setOwnerUserId(user.getId());

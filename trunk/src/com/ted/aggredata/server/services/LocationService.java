@@ -30,6 +30,7 @@ public interface LocationService {
 
     /**
      * Adds a new location to the system
+     *
      * @param user
      * @param location
      */
@@ -37,6 +38,7 @@ public interface LocationService {
 
     /**
      * Removes a location from the system
+     *
      * @param location
      */
     public void removeLocation(Location location);
@@ -44,6 +46,7 @@ public interface LocationService {
 
     /**
      * Updates an existing location
+     *
      * @param location
      */
     public void updateLocation(Location location);
@@ -51,6 +54,7 @@ public interface LocationService {
 
     /**
      * Retrieves a list of locations for a given user
+     *
      * @param user
      * @return
      */
@@ -58,6 +62,7 @@ public interface LocationService {
 
     /**
      * Retrieves a list of locations for a given group
+     *
      * @param group
      * @return
      */
@@ -65,6 +70,7 @@ public interface LocationService {
 
     /**
      * Returns the location w/ the given description for the specified user
+     *
      * @param user
      * @param description
      * @return
@@ -72,9 +78,9 @@ public interface LocationService {
     public Location getLocation(User user, String description);
 
 
-
     /**
      * Adds a location to the given group
+     *
      * @param location
      * @param group
      */
@@ -83,11 +89,11 @@ public interface LocationService {
 
     /**
      * Removes a location from the given group
+     *
      * @param location
      * @param group
      */
     public void removeLocationFromGroup(Location location, Group group);
-
 
 
 }

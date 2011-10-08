@@ -23,7 +23,7 @@ import java.io.Serializable;
  * Represents a unique weather location in the system. This is user editable but will come
  * pre-populated with many locations.
  */
-public class WeatherLocation   extends AggreDataModel implements Serializable {
+public class WeatherLocation extends AggreDataModel implements Serializable {
     private String stateOrProvince;
     private String city;
     private Integer postal;
@@ -70,7 +70,7 @@ public class WeatherLocation   extends AggreDataModel implements Serializable {
         this.longitude = longitude;
     }
 
-        @Override
+    @Override
     public String toString() {
         StringBuffer b = new StringBuffer();
         b.append("WeatherLocation{");

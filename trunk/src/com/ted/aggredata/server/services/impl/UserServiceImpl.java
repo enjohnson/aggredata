@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     public User changeUserRole(User entity, User.Role role) {
         entity.setRole(role);
         userDao.save(entity);
-        return  entity;
+        return entity;
     }
 
     public User changePassword(User entity, String newPassword) {
