@@ -28,7 +28,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * DAO for accessing the user object
+ * DAO for accessing the Location object
  */
 public class LocationDAO extends AggreDataDAO<Location> {
 

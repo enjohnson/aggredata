@@ -24,8 +24,8 @@ import java.io.Serializable;
  */
 public class Gateway extends AggreDataModel implements Serializable {
 
-    public Integer locationId;
-    public Integer userAccountId;
+    public Long locationId;
+    public Long userAccountId;
     public String gatewaySerialNumber;
     public boolean state;
     public String securityKey;
@@ -36,11 +36,11 @@ public class Gateway extends AggreDataModel implements Serializable {
      *
      * @return
      */
-    public Integer getLocationId() {
+    public Long getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(Integer locationId) {
+    public void setLocationId(Long locationId) {
         this.locationId = locationId;
     }
 
@@ -49,11 +49,11 @@ public class Gateway extends AggreDataModel implements Serializable {
      *
      * @return
      */
-    public Integer getUserAccountId() {
+    public Long getUserAccountId() {
         return userAccountId;
     }
 
-    public void setUserAccountId(Integer userAccountId) {
+    public void setUserAccountId(Long userAccountId) {
         this.userAccountId = userAccountId;
     }
 
@@ -76,7 +76,7 @@ public class Gateway extends AggreDataModel implements Serializable {
      *
      * @return
      */
-    public boolean isState() {
+    public boolean getState() {
         return state;
     }
 

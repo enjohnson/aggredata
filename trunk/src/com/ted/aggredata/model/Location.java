@@ -24,7 +24,6 @@ import java.io.Serializable;
  */
 public class Location extends AggreDataModel implements Serializable {
 
-    private Long id;
     private String description;
     private String address1;
     private String address2;
@@ -36,13 +35,6 @@ public class Location extends AggreDataModel implements Serializable {
     private boolean state;
     private long userId;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getDescription() {
         return description;
@@ -156,7 +148,7 @@ public class Location extends AggreDataModel implements Serializable {
         if (country != null ? !country.equals(location.country) : location.country != null) return false;
         if (description != null ? !description.equals(location.description) : location.description != null)
             return false;
-        if (id != null ? !id.equals(location.id) : location.id != null) return false;
+        if (getId() != null ? !getId().equals(location.getId()) : location.getId() != null) return false;
         if (postal != null ? !postal.equals(location.postal) : location.postal != null) return false;
         if (stateOrProvince != null ? !stateOrProvince.equals(location.stateOrProvince) : location.stateOrProvince != null)
             return false;
@@ -168,7 +160,7 @@ public class Location extends AggreDataModel implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (address1 != null ? address1.hashCode() : 0);
         result = 31 * result + (address2 != null ? address2.hashCode() : 0);

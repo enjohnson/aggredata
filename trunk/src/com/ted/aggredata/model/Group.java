@@ -27,7 +27,6 @@ public class Group extends AggreDataModel implements Serializable {
 
     ;
 
-
     private String description;
     private Long ownerUserId;
     private Role role;

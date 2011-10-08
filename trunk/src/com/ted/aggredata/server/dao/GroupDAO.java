@@ -27,7 +27,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * DAO for accessing the user object
+ * DAO for accessing the Group object
  */
 public class GroupDAO extends AggreDataDAO<Group> {
 

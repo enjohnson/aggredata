@@ -24,7 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * DAO for accessing the user object
+ * DAO for accessing and storing energy data
  */
 public class EnergyDataDAO extends AggreDataDAO<EnergyData> {
 
