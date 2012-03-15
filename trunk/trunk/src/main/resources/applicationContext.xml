@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2011. The Energy Detective. All Rights Reserved
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+
+    <!-- Spring includes -->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
+
+
+    <!-- BoneCP configuration -->
+    <bean id="aggredataDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1/aggredata"/>
+        <property name="username" value="aggredata"/>
+        <property name="password" value="aggredata"/>
+        <property name="idleConnectionTestPeriod" value="60"/>
+        <property name="idleMaxAge" value="240"/>
+        <property name="maxConnectionsPerPartition" value="30"/>
+        <property name="minConnectionsPerPartition" value="10"/>
+        <property name="partitionCount" value="3"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+        <property name="releaseHelperThreads" value="3"/>
+    </bean>
+
+
+    <!-- Application Beans -->
+    <bean name="userDAO" class=" com.ted.aggredata.server.dao.UserDAO"/>
+    <bean name="groupDAO" class=" com.ted.aggredata.server.dao.GroupDAO"/>
+    <bean name="locationDAO" class=" com.ted.aggredata.server.dao.LocationDAO"/>
+    <bean name="mtuDAO" class=" com.ted.aggredata.server.dao.MTUDAO"/>
+    <bean name="gatewayDAO" class=" com.ted.aggredata.server.dao.GatewayDAO"/>
+    <bean name="energyDataDAO" class=" com.ted.aggredata.server.dao.EnergyDataDAO"/>
+
+    <bean name="userService" class="com.ted.aggredata.server.services.impl.UserServiceImpl" scope="session"/>
+    <bean name="groupService" class="com.ted.aggredata.server.services.impl.GroupServiceImpl" scope="session"/>
+    <bean name="locationService" class="com.ted.aggredata.server.services.impl.LocationServiceImpl" scope="session"/>
+    <bean name="gatewayService" class="com.ted.aggredata.server.services.impl.GatewayServiceImpl" scope="session"/>
+
+
+</beans>
