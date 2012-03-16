@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011. The Energy Detective. All Rights Reserved
+ * Copyright (c) 2012. The Energy Detective. All Rights Reserved
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,33 +24,15 @@ import java.io.Serializable;
  * pre-populated with many locations.
  */
 public class WeatherLocation extends AggreDataModel implements Serializable {
-    private String stateOrProvince;
-    private String city;
-    private Integer postal;
+    private String postal;
     private double latitude;
     private double longitude;
 
-    public String getStateOrProvince() {
-        return stateOrProvince;
-    }
-
-    public void setStateOrProvince(String stateOrProvince) {
-        this.stateOrProvince = stateOrProvince;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Integer getPostal() {
+    public String getPostal() {
         return postal;
     }
 
-    public void setPostal(Integer postal) {
+    public void setPostal(String postal) {
         this.postal = postal;
     }
 
@@ -75,8 +57,6 @@ public class WeatherLocation extends AggreDataModel implements Serializable {
         StringBuffer b = new StringBuffer();
         b.append("WeatherLocation{");
         b.append("id:" + getId());
-        b.append(", stateOrProvince:" + stateOrProvince);
-        b.append(", city:" + city);
         b.append(", postal:" + postal);
         b.append(", latitude:" + latitude);
         b.append(", longitude:" + longitude);

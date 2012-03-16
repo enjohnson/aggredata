@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011. The Energy Detective. All Rights Reserved
+ * Copyright (c) 2012. The Energy Detective. All Rights Reserved
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 package com.ted.aggredata.server.services;
 
 import com.ted.aggredata.model.User;
-import com.ted.aggredata.server.services.UserService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,8 +33,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml",
-                                   "classpath:applicationContext-Test.xml"
-                    })
+        "classpath:applicationContext-Test.xml"
+})
 
 
 public class UserServiceTest {
@@ -50,12 +49,12 @@ public class UserServiceTest {
 
 
     @Before
-     public void setUp() throws Exception {
-     }
+    public void setUp() throws Exception {
+    }
 
-     @After
-     public void tearDown() throws Exception {
-     }
+    @After
+    public void tearDown() throws Exception {
+    }
 
     @Test
     public void testUserCreate() {
@@ -98,15 +97,15 @@ public class UserServiceTest {
 
     @Test
     public void testUserDelete() {
-            User testUser = userService.getUserByUserName(testUserName);
+        User testUser = userService.getUserByUserName(testUserName);
 
-           //Delete the user
-           userService.deleteUser(testUser);
+        //Delete the user
+        userService.deleteUser(testUser);
 
-           //Check to make sure the user has been deleted
-           User user = userService.getUserByUserName(testUser.getUsername());
-           Assert.assertNull(user);
+        //Check to make sure the user has been deleted
+        User user = userService.getUserByUserName(testUser.getUsername());
+        Assert.assertNull(user);
 
-       }
+    }
 
 }

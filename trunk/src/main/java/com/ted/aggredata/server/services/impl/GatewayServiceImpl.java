@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011. The Energy Detective. All Rights Reserved
+ * Copyright (c) 2012. The Energy Detective. All Rights Reserved
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +24,7 @@ import com.ted.aggredata.model.User;
 import com.ted.aggredata.server.dao.EnergyDataDAO;
 import com.ted.aggredata.server.dao.GatewayDAO;
 import com.ted.aggredata.server.dao.MTUDAO;
-import com.ted.aggredata.server.dao.UserDAO;
 import com.ted.aggredata.server.services.GatewayService;
-import com.ted.aggredata.server.services.UserService;
 import com.ted.aggredata.server.util.KeyGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +49,8 @@ public class GatewayServiceImpl implements GatewayService {
     Logger logger = LoggerFactory.getLogger(getClass());
 
     public Gateway createGateway(Location location, User userAccount, String serialNumber, String description) {
-        logger.info("Adding a new gateway with the serial number " + serialNumber + " for " + userAccount + " at " + location);;
+        logger.info("Adding a new gateway with the serial number " + serialNumber + " for " + userAccount + " at " + location);
+        ;
         Gateway gateway = new Gateway();
         gateway.setLocationId(location.getId());
         gateway.setUserAccountId(userAccount.getId());
@@ -65,8 +64,7 @@ public class GatewayServiceImpl implements GatewayService {
         logger.info("Deleting " + gateway + " and all energy information for it");
         List<MTU> mtuList = mtuDAO.getByGateway(gateway);
         Iterator<MTU> mtuIterator = mtuList.iterator();
-        while (mtuIterator.hasNext())
-        {
+        while (mtuIterator.hasNext()) {
             MTU mtu = mtuIterator.next();
             logger.info("Deleting data for " + mtu + " as part of " + gateway + " deletion");
             energyDataDAO.removeEnergyData(mtu);
@@ -85,15 +83,13 @@ public class GatewayServiceImpl implements GatewayService {
     public MTU addMTU(Gateway gateway, String mtuSerialNumber, MTU.MTUType type, String description) {
         logger.info("Adding MTU " + mtuSerialNumber + " to " + gateway);
         MTU existingMTU = mtuDAO.getBySerialNumber(mtuSerialNumber);
-        if (existingMTU != null)
-        {
+        if (existingMTU != null) {
             logger.info("MTU Already exists. Updating information");
             existingMTU.setDescription(description);
             existingMTU.setType(type);
             existingMTU.setGatewayId(gateway.getId());
             mtuDAO.save(existingMTU);
-        } else
-        {
+        } else {
             MTU mtu = new MTU();
             mtu.setMtuSerialNumber(mtuSerialNumber);
             mtu.setDescription(description);

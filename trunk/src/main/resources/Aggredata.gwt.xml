@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2011. The Energy Detective. All Rights Reserved
+  ~ Copyright (c) 2012. The Energy Detective. All Rights Reserved
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -15,12 +16,21 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.6//EN"
-        "http://google-web-toolkit.googlecode.com/svn/releases/1.6/distro-source/core/src/gwt-module.dtd">
-<module>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.4.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.4.0/distro-source/core/src/gwt-module.dtd">
+
+<module rename-to="Aggredata">
 
     <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.google.gwt.json.JSON'/>
+    <inherits name="com.google.gwt.logging.Logging"/>
+
+
+    <set-property name="gwt.logging.logLevel" value="SEVERE"/>
+    <set-property name="gwt.logging.enabled" value="FALSE"/>
 
     <entry-point class='com.ted.aggredata.client.Aggredata'/>
+
+    <extend-property name="locale" values="en"/>
+    <!--<set-property-fallback name="locale" value="en"/> //DTD broken. Supposed to be fixed in 2.5 -->
 
 </module>

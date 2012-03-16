@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011. The Energy Detective. All Rights Reserved
+ * Copyright (c) 2012. The Energy Detective. All Rights Reserved
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,7 @@
 package com.ted.aggredata.server.dao;
 
 import com.ted.aggredata.model.EnergyData;
-import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
-import com.ted.aggredata.model.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

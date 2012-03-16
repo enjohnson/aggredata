@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011. The Energy Detective. All Rights Reserved
+ * Copyright (c) 2012. The Energy Detective. All Rights Reserved
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,11 +23,11 @@ import com.ted.aggredata.model.MTU;
 import com.ted.aggredata.model.User;
 
 
-
-public interface GatewayService  {
+public interface GatewayService {
 
     /**
      * Creates a new Gateway in the system
+     *
      * @param location
      * @param userAccount
      * @param serialNumber
@@ -38,12 +38,14 @@ public interface GatewayService  {
 
     /**
      * Removes a gateway and all associated data from the system.
+     *
      * @param gateway
      */
     public void deleteGateway(Gateway gateway);
 
     /**
      * Moves a gateway to a new location.
+     *
      * @param gateway
      * @param location
      * @return
@@ -52,6 +54,7 @@ public interface GatewayService  {
 
     /**
      * Adds a new MTU to the system. If the serial number already exists it will be moved to a new gateway.
+     *
      * @param gateway
      * @param mtuSerialNumber
      * @param type
@@ -61,9 +64,9 @@ public interface GatewayService  {
     public MTU addMTU(Gateway gateway, String mtuSerialNumber, MTU.MTUType type, String description);
 
 
-
     /**
      * Disables a gateway
+     *
      * @param gateway
      * @return
      */
@@ -71,11 +74,11 @@ public interface GatewayService  {
 
     /**
      * Enables a gateway and generates a new security key for posting
+     *
      * @param gateway
      * @return
      */
     public Gateway activateGateway(Gateway gateway);
-
 
 
 }

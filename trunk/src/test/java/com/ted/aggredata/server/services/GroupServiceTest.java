@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011. The Energy Detective. All Rights Reserved
+ * Copyright (c) 2012. The Energy Detective. All Rights Reserved
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,10 @@ package com.ted.aggredata.server.services;
 
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
-import com.ted.aggredata.server.services.GroupService;
-import com.ted.aggredata.server.services.UserService;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,11 +30,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml",
-                                   "classpath:applicationContext-Test.xml"
-                    })
+        "classpath:applicationContext-Test.xml"
+})
 
-public class GroupServiceTest
-{
+public class GroupServiceTest {
     @Autowired
     protected UserService userService;
 
@@ -46,7 +46,7 @@ public class GroupServiceTest
 
 
     @Before
-     public void setUp() throws Exception {
+    public void setUp() throws Exception {
         testUser = new User();
         testUser.setUsername("grouptestuser@theenergydetective.com");
         testUser.setPassword("aggredata");
@@ -67,19 +67,18 @@ public class GroupServiceTest
 
         groupService.createGroup(testUser, "Test Group");
         testGroup = groupService.getByUser(testUser).get(0);
-     }
+    }
 
-     @After
-     public void tearDown() throws Exception {
-         groupService.deleteGroup(testGroup);
-         userService.deleteUser(testUserMember);
-         userService.deleteUser(testUser);
-     }
+    @After
+    public void tearDown() throws Exception {
+        groupService.deleteGroup(testGroup);
+        userService.deleteUser(testUserMember);
+        userService.deleteUser(testUser);
+    }
 
 
     @Test
-    public void testAddMember()
-    {
+    public void testAddMember() {
         groupService.addUserToGroup(testUserMember, testGroup, Group.Role.MEMBER);
 
         Group testGroup2 = groupService.getByUser(testUserMember).get(0);

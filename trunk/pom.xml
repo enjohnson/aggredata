@@ -23,7 +23,7 @@
 
     <groupId>com.ted</groupId>
     <artifactId>aggredata</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-DEVELOPMENT</version>
     <description>TED Aggredata - Data aggregation from multiple TED devices</description>
     <url>http://www.theenergydetective.com</url>
     <packaging>war</packaging>
@@ -231,25 +231,22 @@
     					</additionalClasspathElements>
     				</configuration>
     			</plugin>
-    			<plugin>
-    				<groupId>org.codehaus.mojo</groupId>
-    				<artifactId>xmlbeans-maven-plugin</artifactId>
-    				<version>2.3.3</version>
-    				<executions>
-    					<execution>
-    						<goals>
-    							<goal>xmlbeans</goal>
-    						</goals>
-    						<configuration>
-    							<sourceGenerationDirectory>src/main/java</sourceGenerationDirectory>
-    						</configuration>
-    					</execution>
-    				</executions>
-    				<inherited>true</inherited>
-    				<configuration>
-    					<schemaDirectory>src/main/xsd</schemaDirectory>
-    				</configuration>
-    			</plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>gwt-maven-plugin</artifactId>
+                    <version>2.4.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>compile</goal>
+                                <goal>generateAsync</goal>
+                                <goal>test</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
     		</plugins>
     		
 	</build>

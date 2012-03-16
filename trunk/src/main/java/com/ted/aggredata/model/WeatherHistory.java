@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011. The Energy Detective. All Rights Reserved
+ * Copyright (c) 2012. The Energy Detective. All Rights Reserved
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ package com.ted.aggredata.model;
 import java.io.Serializable;
 
 public class WeatherHistory extends AggreDataModel implements Serializable {
-    private Integer weatherLocationId;
+    private Long weatherLocationId;
     private Integer timestamp;
     private Integer temperature;
     private Integer windSpeed;
@@ -28,11 +28,11 @@ public class WeatherHistory extends AggreDataModel implements Serializable {
     private String weatherConditions;
     private String iconLink;
 
-    public Integer getWeatherLocationId() {
+    public Long getWeatherLocationId() {
         return weatherLocationId;
     }
 
-    public void setWeatherLocationId(Integer weatherLocationId) {
+    public void setWeatherLocationId(Long weatherLocationId) {
         this.weatherLocationId = weatherLocationId;
     }
 
