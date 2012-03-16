@@ -22,7 +22,17 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
 
-    <display-name>aggredata</display-name>
+    <display-name>AggreData</display-name>
 
+    <servlet>
+        <servlet-name>AggreDataUserService</servlet-name>
+        <servlet-class>com.ted.aggredata.server.guiServiceImpl.AggreDataUserServiceImpl</servlet-class>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>AggreDataUserService</servlet-name>
+        <url-pattern>/Aggredata/AggreDataUserService</url-pattern>
+    </servlet-mapping>
 
 </web-app>

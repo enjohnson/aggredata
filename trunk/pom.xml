@@ -24,7 +24,7 @@
     <groupId>com.ted</groupId>
     <artifactId>aggredata</artifactId>
     <version>1.0-DEVELOPMENT</version>
-    <description>TED Aggredata - Data aggregation from multiple TED devices</description>
+    <description>TED AggreData - Data aggregation from multiple TED devices</description>
     <url>http://www.theenergydetective.com</url>
     <packaging>war</packaging>
 
@@ -246,7 +246,6 @@
                         <execution>
                             <goals>
                                 <goal>compile</goal>
-                                <goal>generateAsync</goal>
                                 <goal>test</goal>
                             </goals>
                         </execution>
