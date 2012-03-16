@@ -78,7 +78,7 @@ public abstract class AggreDataDAO<T> {
     }
 
     public void delete(AggreDataModel aggreDataModel) {
-        getJdbcTemplate().execute("delete from " + tableName + " where id = " + aggreDataModel.getId());
+        getJdbcTemplate().update("delete from " + tableName + " where id=?", new Object[]{aggreDataModel.getId()});
     }
 
 
