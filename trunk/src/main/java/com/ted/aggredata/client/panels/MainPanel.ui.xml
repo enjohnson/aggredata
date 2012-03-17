@@ -16,13 +16,25 @@
   -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:my='urn:import:com.ted.aggredata.client.widgets'>
+             xmlns:my='urn:import:com.ted.aggredata.client'>
     <ui:style src="AggreData.css"/>
     <g:VerticalPanel height="780px" width="1024px">
-        <g:cell height="15px"><g:Label></g:Label></g:cell>
+        <g:cell height="50px">
+            <g:Label></g:Label>
+        </g:cell>
         <g:HorizontalPanel>
-            <g:cell><my:ClickableTEDLogoImage/></g:cell>
+            <my:widgets.ClearImage width="30px" height="1px"/>
+            <g:cell>
+                <my:widgets.ClickableTEDLogoImage/>
+            </g:cell>
+            <my:widgets.ClearImage width="29px" height="1px"/>
+            <g:VerticalPanel>
+                <my:widgets.ClearImage width="1px" height="26px"/>
+                <my:panels.DashboardTabPanel/>
+            </g:VerticalPanel>
         </g:HorizontalPanel>
-        <g:cell horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="1024px" height="640px"><g:Label addStyleNames='{style.mainBody}' >xxxx</g:Label></g:cell>
+        <g:cell horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="1024px" height="640px">
+            <g:Label addStyleNames='{style.mainBody}'>TO DO</g:Label>
+        </g:cell>
     </g:VerticalPanel>
 </ui:UiBinder>

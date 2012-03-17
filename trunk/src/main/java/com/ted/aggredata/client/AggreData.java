@@ -21,7 +21,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.ted.aggredata.client.guiService.AggreDataUserService;
 import com.ted.aggredata.client.guiService.AggreDataUserServiceAsync;
 import com.ted.aggredata.client.panels.MainPanel;
@@ -29,9 +29,9 @@ import com.ted.aggredata.client.panels.MainPanel;
 public class AggreData implements EntryPoint {
 
     final AggreDataUserServiceAsync accountService = (AggreDataUserServiceAsync) GWT.create(AggreDataUserService.class);
-    
+
     public void onModuleLoad() {
-        
+
         accountService.getTestString(new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable caught) {

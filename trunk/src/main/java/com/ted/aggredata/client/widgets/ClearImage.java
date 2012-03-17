@@ -17,24 +17,37 @@
 
 package com.ted.aggredata.client.widgets;
 
-import com.google.gwt.event.dom.client.ClickEvent;
+
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.uibinder.client.UiConstructor;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.ted.aggredata.client.resources.DashboardImageResource;
 
-/**
- * Creates a clickable TED Logo
+/***
+ * Simple widget to provide flexible padding/spacing on layouts
  */
-public class ClickableTEDLogoImage extends ClickableImage {
+public class ClearImage extends Composite {
+    
+    final Image spaceImage = new Image(DashboardImageResource.INSTANCE.clearImage());
 
-    public ClickableTEDLogoImage() {
-        super(new Image(DashboardImageResource.INSTANCE.tedLogo()), "126px", "50px");
-        addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                Window.open("http://www.theenergydetective.com", "_blank", "");
-            }
-        });
+    private final String width;
+    private final String height;
+
+    public @UiConstructor ClearImage(String width, String height)
+    {
+        if (width == null) this.width = "1px";
+        else this.width = width;
+
+        if (height == null) this.height = "1px";
+        else this.height = height;
+
+        spaceImage.setSize(width, height);
+        initWidget(spaceImage);
+    }
+
+    public void addClickHandler(ClickHandler clickHandler)
+    {
+        spaceImage.addClickHandler(clickHandler);
     }
 }

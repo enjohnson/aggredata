@@ -26,10 +26,22 @@ import com.google.gwt.resources.client.ImageResource;
  */
 public interface DashboardImageResource extends ClientBundle {
 
-    public static final DashboardImageResource INSTANCE =  GWT.create(DashboardImageResource.class);
+    public static final DashboardImageResource INSTANCE = GWT.create(DashboardImageResource.class);
 
     @Source("images/tedlogo.png")
     ImageResource tedLogo();
+
+    @Source("images/clear.png")
+    ImageResource clearImage();
+
+    @Source("images/lefttabbutton.png")
+    ImageResource lefttabButton();
+
+    @Source("images/tabbutton.png")
+    ImageResource tabButton();
+
+    @Source("images/tabdivider.png")
+    ImageResource tabDivider();
 
 
 }

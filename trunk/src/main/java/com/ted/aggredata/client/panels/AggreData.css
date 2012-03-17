@@ -19,11 +19,11 @@
         text-align: center;
         font-size: 1em;
         font-family: Arial, Verdana, Trebuchet, sans-serif;
-        background: #000000 url(images/background.jpg) center no-repeat;
+        background: #000000 url(images/backgroundControls.jpg) center no-repeat;
         color: #FFF;
         padding-bottom: 0px !important;
         margin-bottom: 0px !important;
-        background-position:center top;
+        background-position: center top;
     }
 
     .mainBody {
@@ -31,6 +31,15 @@
         min-height: 640px;
         margin: 0px;
         padding: 0px;
+    }
+
+    .dashboardTabText {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #FFF;
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 11pt;
+        vertical-align: middle;
     }
 
 

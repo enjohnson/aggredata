@@ -19,18 +19,17 @@ package com.ted.aggredata.client.panels;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class MainPanel extends Composite {
 
-    interface MyUiBinder extends UiBinder<Widget, MainPanel> {}
+    interface MyUiBinder extends UiBinder<Widget, MainPanel> {
+    }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-        public MainPanel()
-    {
+    public MainPanel() {
         initWidget(uiBinder.createAndBindUi(this));
 
     }
