@@ -1,6 +1,30 @@
+ /*
+ * Copyright (c) 2012. The Energy Detective. All Rights Reserved
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
+ /*
+  * mySQL scrupt to create the support tables for AggreData
+  * Script for Version: 1.0
+  *
+  */
+ 
+
 CREATE SCHEMA IF NOT EXISTS aggredata;
 
-DROP USER 'aggredata'@'localhost';
+DROP USER 'aggredata'@'localhost';  /*Uncomment this line if re-rerunning the script*/
 
 CREATE USER 'aggredata'@'localhost' IDENTIFIED BY 'aggredata';
 GRANT ALL PRIVILEGES ON aggredata.* TO 'aggredata'@'localhost' WITH GRANT OPTION;
@@ -24,31 +48,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `aggredata`.`Location`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`Location` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `description` VARCHAR(1000) NULL ,
-  `address1` VARCHAR(200) NULL ,
-  `address2` VARCHAR(200) NULL ,
-  `city` VARCHAR(200) NULL ,
-  `stateOrProvince` VARCHAR(200) NULL ,
-  `postal` VARCHAR(200) NULL ,
-  `country` VARCHAR(3) NULL ,
-  `weatherLocationId` INT NULL ,
-  `state` INT(1) NULL ,
-  `userId` INT NULL COMMENT 'The owner of the location (allowed to delete or edit the location)	' ,
-  PRIMARY KEY (`id`) ,
-  INDEX `weather_location_id` (`weatherLocationId` ASC) ,
-  CONSTRAINT `weather_location_id`
-    FOREIGN KEY (`weatherLocationId` )
-    REFERENCES `aggredata`.`WeatherLocation` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `aggredata`.`Gateway`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `aggredata`.`Gateway` (
@@ -59,11 +58,12 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`Gateway` (
   `state` INT(1) NOT NULL ,
   `securityKey` VARCHAR(20) NULL ,
   `description` VARCHAR(1000) NULL ,
+  `weatherLocationId` INT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `location_id` (`locationId` ASC) ,
-  CONSTRAINT `location_id`
-    FOREIGN KEY (`locationId` )
-    REFERENCES `aggredata`.`Location` (`id` )
+  INDEX `weather_location_id` (`weatherLocationId` ASC) ,
+  CONSTRAINT `weather_location_id`
+    FOREIGN KEY (`weatherLocationId` )
+    REFERENCES `aggredata`.`WeatherLocation` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -133,7 +133,7 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`Group` (
   `ownerUserId` INT NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
-COMMENT = 'By default, each user is placed in their own group. However, users may belong to more than one group.\n\n';
+COMMENT = 'Groups of Gateways.\n\n';
 
 
 -- -----------------------------------------------------
@@ -180,30 +180,6 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`UserGroup` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `aggredata`.`GroupLocation`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`GroupLocation` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `groupId` INT NOT NULL ,
-  `locationId` INT NOT NULL ,
-  PRIMARY KEY (`id`, `groupId`, `locationId`) ,
-  INDEX `group_id` (`groupId` ASC) ,
-  INDEX `location_id` (`locationId` ASC) ,
-  CONSTRAINT `group_id_gl`
-    FOREIGN KEY (`groupId` )
-    REFERENCES `aggredata`.`Group` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `location_id_gl`
-    FOREIGN KEY (`locationId` )
-    REFERENCES `aggredata`.`Location` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `aggredata`.`ThirdPartyAccess`
