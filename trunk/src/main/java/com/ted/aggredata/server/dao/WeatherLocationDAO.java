@@ -30,11 +30,11 @@ import java.sql.SQLException;
  */
 public class WeatherLocationDAO extends AggreDataDAO<WeatherLocation> {
 
-    public static final String GET_BY_POSTAL = "select id, postal, latitude, longitude from aggredata.WeatherLocation where postal= ?";
-    public static final String GET_BY_ID = "select id, postal, latitude, longitude from aggredata.WeatherLocation where id= ?";
-    public static final String SAVE_WEATHER_QUERY = "update aggredata.weatherLocation set postal=?, latitude=?, longitude=? where id = ?";
-    public static final String CREATE_WEATHER_QUERY = "insert into aggredata.weatherLocation (postal, latitude, longitude) values (?,?,?)";
-    public static final String COUNT_WEATHER_QUERY = "select count(*) from aggredata.weatherLocation where id = ?";
+    public static final String GET_BY_POSTAL = "select id, postal, latitude, longitude from aggredata.weatherlocation where postal= ?";
+    public static final String GET_BY_ID = "select id, postal, latitude, longitude from aggredata.weatherlocation where id= ?";
+    public static final String SAVE_WEATHER_QUERY = "update aggredata.weatherlocation set postal=?, latitude=?, longitude=? where id = ?";
+    public static final String CREATE_WEATHER_QUERY = "insert into aggredata.weatherlocation (postal, latitude, longitude) values (?,?,?)";
+    public static final String COUNT_WEATHER_QUERY = "select count(*) from aggredata.weatherlocation where id = ?";
 
 
     public WeatherLocationDAO() {

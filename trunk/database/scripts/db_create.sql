@@ -24,9 +24,9 @@
 
 CREATE SCHEMA IF NOT EXISTS aggredata;
 
-DROP USER 'aggredata'@'localhost';  /*Uncomment this line if re-rerunning the script*/
+DROP user 'aggredata'@'localhost';  /*Uncomment this line if re-rerunning the script*/
 
-CREATE USER 'aggredata'@'localhost' IDENTIFIED BY 'aggredata';
+CREATE user 'aggredata'@'localhost' IDENTIFIED BY 'aggredata';
 GRANT ALL PRIVILEGES ON aggredata.* TO 'aggredata'@'localhost' WITH GRANT OPTION;
 
 
@@ -36,9 +36,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
 
 -- -----------------------------------------------------
--- Table `aggredata`.`WeatherLocation`
+-- Table `aggredata`.`weatherlocation`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`WeatherLocation` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`weatherlocation` (
   `id` INT NOT NULL AUTO_INCREMENT  ,
   `postal` VARCHAR(200) NULL ,
   `latitude` DECIMAL(10,6) NULL ,
@@ -48,11 +48,10 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `aggredata`.`Gateway`
+-- Table `aggredata`.`gateway`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`Gateway` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`gateway` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `locationId` INT NOT NULL ,
   `userAccountId` INT NOT NULL ,
   `gatewaySerialNumber` VARCHAR(6) NOT NULL ,
   `state` INT(1) NOT NULL ,
@@ -63,35 +62,35 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`Gateway` (
   INDEX `weather_location_id` (`weatherLocationId` ASC) ,
   CONSTRAINT `weather_location_id`
     FOREIGN KEY (`weatherLocationId` )
-    REFERENCES `aggredata`.`WeatherLocation` (`id` )
+    REFERENCES `aggredata`.`weatherlocation` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `aggredata`.`MTU`
+-- Table `aggredata`.`mtu`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`MTU` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`mtu` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `gatewayId` INT NOT NULL ,
-  `mtuSerialNumber` VARCHAR(6) NOT NULL ,
+  `mtuserialNumber` VARCHAR(6) NOT NULL ,
   `type` INT NULL ,
   `description` VARCHAR(1000) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `gateway_id` (`gatewayId` ASC) ,
   CONSTRAINT `gateway_id`
     FOREIGN KEY (`gatewayId` )
-    REFERENCES `aggredata`.`Gateway` (`id` )
+    REFERENCES `aggredata`.`gateway` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `aggredata`.`EnergyData`
+-- Table `aggredata`.`energydata`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`EnergyData` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`energydata` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `mtuId` INT NOT NULL ,
   `timestamp` INT NOT NULL ,
@@ -102,7 +101,7 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`EnergyData` (
   INDEX `timestamp` (`timestamp` ASC, `mtuId` ASC) ,
   CONSTRAINT `mtu_id`
     FOREIGN KEY (`mtuId` )
-    REFERENCES `aggredata`.`MTU` (`id` )
+    REFERENCES `aggredata`.`mtu` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -110,36 +109,36 @@ COMMENT = 'Table that stores all energy data posted from each gateway';
 
 
 -- -----------------------------------------------------
--- Table `aggredata`.`User`
+-- Table `aggredata`.`user`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`User` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`user` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `username` VARCHAR(200) NULL ,
   `password` VARCHAR(45) NULL ,
   `role` INT NULL COMMENT '0 = normal (can view their own data and see their own gateways)\n1 = admin (can see all users and admin screens)\n' ,
   `state` INT NULL ,
   `activationKey` VARCHAR(20) NULL ,
-  `defaultGroupId` INT NULL ,
+  `defaultgroupId` INT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `aggredata`.`Group`
+-- Table `aggredata`.`group`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`Group` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`group` (
   `id` INT NOT NULL AUTO_INCREMENT  ,
   `description` VARCHAR(1000) NULL ,
-  `ownerUserId` INT NOT NULL ,
+  `owneruserId` INT NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
-COMMENT = 'Groups of Gateways.\n\n';
+COMMENT = 'groups of gateways.\n\n';
 
 
 -- -----------------------------------------------------
--- Table `aggredata`.`WeatherHistory`
+-- Table `aggredata`.`weatherhistory`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`WeatherHistory` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`weatherhistory` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `weatherLocationId` INT NOT NULL ,
   `timestamp` INT NOT NULL ,
@@ -152,16 +151,16 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`WeatherHistory` (
   INDEX `weather_location_id` (`weatherLocationId` ASC) ,
   CONSTRAINT `weather_location_id_wh`
     FOREIGN KEY (`weatherLocationId` )
-    REFERENCES `aggredata`.`WeatherLocation` (`id` )
+    REFERENCES `aggredata`.`weatherlocation` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `aggredata`.`UserGroup`
+-- Table `aggredata`.`usergroup`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`UserGroup` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`usergroup` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `userId` INT NOT NULL ,
   `groupId` INT NOT NULL ,
@@ -171,21 +170,21 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`UserGroup` (
   INDEX `group_id` (`groupId` ASC) ,
   CONSTRAINT `user_id`
     FOREIGN KEY (`userId` )
-    REFERENCES `aggredata`.`User` (`id` )
+    REFERENCES `aggredata`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `group_id`
     FOREIGN KEY (`groupId` )
-    REFERENCES `aggredata`.`Group` (`id` )
+    REFERENCES `aggredata`.`group` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `aggredata`.`GroupLocation`
+-- Table `aggredata`.`groupLocation`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`GatewayGroup` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`gatewaygroup` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `groupId` INT NOT NULL ,
   `gatewayId` INT NOT NULL ,
@@ -194,20 +193,20 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`GatewayGroup` (
   INDEX `gateway_id` (`gatewayId` ASC) ,
   CONSTRAINT `group_id_gl`
     FOREIGN KEY (`groupId` )
-    REFERENCES `aggredata`.`Group` (`id` )
+    REFERENCES `aggredata`.`group` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `gateway_id_gl`
     FOREIGN KEY (`gatewayId` )
-    REFERENCES `aggredata`.`Gateway` (`id` )
+    REFERENCES `aggredata`.`gateway` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `aggredata`.`ThirdPartyAccess`
+-- Table `aggredata`.`thirdpartyaccess`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`ThirdPartyAccess` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`thirdpartyaccess` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `userId` INT NOT NULL ,
   `thirdPartyApplicationKey` VARCHAR(45) NOT NULL ,
@@ -218,9 +217,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `aggredata`.`ThirdPartyAccessGroup`
+-- Table `aggredata`.`thirdpartyaccessgroup`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`ThirdPartyAccessGroup` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`thirdpartyaccessgroup` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `thirdPartyAccessId` INT NOT NULL ,
   `groupId` INT NOT NULL ,
@@ -229,12 +228,12 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`ThirdPartyAccessGroup` (
   INDEX `group_id` (`groupId` ASC) ,
   CONSTRAINT `thirdPartyAccess_id_tpag`
     FOREIGN KEY (`thirdPartyAccessId` )
-    REFERENCES `aggredata`.`ThirdPartyAccess` (`id` )
+    REFERENCES `aggredata`.`thirdpartyaccess` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `group_id_tpag`
     FOREIGN KEY (`groupId` )
-    REFERENCES `aggredata`.`Group` (`id` )
+    REFERENCES `aggredata`.`group` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

@@ -22,13 +22,15 @@ import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
 import com.ted.aggredata.model.User;
 
+import java.util.List;
+
 
 public interface GatewayService {
 
     /**
      * Creates a new Gateway in the system
      *
-     * @param Group
+     * @param group
      * @param userAccount
      * @param serialNumber
      * @param description
@@ -74,4 +76,18 @@ public interface GatewayService {
     public Gateway activateGateway(Gateway gateway);
 
 
+    /****
+     * Returns a list of gateways for the specified user
+     * @param user
+     * @return
+     */
+    List<Gateway> getByUser(User user);
+
+
+    /***
+     * Returns a list of gateways for the specified group
+     * @param group
+     * @return
+     */
+    List<Gateway>getByGroup(Group group);
 }

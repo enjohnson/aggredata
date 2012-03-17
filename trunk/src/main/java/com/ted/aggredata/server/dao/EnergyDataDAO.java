@@ -29,9 +29,9 @@ import java.sql.SQLException;
  */
 public class EnergyDataDAO extends AggreDataDAO<EnergyData> {
 
-    public static String POST_ENERGY_DATA = "insert into aggredata.energyData (mtuId, timestamp, rate, energy) values (?,?,?,?)";
-    public static String SAVE_ENERGY_DATA = "update aggredata.energyData set mtuId=?, timestamp=?, rate=?, energy=? where id = ?";
-    public static String DELETE_ENERGY_DATA = "delete from aggredata.energyData where mtuId=?";
+    public static String POST_ENERGY_DATA = "insert into aggredata.energydata (mtuId, timestamp, rate, energy) values (?,?,?,?)";
+    public static String SAVE_ENERGY_DATA = "update aggredata.energydata set mtuId=?, timestamp=?, rate=?, energy=? where id = ?";
+    public static String DELETE_ENERGY_DATA = "delete from aggredata.energydata where mtuId=?";
 
 
     public EnergyDataDAO() {

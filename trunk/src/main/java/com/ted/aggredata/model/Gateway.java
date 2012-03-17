@@ -40,8 +40,8 @@ public class Gateway extends AggreDataModel implements Serializable {
         return weatherLocationId;
     }
 
-    public void setWeatherLocationId(Long locationId) {
-        this.weatherLocationId = locationId;
+    public void setWeatherLocationId(Long weatherLocationId) {
+        this.weatherLocationId = weatherLocationId;
     }
 
     /**

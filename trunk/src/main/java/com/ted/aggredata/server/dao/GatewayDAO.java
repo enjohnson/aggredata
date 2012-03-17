@@ -18,6 +18,7 @@
 package com.ted.aggredata.server.dao;
 
 import com.ted.aggredata.model.Gateway;
+import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -35,6 +36,7 @@ public class GatewayDAO extends AggreDataDAO<Gateway> {
     public static String SAVE_GATEWAY_QUERY = "update aggredata.gateway set weatherLocationId=?, userAccountId=?, gatewaySerialNumber=?, state=?, securityKey=?, description=? where id=?";
     public static String GET_BY_SERIAL_NUMBER_QUERY = "select id, weatherLocationId, userAccountId, gatewaySerialNumber, state, securityKey, description from aggredata.gateway where gatewaySerialNumber=?";
     public static String GET_BY_USER_ACCOUNT_QUERY = "select id, weatherLocationId, userAccountId, gatewaySerialNumber, state, securityKey, description from aggredata.gateway where userAccountId=?";
+    public static String GET_BY_GROUP_QUERY = "select id, weatherLocationId, userAccountId, gatewaySerialNumber, state, securityKey, description from aggredata.gateway, aggredata.gatewaygroup where gateway.id = gatewaygroup.id and groupId=?";
 
     public GatewayDAO() {
         super("aggredata.gateway");
@@ -55,7 +57,13 @@ public class GatewayDAO extends AggreDataDAO<Gateway> {
     };
 
     public void create(Gateway gateway) {
-        getJdbcTemplate().update(CREATE_GATEWAY_QUERY, gateway.getWeatherLocationId(), gateway.getUserAccountId(), gateway.getSecurityKey(), gateway.getState(), gateway.getSecurityKey(), gateway.description);
+        //Check to make sure a gateway with the given serial number does not already exist in the system. No two gateways should have the same serial number.
+        if (getBySerialNumber(gateway.getGatewaySerialNumber())==null)
+        {
+            getJdbcTemplate().update(CREATE_GATEWAY_QUERY, gateway.getWeatherLocationId(), gateway.getUserAccountId(), gateway.getGatewaySerialNumber(), gateway.getState(), gateway.getSecurityKey(), gateway.description);
+        } else {
+            logger.error("Gateway with serial number " + gateway.getGatewaySerialNumber() + " already exists in the database");
+        }
     }
 
     @Override
@@ -91,6 +99,17 @@ public class GatewayDAO extends AggreDataDAO<Gateway> {
             return getJdbcTemplate().queryForObject(GET_BY_SERIAL_NUMBER_QUERY, new Object[]{serialNumber}, getRowMapper());
         } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");
+            return null;
+        }
+    }
+
+    public List<Gateway> getByGroup(Group group)
+    {
+        try
+        {
+            return getJdbcTemplate().query(GET_BY_GROUP_QUERY, new Object[]{group.getId()}, getRowMapper());
+        } catch (EmptyResultDataAccessException ex){
+            logger.debug("no results returned");
             return null;
         }
     }

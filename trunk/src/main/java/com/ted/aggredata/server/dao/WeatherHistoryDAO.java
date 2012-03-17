@@ -34,10 +34,10 @@ import java.util.List;
 public class WeatherHistoryDAO extends AggreDataDAO<WeatherHistory> {
 
 
-    public static final String GET_RECENT_BY_WEATHER_LOCATION = "select top 1 id, weatherLocationId, timestamp, temperature, windspeed, direction, weatherConditions, iconLink from aggredata.WeatherHistory where weatherLocationId= ? order by timestamp desc";
-    public static final String GET_RANGE_BY_WEATHER_LOCATION = "select id, weatherLocationId, timestamp, temperature, windspeed, direction, weatherConditions, iconLink from aggredata.WeatherHistory where timestamp >= ? and timestamp < ? and weatherLocationId=? order by timestamp desc";
-    public static final String CREATE_WEATHER_HISTORY = "insert into aggredata.weatherHistory (weatherLocationId, timestamp, temperature, windspeed, direction, weatherConditions, iconlink) values (?,?,?,?,?,?,?)";
-    public static final String SAVE_WEATHER_HISTORY = "update aggredata.weatherHistory set weatherLocationId=?, timestamp=?, temperature=?, windspeed=?, direction=?, weatherConditions=?, iconlink=? where id=?";
+    public static final String GET_RECENT_BY_WEATHER_LOCATION = "select top 1 id, weatherLocationId, timestamp, temperature, windspeed, direction, weatherConditions, iconLink from aggredata.weatherhistory where weatherLocationId= ? order by timestamp desc";
+    public static final String GET_RANGE_BY_WEATHER_LOCATION = "select id, weatherLocationId, timestamp, temperature, windspeed, direction, weatherConditions, iconLink from aggredata.weatherhistory where timestamp >= ? and timestamp < ? and weatherLocationId=? order by timestamp desc";
+    public static final String CREATE_WEATHER_HISTORY = "insert into aggredata.weatherhistory (weatherLocationId, timestamp, temperature, windspeed, direction, weatherConditions, iconlink) values (?,?,?,?,?,?,?)";
+    public static final String SAVE_WEATHER_HISTORY = "update aggredata.weatherhistory set weatherLocationId=?, timestamp=?, temperature=?, windspeed=?, direction=?, weatherConditions=?, iconlink=? where id=?";
 
 
     public WeatherHistoryDAO() {

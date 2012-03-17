@@ -17,10 +17,11 @@
 
 package com.ted.aggredata.server.services.impl;
 
+import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
+import com.ted.aggredata.server.dao.GatewayDAO;
 import com.ted.aggredata.server.dao.GroupDAO;
-import com.ted.aggredata.server.dao.LocationDAO;
 import com.ted.aggredata.server.services.GroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,14 +41,13 @@ public class GroupServiceImpl implements GroupService {
     protected GroupDAO groupDAO;
 
     @Autowired
-    protected LocationDAO locationDAO;
+    protected GatewayDAO gatewayDAO;
 
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
     public void createGroup(User user, String description) {
-        logger.debug("Creating new group w/ description " + description + " for user " + user);
-        logger.debug("Checking for existing group");
+        if (logger.isDebugEnabled()) logger.debug("Creating new group w/ description " + description + " for user " + user);
         Group oldGroup = groupDAO.getGroup(user, description);
         if (oldGroup == null) {
             Group group = new Group();
@@ -60,34 +60,46 @@ public class GroupServiceImpl implements GroupService {
     }
 
     public void deleteGroup(Group group) {
-        logger.info("Deleting group " + group);
-        locationDAO.removeGroupLocations(group);
+        if (logger.isInfoEnabled()) logger.info("Deleting group " + group);
         groupDAO.deleteGroupMemberships(group);
+        groupDAO.removeGroupFromGatewayGroups(group);
         groupDAO.delete(group);
     }
+    
+    
 
     public Group getGroup(User user, String description) {
         return groupDAO.getGroup(user, description);
     }
 
     public List<Group> getByUser(User user) {
-        logger.debug("Returning all groups for the user " + user);
+        if (logger.isDebugEnabled())logger.debug("Returning all groups for the user " + user);
         return groupDAO.getGroups(user);
     }
 
     public void addUserToGroup(User user, Group group, Group.Role role) {
-        logger.debug("Adding " + user + " to " + group + " with the role of " + role);
+        if (logger.isDebugEnabled())logger.debug("Adding " + user + " to " + group + " with the role of " + role);
         groupDAO.addGroupMembership(user, group, role);
     }
 
     public void removeUserFromGroup(User user, Group group) {
-        logger.debug("Removing " + user + " from " + group);
+        if (logger.isDebugEnabled())logger.debug("Removing " + user + " from " + group);
         groupDAO.removeGroupMembership(user, group);
     }
 
     public void changeUserRole(User user, Group group, Group.Role role) {
-        logger.debug("Changing " + user + " role in group " + group + " to " + role);
+        if (logger.isDebugEnabled()) logger.debug("Changing " + user + " role in group " + group + " to " + role);
         groupDAO.updateGroupMembership(user, group, role);
+    }
+
+    @Override
+    public void addGatewayToGroup(User user, Group group, Gateway gateway) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void removeGatewayFromGroup(User user, Group group, Gateway gateway) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
 }

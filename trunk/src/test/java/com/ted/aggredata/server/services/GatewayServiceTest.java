@@ -17,8 +17,10 @@
 
 package com.ted.aggredata.server.services;
 
+import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
+import com.ted.aggredata.server.util.TestUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,66 +35,56 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
         "classpath:applicationContext-Test.xml"
 })
 
-public class GroupServiceTest {
+public class GatewayServiceTest {
     @Autowired
     protected UserService userService;
 
     @Autowired
     protected GroupService groupService;
 
+    @Autowired
+    protected GatewayService gatewayService;
 
     public static User testUser;
     public static User testUserMember;
     public static Group testGroup;
-
+    public static String userEmailAddress;
+    public static String groupName;
+    public static Gateway gateway;
 
     @Before
     public void setUp() throws Exception {
+        userEmailAddress = TestUtil.getUniqueKey() + "@theenergydetective.com";
+        groupName = TestUtil.getUniqueKey();
+
         testUser = new User();
-        testUser.setUsername("grouptestuser@theenergydetective.com");
+        testUser.setUsername(userEmailAddress);
         testUser.setPassword("aggredata");
         testUser.setDefaultGroupId(0);
         testUser.setRole(User.Role.MEMBER);
         testUser.setState(true);
         userService.createUser(testUser);
-        testUser = userService.getUserByUserName("grouptestuser@theenergydetective.com");
-
-        testUserMember = new User();
-        testUserMember.setUsername("grouptestmember@theenergydetective.com");
-        testUserMember.setPassword("aggredata");
-        testUserMember.setDefaultGroupId(0);
-        testUserMember.setRole(User.Role.MEMBER);
-        testUserMember.setState(true);
-        userService.createUser(testUserMember);
-        testUserMember = userService.getUserByUserName("grouptestmember@theenergydetective.com");
-
-        groupService.createGroup(testUser, "Test Group");
+        testUser = userService.getUserByUserName(userEmailAddress);
+        Assert.assertNotNull(testUser);
+        groupService.createGroup(testUser, groupName);
         testGroup = groupService.getByUser(testUser).get(0);
+        Assert.assertNotNull(testGroup);
+        gateway = gatewayService.createGateway(testGroup, testUser, "AAAAAA", "AAAAAA");
     }
 
     @After
     public void tearDown() throws Exception {
         groupService.deleteGroup(testGroup);
-        userService.deleteUser(testUserMember);
         userService.deleteUser(testUser);
+        gatewayService.deleteGateway(gateway);
     }
 
 
     @Test
-    public void testAddMember() {
-        groupService.addUserToGroup(testUserMember, testGroup, Group.Role.MEMBER);
-
-        Group testGroup2 = groupService.getByUser(testUserMember).get(0);
-        Assert.assertEquals(testGroup2.getDescription(), "Test Group");
-        Assert.assertEquals(testGroup2.getRole(), Group.Role.MEMBER);
-
-        groupService.changeUserRole(testUserMember, testGroup, Group.Role.READONLY);
-        Group testGroup3 = groupService.getByUser(testUserMember).get(0);
-        Assert.assertEquals(testGroup3.getDescription(), "Test Group");
-        Assert.assertEquals(testGroup3.getRole(), Group.Role.READONLY);
-
-        groupService.removeUserFromGroup(testUserMember, testGroup);
-        Assert.assertEquals(groupService.getByUser(testUserMember).size(), 0);
-    }
+    public void testAddGateway() {
+        Assert.assertNotNull(testUser);
+        Assert.assertNotNull(testGroup);
+        Assert.assertNotNull(gateway);
+   }
 
 }

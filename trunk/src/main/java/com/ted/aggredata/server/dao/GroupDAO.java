@@ -17,6 +17,7 @@
 
 package com.ted.aggredata.server.dao;
 
+import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -41,6 +42,11 @@ public class GroupDAO extends AggreDataDAO<Group> {
     public static String UPDATE_GROUP_MEMBERSHIP_QUERY = "update aggredata.usergroup set role = ? where userId=? and groupId=?";
     public static String REMOVE_GROUP_MEMBERSHIP_QUERY = "delete from aggredata.usergroup where userId=? and groupId=?";
     public static String DELETE_GROUPS_FROM_MEMBERSHIP_QUERY = "delete from aggredata.usergroup where groupId=?";
+    public static String ADD_GATEWAY_TO_GROUP_QUERY = "insert into aggredata.gatewaygroup (groupId, gatewayId) values (?,?)";
+    public static String REMOVE_GATEWAY_FROM_GROUP_QUERY = "delete from aggredata.gatewaygroup where groupId=? and gatewayId=?";
+    public static String REMOVE_GROUP_FROM_GATEWAYGROUP_QUERY = "delete from aggredata.gatewaygroup where groupId=?";
+    public static String REMOVE_GATEWAY_FROM_GATEWAYGROUP_QUERY = "delete from aggredata.gatewaygroup where gatewayId=?";
+
 
 
     public GroupDAO() {
@@ -137,6 +143,33 @@ public class GroupDAO extends AggreDataDAO<Group> {
             logger.debug("No Results returned");
             return null;
         }
+    }
+
+    public void addGatewayToGroup(Gateway gateway, Group group)
+    {
+        getJdbcTemplate().update(ADD_GATEWAY_TO_GROUP_QUERY, group.getId(), gateway.getId());
+    }
+
+    public void removeGatewayFromGroup(Gateway gateway, Group group)
+    {
+        getJdbcTemplate().update(REMOVE_GATEWAY_FROM_GROUP_QUERY, group.getId(), gateway.getId());
+    }
+
+
+    /***
+     * Deletes all references to a specific group in a gateway group. Should only be called if a group is deleted.
+     */
+    public void removeGroupFromGatewayGroups(Group group)
+    {
+        getJdbcTemplate().update(REMOVE_GROUP_FROM_GATEWAYGROUP_QUERY, group.getId());
+    }
+
+    /***
+     * Deletes all references to a specific gateway in a gatewaygroup. Should only be called if a gateway is deleted.
+     */
+    public void removeGatewayFromGatewayGroups(Gateway gateway)
+    {
+        getJdbcTemplate().update(REMOVE_GATEWAY_FROM_GATEWAYGROUP_QUERY,gateway.getId());
     }
 
     @Override

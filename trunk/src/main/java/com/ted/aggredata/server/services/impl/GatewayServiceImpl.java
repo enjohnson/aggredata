@@ -18,11 +18,12 @@
 package com.ted.aggredata.server.services.impl;
 
 import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.Location;
+import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
 import com.ted.aggredata.model.User;
 import com.ted.aggredata.server.dao.EnergyDataDAO;
 import com.ted.aggredata.server.dao.GatewayDAO;
+import com.ted.aggredata.server.dao.GroupDAO;
 import com.ted.aggredata.server.dao.MTUDAO;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.util.KeyGenerator;
@@ -41,6 +42,10 @@ public class GatewayServiceImpl implements GatewayService {
     protected GatewayDAO gatewayDAO;
 
     @Autowired
+    protected GroupDAO groupDAO;
+
+    
+    @Autowired
     protected MTUDAO mtuDAO;
 
     @Autowired
@@ -48,20 +53,20 @@ public class GatewayServiceImpl implements GatewayService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    public Gateway createGateway(Location location, User userAccount, String serialNumber, String description) {
-        logger.info("Adding a new gateway with the serial number " + serialNumber + " for " + userAccount + " at " + location);
-        ;
+    public Gateway createGateway(Group group, User userAccount, String serialNumber, String description) {
+        if (logger.isInfoEnabled()) logger.info("Adding a new gateway with the serial number " + serialNumber + " for " + userAccount + " at " + group);
         Gateway gateway = new Gateway();
-        gateway.setLocationId(location.getId());
         gateway.setUserAccountId(userAccount.getId());
         gateway.setGatewaySerialNumber(serialNumber);
         gateway.setDescription(description);
         gatewayDAO.create(gateway);
-        return gatewayDAO.getBySerialNumber(serialNumber);
+        gateway = gatewayDAO.getBySerialNumber(serialNumber);
+        groupDAO.addGatewayToGroup(gateway, group);
+        return gateway;
     }
 
     public void deleteGateway(Gateway gateway) {
-        logger.info("Deleting " + gateway + " and all energy information for it");
+        if (logger.isInfoEnabled()) logger.info("Deleting " + gateway + " and all energy information for it");
         List<MTU> mtuList = mtuDAO.getByGateway(gateway);
         Iterator<MTU> mtuIterator = mtuList.iterator();
         while (mtuIterator.hasNext()) {
@@ -70,18 +75,14 @@ public class GatewayServiceImpl implements GatewayService {
             energyDataDAO.removeEnergyData(mtu);
             mtuDAO.delete(mtu);
         }
+        groupDAO.removeGatewayFromGatewayGroups(gateway);
         gatewayDAO.delete(gateway);
     }
 
-    public Gateway moveGateway(Gateway gateway, Location location) {
-        logger.info("Moving " + gateway + " to " + location);
-        gateway.setLocationId(location.getId());
-        gatewayDAO.save(gateway);
-        return gateway;
-    }
+
 
     public MTU addMTU(Gateway gateway, String mtuSerialNumber, MTU.MTUType type, String description) {
-        logger.info("Adding MTU " + mtuSerialNumber + " to " + gateway);
+        if (logger.isInfoEnabled()) logger.info("Adding MTU " + mtuSerialNumber + " to " + gateway);
         MTU existingMTU = mtuDAO.getBySerialNumber(mtuSerialNumber);
         if (existingMTU != null) {
             logger.info("MTU Already exists. Updating information");
@@ -101,7 +102,7 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     public Gateway disableGateWay(Gateway gateway) {
-        logger.info("Disabling " + gateway);
+        if (logger.isInfoEnabled()) logger.info("Disabling " + gateway);
         gateway.setState(false);
         gateway.setSecurityKey("");
         gatewayDAO.save(gateway);
@@ -109,10 +110,20 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     public Gateway activateGateway(Gateway gateway) {
-        logger.info("Activating " + gateway);
+        if (logger.isInfoEnabled()) logger.info("Activating " + gateway);
         String key = KeyGenerator.generateSecurityKey(18);
         gateway.setState(true);
         gateway.setSecurityKey(key);
         return gateway;
+    }
+
+    @Override
+    public List<Gateway> getByUser(User user) {
+        return gatewayDAO.getByUserAccount(user);
+    }
+
+    @Override
+    public List<Gateway> getByGroup(Group group) {
+        return gatewayDAO.getByGroup(group);
     }
 }
