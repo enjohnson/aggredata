@@ -19,35 +19,56 @@ package com.ted.aggredata.client.panels;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.ted.aggredata.client.events.TabClickedEvent;
+import com.ted.aggredata.client.events.TabClickedHandler;
 import com.ted.aggredata.client.widgets.DashboardTab;
 
 /**
  * Implements the tabbed interface for dashboard navigation
  */
-public class DashboardTabPanel extends Composite {
+public class DashboardTabPanel extends Composite implements HasHandlers {
 
     final DashboardTab monthTab = new DashboardTab("Month", true);
     final DashboardTab dayTab = new DashboardTab("Day", false);
     final DashboardTab hourTab = new DashboardTab("Hour", false);
     final DashboardTab minuteTab = new DashboardTab("Minute", false);
+    final private HandlerManager handlerManager;
 
     public DashboardTabPanel() {
+        handlerManager = new HandlerManager(this);
         monthTab.setSelected(true, false);
         dayTab.setSelected(false, false);
         hourTab.setSelected(false, true);
-        minuteTab.setSelected(false,true);
+        minuteTab.setSelected(false, true);
 
         monthTab.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (!monthTab.isSelected())
-                {
+                if (!monthTab.isSelected()) {
                     monthTab.setSelected(true, false);
                     dayTab.setSelected(false, false);
                     hourTab.setSelected(false, true);
                     minuteTab.setSelected(false, true);
+                    handlerManager.fireEvent(new TabClickedEvent(0));
+                }
+            }
+        });
+
+
+        dayTab.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                if (!dayTab.isSelected()) {
+                    monthTab.setSelected(false, false);
+                    dayTab.setSelected(true, false);
+                    hourTab.setSelected(false, false);
+                    minuteTab.setSelected(false, true);
+                    handlerManager.fireEvent(new TabClickedEvent(1));
                 }
             }
         });
@@ -55,25 +76,12 @@ public class DashboardTabPanel extends Composite {
         hourTab.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (!hourTab.isSelected())
-                {
+                if (!hourTab.isSelected()) {
                     monthTab.setSelected(false, false);
                     dayTab.setSelected(false, true);
                     hourTab.setSelected(true, false);
                     minuteTab.setSelected(false, false);
-                }
-            }
-        });
-
-        dayTab.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (!dayTab.isSelected())
-                {
-                    monthTab.setSelected(false, false);
-                    dayTab.setSelected(true, false);
-                    hourTab.setSelected(false, false);
-                    minuteTab.setSelected(false, true);
+                    handlerManager.fireEvent(new TabClickedEvent(2));
                 }
             }
         });
@@ -81,12 +89,12 @@ public class DashboardTabPanel extends Composite {
         minuteTab.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (!minuteTab.isSelected())
-                {
+                if (!minuteTab.isSelected()) {
                     monthTab.setSelected(false, false);
                     dayTab.setSelected(false, true);
                     hourTab.setSelected(false, true);
                     minuteTab.setSelected(true, false);
+                    handlerManager.fireEvent(new TabClickedEvent(3));
                 }
             }
         });
@@ -98,6 +106,10 @@ public class DashboardTabPanel extends Composite {
         horizontalPanel.add(minuteTab);
 
         initWidget(horizontalPanel);
+    }
+
+    public HandlerRegistration addTabClickedHandler(TabClickedHandler handler) {
+        return handlerManager.addHandler(TabClickedEvent.TYPE, handler);
     }
 }
 

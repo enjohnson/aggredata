@@ -15,14 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.server.guiServiceImpl;
+package com.ted.aggredata.client.events;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.ted.aggredata.client.guiService.AggreDataUserService;
+import com.google.gwt.event.shared.GwtEvent;
 
-public class AggreDataUserServiceImpl extends RemoteServiceServlet implements AggreDataUserService {
+/**
+ * Event fired off when a tab is clicked
+ */
+public class TabClickedEvent extends GwtEvent<TabClickedHandler> {
+    public static Type<TabClickedHandler> TYPE = new Type<TabClickedHandler>();
+
+
+    private final int tabIndex;
+
+    public TabClickedEvent(int tabIndex) {
+        this.tabIndex = tabIndex;
+    }
+
     @Override
-    public String getTestString() {
-        return "The Service Works!!!";
+    public Type<TabClickedHandler> getAssociatedType() {
+        return TYPE;
+    }
+
+    @Override
+    protected void dispatch(TabClickedHandler handler) {
+        handler.onTabClicked(this);
+    }
+
+
+    public int getTabIndex() {
+        return tabIndex;
     }
 }

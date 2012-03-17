@@ -24,18 +24,21 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.ted.aggredata.client.resources.DashboardImageResource;
 
-/***
+/**
  * Simple widget to provide flexible padding/spacing on layouts
  */
 public class ClearImage extends Composite {
-    
+
     final Image spaceImage = new Image(DashboardImageResource.INSTANCE.clearImage());
 
     private final String width;
     private final String height;
 
-    public @UiConstructor ClearImage(String width, String height)
-    {
+
+    public
+    @UiConstructor
+    ClearImage(String width, String height) {
+
         if (width == null) this.width = "1px";
         else this.width = width;
 
@@ -46,8 +49,8 @@ public class ClearImage extends Composite {
         initWidget(spaceImage);
     }
 
-    public void addClickHandler(ClickHandler clickHandler)
-    {
+
+    public void addClickHandler(ClickHandler clickHandler) {
         spaceImage.addClickHandler(clickHandler);
     }
 }

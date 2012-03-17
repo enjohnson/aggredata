@@ -15,14 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.server.guiServiceImpl;
+package com.ted.aggredata.client.panels.graph;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.ted.aggredata.client.guiService.AggreDataUserService;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
-public class AggreDataUserServiceImpl extends RemoteServiceServlet implements AggreDataUserService {
-    @Override
-    public String getTestString() {
-        return "The Service Works!!!";
+/**
+ * Probably just a placeholder for now.
+ */
+public class GraphPanel extends Composite {
+    interface MyUiBinder extends UiBinder<Widget, GraphPanel> {
     }
+
+    @UiField
+    Label titleLabel;
+
+    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+
+    public GraphPanel(String title) {
+        initWidget(uiBinder.createAndBindUi(this));
+        titleLabel.setText(title);
+    }
+
 }

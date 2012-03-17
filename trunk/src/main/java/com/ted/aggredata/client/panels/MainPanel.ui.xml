@@ -18,23 +18,30 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:my='urn:import:com.ted.aggredata.client'>
     <ui:style src="AggreData.css"/>
-    <g:VerticalPanel height="780px" width="1024px">
-        <g:cell height="50px">
-            <g:Label></g:Label>
-        </g:cell>
-        <g:HorizontalPanel>
-            <my:widgets.ClearImage width="30px" height="1px"/>
-            <g:cell>
-                <my:widgets.ClickableTEDLogoImage/>
-            </g:cell>
-            <my:widgets.ClearImage width="29px" height="1px"/>
+
+    <g:VerticalPanel styleName='{style.mainBody}' horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
+        <my:widgets.ClearImage width="1018px" height="1px"/>
+        <g:HorizontalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
+            <g:VerticalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
+                <my:widgets.ClearImage width="1px" height="20px"/>
+                <g:HorizontalPanel>
+                    <my:widgets.ClearImage width="25px" height="1px"/>
+                    <my:widgets.ClickableTEDLogoImage/>
+                </g:HorizontalPanel>
+            </g:VerticalPanel>
+
             <g:VerticalPanel>
-                <my:widgets.ClearImage width="1px" height="26px"/>
-                <my:panels.DashboardTabPanel/>
+                <my:widgets.ClearImage width="1px" height="30px"/>
+                <g:HorizontalPanel>
+                    <my:widgets.ClearImage width="30px" height="1px"/>
+                    <my:panels.DashboardTabPanel ui:field="tabPanel"/>
+                </g:HorizontalPanel>
+                <g:HorizontalPanel>
+                    <my:widgets.ClearImage width="30px" height="1px"/>
+                    <g:AbsolutePanel ui:field="contentPanel" width="800px" height="600px"/>
+                </g:HorizontalPanel>
             </g:VerticalPanel>
         </g:HorizontalPanel>
-        <g:cell horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="1024px" height="640px">
-            <g:Label addStyleNames='{style.mainBody}'>TO DO</g:Label>
-        </g:cell>
     </g:VerticalPanel>
+
 </ui:UiBinder>

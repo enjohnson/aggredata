@@ -15,26 +15,12 @@
     * along with this program.  If not, see <http://www.gnu.org/licenses/>.
     */
 
-    body {
-        text-align: center;
-        font-size: 1em;
-        font-family: Arial, Verdana, Trebuchet, sans-serif;
-        background-color: black;
-        color: #FFF;
-        background: #000000 url(images/background.jpg) center top no-repeat;
-    }
-
-    .mainBody {
-        padding: 0px !important;
-        margin: 0px !important;
-    }
-
     .dashboardTabText {
         font-family: Arial, Verdana, Trebuchet, sans-serif;
         color: #FFF;
         text-transform: uppercase;
         text-align: center;
-        font-size: 11pt;
+        font-size: 16pt;
         vertical-align: middle;
     }
 

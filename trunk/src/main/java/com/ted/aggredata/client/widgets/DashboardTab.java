@@ -24,6 +24,9 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.ted.aggredata.client.resources.DashboardImageResource;
 
+/**
+ * Widget that represents a single clickable tab
+ */
 public class DashboardTab extends Composite {
 
     final AbsolutePanel tabPanel = new AbsolutePanel();
@@ -33,10 +36,15 @@ public class DashboardTab extends Composite {
     final ClearImage clickImage = new ClearImage("95px", "36px");
     final Boolean isLeftButton;
 
-    public DashboardTab(String text, Boolean leftButton) {
-
-        isLeftButton = leftButton;
-        if (leftButton) selectedImage = new Image(DashboardImageResource.INSTANCE.lefttabButton());
+    /**
+     * Constructs a tab for the DashboardTabPanel
+     *
+     * @param text         the text to be displayed on the tab
+     * @param isLeftButton whether or not this button is the leftmost button
+     */
+    public DashboardTab(String text, Boolean isLeftButton) {
+        this.isLeftButton = isLeftButton;
+        if (isLeftButton) selectedImage = new Image(DashboardImageResource.INSTANCE.lefttabButton());
         else selectedImage = new Image(DashboardImageResource.INSTANCE.tabButton());
 
         label = new TEDLabel(text, "95px", "dashboardTabText", HasHorizontalAlignment.ALIGN_CENTER);
@@ -45,11 +53,10 @@ public class DashboardTab extends Composite {
         clickImage.setSize("95px", "36px");
         tabPanel.setSize("95px", "36px");
 
-
         tabPanel.add(selectedImage, 0, 0);
         tabPanel.add(dividerImage, 0, 0);
-        tabPanel.add(label,0,3);
-        tabPanel.add(clickImage,0,0);
+        tabPanel.add(label, 0, 3);
+        tabPanel.add(clickImage, 0, 0);
 
         selectedImage.setVisible(false);
         initWidget(tabPanel);

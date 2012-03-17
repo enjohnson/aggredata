@@ -19,18 +19,58 @@ package com.ted.aggredata.client.panels;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.ted.aggredata.client.events.TabClickedEvent;
+import com.ted.aggredata.client.events.TabClickedHandler;
+import com.ted.aggredata.client.panels.graph.GraphPanel;
 
 public class MainPanel extends Composite {
+
+    @UiField
+    DashboardTabPanel tabPanel;
 
     interface MyUiBinder extends UiBinder<Widget, MainPanel> {
     }
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
+    @UiField
+    AbsolutePanel contentPanel;
+
     public MainPanel() {
         initWidget(uiBinder.createAndBindUi(this));
+        contentPanel.add(new GraphPanel("Monthly Graphing View"));
+
+        tabPanel.addTabClickedHandler(new TabClickedHandler() {
+            @Override
+            public void onTabClicked(TabClickedEvent event) {
+                contentPanel.clear();
+
+                switch (event.getTabIndex()) {
+                    case 0: {
+                        contentPanel.add(new GraphPanel("Monthly Graphing View"));
+                        break;
+                    }
+                    case 1: {
+                        contentPanel.add(new GraphPanel("Daily Graphing View"));
+                        break;
+                    }
+                    case 2: {
+                        contentPanel.add(new GraphPanel("Hourly Graphing View"));
+                        break;
+                    }
+                    case 3: {
+                        contentPanel.add(new GraphPanel("Minute Graphing View"));
+                        break;
+                    }
+
+                }
+
+            }
+        });
 
     }
 

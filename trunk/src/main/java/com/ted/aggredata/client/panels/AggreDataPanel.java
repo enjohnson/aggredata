@@ -15,14 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.server.guiServiceImpl;
+package com.ted.aggredata.client.panels;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.ted.aggredata.client.guiService.AggreDataUserService;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
+import com.ted.aggredata.client.resources.DashboardImageResource;
 
-public class AggreDataUserServiceImpl extends RemoteServiceServlet implements AggreDataUserService {
-    @Override
-    public String getTestString() {
-        return "The Service Works!!!";
+/**
+ * Top level frame panel
+ */
+public class AggreDataPanel extends Composite {
+
+    final AbsolutePanel mainPanel = new AbsolutePanel();
+
+    public AggreDataPanel() {
+        mainPanel.setSize("1018px", "720px");
+        mainPanel.add(new Image(DashboardImageResource.INSTANCE.contentBackground()), 0, 0);
+        mainPanel.add(new MainPanel(), 0, 0);
+        initWidget(mainPanel);
     }
+
 }

@@ -24,7 +24,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.ted.aggredata.client.guiService.AggreDataUserService;
 import com.ted.aggredata.client.guiService.AggreDataUserServiceAsync;
-import com.ted.aggredata.client.panels.MainPanel;
+import com.ted.aggredata.client.panels.AggreDataPanel;
 
 public class AggreData implements EntryPoint {
 
@@ -41,7 +41,7 @@ public class AggreData implements EntryPoint {
 
             @Override
             public void onSuccess(String result) {
-                RootPanel.get("aggreDataSlot").add(new MainPanel());
+                RootPanel.get("aggreDataSlot").add(new AggreDataPanel());
             }
         });
     }
