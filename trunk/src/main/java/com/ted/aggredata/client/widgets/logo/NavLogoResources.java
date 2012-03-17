@@ -15,10 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-body {
-    background-color: white;
-    color: black;
-    font-family: Arial, sans-serif;
-    font-size: small;
-    margin: 8px;
+package com.ted.aggredata.client.widgets.logo;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ImageResource;
+
+/**
+ * Resource bundle for the Nav logo
+ */
+public interface NavLogoResources extends ClientBundle {
+
+    public static final NavLogoResources INSTANCE =  GWT.create(NavLogoResources.class);
+
+
+    @Source("nav_logo.png")
+    ImageResource navLogo();
+
+    @Source("nav_logo_high.png")
+    ImageResource navLogoHigh();
+
 }

@@ -17,17 +17,36 @@
 
 <html>
 <head>
-    <title>AggreData Application</title>
-    <link rel="stylesheet" href="AggreData.css">
+    <title>AggreData</title>
+    <style>
+        table#applicationTable
+        {
+            width:1024px;
+            height:768px;
+            border-collapse: collapse;
+            border: 0px solid #cccc00;
+            padding:0;
+            margin:0;
+        }
+        #content_wrap {
+            width: 100%;
+            min-height: 640px;
+            margin: 0px;
+            padding: 0px;
+            padding-bottom: 40px;
+            background: #000 url(images/content_bottom.png) bottom left repeat-x;
+            background-position: bottom !important;
+        }
+    </style>
 </head>
 <body>
-<script type="text/javascript" language="javascript" src="Aggredata/Aggredata.nocache.js"></script>
-<h1>AggreData Application</h1>
 
-<table class="applicationTable" style="width:1024px;height:780px" align="center">
-    <tr>
-        <td style="width:1024px;height:780px" id="aggreDataSlot"></td>
-    </tr>
-</table>
+    <script type="text/javascript" language="javascript" src="Aggredata/Aggredata.nocache.js"></script>
+    <table class="applicationTable" style="width:1024px;height:780px" align="center">
+        <tr>
+            <td style="width:1024px;height:780px" id="aggreDataSlot"></td>
+        </tr>
+    </table>
+
 </body>
 </html>
