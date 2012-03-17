@@ -17,7 +17,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:my='urn:import:com.ted.aggredata.client'>
-    <ui:style src="AggreData.css"/>
+    <ui:style src="MainPanel.css"/>
 
     <g:VerticalPanel styleName='{style.mainBody}' horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
         <my:widgets.ClearImage width="1018px" height="1px"/>
@@ -31,10 +31,18 @@
             </g:VerticalPanel>
 
             <g:VerticalPanel>
-                <my:widgets.ClearImage width="1px" height="30px"/>
+
                 <g:HorizontalPanel>
                     <my:widgets.ClearImage width="30px" height="1px"/>
-                    <my:panels.DashboardTabPanel ui:field="tabPanel"/>
+                    <g:VerticalPanel>
+                        <my:widgets.ClearImage width="1px" height="30px"/>
+                        <g:AbsolutePanel height="36px" width="380px" ui:field="titlePanel"/>
+                    </g:VerticalPanel>
+                    <my:widgets.ClearImage width="160px" height="1px"/>
+                    <g:VerticalPanel>
+                        <my:widgets.ClearImage width="1px" height="10px"/>
+                        <my:panels.AdminNavigationPanel ui:field="adminNavigationPanel"/>
+                    </g:VerticalPanel>
                 </g:HorizontalPanel>
                 <g:HorizontalPanel>
                     <my:widgets.ClearImage width="30px" height="1px"/>

@@ -20,31 +20,92 @@ package com.ted.aggredata.client.panels;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.*;
+import com.ted.aggredata.client.events.MenuClickedEvent;
+import com.ted.aggredata.client.events.MenuClickedHandler;
 import com.ted.aggredata.client.events.TabClickedEvent;
 import com.ted.aggredata.client.events.TabClickedHandler;
 import com.ted.aggredata.client.panels.graph.GraphPanel;
+import com.ted.aggredata.client.resources.lang.DashboardConstants;
 
 public class MainPanel extends Composite {
 
-    @UiField
-    DashboardTabPanel tabPanel;
+    
 
     interface MyUiBinder extends UiBinder<Widget, MainPanel> {
     }
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-    @UiField
-    AbsolutePanel contentPanel;
+    @UiField AbsolutePanel contentPanel;
+    @UiField AbsolutePanel titlePanel;
+    @UiField AdminNavigationPanel adminNavigationPanel;
+
+    final DashboardTabPanel graphDashboardPanel;
+    final DashboardTabPanel profileDashboardPanel;
+
+    DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
 
     public MainPanel() {
         initWidget(uiBinder.createAndBindUi(this));
+        
+        graphDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.month(), dashboardConstants.day(), dashboardConstants.hour(), dashboardConstants.minute()});
+        profileDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.accountSettings(), dashboardConstants.accountGroups(), dashboardConstants.accountTEDS()});
+
+        //Set default view
+        graphDashboardPanel.setSelectedTab(0);
+        titlePanel.add(graphDashboardPanel,0,0);
         contentPanel.add(new GraphPanel("Monthly Graphing View"));
 
-        tabPanel.addTabClickedHandler(new TabClickedHandler() {
+
+        //Add handlers
+        adminNavigationPanel.addMenuClickedHandler(new MenuClickedHandler() {
+            @Override
+            public void onMenuClicked(MenuClickedEvent event) {
+                titlePanel.clear();
+                contentPanel.clear();
+                if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ADMIN) {
+                    titlePanel.add(new Label("System Administration"));
+                    contentPanel.add(new GraphPanel("ADMIN View"));
+                } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ENERGY) {
+                    titlePanel.add(graphDashboardPanel,0,0);
+                    contentPanel.add(new GraphPanel("Monthly Graphing View"));
+                    graphDashboardPanel.setSelectedTab(0);
+                } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.PROFILE) {
+                    titlePanel.add(profileDashboardPanel,0,0);
+                    profileDashboardPanel.setSelectedTab(0);
+                    contentPanel.add(new GraphPanel("USER ACCOUNT SETTINGS"));
+                } else {
+                        Window.alert("Logout Not Implemented Yet");
+                }
+                
+            }
+        });
+
+        profileDashboardPanel.addTabClickedHandler(new TabClickedHandler() {
+            @Override
+            public void onTabClicked(TabClickedEvent event) {
+                contentPanel.clear();
+
+                switch (event.getTabIndex()) {
+                    case 0: {
+                        contentPanel.add(new GraphPanel("USER ACCOUNT SETTINGS"));
+                        break;
+                    }
+                    case 1: {
+                        contentPanel.add(new GraphPanel("GROUPS OF GATEWAYS"));
+                        break;
+                    }
+                    case 2: {
+                        contentPanel.add(new GraphPanel("GATEWAYS"));
+                        break;
+                    }
+                }
+            }
+        });
+
+        graphDashboardPanel.addTabClickedHandler(new TabClickedHandler() {
             @Override
             public void onTabClicked(TabClickedEvent event) {
                 contentPanel.clear();

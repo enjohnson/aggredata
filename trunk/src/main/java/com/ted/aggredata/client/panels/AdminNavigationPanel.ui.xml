@@ -14,23 +14,19 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:my='urn:import:com.ted.aggredata.client'>
+    <ui:style src="AdminNavigationPanel.css"/>
+    <g:VerticalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
+        <g:HorizontalPanel>
 
-<html>
-<head>
-    <title>AggreData</title>
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
-    <LINK href="AggreData.css" rel="stylesheet" type="text/css">
+            <g:Label styleName="{style.helloText}" ui:field="helloLabel" />
+            <my:widgets.ClearImage width="3px" height="1px"/>
+            <g:Label styleName="{style.helloTextName}" ui:field="usernameLabel"/>
+        </g:HorizontalPanel>
+        <g:HorizontalPanel ui:field="menuOptionsPanel"/>
+    </g:VerticalPanel>
 
-    <script type="text/javascript" language="javascript" src="Aggredata/Aggredata.nocache.js"></script>
-</head>
-<body>
-<center>
-    <table class="applicationTable" style="width:1024px;height:780px" align="center">
-        <tr>
-            <td style="width:1024px;height:780px" id="aggreDataSlot"></td>
-        </tr>
-    </table>
-</center>
-</body>
-</html>
+
+</ui:UiBinder>

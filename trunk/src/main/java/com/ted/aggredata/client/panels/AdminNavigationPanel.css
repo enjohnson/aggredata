@@ -15,12 +15,21 @@
     * along with this program.  If not, see <http://www.gnu.org/licenses/>.
     */
 
-    .dashboardTabText {
+    .helloText {
         font-family: Arial, Verdana, Trebuchet, sans-serif;
         color: #FFF;
-        text-align: center;
-        font-size: 16pt;
+        text-align: left;
+        font-size: 11pt;
         vertical-align: middle;
     }
+
+    .helloTextName {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #fbee9a;
+        text-align: left;
+        font-size: 11pt;
+        vertical-align: middle;
+    }
+
 
 

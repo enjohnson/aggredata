@@ -46,5 +46,7 @@ public interface DashboardImageResource extends ClientBundle {
     @Source("images/contentBackground.png")
     ImageResource contentBackground();
 
+    @Source("images/menuDivider.png")
+    ImageResource menuDivider();
 
 }

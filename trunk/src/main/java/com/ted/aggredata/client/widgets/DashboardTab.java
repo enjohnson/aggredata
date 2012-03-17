@@ -17,6 +17,7 @@
 
 package com.ted.aggredata.client.widgets;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
@@ -47,7 +48,7 @@ public class DashboardTab extends Composite {
         if (isLeftButton) selectedImage = new Image(DashboardImageResource.INSTANCE.lefttabButton());
         else selectedImage = new Image(DashboardImageResource.INSTANCE.tabButton());
 
-        label = new TEDLabel(text, "95px", "dashboardTabText", HasHorizontalAlignment.ALIGN_CENTER);
+        label = new TEDLabel(text.toUpperCase(), "95px", "dashboardTabText", HasHorizontalAlignment.ALIGN_CENTER);
         label.setHeight("36px");
 
         clickImage.setSize("95px", "36px");
@@ -60,11 +61,14 @@ public class DashboardTab extends Composite {
 
         selectedImage.setVisible(false);
         initWidget(tabPanel);
+
     }
 
     public void setSelected(Boolean isSelected, Boolean showDivider) {
         selectedImage.setVisible(isSelected);
         dividerImage.setVisible(!isSelected && !isLeftButton && showDivider);
+        if (isSelected) label.getElement().getStyle().setFontWeight(Style.FontWeight.BOLDER);
+        else label.getElement().getStyle().setFontWeight(Style.FontWeight.LIGHTER);
     }
 
 
