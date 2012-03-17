@@ -24,7 +24,7 @@ import java.io.Serializable;
  */
 public class Gateway extends AggreDataModel implements Serializable {
 
-    public Long locationId;
+    public Long weatherLocationId;
     public Long userAccountId;
     public String gatewaySerialNumber;
     public boolean state;
@@ -32,16 +32,16 @@ public class Gateway extends AggreDataModel implements Serializable {
     public String description;
 
     /**
-     * the unique location id of the location that contains this gateway
+     * the unique location id of the weather location associated with this gateway
      *
      * @return
      */
-    public Long getLocationId() {
-        return locationId;
+    public Long getWeatherLocationId() {
+        return weatherLocationId;
     }
 
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
+    public void setWeatherLocationId(Long locationId) {
+        this.weatherLocationId = locationId;
     }
 
     /**
@@ -116,7 +116,7 @@ public class Gateway extends AggreDataModel implements Serializable {
         StringBuffer b = new StringBuffer();
         b.append("Gateway{");
         b.append("id:" + getId());
-        b.append(", locationId:" + locationId);
+        b.append(", weatherLocationId:" + weatherLocationId);
         b.append(", userAccountId:" + userAccountId);
         b.append(", state:" + state);
         b.append(", securityKey:" + securityKey);

@@ -18,7 +18,7 @@
 package com.ted.aggredata.server.services;
 
 import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.Location;
+import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
 import com.ted.aggredata.model.User;
 
@@ -28,13 +28,13 @@ public interface GatewayService {
     /**
      * Creates a new Gateway in the system
      *
-     * @param location
+     * @param Group
      * @param userAccount
      * @param serialNumber
      * @param description
      * @return
      */
-    public Gateway createGateway(Location location, User userAccount, String serialNumber, String description);
+    public Gateway createGateway(Group group, User userAccount, String serialNumber, String description);
 
     /**
      * Removes a gateway and all associated data from the system.
@@ -43,14 +43,7 @@ public interface GatewayService {
      */
     public void deleteGateway(Gateway gateway);
 
-    /**
-     * Moves a gateway to a new location.
-     *
-     * @param gateway
-     * @param location
-     * @return
-     */
-    public Gateway moveGateway(Gateway gateway, Location location);
+
 
     /**
      * Adds a new MTU to the system. If the serial number already exists it will be moved to a new gateway.

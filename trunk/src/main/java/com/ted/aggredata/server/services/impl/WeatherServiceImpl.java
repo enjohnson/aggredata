@@ -17,7 +17,7 @@
 
 package com.ted.aggredata.server.services.impl;
 
-import com.ted.aggredata.model.Location;
+
 import com.ted.aggredata.model.WeatherHistory;
 import com.ted.aggredata.model.WeatherLocation;
 import com.ted.aggredata.server.services.WeatherService;
@@ -41,20 +41,12 @@ public class WeatherServiceImpl implements WeatherService {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
-    public WeatherHistory getRecentWeather(Location location) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     @Override
     public List<WeatherHistory> getWeather(WeatherLocation location, Date startDate, Date endDate) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
-    public List<WeatherHistory> getWeather(Location location, Date startDate, Date endDate) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     @Override
     public void updateWeather(WeatherLocation weatherLocation) {

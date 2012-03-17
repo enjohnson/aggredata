@@ -17,7 +17,6 @@
 
 package com.ted.aggredata.server.services;
 
-import com.ted.aggredata.model.Location;
 import com.ted.aggredata.model.WeatherHistory;
 import com.ted.aggredata.model.WeatherLocation;
 
@@ -56,13 +55,7 @@ public interface WeatherService {
      */
     public WeatherHistory getRecentWeather(WeatherLocation location);
 
-    /**
-     * Returns the most recent weather record for the specified location
-     *
-     * @param location
-     * @return
-     */
-    public WeatherHistory getRecentWeather(Location location);
+
 
     /**
      * Returns a weather history for the specified start and end date range
@@ -73,14 +66,6 @@ public interface WeatherService {
      */
     public List<WeatherHistory> getWeather(WeatherLocation location, Date startDate, Date endDate);
 
-    /**
-     * Returns a weather history for the specified start and end date range
-     *
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-    public List<WeatherHistory> getWeather(Location location, Date startDate, Date endDate);
 
 
     /**

@@ -181,6 +181,29 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`UserGroup` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `aggredata`.`GroupLocation`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `aggredata`.`GatewayGroup` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `groupId` INT NOT NULL ,
+  `gatewayId` INT NOT NULL ,
+  PRIMARY KEY (`id`, `groupId`, `gatewayId`) ,
+  INDEX `group_id` (`groupId` ASC) ,
+  INDEX `gateway_id` (`gatewayId` ASC) ,
+  CONSTRAINT `group_id_gl`
+    FOREIGN KEY (`groupId` )
+    REFERENCES `aggredata`.`Group` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `gateway_id_gl`
+    FOREIGN KEY (`gatewayId` )
+    REFERENCES `aggredata`.`Gateway` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 -- -----------------------------------------------------
 -- Table `aggredata`.`ThirdPartyAccess`
 -- -----------------------------------------------------

@@ -18,7 +18,6 @@
 package com.ted.aggredata.server.dao;
 
 import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.Location;
 import com.ted.aggredata.model.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -32,11 +31,10 @@ import java.util.List;
  */
 public class GatewayDAO extends AggreDataDAO<Gateway> {
 
-    public static String CREATE_GATEWAY_QUERY = "insert into aggredata.gateway (locationId, userAccountId, gatewaySerialNumber, state, securityKey, description) values (?,?,?,?,?,?)";
-    public static String SAVE_GATEWAY_QUERY = "update aggredata.gateway set locationId=?, userAccountId=?, gatewaySerialNumber=?, state=?, securityKey=?, description=? where id=?";
-    public static String GET_BY_SERIAL_NUMBER_QUERY = "select id, locationId, userAccountId, gatewaySerialNumber, state, securityKey, description from aggredata.gateway where gatewaySerialNumber=?";
-    public static String GET_BY_LOCATION_QUERY = "select id, locationId, userAccountId, gatewaySerialNumber, state, securityKey, description from aggredata.gateway where locationId=?";
-    public static String GET_BY_USER_ACCOUNT_QUERY = "select id, locationId, userAccountId, gatewaySerialNumber, state, securityKey, description from aggredata.gateway where userAccountId=?";
+    public static String CREATE_GATEWAY_QUERY = "insert into aggredata.gateway (weatherLocationId, userAccountId, gatewaySerialNumber, state, securityKey, description) values (?,?,?,?,?,?)";
+    public static String SAVE_GATEWAY_QUERY = "update aggredata.gateway set weatherLocationId=?, userAccountId=?, gatewaySerialNumber=?, state=?, securityKey=?, description=? where id=?";
+    public static String GET_BY_SERIAL_NUMBER_QUERY = "select id, weatherLocationId, userAccountId, gatewaySerialNumber, state, securityKey, description from aggredata.gateway where gatewaySerialNumber=?";
+    public static String GET_BY_USER_ACCOUNT_QUERY = "select id, weatherLocationId, userAccountId, gatewaySerialNumber, state, securityKey, description from aggredata.gateway where userAccountId=?";
 
     public GatewayDAO() {
         super("aggredata.gateway");
@@ -46,7 +44,7 @@ public class GatewayDAO extends AggreDataDAO<Gateway> {
         public Gateway mapRow(ResultSet rs, int rowNum) throws SQLException {
             Gateway gateway = new Gateway();
             gateway.setId(rs.getLong("id"));
-            gateway.setLocationId(rs.getLong("locationId"));
+            gateway.setWeatherLocationId(rs.getLong("weatherLocationId"));
             gateway.setUserAccountId(rs.getLong("userAccountId"));
             gateway.setGatewaySerialNumber(rs.getString("gatewaySerialNumber"));
             gateway.setState(rs.getBoolean("state"));
@@ -57,12 +55,12 @@ public class GatewayDAO extends AggreDataDAO<Gateway> {
     };
 
     public void create(Gateway gateway) {
-        getJdbcTemplate().update(CREATE_GATEWAY_QUERY, gateway.getLocationId(), gateway.getUserAccountId(), gateway.getSecurityKey(), gateway.getState(), gateway.getSecurityKey(), gateway.description);
+        getJdbcTemplate().update(CREATE_GATEWAY_QUERY, gateway.getWeatherLocationId(), gateway.getUserAccountId(), gateway.getSecurityKey(), gateway.getState(), gateway.getSecurityKey(), gateway.description);
     }
 
     @Override
     public void save(Gateway gateway) {
-        getJdbcTemplate().update(SAVE_GATEWAY_QUERY, gateway.getLocationId(), gateway.getUserAccountId(), gateway.getSecurityKey(), gateway.getState(), gateway.getSecurityKey(), gateway.description, gateway.getId());
+        getJdbcTemplate().update(SAVE_GATEWAY_QUERY, gateway.getWeatherLocationId(), gateway.getUserAccountId(), gateway.getSecurityKey(), gateway.getState(), gateway.getSecurityKey(), gateway.description, gateway.getId());
     }
 
 
@@ -81,20 +79,6 @@ public class GatewayDAO extends AggreDataDAO<Gateway> {
         }
     }
 
-    /**
-     * Returns the MTU's for the given gateway
-     *
-     * @param location
-     * @return
-     */
-    public List<Gateway> getByLocation(Location location) {
-        try {
-            return getJdbcTemplate().query(GET_BY_LOCATION_QUERY, new Object[]{location.getId()}, getRowMapper());
-        } catch (EmptyResultDataAccessException ex) {
-            logger.debug("No Results returned");
-            return null;
-        }
-    }
 
     /**
      * Returns the mtu for the given serial number

@@ -17,6 +17,7 @@
 
 package com.ted.aggredata.server.services;
 
+import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
 
@@ -84,4 +85,23 @@ public interface GroupService {
      * @param role
      */
     public void changeUserRole(User user, Group group, Group.Role role);
+
+    /**
+     * Adds a Gateway to a specific group
+     * @param user
+     * @param group
+     * @param gateway
+     */
+    public void addGatewayToGroup(User user, Group group, Gateway gateway);
+
+
+    /**
+     * Removes a gateway from a specific group
+     * @param user
+     * @param group
+     * @param gateway
+     */
+    public void removeGatewayFromGroup(User user, Group group, Gateway gateway);
+
+
 }
