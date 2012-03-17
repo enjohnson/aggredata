@@ -15,24 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.client.widgets.logo;
+package com.ted.aggredata.client.resources;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
 /**
- * Resource bundle for the Nav logo
+ * Resource bundle for images used on the AggreData dashboard.
  */
-public interface NavLogoResources extends ClientBundle {
+public interface DashboardImageResource extends ClientBundle {
 
-    public static final NavLogoResources INSTANCE =  GWT.create(NavLogoResources.class);
+    public static final DashboardImageResource INSTANCE =  GWT.create(DashboardImageResource.class);
 
+    @Source("images/tedlogo.png")
+    ImageResource tedLogo();
 
-    @Source("nav_logo.png")
-    ImageResource navLogo();
-
-    @Source("nav_logo_high.png")
-    ImageResource navLogoHigh();
 
 }

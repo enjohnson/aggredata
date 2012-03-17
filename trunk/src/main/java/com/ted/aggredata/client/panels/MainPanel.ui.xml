@@ -21,7 +21,7 @@
     <g:VerticalPanel height="780px" width="1024px">
         <g:cell height="15px"><g:Label></g:Label></g:cell>
         <g:HorizontalPanel>
-            <g:cell horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP"><my:logo.NavLogo/></g:cell>
+            <g:cell><my:ClickableTEDLogoImage/></g:cell>
         </g:HorizontalPanel>
         <g:cell horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="1024px" height="640px"><g:Label addStyleNames='{style.mainBody}' >xxxx</g:Label></g:cell>
     </g:VerticalPanel>
