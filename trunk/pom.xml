@@ -30,7 +30,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.1.0.M2</spring.version>
+        <spring.version>3.1.1.RELEASE</spring.version>
         <gwt.version>2.4.0</gwt.version>
     </properties>
 
@@ -97,101 +97,96 @@
 		</dependency>
     
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.aop</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-aop</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.asm</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-asm</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.aspects</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-aspects</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.beans</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-beans</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.context</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-context</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.context.support</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-context-support</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.core</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-core</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.expression</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-expression</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.instrument.tomcat</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-instrument-tomcat</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.jdbc</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-jdbc</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.jms</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-jms</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.orm</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-orm</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.oxm</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-oxm</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.test</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-test</artifactId>
     			<version>${spring.version}</version>
     			<scope>test</scope>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.transaction</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-tx</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.web</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-web</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.web.portlet</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-webmvc-portlet</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
     		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.web.servlet</artifactId>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-webmvc</artifactId>
     			<version>${spring.version}</version>
     		</dependency>
-    		<dependency>
-    			<groupId>spring</groupId>
-    			<artifactId>org.springframework.web.struts</artifactId>
-    			<version>${spring.version}</version>
-		</dependency>
 		
     </dependencies>
     
