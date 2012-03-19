@@ -14,13 +14,16 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:my='urn:import:com.ted.aggredata.client'>
+    <ui:style src="LoginPanel.css"/>
 
-<!--XML File for Jetty configuration.  -->
-
-
-<Configure class="org.mortbay.jetty.webapp.WebAppContext">
-
-    <Set name="contextPath">/aggredata</Set>
-
-</Configure>
-
+    <g:VerticalPanel styleName='{style.mainBody}' horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
+        <my:widgets.ClearImage width="1024px" height="1px"/>
+        <g:HorizontalPanel  horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
+            <my:widgets.ClearImage width="1px" height="640px"/>
+            <g:AbsolutePanel ui:field="contentPanel"/>
+        </g:HorizontalPanel>
+    </g:VerticalPanel>
+</ui:UiBinder>

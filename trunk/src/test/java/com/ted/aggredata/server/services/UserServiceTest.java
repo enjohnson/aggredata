@@ -63,7 +63,7 @@ public class UserServiceTest {
         testUser.setUsername(testUserName);
         testUser.setPassword("aggredata");
         testUser.setDefaultGroupId(0);
-        testUser.setRole(User.Role.MEMBER);
+        testUser.setRole(User.ROLE_USER);
         testUser.setState(true);
 
         //Save the user

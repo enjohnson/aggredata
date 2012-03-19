@@ -115,7 +115,7 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`user` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `username` VARCHAR(200) NULL ,
   `password` VARCHAR(45) NULL ,
-  `role` INT NULL COMMENT '0 = normal (can view their own data and see their own gateways)\n1 = admin (can see all users and admin screens)\n' ,
+  `role` VARCHAR(45) NULL ,
   `state` INT NULL ,
   `activationKey` VARCHAR(20) NULL ,
   `defaultgroupId` INT NULL ,
@@ -243,3 +243,8 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+insert into aggredata.user (username, password, role, state, defaultGroupId) values ('admin','admin','ROLE_ADMIN', 1, 1);
+insert into aggredata.group (description, owneruserId) values ('Default', (select id from aggredata.user where username='admin'));
+
+

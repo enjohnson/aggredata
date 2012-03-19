@@ -60,6 +60,8 @@ public class DashboardTab extends Composite {
         tabPanel.add(clickImage, 0, 0);
 
         selectedImage.setVisible(false);
+
+        clickImage.setStylePrimaryName("dashboardTabText");
         initWidget(tabPanel);
 
     }

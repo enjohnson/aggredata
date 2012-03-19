@@ -19,12 +19,31 @@ package com.ted.aggredata.client.guiService;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.ted.aggredata.model.User;
 
 /**
- * Client Side Interface for the service
+ * Client Side Interface for the service to check user sessions.
  */
-@RemoteServiceRelativePath("AggreDataUserService")
-public interface AggreDataUserService extends RemoteService {
-    public String getTestString();
+@RemoteServiceRelativePath("UserSessionService")
+public interface UserSessionService extends RemoteService {
+
+    /***
+     * Creates a user session
+     * @param username
+     * @param password
+     * @return
+     */
+    public User logon(String username, String password);
+
+    /***
+     * Logs the current user out of their session
+     */
+    public void logoff();
+
+    /***
+     * Checks to see if the user is currently in a valid/logged in session.
+     * @return
+     */
+    public User getUserFromSession();
 
 }

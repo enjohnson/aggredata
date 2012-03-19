@@ -19,29 +19,38 @@ package com.ted.aggredata.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.ted.aggredata.client.guiService.AggreDataUserService;
-import com.ted.aggredata.client.guiService.AggreDataUserServiceAsync;
+import com.ted.aggredata.client.guiService.*;
 import com.ted.aggredata.client.panels.AggreDataPanel;
+import com.ted.aggredata.client.panels.login.LoginPanel;
+import com.ted.aggredata.model.User;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AggreData implements EntryPoint {
 
-    final AggreDataUserServiceAsync accountService = (AggreDataUserServiceAsync) GWT.create(AggreDataUserService.class);
-
+    final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
+    static final Logger logger = Logger.getLogger(AggreData.class.toString());
     public void onModuleLoad() {
 
-        accountService.getTestString(new AsyncCallback<String>() {
+        /**
+         * Check to see if the user already has a valid session
+         */
+        userSessionService.getUserFromSession(new TEDAsyncCallback<User>() {
             @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("Initialization Failed");
-                GWT.log(caught.getMessage(), caught);
-            }
-
-            @Override
-            public void onSuccess(String result) {
-                RootPanel.get("aggreDataSlot").add(new AggreDataPanel());
+            public void onSuccess(User result) {
+                Globals.user = result;
+                if (result != null){
+                    if (logger.isLoggable(Level.FINE)) logger.fine("Valid session found for user " + result.getUsername());
+                    RootPanel.get("aggreDataSlot").clear();
+                    RootPanel.get("aggreDataSlot").add(new AggreDataPanel());
+                }  else
+                {
+                    logger.info("No session found. Redirecting to login page.");
+                    RootPanel.get("aggreDataSlot").clear();
+                    RootPanel.get("aggreDataSlot").add(new LoginPanel());
+                }
             }
         });
     }

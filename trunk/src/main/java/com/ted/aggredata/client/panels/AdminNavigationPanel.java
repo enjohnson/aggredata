@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.ted.aggredata.client.Globals;
 import com.ted.aggredata.client.events.MenuClickedEvent;
 import com.ted.aggredata.client.events.MenuClickedHandler;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
@@ -60,7 +61,7 @@ public class AdminNavigationPanel extends Composite implements HasHandlers{
         handlerManager = new HandlerManager(this);
 
         helloLabel.setText(myConstants.hello());
-        usernameLabel.setText("Dolph Rodenberg");
+        usernameLabel.setText(Globals.user.getUsername());
 
         //TODO: DISABLE ADMIN BUTTON IF USER IS NOT AN ADMIN
         String width = "65px";

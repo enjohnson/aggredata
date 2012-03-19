@@ -52,7 +52,7 @@ public class GroupServiceTest {
         testUser.setUsername("grouptestuser@theenergydetective.com");
         testUser.setPassword("aggredata");
         testUser.setDefaultGroupId(0);
-        testUser.setRole(User.Role.MEMBER);
+        testUser.setRole(User.ROLE_USER);
         testUser.setState(true);
         userService.createUser(testUser);
         testUser = userService.getUserByUserName("grouptestuser@theenergydetective.com");
@@ -61,7 +61,7 @@ public class GroupServiceTest {
         testUserMember.setUsername("grouptestmember@theenergydetective.com");
         testUserMember.setPassword("aggredata");
         testUserMember.setDefaultGroupId(0);
-        testUserMember.setRole(User.Role.MEMBER);
+        testUserMember.setRole(User.ROLE_USER);
         testUserMember.setState(true);
         userService.createUser(testUserMember);
         testUserMember = userService.getUserByUserName("grouptestmember@theenergydetective.com");

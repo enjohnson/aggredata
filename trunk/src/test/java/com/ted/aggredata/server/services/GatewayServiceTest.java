@@ -61,7 +61,7 @@ public class GatewayServiceTest {
         testUser.setUsername(userEmailAddress);
         testUser.setPassword("aggredata");
         testUser.setDefaultGroupId(0);
-        testUser.setRole(User.Role.MEMBER);
+        testUser.setRole(User.ROLE_USER);
         testUser.setState(true);
         userService.createUser(testUser);
         testUser = userService.getUserByUserName(userEmailAddress);

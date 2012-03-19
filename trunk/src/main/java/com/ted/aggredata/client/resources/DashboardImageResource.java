@@ -48,5 +48,14 @@ public interface DashboardImageResource extends ClientBundle {
 
     @Source("images/menuDivider.png")
     ImageResource menuDivider();
+    
+    @Source("images/smallPanel.png")
+    ImageResource smallPanel();
+    
+    @Source("images/aggreDataMedium.png")
+    ImageResource aggreDataMedium();
+
+    @Source("images/largeButton.png")
+    ImageResource largeButton();
 
 }

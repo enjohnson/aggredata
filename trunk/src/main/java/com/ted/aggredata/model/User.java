@@ -26,13 +26,14 @@ import java.io.Serializable;
 
 public class User extends AggreDataModel implements Serializable {
 
-    public static enum Role {MEMBER, ADMIN}
+    public static String ROLE_USER = "ROLE_USER";
+    public static String ROLE_ADMIN= "ROLE_ADMIN";
 
-    ;
+    
 
     private String username;
     private String password;
-    private Role role;
+    private String role;
     private boolean state;
     private String activationKey;
     private int defaultGroupId;
@@ -58,11 +59,11 @@ public class User extends AggreDataModel implements Serializable {
         this.password = password;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

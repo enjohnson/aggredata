@@ -47,7 +47,7 @@ public class UserDAO extends AggreDataDAO<User> {
             user.setUsername(rs.getString("username"));
             user.setActivationKey(rs.getString("activationKey"));
             user.setDefaultGroupId(rs.getShort("defaultGroupId"));
-            user.setRole(User.Role.values()[rs.getInt("role")]);
+            user.setRole(rs.getString("role"));
             user.setPassword(rs.getString("password"));
             user.setState(rs.getBoolean("state"));
             return user;
@@ -74,13 +74,13 @@ public class UserDAO extends AggreDataDAO<User> {
 
     public void create(User user) {
         if (getJdbcTemplate().queryForInt(COUNT_USER_QUERY, user.getUsername()) == 0) {
-            getJdbcTemplate().update(CREATE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole().ordinal(), user.getPassword(), user.isState());
+            getJdbcTemplate().update(CREATE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole(), user.getPassword(), user.isState());
         }
     }
 
     public void save(User user) {
 
-        getJdbcTemplate().update(SAVE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole().ordinal(), user.getPassword(), user.isState(), user.getId());
+        getJdbcTemplate().update(SAVE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole(), user.getPassword(), user.isState(), user.getId());
     }
 
 }

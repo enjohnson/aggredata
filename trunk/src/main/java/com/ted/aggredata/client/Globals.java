@@ -15,16 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.client.guiService;
+package com.ted.aggredata.client;
 
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.ted.aggredata.model.User;
 
-/**
- * Client Side Interface for the service
+/***
+ * Static class for application specific global variables.
  */
-@RemoteServiceRelativePath("AggreDataUserService")
-public interface AggreDataUserService extends RemoteService {
-    public String getTestString();
+public class Globals {
+    
+    public static User user;
 
 }

@@ -18,15 +18,26 @@
 package com.ted.aggredata.server.guiServiceImpl;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.ted.aggredata.client.guiService.AggreDataUserService;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
-public class AggreDataUserServiceImpl extends SpringRemoteServiceServlet implements AggreDataUserService {
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+
+/***
+ * Simple suplerclass of all AggreData RemoteServiceServlets. This is primarialy intended
+ * to allow for Spring integration as well as include some common utility classes.
+ *
+ * Thanks to Max Matveev for posting this solution to his blog: http://blog.maxmatveev.com/2011/02/simple-spring-bean-autowiring-in-gwt.html
+ *
+ */
+public class SpringRemoteServiceServlet extends RemoteServiceServlet {
+
     @Override
-    public String getTestString() {
-        return "The Service Works!!!";
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        WebApplicationContextUtils.
+                getRequiredWebApplicationContext(getServletContext()).
+                getAutowireCapableBeanFactory().
+                autowireBean(this);
     }
-
-
-
-
 }

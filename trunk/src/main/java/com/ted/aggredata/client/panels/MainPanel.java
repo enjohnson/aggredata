@@ -26,21 +26,33 @@ import com.ted.aggredata.client.events.MenuClickedEvent;
 import com.ted.aggredata.client.events.MenuClickedHandler;
 import com.ted.aggredata.client.events.TabClickedEvent;
 import com.ted.aggredata.client.events.TabClickedHandler;
+import com.ted.aggredata.client.guiService.TEDAsyncCallback;
+import com.ted.aggredata.client.guiService.UserSessionService;
+import com.ted.aggredata.client.guiService.UserSessionServiceAsync;
 import com.ted.aggredata.client.panels.graph.GraphPanel;
+import com.ted.aggredata.client.panels.login.LoginPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+
+import java.util.logging.Logger;
 
 public class MainPanel extends Composite {
 
-    
+
+    final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
 
     interface MyUiBinder extends UiBinder<Widget, MainPanel> {
     }
 
+
+    static Logger logger = Logger.getLogger(MainPanel.class.toString());
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-    @UiField AbsolutePanel contentPanel;
-    @UiField AbsolutePanel titlePanel;
-    @UiField AdminNavigationPanel adminNavigationPanel;
+    @UiField
+    AbsolutePanel contentPanel;
+    @UiField
+    AbsolutePanel titlePanel;
+    @UiField
+    AdminNavigationPanel adminNavigationPanel;
 
     final DashboardTabPanel graphDashboardPanel;
     final DashboardTabPanel profileDashboardPanel;
@@ -49,13 +61,13 @@ public class MainPanel extends Composite {
 
     public MainPanel() {
         initWidget(uiBinder.createAndBindUi(this));
-        
+
         graphDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.month(), dashboardConstants.day(), dashboardConstants.hour(), dashboardConstants.minute()});
         profileDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.accountSettings(), dashboardConstants.accountGroups(), dashboardConstants.accountTEDS()});
 
         //Set default view
         graphDashboardPanel.setSelectedTab(0);
-        titlePanel.add(graphDashboardPanel,0,0);
+        titlePanel.add(graphDashboardPanel, 0, 0);
         contentPanel.add(new GraphPanel("Monthly Graphing View"));
 
 
@@ -69,17 +81,27 @@ public class MainPanel extends Composite {
                     titlePanel.add(new Label("System Administration"));
                     contentPanel.add(new GraphPanel("ADMIN View"));
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ENERGY) {
-                    titlePanel.add(graphDashboardPanel,0,0);
+                    titlePanel.add(graphDashboardPanel, 0, 0);
                     contentPanel.add(new GraphPanel("Monthly Graphing View"));
                     graphDashboardPanel.setSelectedTab(0);
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.PROFILE) {
-                    titlePanel.add(profileDashboardPanel,0,0);
+                    titlePanel.add(profileDashboardPanel, 0, 0);
                     profileDashboardPanel.setSelectedTab(0);
                     contentPanel.add(new GraphPanel("USER ACCOUNT SETTINGS"));
                 } else {
-                        Window.alert("Logout Not Implemented Yet");
+                    logger.info("User has slected to logout");
+                    userSessionService.logoff(new TEDAsyncCallback<Void>() {
+                        @Override
+                        public void onSuccess(Void result) {
+                            logger.info("User has sucessfully logged out");
+                            RootPanel.get("aggreDataSlot").clear();
+                            RootPanel.get("aggreDataSlot").add(new LoginPanel());
+                        }
+                    });
+
+
                 }
-                
+
             }
         });
 

@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         return entity;
     }
 
-    public User changeUserRole(User entity, User.Role role) {
+    public User changeUserRole(User entity, String role) {
         entity.setRole(role);
         userDao.save(entity);
         return entity;
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
             logger.debug("Looking up user with username " + username);
             return userDao.getUserByUserName(username);
         } catch (Exception ex) {
-            logger.warn("User not found: " + username);
+            logger.error("getUserByUserName:" + ex.getMessage(), ex);
             return null;
         }
     }

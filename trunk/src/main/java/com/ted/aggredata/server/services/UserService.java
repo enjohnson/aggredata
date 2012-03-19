@@ -23,6 +23,9 @@ import com.ted.aggredata.model.User;
  * Public interface to the user management service
  */
 public interface UserService {
+    
+    
+
     /**
      * Creates a new entity in the database
      *
@@ -57,7 +60,7 @@ public interface UserService {
      * @param role
      * @return
      */
-    public User changeUserRole(User entity, User.Role role);
+    public User changeUserRole(User entity, String role);
 
 
     /**
