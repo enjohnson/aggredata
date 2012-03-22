@@ -28,6 +28,7 @@ import com.ted.aggredata.client.guiService.UserSessionService;
 import com.ted.aggredata.client.guiService.UserSessionServiceAsync;
 import com.ted.aggredata.client.panels.AggreDataPanel;
 import com.ted.aggredata.client.resources.DashboardImageResource;
+import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.LargeButton;
 import com.ted.aggredata.model.User;
 
@@ -44,9 +45,12 @@ public class LoginFormPanel extends Composite {
     @UiField Label completionLabel2;
     @UiField LargeButton submitButton;
     @UiField Label formErrorLabel;
+    @UiField Label usernameLabel;
+    @UiField Label passwordLabel;
     
     static Logger logger = Logger.getLogger(LoginFormPanel.class.toString());
     final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
+    DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
 
     interface MyUiBinder extends UiBinder<Widget, LoginFormPanel> {
     }
@@ -56,6 +60,8 @@ public class LoginFormPanel extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
 
         formErrorLabel.setText(" ");
+        usernameLabel.setText(dashboardConstants.userNameLabel());
+        passwordLabel.setText(dashboardConstants.passwordLabel());
 
         mainPanel.addKeyPressHandler(new KeyPressHandler() {
             @Override

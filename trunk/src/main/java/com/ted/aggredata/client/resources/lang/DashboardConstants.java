@@ -33,4 +33,7 @@ public interface DashboardConstants extends Constants {
     String accountSettings();
     String accountGroups();
     String accountTEDS();
+    
+    String userNameLabel();
+    String passwordLabel();
 }

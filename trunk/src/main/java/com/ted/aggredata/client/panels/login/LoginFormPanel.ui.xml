@@ -24,7 +24,7 @@
         <g:Label ui:field="formErrorLabel" styleName="{style.errorTextTitle}" height="12px"/>
         <my:widgets.ClearImage width="1px" height="10px"/>
         <g:HorizontalPanel>
-            <g:Label text="Login:" width="200px" styleName="{style.loginPanelText}" />
+            <g:Label width="200px" styleName="{style.loginPanelText}" ui:field="usernameLabel"/>
             <my:widgets.ClearImage width="3px" height="1px"/>
             <g:TextBox ui:field="loginBox" width="200px"  />
             <my:widgets.ClearImage width="3px" height="1px"/>
@@ -32,7 +32,7 @@
         </g:HorizontalPanel>
         <my:widgets.ClearImage width="1px" height="5px"/>
         <g:HorizontalPanel>
-            <g:Label text="Password:" width="200px" styleName="{style.loginPanelText}"/>
+            <g:Label  width="200px" styleName="{style.loginPanelText}" ui:field="passwordLabel"/>
             <my:widgets.ClearImage width="3px" height="1px"/>
             <g:PasswordTextBox ui:field="passwordTextBox" width="200px" />
             <my:widgets.ClearImage width="3px" height="1px"/>
