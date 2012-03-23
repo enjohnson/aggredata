@@ -30,8 +30,7 @@ public class MTU extends AggredataModel implements Serializable {
 
     Long gatewayId;
     MTUType type;
-    String mtuSerialNumber;
-    String description;
+   String description;
 
 
     /**
@@ -60,19 +59,6 @@ public class MTU extends AggredataModel implements Serializable {
         this.type = type;
     }
 
-
-    /**
-     * The six-character unique serial number of the MTU
-     *
-     * @return
-     */
-    public String getMtuSerialNumber() {
-        return mtuSerialNumber;
-    }
-
-    public void setMtuSerialNumber(String mtuSerialNumber) {
-        this.mtuSerialNumber = mtuSerialNumber;
-    }
 
     /**
      * User description of the MTU (e.g. "main panel", "guest house")

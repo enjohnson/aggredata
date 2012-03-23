@@ -17,17 +17,27 @@
 
 package com.ted.aggredata.server.util;
 
+
 import java.util.Date;
 
 public class TestUtil {
 
+    static Long lastKey = null;
+    
     /**
      * Returns a unique key for testing (used w/ email address, usernames, etc).
      * @return
      */
     public static String getUniqueKey()
     {
-        Date date = new Date();
-        return date.getTime() + "";
+        Long l = new Date().getTime();
+        while (l.equals(lastKey)) {
+            l = new Date().getTime();
+        }
+        lastKey = l;
+        return l.toString();
     }
+
+
+
 }

@@ -28,7 +28,7 @@ import java.sql.SQLException;
 /**
  * DAO for accessing a weather location
  */
-public class WeatherLocationDAO extends AggredataDAO<WeatherLocation> {
+public class WeatherLocationDAO extends AbstractDAO<WeatherLocation> {
 
     public static final String GET_BY_POSTAL = "select id, postal, latitude, longitude from aggredata.weatherlocation where postal= ?";
     public static final String GET_BY_ID = "select id, postal, latitude, longitude from aggredata.weatherlocation where id= ?";
@@ -53,7 +53,7 @@ public class WeatherLocationDAO extends AggredataDAO<WeatherLocation> {
         }
     };
 
-    public WeatherLocation getById(Long id) {
+    public WeatherLocation findById(Long id) {
         try {
             return getJdbcTemplate().queryForObject(GET_BY_ID, new Object[]{id}, rowMapper);
         } catch (EmptyResultDataAccessException ex) {

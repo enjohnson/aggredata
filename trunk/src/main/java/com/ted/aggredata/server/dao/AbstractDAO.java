@@ -33,7 +33,7 @@ import javax.sql.DataSource;
  * @param <T>
  */
 
-public abstract class AggredataDAO<T> {
+public abstract class AbstractDAO<T> {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -43,7 +43,7 @@ public abstract class AggredataDAO<T> {
     private String tableName;
     private JdbcTemplate jdbcTemplate = null;
 
-    public AggredataDAO(String tableName) {
+    public AbstractDAO(String tableName) {
         this.tableName = tableName;
     }
 
@@ -54,12 +54,8 @@ public abstract class AggredataDAO<T> {
      */
     public abstract RowMapper<T> getRowMapper();
 
-    public abstract void create(T entity);
 
-    public abstract void save(T entity);
-
-
-    public T getById(Long id) {
+    public T findById(Long id) {
         try {
             String query = "select * from " + tableName + " where id= ?";
             return getJdbcTemplate().queryForObject(query, new Object[]{id}, getRowMapper());
@@ -77,9 +73,6 @@ public abstract class AggredataDAO<T> {
         return jdbcTemplate;
     }
 
-    public void delete(AggredataModel aggreDataModel) {
-        getJdbcTemplate().update("delete from " + tableName + " where id=?", new Object[]{aggreDataModel.getId()});
-    }
 
 
 }

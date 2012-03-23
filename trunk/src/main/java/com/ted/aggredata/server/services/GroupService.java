@@ -31,7 +31,7 @@ public interface GroupService {
     /**
      * Creates a new group
      *
-     * @param user        The user creating the group. This user will be added as a ADMIN of the group.
+     * @param user        The user creating the group. This user will be added as a OWNER of the group.
      * @param description
      */
     public void createGroup(User user, String description);

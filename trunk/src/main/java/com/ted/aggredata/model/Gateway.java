@@ -26,7 +26,6 @@ public class Gateway extends AggredataModel implements Serializable {
 
     public Long weatherLocationId;
     public Long userAccountId;
-    public String gatewaySerialNumber;
     public boolean state;
     public String securityKey;
     public String description;
@@ -57,18 +56,7 @@ public class Gateway extends AggredataModel implements Serializable {
         this.userAccountId = userAccountId;
     }
 
-    /**
-     * unique six-character serial number of the gateway
-     *
-     * @return
-     */
-    public String getGatewaySerialNumber() {
-        return gatewaySerialNumber;
-    }
 
-    public void setGatewaySerialNumber(String gatewaySerialNumber) {
-        this.gatewaySerialNumber = gatewaySerialNumber;
-    }
 
     /**
      * whether or not this gateway is currently enabled. gateways need to be enabled to receive post com.ted.aggredata.dao

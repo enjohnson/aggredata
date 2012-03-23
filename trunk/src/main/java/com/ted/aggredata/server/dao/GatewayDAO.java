@@ -30,14 +30,23 @@ import java.util.List;
 /**
  * DAO for accessing the Gateway Object
  */
-public class GatewayDAO extends AggredataDAO<Gateway> {
+public class GatewayDAO extends AbstractDAO<Gateway> {
 
-    public static String CREATE_GATEWAY_QUERY = "insert into aggredata.gateway (weatherLocationId, userAccountId, gatewaySerialNumber, state, securityKey, description) values (?,?,?,?,?,?)";
-    public static String SAVE_GATEWAY_QUERY = "update aggredata.gateway set weatherLocationId=?, userAccountId=?, gatewaySerialNumber=?, state=?, securityKey=?, description=? where id=?";
-    public static String GET_BY_SERIAL_NUMBER_QUERY = "select id, weatherLocationId, userAccountId, gatewaySerialNumber, state, securityKey, description from aggredata.gateway where gatewaySerialNumber=?";
-    public static String GET_BY_USER_ACCOUNT_QUERY = "select id, weatherLocationId, userAccountId, gatewaySerialNumber, state, securityKey, description from aggredata.gateway where userAccountId=?";
-    public static String GET_BY_GROUP_QUERY = "select id, weatherLocationId, userAccountId, gatewaySerialNumber, state, securityKey, description from aggredata.gateway, aggredata.gatewaygroup where gateway.id = gatewaygroup.id and groupId=?";
 
+    public static String DELETE_GATEWAY_QUERY = "delete from aggredata.gateway where id=?";
+    public static String CREATE_GATEWAY_QUERY = "insert into aggredata.gateway (id, weatherLocationId, userAccountId,  state, securityKey, description) values (?,?,?,?,?,?)";
+    public static String SAVE_GATEWAY_QUERY = "update aggredata.gateway set weatherLocationId=?, userAccountId=?,  state=?, securityKey=?, description=? where id=?";
+    public static String GET_BY_USER_ACCOUNT_QUERY = "select id, weatherLocationId, userAccountId,  state, securityKey, description from aggredata.gateway where userAccountId=?";
+    public static String GET_BY_GROUP_QUERY = "select g.id, weatherLocationId, userAccountId,  state, securityKey, description from aggredata.gateway g, aggredata.gatewaygroup gg where g.id = gg.gatewayId and gg.groupId=?";
+
+    public static String ADD_GATEWAY_TO_GROUP_QUERY = "insert into aggredata.gatewaygroup (groupId, gatewayId) values (?,?)";
+    public static String REMOVE_GATEWAY_FROM_GROUP_QUERY = "delete from aggredata.gatewaygroup where groupId=? and gatewayId=?";
+    public static String REMOVE_GATEWAY_FROM_GATEWAYGROUP_QUERY = "delete from aggredata.gatewaygroup where gatewayId=?";
+    public static String DELETE_MTU_FROM_GATEWAY_QUERY = "delete from aggredata.mtu where gatewayId=?";
+
+
+
+    
     public GatewayDAO() {
         super("aggredata.gateway");
     }
@@ -48,7 +57,6 @@ public class GatewayDAO extends AggredataDAO<Gateway> {
             gateway.setId(rs.getLong("id"));
             gateway.setWeatherLocationId(rs.getLong("weatherLocationId"));
             gateway.setUserAccountId(rs.getLong("userAccountId"));
-            gateway.setGatewaySerialNumber(rs.getString("gatewaySerialNumber"));
             gateway.setState(rs.getBoolean("state"));
             gateway.setSecurityKey(rs.getString("securityKey"));
             gateway.setDescription(rs.getString("description"));
@@ -56,21 +64,31 @@ public class GatewayDAO extends AggredataDAO<Gateway> {
         }
     };
 
-    public void create(Gateway gateway) {
+    public Gateway create(Gateway gateway) throws GatewayExistsException{
         //Check to make sure a gateway with the given serial number does not already exist in the system. No two gateways should have the same serial number.
-        if (getBySerialNumber(gateway.getGatewaySerialNumber())==null)
+        if (findById(gateway.getId())==null)
         {
-            getJdbcTemplate().update(CREATE_GATEWAY_QUERY, gateway.getWeatherLocationId(), gateway.getUserAccountId(), gateway.getGatewaySerialNumber(), gateway.getState(), gateway.getSecurityKey(), gateway.description);
+            getJdbcTemplate().update(CREATE_GATEWAY_QUERY, gateway.getId(), gateway.getWeatherLocationId(), gateway.getUserAccountId(), gateway.getState(), gateway.getSecurityKey(), gateway.description);
+            return findById(gateway.getId());
         } else {
-            logger.error("Gateway with serial number " + gateway.getGatewaySerialNumber() + " already exists in the database");
+            logger.error("Gateway with serial number " + Long.toHexString(gateway.getId()) + " already exists in the database:" + gateway);
+            throw new GatewayExistsException(Long.toHexString(gateway.getId()));
         }
     }
 
-    @Override
+
     public void save(Gateway gateway) {
         getJdbcTemplate().update(SAVE_GATEWAY_QUERY, gateway.getWeatherLocationId(), gateway.getUserAccountId(), gateway.getSecurityKey(), gateway.getState(), gateway.getSecurityKey(), gateway.description, gateway.getId());
     }
 
+    public void delete(Gateway gateway){
+        if (logger.isDebugEnabled()) logger.debug("removing mtu's for gateway  " + gateway );
+        getJdbcTemplate().update(DELETE_MTU_FROM_GATEWAY_QUERY,gateway.getId());
+        if (logger.isDebugEnabled()) logger.debug("removing " + gateway + " from gatewaygroups");
+        getJdbcTemplate().update(REMOVE_GATEWAY_FROM_GATEWAYGROUP_QUERY,gateway.getId());
+        if (logger.isDebugEnabled()) logger.debug("removing " + gateway + " from gateway table");
+        getJdbcTemplate().update(DELETE_GATEWAY_QUERY,gateway.getId());
+    }
 
     /**
      * Returns the MTU's for the given gateway
@@ -78,7 +96,7 @@ public class GatewayDAO extends AggredataDAO<Gateway> {
      * @param user
      * @return
      */
-    public List<Gateway> getByUserAccount(User user) {
+    public List<Gateway> findByUserAccount(User user) {
         try {
             return getJdbcTemplate().query(GET_BY_USER_ACCOUNT_QUERY, new Object[]{user.getId()}, getRowMapper());
         } catch (EmptyResultDataAccessException ex) {
@@ -88,22 +106,9 @@ public class GatewayDAO extends AggredataDAO<Gateway> {
     }
 
 
-    /**
-     * Returns the mtu for the given serial number
-     *
-     * @param serialNumber
-     * @return
-     */
-    public Gateway getBySerialNumber(String serialNumber) {
-        try {
-            return getJdbcTemplate().queryForObject(GET_BY_SERIAL_NUMBER_QUERY, new Object[]{serialNumber}, getRowMapper());
-        } catch (EmptyResultDataAccessException ex) {
-            logger.debug("No Results returned");
-            return null;
-        }
-    }
 
-    public List<Gateway> getByGroup(Group group)
+
+    public List<Gateway> findByGroup(Group group)
     {
         try
         {
@@ -113,6 +118,19 @@ public class GatewayDAO extends AggredataDAO<Gateway> {
             return null;
         }
     }
+
+
+    public void addGatewayToGroup(Gateway gateway, Group group)
+    {
+        getJdbcTemplate().update(ADD_GATEWAY_TO_GROUP_QUERY, group.getId(), gateway.getId());
+    }
+
+    public void removeGatewayFromGroup(Gateway gateway, Group group)
+    {
+        getJdbcTemplate().update(REMOVE_GATEWAY_FROM_GROUP_QUERY, group.getId(), gateway.getId());
+    }
+
+
 
     @Override
     public RowMapper<Gateway> getRowMapper() {

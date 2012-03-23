@@ -63,7 +63,7 @@ public class AdminNavigationPanel extends Composite implements HasHandlers{
         helloLabel.setText(myConstants.hello());
         usernameLabel.setText(Globals.user.getUsername());
 
-        //TODO: DISABLE ADMIN BUTTON IF USER IS NOT AN ADMIN
+        //TODO: DISABLE OWNER BUTTON IF USER IS NOT AN OWNER
         String width = "65px";
         
         accountMenuItem = new MenuItem(myConstants.profile(), true, width, "12px");
