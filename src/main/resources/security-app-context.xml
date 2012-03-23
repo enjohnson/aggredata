@@ -1,0 +1,53 @@
+<!--
+  ~ Copyright (c) 2012. The Energy Detective. All Rights Reserved
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                    http://www.springframework.org/schema/security
+                    http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <!-- Used by Spring security to force a 403 to be returned-->
+    <beans:bean id="http403ForbiddenEntryPoint"
+          class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
+
+    <beans:bean id="TEDEntryPoint" class="com.ted.aggredata.server.entryPoint.TEDEntryPoint"/>
+
+    <http use-expressions="true" entry-point-ref="TEDEntryPoint">
+        <!-- Allow static content and the login service. Block everything else -->
+        <intercept-url pattern="/**/*.html" access="permitAll" />
+        <intercept-url pattern="/**/*.js" access="permitAll" />
+        <intercept-url pattern="/**/*.css" access="permitAll" />
+        <intercept-url pattern="/**/*.jpg" access="permitAll" />
+        <intercept-url pattern="/**/*.png" access="permitAll" />
+        <intercept-url pattern="/**/*.gif" access="permitAll" />
+        <intercept-url pattern="/**/*UserSessionService*" access="permitAll" />
+
+        <intercept-url pattern="/**" access="isAuthenticated()" />
+
+    </http>
+
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider>
+             <jdbc-user-service data-source-ref="aggredataDataSource"
+                                users-by-username-query="select username,password,state from user where username=?"
+                                authorities-by-username-query="select username,role from user where username=?"/>
+        </authentication-provider>
+    </authentication-manager>
+</beans:beans>
