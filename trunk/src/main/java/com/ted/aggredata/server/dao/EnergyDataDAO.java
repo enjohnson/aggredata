@@ -19,10 +19,12 @@ package com.ted.aggredata.server.dao;
 
 import com.ted.aggredata.model.EnergyData;
 import com.ted.aggredata.model.MTU;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * DAO for accessing and storing energy data
@@ -30,9 +32,8 @@ import java.sql.SQLException;
 public class EnergyDataDAO extends AbstractDAO<EnergyData> {
 
     public static String POST_ENERGY_DATA = "insert into aggredata.energydata (mtuId, timestamp, rate, energy) values (?,?,?,?)";
-    public static String SAVE_ENERGY_DATA = "update aggredata.energydata set mtuId=?, timestamp=?, rate=?, energy=? where id = ?";
     public static String DELETE_ENERGY_DATA = "delete from aggredata.energydata where mtuId=?";
-
+    public static String FIND_BY_MTU = "select id, mtuId, timestamp, rate, energy from aggredata.energydata where mtuId=? and timestamp>=? and timestamp < ?";
 
     public EnergyDataDAO() {
         super("aggredata.energyData");
@@ -50,14 +51,27 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
         }
     };
 
+    /**
+     * Returns a list of energy data based on the time range.
+     *
+     * @param mtu
+     * @param timestampStart
+     * @param timestampEnd
+     * @return
+     */
+    public List<EnergyData> findByMTU(MTU mtu, long timestampStart, long timestampEnd) {
+        try {
+            return getJdbcTemplate().query(FIND_BY_MTU, new Object[]{mtu.getId(), timestampStart, timestampEnd}, getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return null;
+        }
+    }
+
     public void create(EnergyData energyData) {
         getJdbcTemplate().update(POST_ENERGY_DATA, energyData.getMtuId(), energyData.getTimestamp(), energyData.getRate(), energyData.getEnergy());
     }
 
-
-    public void save(EnergyData energyData) {
-        getJdbcTemplate().update(SAVE_ENERGY_DATA, energyData.getMtuId(), energyData.getTimestamp(), energyData.getRate(), energyData.getEnergy(), energyData.getId());
-    }
 
 
     public RowMapper<EnergyData> getRowMapper() {

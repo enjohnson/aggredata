@@ -43,6 +43,7 @@ public class GatewayDAO extends AbstractDAO<Gateway> {
     public static String REMOVE_GATEWAY_FROM_GROUP_QUERY = "delete from aggredata.gatewaygroup where groupId=? and gatewayId=?";
     public static String REMOVE_GATEWAY_FROM_GATEWAYGROUP_QUERY = "delete from aggredata.gatewaygroup where gatewayId=?";
     public static String DELETE_MTU_FROM_GATEWAY_QUERY = "delete from aggredata.mtu where gatewayId=?";
+    public static String DELETE_GATEWAY_ENERGY_DATA_QUERY = "delete from aggredata.energydata where mtuId in (select id from aggredata.mtu where gatewayId=?)";
 
 
 
@@ -82,6 +83,9 @@ public class GatewayDAO extends AbstractDAO<Gateway> {
     }
 
     public void delete(Gateway gateway){
+
+        if (logger.isDebugEnabled()) logger.debug("removing energy data for gateway  " + gateway );
+        getJdbcTemplate().update(DELETE_GATEWAY_ENERGY_DATA_QUERY,gateway.getId());
         if (logger.isDebugEnabled()) logger.debug("removing mtu's for gateway  " + gateway );
         getJdbcTemplate().update(DELETE_MTU_FROM_GATEWAY_QUERY,gateway.getId());
         if (logger.isDebugEnabled()) logger.debug("removing " + gateway + " from gatewaygroups");
