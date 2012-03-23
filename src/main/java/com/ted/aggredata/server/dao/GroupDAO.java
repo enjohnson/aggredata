@@ -152,7 +152,7 @@ public class GroupDAO extends AbstractDAO<Group> {
      * @param user
      * @return
      */
-    public List<Group> getGroups(User user) {
+    public List<Group> findGroupsByUser(User user) {
         try {
             return getJdbcTemplate().query(GET_GROUPS_BY_USER_QUERY, new Object[]{user.getId()}, getRowMapper());
         } catch (EmptyResultDataAccessException ex) {

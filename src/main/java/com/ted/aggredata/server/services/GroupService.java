@@ -34,7 +34,7 @@ public interface GroupService {
      * @param user        The user creating the group. This user will be added as a OWNER of the group.
      * @param description
      */
-    public void createGroup(User user, String description);
+    public Group createGroup(User user, String description);
 
     /**
      * Deletes a group from the system
