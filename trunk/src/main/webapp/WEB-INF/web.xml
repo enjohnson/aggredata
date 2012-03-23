@@ -22,7 +22,7 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
 
-    <display-name>AggreData</display-name>
+    <display-name>Aggredata</display-name>
 
     <!--Spring context listener to load the log4j from an external file source-->
     <context-param>
