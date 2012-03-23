@@ -28,10 +28,10 @@ import com.ted.aggredata.model.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AggreData implements EntryPoint {
+public class AggreData2 implements EntryPoint {
 
     final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
-    static final Logger logger = Logger.getLogger(AggreData.class.toString());
+    static final Logger logger = Logger.getLogger(AggreData2.class.toString());
     public void onModuleLoad() {
 
         /**

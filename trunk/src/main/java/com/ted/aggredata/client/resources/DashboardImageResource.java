@@ -22,7 +22,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
 /**
- * Resource bundle for images used on the AggreData dashboard.
+ * Resource bundle for images used on the AggreData2 dashboard.
  */
 public interface DashboardImageResource extends ClientBundle {
 

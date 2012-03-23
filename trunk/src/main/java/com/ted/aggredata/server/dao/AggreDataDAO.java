@@ -28,7 +28,7 @@ import org.springframework.jdbc.core.RowMapper;
 import javax.sql.DataSource;
 
 /**
- * Common abstract class for all AggreData DAO's. Contains common methods and utilities.
+ * Common abstract class for all AggreData2 DAO's. Contains common methods and utilities.
  *
  * @param <T>
  */

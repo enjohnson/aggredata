@@ -20,7 +20,7 @@ package com.ted.aggredata.model;
 import java.io.Serializable;
 
 /**
- * Represents a 3rd-party who is allowed access to AggreData
+ * Represents a 3rd-party who is allowed access to AggreData2
  */
 public class ThirdParty extends AggreDataModel implements Serializable {
 

@@ -24,7 +24,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
 /***
- * Simple suplerclass of all AggreData RemoteServiceServlets. This is primarialy intended
+ * Simple suplerclass of all AggreData2 RemoteServiceServlets. This is primarialy intended
  * to allow for Spring integration as well as include some common utility classes.
  *
  * Thanks to Max Matveev for posting this solution to his blog: http://blog.maxmatveev.com/2011/02/simple-spring-bean-autowiring-in-gwt.html
