@@ -53,8 +53,8 @@ public class GatewayServiceImpl implements GatewayService {
     public Gateway createGateway(Group group, User userAccount, String serialNumber, String description) {
         if (logger.isInfoEnabled()) logger.info("Adding a new gateway with the serial number " + serialNumber + " for " + userAccount + " at " + group);
         Gateway gateway = new Gateway();
-        gateway.setUserAccountId(userAccount.getId());
         gateway.setId(Long.parseLong(serialNumber, 16));
+        gateway.setUserAccountId(userAccount.getId());
         gateway.setDescription(description);
         try{
             gateway = gatewayDAO.create(gateway);    
@@ -69,15 +69,6 @@ public class GatewayServiceImpl implements GatewayService {
 
     public void deleteGateway(Gateway gateway) {
         if (logger.isInfoEnabled()) logger.info("Deleting " + gateway + " and all energy information for it");
-        List<MTU> mtuList = mtuDAO.getByGateway(gateway);
-        Iterator<MTU> mtuIterator = mtuList.iterator();
-        while (mtuIterator.hasNext()) {
-            MTU mtu = mtuIterator.next();
-            logger.info("Deleting data for " + mtu + " as part of " + gateway + " deletion");
-            energyDataDAO.removeEnergyData(mtu);
-            mtuDAO.delete(mtu);
-        }
-
         gatewayDAO.delete(gateway);
     }
 
@@ -85,22 +76,12 @@ public class GatewayServiceImpl implements GatewayService {
 
     public MTU addMTU(Gateway gateway, String mtuSerialNumber, MTU.MTUType type, String description) {
         if (logger.isInfoEnabled()) logger.info("Adding MTU " + mtuSerialNumber + " to " + gateway);
-        MTU existingMTU = mtuDAO.findById(Long.parseLong(mtuSerialNumber, 16));
-        if (existingMTU != null) {
-            logger.info("MTU Already exists. Updating information");
-            existingMTU.setDescription(description);
-            existingMTU.setType(type);
-            existingMTU.setGatewayId(gateway.getId());
-            mtuDAO.save(existingMTU);
-        } else {
-            MTU mtu = new MTU();
-            mtu.setId(Long.parseLong(mtuSerialNumber,16));
-            mtu.setDescription(description);
-            mtu.setType(type);
-            mtu.setGatewayId(gateway.getId());
-            mtuDAO.save(mtu);
-        }
-        return mtuDAO.findById(Long.parseLong(mtuSerialNumber, 16));
+        MTU mtu = new MTU();
+        mtu.setId(Long.parseLong(mtuSerialNumber,16));
+        mtu.setDescription(description);
+        mtu.setType(type);
+        mtu.setGatewayId(gateway.getId());
+        return mtuDAO.create(gateway, mtu);
     }
 
     public Gateway disableGateWay(Gateway gateway) {

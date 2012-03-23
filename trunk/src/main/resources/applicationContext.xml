@@ -60,14 +60,11 @@
     <bean name="mtuDAO" class=" com.ted.aggredata.server.dao.MTUDAO"/>
     <bean name="gatewayDAO" class=" com.ted.aggredata.server.dao.GatewayDAO"/>
     <bean name="energyDataDAO" class=" com.ted.aggredata.server.dao.EnergyDataDAO"/>
-    <bean name="weatherHistoryDAO" class=" com.ted.aggredata.server.dao.WeatherHistoryDAO"/>
-    <bean name="weatherLocationDAO" class=" com.ted.aggredata.server.dao.WeatherLocationDAO"/>
 
 
     <bean name="userService" class="com.ted.aggredata.server.services.impl.UserServiceImpl" scope="session"/>
     <bean name="groupService" class="com.ted.aggredata.server.services.impl.GroupServiceImpl" scope="session"/>
     <bean name="gatewayService" class="com.ted.aggredata.server.services.impl.GatewayServiceImpl" scope="session"/>
-    <bean name="weatherService" class="com.ted.aggredata.server.services.impl.WeatherServiceImpl" scope="session"/>
 
 
 </beans>

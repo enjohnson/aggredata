@@ -36,8 +36,7 @@ public class UserServiceImpl implements UserService {
 
     public User createUser(User entity) {
         logger.debug("creating user " + entity);
-        userDao.create(entity);
-        return entity;
+        return userDao.create(entity);
     }
 
     public void deleteUser(User entity) {

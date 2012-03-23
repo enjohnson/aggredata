@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml",
         "classpath:applicationContext-Test.xml"
@@ -98,11 +96,11 @@ public class GroupDAOTest {
         Assert.assertNull(group3);
 
         //check group memberships
-        Assert.assertEquals(groupDAO.getGroups(groupOwner1).size(), 2);
-        Assert.assertEquals(groupDAO.getGroups(groupOwner2).size(), 1);
+        Assert.assertEquals(groupDAO.findGroupsByUser(groupOwner1).size(), 2);
+        Assert.assertEquals(groupDAO.findGroupsByUser(groupOwner2).size(), 1);
 
         groupDAO.removeGroupMembership(groupOwner2, createdGroup1);
-        Assert.assertEquals(groupDAO.getGroups(groupOwner2).size(), 0);
+        Assert.assertEquals(groupDAO.findGroupsByUser(groupOwner2).size(), 0);
 
 
         //Delete the groups
@@ -111,7 +109,7 @@ public class GroupDAOTest {
 
         Assert.assertNull(groupDAO.getOwnedGroup(groupOwner1, groupName1));
         Assert.assertNull(groupDAO.getOwnedGroup(groupOwner1, groupName2));
-        Assert.assertEquals(groupDAO.getGroups(groupOwner1).size(), 0);
+        Assert.assertEquals(groupDAO.findGroupsByUser(groupOwner1).size(), 0);
 
         userDAO.delete(groupOwner1);
         userDAO.delete(groupOwner2);
