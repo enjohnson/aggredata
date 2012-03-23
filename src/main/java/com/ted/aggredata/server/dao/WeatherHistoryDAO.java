@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * DAO for accessing weather history
  */
-public class WeatherHistoryDAO extends AggredataDAO<WeatherHistory> {
+public class WeatherHistoryDAO extends AbstractDAO<WeatherHistory> {
 
 
     public static final String GET_RECENT_BY_WEATHER_LOCATION = "select top 1 id, weatherLocationId, timestamp, temperature, windspeed, direction, weatherConditions, iconLink from aggredata.weatherhistory where weatherLocationId= ? order by timestamp desc";
@@ -88,7 +88,7 @@ public class WeatherHistoryDAO extends AggredataDAO<WeatherHistory> {
         getJdbcTemplate().update(CREATE_WEATHER_HISTORY, weatherHistory.getWeatherLocationId(), weatherHistory.getTimestamp(), weatherHistory.getTemperature(), weatherHistory.getWindSpeed(), weatherHistory.getDirection(), weatherHistory.getWeatherConditions(), weatherHistory.getIconLink());
     }
 
-    @Override
+
     public void save(WeatherHistory weatherHistory) {
         getJdbcTemplate().update(SAVE_WEATHER_HISTORY, weatherHistory.getWeatherLocationId(), weatherHistory.getTimestamp(), weatherHistory.getTemperature(), weatherHistory.getWindSpeed(), weatherHistory.getDirection(), weatherHistory.getWeatherConditions(), weatherHistory.getIconLink(), weatherHistory.getId());
     }

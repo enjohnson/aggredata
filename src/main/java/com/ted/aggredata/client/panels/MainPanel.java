@@ -79,7 +79,7 @@ public class MainPanel extends Composite {
                 contentPanel.clear();
                 if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ADMIN) {
                     titlePanel.add(new Label("System Administration"));
-                    contentPanel.add(new GraphPanel("ADMIN View"));
+                    contentPanel.add(new GraphPanel("OWNER View"));
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ENERGY) {
                     titlePanel.add(graphDashboardPanel, 0, 0);
                     contentPanel.add(new GraphPanel("Monthly Graphing View"));

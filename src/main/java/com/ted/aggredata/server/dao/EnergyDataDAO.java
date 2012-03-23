@@ -27,7 +27,7 @@ import java.sql.SQLException;
 /**
  * DAO for accessing and storing energy data
  */
-public class EnergyDataDAO extends AggredataDAO<EnergyData> {
+public class EnergyDataDAO extends AbstractDAO<EnergyData> {
 
     public static String POST_ENERGY_DATA = "insert into aggredata.energydata (mtuId, timestamp, rate, energy) values (?,?,?,?)";
     public static String SAVE_ENERGY_DATA = "update aggredata.energydata set mtuId=?, timestamp=?, rate=?, energy=? where id = ?";
@@ -54,12 +54,12 @@ public class EnergyDataDAO extends AggredataDAO<EnergyData> {
         getJdbcTemplate().update(POST_ENERGY_DATA, energyData.getMtuId(), energyData.getTimestamp(), energyData.getRate(), energyData.getEnergy());
     }
 
-    @Override
+
     public void save(EnergyData energyData) {
         getJdbcTemplate().update(SAVE_ENERGY_DATA, energyData.getMtuId(), energyData.getTimestamp(), energyData.getRate(), energyData.getEnergy(), energyData.getId());
     }
 
-    @Override
+
     public RowMapper<EnergyData> getRowMapper() {
         return rowMapper;
     }

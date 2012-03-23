@@ -21,10 +21,7 @@ import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
 import com.ted.aggredata.model.User;
-import com.ted.aggredata.server.dao.EnergyDataDAO;
-import com.ted.aggredata.server.dao.GatewayDAO;
-import com.ted.aggredata.server.dao.GroupDAO;
-import com.ted.aggredata.server.dao.MTUDAO;
+import com.ted.aggredata.server.dao.*;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.util.KeyGenerator;
 import org.slf4j.Logger;
@@ -57,11 +54,16 @@ public class GatewayServiceImpl implements GatewayService {
         if (logger.isInfoEnabled()) logger.info("Adding a new gateway with the serial number " + serialNumber + " for " + userAccount + " at " + group);
         Gateway gateway = new Gateway();
         gateway.setUserAccountId(userAccount.getId());
-        gateway.setGatewaySerialNumber(serialNumber);
+        gateway.setId(Long.parseLong(serialNumber, 16));
         gateway.setDescription(description);
-        gatewayDAO.create(gateway);
-        gateway = gatewayDAO.getBySerialNumber(serialNumber);
-        groupDAO.addGatewayToGroup(gateway, group);
+        try{
+            gateway = gatewayDAO.create(gateway);    
+        } catch (Exception ex){
+            logger.error(ex.getMessage(), ex);
+            return null;
+        }
+
+        gatewayDAO.addGatewayToGroup(gateway, group);
         return gateway;
     }
 
@@ -75,7 +77,7 @@ public class GatewayServiceImpl implements GatewayService {
             energyDataDAO.removeEnergyData(mtu);
             mtuDAO.delete(mtu);
         }
-        groupDAO.removeGatewayFromGatewayGroups(gateway);
+
         gatewayDAO.delete(gateway);
     }
 
@@ -83,7 +85,7 @@ public class GatewayServiceImpl implements GatewayService {
 
     public MTU addMTU(Gateway gateway, String mtuSerialNumber, MTU.MTUType type, String description) {
         if (logger.isInfoEnabled()) logger.info("Adding MTU " + mtuSerialNumber + " to " + gateway);
-        MTU existingMTU = mtuDAO.getBySerialNumber(mtuSerialNumber);
+        MTU existingMTU = mtuDAO.findById(Long.parseLong(mtuSerialNumber, 16));
         if (existingMTU != null) {
             logger.info("MTU Already exists. Updating information");
             existingMTU.setDescription(description);
@@ -92,13 +94,13 @@ public class GatewayServiceImpl implements GatewayService {
             mtuDAO.save(existingMTU);
         } else {
             MTU mtu = new MTU();
-            mtu.setMtuSerialNumber(mtuSerialNumber);
+            mtu.setId(Long.parseLong(mtuSerialNumber,16));
             mtu.setDescription(description);
             mtu.setType(type);
             mtu.setGatewayId(gateway.getId());
             mtuDAO.save(mtu);
         }
-        return mtuDAO.getBySerialNumber(mtuSerialNumber);
+        return mtuDAO.findById(Long.parseLong(mtuSerialNumber, 16));
     }
 
     public Gateway disableGateWay(Gateway gateway) {
@@ -119,11 +121,11 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Override
     public List<Gateway> getByUser(User user) {
-        return gatewayDAO.getByUserAccount(user);
+        return gatewayDAO.findByUserAccount(user);
     }
 
     @Override
     public List<Gateway> getByGroup(Group group) {
-        return gatewayDAO.getByGroup(group);
+        return gatewayDAO.findByGroup(group);
     }
 }

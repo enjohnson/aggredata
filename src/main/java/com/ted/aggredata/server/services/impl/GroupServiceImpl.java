@@ -48,28 +48,23 @@ public class GroupServiceImpl implements GroupService {
 
     public void createGroup(User user, String description) {
         if (logger.isDebugEnabled()) logger.debug("Creating new group w/ description " + description + " for user " + user);
-        Group oldGroup = groupDAO.getGroup(user, description);
+        Group oldGroup = groupDAO.getOwnedGroup(user, description);
         if (oldGroup == null) {
-            Group group = new Group();
-            group.setDescription(description);
-            group.setOwnerUserId(user.getId());
-            groupDAO.create(group);
-            group = groupDAO.getGroup(user, description);
-            groupDAO.addGroupMembership(user, group, Group.Role.ADMIN);
+            Group group = groupDAO.create(user, description);
         }
     }
 
     public void deleteGroup(Group group) {
         if (logger.isInfoEnabled()) logger.info("Deleting group " + group);
-        groupDAO.deleteGroupMemberships(group);
-        groupDAO.removeGroupFromGatewayGroups(group);
+        //groupDAO.deleteGroupMemberships(group);
+        //groupDAO.removeGroupFromGatewayGroups(group);
         groupDAO.delete(group);
     }
     
     
 
     public Group getGroup(User user, String description) {
-        return groupDAO.getGroup(user, description);
+        return groupDAO.getOwnedGroup(user, description);
     }
 
     public List<Group> getByUser(User user) {

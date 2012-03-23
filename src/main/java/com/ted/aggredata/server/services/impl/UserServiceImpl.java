@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
     public void deleteUser(User entity) {
         logger.debug("deleting user " + entity);
-        userDao.delete(userDao.getById(entity.getId()));
+        userDao.delete(userDao.findById(entity.getId()));
     }
 
     public User changeUserStatus(User entity, boolean enabled) {
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
     public User changePassword(User entity, String newPassword) {
         logger.debug("Changing user's password");
-        User userEntity = userDao.getById(entity.getId());
+        User userEntity = userDao.findById(entity.getId());
         userEntity.setPassword(newPassword);
         userDao.save(userEntity);
         return userEntity;
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 
     public User changeUserName(User entity, String newUsername) {
         logger.info("Changing username from : " + entity.getUsername() + "  to " + newUsername);
-        User userEntity = userDao.getById(entity.getId());
+        User userEntity = userDao.findById(entity.getId());
         userEntity.setUsername(newUsername);
         userDao.save(userEntity);
         return userEntity;

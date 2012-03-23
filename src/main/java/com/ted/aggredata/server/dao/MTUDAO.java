@@ -29,12 +29,13 @@ import java.util.List;
 /**
  * DAO for accessing the MTU Object
  */
-public class MTUDAO extends AggredataDAO<MTU> {
+public class MTUDAO extends AbstractDAO<MTU> {
 
-    public static String CREATE_MTU_QUERY = "insert into aggredata.mtu (gatewayId, mtuSerialNumber, type, description) values (?,?,?,?)";
-    public static String SAVE_MTU_QUERY = "update aggredata.mtu set gatewayId=?, mtuSerialNumber=?, type=?, description=? where id=?";
-    public static String GET_BY_SERIAL_NUMBER_QUERY = "select id, gatewayId, mtuSerialNumber, type, description from aggredata.mtu where mtuSerialNumber=?";
-    public static String GET_BY_GATEWAY_QUERY = "select id, gatewayId, mtuSerialNumber, type, description from aggredata.mtu where gatewayId=?";
+
+    public static String DELETE_MTU_QUERY = "delete from aggredata.mtu where id=?";
+    public static String CREATE_MTU_QUERY = "insert into aggredata.mtu (id, gatewayId,  type, description) values (?,?,?,?)";
+    public static String SAVE_MTU_QUERY = "update aggredata.mtu set gatewayId=?, type=?, description=? where id=?";
+    public static String GET_BY_GATEWAY_QUERY = "select id, gatewayId,  type, description from aggredata.mtu where gatewayId=?";
 
     public MTUDAO() {
         super("aggredata.mtu");
@@ -45,20 +46,28 @@ public class MTUDAO extends AggredataDAO<MTU> {
             MTU mtu = new MTU();
             mtu.setId(rs.getLong("id"));
             mtu.setGatewayId(rs.getLong("gatewayId"));
-            mtu.setMtuSerialNumber(rs.getString("mtuSerialNumber"));
             mtu.setType(MTU.MTUType.values()[rs.getInt("type")]);
             mtu.setDescription(rs.getString("description"));
             return mtu;
         }
     };
 
-    public void create(MTU mtu) {
-        getJdbcTemplate().update(CREATE_MTU_QUERY, mtu.getGatewayId(), mtu.getMtuSerialNumber(), mtu.getType(), mtu.getDescription());
+    public MTU create(Gateway gateway, MTU newMTU) {
+        MTU mtu = findById(newMTU.getId());
+        if (mtu == null) {
+            if (logger.isDebugEnabled()) logger.debug("creating new mtu " + newMTU);
+            getJdbcTemplate().update(CREATE_MTU_QUERY, newMTU.getId(), gateway.getId(), newMTU.getType().ordinal(), newMTU.getDescription());
+            return findById(newMTU.getId());
+        }
+        if (logger.isDebugEnabled()) logger.debug("mtu " + newMTU + " already exists");
+        return mtu;
+
     }
 
-    @Override
+
     public void save(MTU mtu) {
-        getJdbcTemplate().update(SAVE_MTU_QUERY, mtu.getGatewayId(), mtu.getMtuSerialNumber(), mtu.getType(), mtu.getDescription(), mtu.getId());
+        if (logger.isDebugEnabled()) logger.debug("saving  mtu " + mtu);
+        getJdbcTemplate().update(SAVE_MTU_QUERY, mtu.getGatewayId(),  mtu.getType().ordinal(), mtu.getDescription(), mtu.getId());
     }
 
 
@@ -77,23 +86,15 @@ public class MTUDAO extends AggredataDAO<MTU> {
         }
     }
 
-    /**
-     * Returns the mtu for the given serial number
-     *
-     * @param serialNumber
-     * @return
-     */
-    public MTU getBySerialNumber(String serialNumber) {
-        try {
-            return getJdbcTemplate().queryForObject(GET_BY_SERIAL_NUMBER_QUERY, new Object[]{serialNumber}, getRowMapper());
-        } catch (EmptyResultDataAccessException ex) {
-            logger.debug("No Results returned");
-            return null;
-        }
-    }
 
     @Override
     public RowMapper<MTU> getRowMapper() {
         return rowMapper;
     }
+
+    public void delete(MTU mtu) {
+        if (logger.isDebugEnabled()) logger.debug("removing " + mtu + " from mtu table");
+        getJdbcTemplate().update(DELETE_MTU_QUERY, mtu.getId());
+    }
+
 }

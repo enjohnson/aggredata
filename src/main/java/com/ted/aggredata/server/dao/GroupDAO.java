@@ -17,6 +17,7 @@
 
 package com.ted.aggredata.server.dao;
 
+import com.ted.aggredata.model.AggredataModel;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
@@ -30,8 +31,10 @@ import java.util.List;
 /**
  * DAO for accessing the Group object
  */
-public class GroupDAO extends AggredataDAO<Group> {
+public class GroupDAO extends AbstractDAO<Group> {
 
+    
+    public static String DELETE_GROUP_QUERY = "delete from aggredata.group where id=?";
     public static String CREATE_GROUP_QUERY = "insert into aggredata.group (ownerUserId, description) values (?,?)";
     public static String COUNT_GROUP_QUERY = "select count(*) from aggredata.group where ownerUserId=? and description=?";
     public static String SAVE_GROUP_QUERY = "update aggredata.group set ownerUserId=?, description=? where id=?";
@@ -42,10 +45,7 @@ public class GroupDAO extends AggredataDAO<Group> {
     public static String UPDATE_GROUP_MEMBERSHIP_QUERY = "update aggredata.usergroup set role = ? where userId=? and groupId=?";
     public static String REMOVE_GROUP_MEMBERSHIP_QUERY = "delete from aggredata.usergroup where userId=? and groupId=?";
     public static String DELETE_GROUPS_FROM_MEMBERSHIP_QUERY = "delete from aggredata.usergroup where groupId=?";
-    public static String ADD_GATEWAY_TO_GROUP_QUERY = "insert into aggredata.gatewaygroup (groupId, gatewayId) values (?,?)";
-    public static String REMOVE_GATEWAY_FROM_GROUP_QUERY = "delete from aggredata.gatewaygroup where groupId=? and gatewayId=?";
     public static String REMOVE_GROUP_FROM_GATEWAYGROUP_QUERY = "delete from aggredata.gatewaygroup where groupId=?";
-    public static String REMOVE_GATEWAY_FROM_GATEWAYGROUP_QUERY = "delete from aggredata.gatewaygroup where gatewayId=?";
 
 
 
@@ -64,27 +64,51 @@ public class GroupDAO extends AggredataDAO<Group> {
         }
     };
 
-    public void create(Group group) {
-        if (getJdbcTemplate().queryForInt(COUNT_GROUP_QUERY, group.getOwnerUserId(), group.getDescription()) == 0) {
-            getJdbcTemplate().update(CREATE_GROUP_QUERY, group.getOwnerUserId(), group.getDescription());
+    /***
+     * Returns the group for the particular user but only if they are the owner.
+     * @param user
+     * @param description
+     * @return
+     */
+    public Group getOwnedGroup(User user, String description) {
+        try {
+            return getJdbcTemplate().queryForObject(GET_GROUP_QUERY, new Object[]{Group.Role.OWNER.ordinal(), description, user.getId()}, getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return null;
         }
     }
 
-    @Override
-    public void save(Group group) {
 
+    /***
+     * Creates a new group for the specified user.
+     * @param user
+     * @param description
+     * @return
+     */
+    public Group create(User user, String description) {
+        if (getJdbcTemplate().queryForInt(COUNT_GROUP_QUERY, user.getId(), description) == 0) {
+            //Create a new group object
+            Group group = new Group();
+            group.setDescription(description);
+            group.setOwnerUserId(user.getId());
+            group.setRole(Group.Role.OWNER);
+            getJdbcTemplate().update(CREATE_GROUP_QUERY, group.getOwnerUserId(), group.getDescription());
+
+            //Add the user/group mapping to the database join table/
+            Group newGroup = getOwnedGroup(user, group.getDescription());
+            addGroupMembership(user, newGroup, Group.Role.OWNER);
+            return newGroup;
+        } else {
+            return getOwnedGroup(user, description);
+        }
+    }
+
+    public void save(Group group) {
         getJdbcTemplate().update(SAVE_GROUP_QUERY, group.getOwnerUserId(), group.getDescription(), group.getId());
     }
 
-    /**
-     * Delete's all memberships for a selected group/
-     *
-     * @param group
-     */
-    public void deleteGroupMemberships(Group group) {
-        getJdbcTemplate().update(DELETE_GROUPS_FROM_MEMBERSHIP_QUERY, group.getId());
-    }
-
+    
     /**
      * Removes a group from the membership table
      *
@@ -92,6 +116,7 @@ public class GroupDAO extends AggredataDAO<Group> {
      * @param group
      */
     public void removeGroupMembership(User user, Group group) {
+        if (logger.isDebugEnabled()) logger.debug("removing " + user  + " from " + group);
         getJdbcTemplate().update(REMOVE_GROUP_MEMBERSHIP_QUERY, user.getId(), group.getId());
     }
 
@@ -136,41 +161,19 @@ public class GroupDAO extends AggredataDAO<Group> {
         }
     }
 
-    public Group getGroup(User user, String description) {
-        try {
-            return getJdbcTemplate().queryForObject(GET_GROUP_QUERY, new Object[]{Group.Role.ADMIN.ordinal(), description, user.getId()}, getRowMapper());
-        } catch (EmptyResultDataAccessException ex) {
-            logger.debug("No Results returned");
-            return null;
-        }
-    }
 
-    public void addGatewayToGroup(Gateway gateway, Group group)
-    {
-        getJdbcTemplate().update(ADD_GATEWAY_TO_GROUP_QUERY, group.getId(), gateway.getId());
-    }
-
-    public void removeGatewayFromGroup(Gateway gateway, Group group)
-    {
-        getJdbcTemplate().update(REMOVE_GATEWAY_FROM_GROUP_QUERY, group.getId(), gateway.getId());
-    }
-
-
-    /***
-     * Deletes all references to a specific group in a gateway group. Should only be called if a group is deleted.
-     */
-    public void removeGroupFromGatewayGroups(Group group)
-    {
+    public void delete(Group group) {
+        logger.debug("Deleting group-user mappings");
+        getJdbcTemplate().update(DELETE_GROUPS_FROM_MEMBERSHIP_QUERY, group.getId());
+        logger.debug("Deleting gateway-group mappings");
         getJdbcTemplate().update(REMOVE_GROUP_FROM_GATEWAYGROUP_QUERY, group.getId());
+        logger.debug("Deleting group");
+        getJdbcTemplate().update(DELETE_GROUP_QUERY, new Object[]{group.getId()});
     }
 
-    /***
-     * Deletes all references to a specific gateway in a gatewaygroup. Should only be called if a gateway is deleted.
-     */
-    public void removeGatewayFromGatewayGroups(Gateway gateway)
-    {
-        getJdbcTemplate().update(REMOVE_GATEWAY_FROM_GATEWAYGROUP_QUERY,gateway.getId());
-    }
+
+
+
 
     @Override
     public RowMapper<Group> getRowMapper() {
