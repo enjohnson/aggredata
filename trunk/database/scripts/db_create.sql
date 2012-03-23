@@ -16,7 +16,7 @@
  */
  
  /*
-  * mySQL scrupt to create the support tables for AggreData2
+  * mySQL scrupt to create the support tables for Aggredata
   * Script for Version: 1.0
   *
   */

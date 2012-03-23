@@ -31,7 +31,7 @@
     <set-property name="gwt.logging.enabled" value="TRUE"/>
 
 
-    <entry-point class='com.ted.aggredata.client.AggreData2'/>
+    <entry-point class='com.ted.aggredata.client.Aggredata'/>
 
     <extend-property name="locale" values="en"/>
     <set-property-fallback name="locale" value="en"/>

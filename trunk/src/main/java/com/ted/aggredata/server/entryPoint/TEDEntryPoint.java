@@ -25,7 +25,7 @@ import java.io.IOException;
 
 /**
  * Custom entry point that returns a 401 error instead of a login form. All authentication to
- * AggreData2 will either be done via the REST service or via the GWT RPC calls.
+ * Aggredata will either be done via the REST service or via the GWT RPC calls.
  */
 public class TEDEntryPoint implements AuthenticationEntryPoint {
 
