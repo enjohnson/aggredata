@@ -58,7 +58,11 @@ public class SettingsPanel extends Composite {
         saveButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                Window.alert("Save clicked!");
+                if (doValidation())
+                {
+                    Window.alert("Save clicked!");
+                }
+
             }
         });
 
@@ -75,4 +79,31 @@ public class SettingsPanel extends Composite {
 
     }
 
+    /**
+     * Performs the field validation. Returns false if any of the fields fail validation
+     * @return
+     */
+    private boolean doValidation()
+    {
+        boolean isValid = true;
+
+        firstNameFieldError.setText("");
+        lastNameFieldError.setText("");
+        companyNameFieldError.setText("");
+
+        if (firstNameField.getText().trim().length()==0)
+        {
+            isValid = false;
+            firstNameFieldError.setText("Required");
+        }
+
+        if (lastNameField.getText().trim().length()==0)
+        {
+            isValid = false;
+            lastNameFieldError.setText("Required");
+        }
+
+        return isValid;
+
+    }
 }
