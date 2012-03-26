@@ -5,3 +5,52 @@ body {
     font-size: small;
     margin: 8px;
 }
+
+
+
+.dashboardTabText {
+    font-family: Arial, Verdana, Trebuchet, sans-serif;
+    color: #FFF;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 10pt;
+    vertical-align: middle;
+    cursor: pointer;
+    cursor: hand;
+
+}
+
+
+.menuText {
+    font-family: Arial, Verdana, Trebuchet, sans-serif;
+    color: #7b7a7a;
+    text-align: left;
+    font-size: 10pt;
+    vertical-align: middle;
+    cursor: pointer;
+    cursor: hand;
+
+}
+
+.menuTextSelected {
+    font-family: Arial, Verdana, Trebuchet, sans-serif;
+    color: #e70035;
+    text-align: left;
+    font-size: 10pt;
+    vertical-align: middle;
+    cursor: pointer;
+    cursor: hand;
+}
+
+
+.largeButtonTextStyle {
+    font-family: Arial, Verdana, Trebuchet, sans-serif;
+    color: #FFF;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 12pt;
+    vertical-align: middle;
+    cursor: pointer;
+    cursor: hand;
+
+}
