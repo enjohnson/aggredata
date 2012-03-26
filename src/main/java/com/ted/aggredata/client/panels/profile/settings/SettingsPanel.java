@@ -1,12 +1,14 @@
 package com.ted.aggredata.client.panels.profile.settings;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.client.widgets.LargeButton;
 
 import java.util.logging.Logger;
 
@@ -19,16 +21,58 @@ public class SettingsPanel extends Composite {
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
 
+    @UiField Label titleLabel;
+    @UiField Label instructionLabel;
+    @UiField Label lastNameLabel;
+    @UiField TextBox lastNameField;
+    @UiField Label lastNameFieldError;
+    @UiField Label firstNameLabel;
+    @UiField TextBox firstNameField;
+    @UiField Label firstNameFieldError;
+    @UiField Label companyNameLabel;
+    @UiField TextBox companyNameField;
+    @UiField Label companyNameFieldError;
     @UiField
-    Label titleLabel;
+    LargeButton saveButton;
     @UiField
-    Label instructionLabel;
+    LargeButton resetButton;
+    @UiField
+    HorizontalPanel buttonPanel;
+    @UiField
+    VerticalPanel mainPanel;
 
     public SettingsPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
         titleLabel.setText(dashboardConstants.settingsTitle());
         instructionLabel.setText(dashboardConstants.settingsInstructions());
+        lastNameLabel.setText(dashboardConstants.profileSettingsLastName());
+        firstNameLabel.setText(dashboardConstants.profileSettingsFirstName());
+        companyNameLabel.setText(dashboardConstants.profileSettingsCompanyName());
+
+        firstNameFieldError.setText("");
+        lastNameFieldError.setText("");
+        companyNameFieldError.setText("");
+
+        
+        saveButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                Window.alert("Save clicked!");
+            }
+        });
+
+        
+        resetButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                Window.alert("Reset clicked!");
+            }
+        });
+        
+        mainPanel.setCellHorizontalAlignment(buttonPanel, HasHorizontalAlignment.ALIGN_CENTER);
+
+
     }
 
 }
