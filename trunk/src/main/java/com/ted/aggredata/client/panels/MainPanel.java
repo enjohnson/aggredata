@@ -21,6 +21,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import com.ted.aggredata.client.Aggredata;
 import com.ted.aggredata.client.events.MenuClickedEvent;
 import com.ted.aggredata.client.events.MenuClickedHandler;
 import com.ted.aggredata.client.events.TabClickedEvent;
@@ -106,8 +107,8 @@ public class MainPanel extends Composite {
                         @Override
                         public void onSuccess(Void result) {
                             logger.info("User has sucessfully logged out");
-                            RootPanel.get("aggreDataSlot").clear();
-                            RootPanel.get("aggreDataSlot").add(new LoginPanel());
+                            RootPanel.get(Aggredata.ROOT_PANEL).clear();
+                            RootPanel.get(Aggredata.ROOT_PANEL).add(new LoginPanel());
                         }
                     });
 
