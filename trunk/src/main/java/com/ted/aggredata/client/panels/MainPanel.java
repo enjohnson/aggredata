@@ -20,7 +20,6 @@ package com.ted.aggredata.client.panels;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.events.MenuClickedEvent;
 import com.ted.aggredata.client.events.MenuClickedHandler;
@@ -29,8 +28,16 @@ import com.ted.aggredata.client.events.TabClickedHandler;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.guiService.UserSessionService;
 import com.ted.aggredata.client.guiService.UserSessionServiceAsync;
-import com.ted.aggredata.client.panels.graph.GraphPanel;
+import com.ted.aggredata.client.panels.admin.system.ServerPanel;
+import com.ted.aggredata.client.panels.admin.user.UserPanel;
+import com.ted.aggredata.client.panels.graph.day.DayPanel;
+import com.ted.aggredata.client.panels.graph.hour.HourPanel;
+import com.ted.aggredata.client.panels.graph.minute.MinutePanel;
+import com.ted.aggredata.client.panels.graph.month.MonthPanel;
 import com.ted.aggredata.client.panels.login.LoginPanel;
+import com.ted.aggredata.client.panels.profile.gateways.GatewaysPanel;
+import com.ted.aggredata.client.panels.profile.groups.GroupsPanel;
+import com.ted.aggredata.client.panels.profile.settings.SettingsPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 
 import java.util.logging.Logger;
@@ -50,12 +57,15 @@ public class MainPanel extends Composite {
     @UiField
     AbsolutePanel contentPanel;
     @UiField
-    AbsolutePanel titlePanel;
+    AbsolutePanel tabNavigationPanel;
     @UiField
     AdminNavigationPanel adminNavigationPanel;
+    @UiField
+    AbsolutePanel sidePanel;
 
     final DashboardTabPanel graphDashboardPanel;
     final DashboardTabPanel profileDashboardPanel;
+    final DashboardTabPanel systemAdministrationDashboardPanel;
 
     DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
 
@@ -64,30 +74,32 @@ public class MainPanel extends Composite {
 
         graphDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.month(), dashboardConstants.day(), dashboardConstants.hour(), dashboardConstants.minute()});
         profileDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.accountSettings(), dashboardConstants.accountGroups(), dashboardConstants.accountTEDS()});
-
+        systemAdministrationDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.systemUsers(), dashboardConstants.systemServer()});
         //Set default view
         graphDashboardPanel.setSelectedTab(0);
-        titlePanel.add(graphDashboardPanel, 0, 0);
-        contentPanel.add(new GraphPanel("Monthly Graphing View"));
+        tabNavigationPanel.add(graphDashboardPanel, 0, 0);
+        contentPanel.add(new MonthPanel());
 
 
         //Add handlers
         adminNavigationPanel.addMenuClickedHandler(new MenuClickedHandler() {
             @Override
             public void onMenuClicked(MenuClickedEvent event) {
-                titlePanel.clear();
+                tabNavigationPanel.clear();
                 contentPanel.clear();
                 if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ADMIN) {
-                    titlePanel.add(new Label("System Administration"));
-                    contentPanel.add(new GraphPanel("OWNER View"));
+                    tabNavigationPanel.add(systemAdministrationDashboardPanel);
+                    contentPanel.add(new UserPanel());
+                    systemAdministrationDashboardPanel.setSelectedTab(0);
+
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ENERGY) {
-                    titlePanel.add(graphDashboardPanel, 0, 0);
-                    contentPanel.add(new GraphPanel("Monthly Graphing View"));
+                    tabNavigationPanel.add(graphDashboardPanel, 0, 0);
+                    contentPanel.add(new MonthPanel());
                     graphDashboardPanel.setSelectedTab(0);
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.PROFILE) {
-                    titlePanel.add(profileDashboardPanel, 0, 0);
+                    tabNavigationPanel.add(profileDashboardPanel, 0, 0);
                     profileDashboardPanel.setSelectedTab(0);
-                    contentPanel.add(new GraphPanel("USER ACCOUNT SETTINGS"));
+                    contentPanel.add(new SettingsPanel());
                 } else {
                     logger.info("User has slected to logout");
                     userSessionService.logoff(new TEDAsyncCallback<Void>() {
@@ -112,15 +124,15 @@ public class MainPanel extends Composite {
 
                 switch (event.getTabIndex()) {
                     case 0: {
-                        contentPanel.add(new GraphPanel("USER ACCOUNT SETTINGS"));
+                        contentPanel.add(new SettingsPanel());
                         break;
                     }
                     case 1: {
-                        contentPanel.add(new GraphPanel("GROUPS OF GATEWAYS"));
+                        contentPanel.add(new GroupsPanel());
                         break;
                     }
                     case 2: {
-                        contentPanel.add(new GraphPanel("GATEWAYS"));
+                        contentPanel.add(new GatewaysPanel());
                         break;
                     }
                 }
@@ -134,22 +146,41 @@ public class MainPanel extends Composite {
 
                 switch (event.getTabIndex()) {
                     case 0: {
-                        contentPanel.add(new GraphPanel("Monthly Graphing View"));
+                        contentPanel.add(new MonthPanel());
                         break;
                     }
                     case 1: {
-                        contentPanel.add(new GraphPanel("Daily Graphing View"));
+                        contentPanel.add(new DayPanel());
                         break;
                     }
                     case 2: {
-                        contentPanel.add(new GraphPanel("Hourly Graphing View"));
+                        contentPanel.add(new HourPanel());
                         break;
                     }
                     case 3: {
-                        contentPanel.add(new GraphPanel("Minute Graphing View"));
+                        contentPanel.add(new MinutePanel());
                         break;
                     }
 
+                }
+
+            }
+        });
+
+        systemAdministrationDashboardPanel.addTabClickedHandler(new TabClickedHandler() {
+            @Override
+            public void onTabClicked(TabClickedEvent event) {
+                contentPanel.clear();
+
+                switch (event.getTabIndex()) {
+                    case 0: {
+                        contentPanel.add(new UserPanel());
+                        break;
+                    }
+                    case 1: {
+                        contentPanel.add(new ServerPanel());
+                        break;
+                    }
                 }
 
             }

@@ -36,4 +36,41 @@ public interface DashboardConstants extends Constants {
     
     String userNameLabel();
     String passwordLabel();
+    
+    
+    String settingsTitle();
+    String settingsInstructions();
+    String groupsTitle();
+    String groupsInstructions();
+    String gatewaysTitle();
+    String gatewaysInstructions();
+
+    String monthTitle();
+
+    String monthInstructions();
+
+
+    String dayTitle();
+
+    String dayInstructions();
+
+    String hourTitle();
+
+    String hourInstructions();
+
+    String minuteTitle();
+
+    String minuteInstructions();
+
+    String systemUsers();
+
+    String systemServer();
+
+    String systemUsersTitle();
+
+    String systemUsersInstructions();
+
+    String systemServerTitle();
+
+    String systemServerInstructions();
 }
