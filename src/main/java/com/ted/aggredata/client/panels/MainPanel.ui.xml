@@ -17,26 +17,25 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:my='urn:import:com.ted.aggredata.client'>
-    <ui:style src="MainPanel.css"/>
+    <ui:style src="Global.css"/>
 
     <g:VerticalPanel styleName='{style.mainBody}' horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
         <my:widgets.ClearImage width="1018px" height="1px"/>
+
+        <!-- Top and nav bar -->
         <g:HorizontalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
-            <g:VerticalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="1px" height="20px"/>
                 <g:HorizontalPanel>
                     <my:widgets.ClearImage width="25px" height="1px"/>
-                    <my:widgets.ClickableTEDLogoImage/>
-                </g:HorizontalPanel>
-            </g:VerticalPanel>
+                    <g:VerticalPanel>
+                        <my:widgets.ClearImage width="1px" height="15px"/>
+                        <my:widgets.ClickableTEDLogoImage/>
+                    </g:VerticalPanel>
 
-            <g:VerticalPanel>
-
-                <g:HorizontalPanel>
-                    <my:widgets.ClearImage width="30px" height="1px"/>
+                    <my:widgets.ClearImage width="29px" height="1px"/>
                     <g:VerticalPanel>
                         <my:widgets.ClearImage width="1px" height="30px"/>
-                        <g:AbsolutePanel height="36px" width="380px" ui:field="titlePanel"/>
+                        <g:AbsolutePanel height="36px" width="380px" ui:field="tabNavigationPanel"/>
                     </g:VerticalPanel>
                     <my:widgets.ClearImage width="160px" height="1px"/>
                     <g:VerticalPanel>
@@ -44,11 +43,18 @@
                         <my:panels.AdminNavigationPanel ui:field="adminNavigationPanel"/>
                     </g:VerticalPanel>
                 </g:HorizontalPanel>
+        </g:HorizontalPanel>
+
+        <g:HorizontalPanel>
                 <g:HorizontalPanel>
-                    <my:widgets.ClearImage width="30px" height="1px"/>
+                    <g:VerticalPanel>
+                        <my:widgets.ClearImage width="1px" height="15px"/>
+                        <g:AbsolutePanel ui:field="sidePanel" width="180px" height="600px"/>
+                    </g:VerticalPanel>
                     <g:AbsolutePanel ui:field="contentPanel" width="800px" height="600px"/>
                 </g:HorizontalPanel>
-            </g:VerticalPanel>
+
+
         </g:HorizontalPanel>
     </g:VerticalPanel>
 

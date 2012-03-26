@@ -16,10 +16,15 @@
   -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-        >
-    <ui:style src="GraphPanel.css"/>
+             xmlns:my='urn:import:com.ted.aggredata.client'>
+    <ui:style src="../../Global.css"/>
 
-    <g:VerticalPanel height="800px" width="600px" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
-        <g:Label ui:field="titleLabel"/>
+    <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
+        <my:widgets.ClearImage width="800" height="1px"/>
+        <g:Label styleName='{style.panelTitleText}' ui:field="titleLabel"/>
+        <my:widgets.ClearImage width="800" height="3px"/>
+        <g:Label styleName='{style.panelInstructionText}' ui:field="instructionLabel"/>
+        <my:widgets.ClearImage width="800" height="5px"/>
     </g:VerticalPanel>
+
 </ui:UiBinder>
