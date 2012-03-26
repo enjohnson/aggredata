@@ -48,3 +48,28 @@
     }
 
 
+
+    .formLabel {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #FFF;
+        text-align: right;
+        font-size: 11pt;
+        vertical-align: middle;
+        width: 100px;
+    }
+
+    .formField {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #FFF;
+        text-align: right;
+        font-size: 11pt;
+        vertical-align: middle;
+    }
+
+    .formError {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: red;
+        text-align: right;
+        font-size: 11pt;
+        vertical-align: middle;
+    }
