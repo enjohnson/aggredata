@@ -15,23 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.client.guiService;
+package com.ted.aggredata.client.panels.profile.gateways;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.ted.aggredata.model.GlobalPlaceholder;
-import com.ted.aggredata.model.User;
 
-public interface UserSessionServiceAsync {
-    void logon(String username, String password, AsyncCallback<GlobalPlaceholder> async);
+import com.google.gwt.user.client.ui.Composite;
 
-    void logoff(AsyncCallback<Void> async);
-
-    /**
-     * Checks to see if the user is currently in a valid/logged in session.
-     *
-     * @return
-     */
-    void getUserFromSession(AsyncCallback<GlobalPlaceholder> async);
+public class ActivationPanel extends Composite {
 }

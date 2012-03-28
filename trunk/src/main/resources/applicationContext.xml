@@ -36,6 +36,12 @@
         <property name="valueSeparator" value="?" />
 
     </bean>
+    
+    <bean id="serverInfo" class="com.ted.aggredata.model.ServerInfo">
+        <property name="serverName" value="${server.name?aggredata.theenergydetective.com}"/>
+        <property name="serverPort" value="${server.port?80}"/>
+    </bean>
+
 
     <!-- BoneCP configuration -->
     <bean id="aggredataDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
