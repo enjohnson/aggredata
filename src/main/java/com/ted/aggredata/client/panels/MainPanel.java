@@ -76,10 +76,21 @@ public class MainPanel extends Composite {
         graphDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.month(), dashboardConstants.day(), dashboardConstants.hour(), dashboardConstants.minute()});
         profileDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.accountSettings(), dashboardConstants.accountGroups(), dashboardConstants.accountTEDS()});
         systemAdministrationDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.systemUsers(), dashboardConstants.systemServer()});
-        //Set default view
-        graphDashboardPanel.setSelectedTab(0);
-        tabNavigationPanel.add(graphDashboardPanel, 0, 0);
-        contentPanel.add(new MonthPanel());
+
+
+        //Redirect the user to the gateway page if there are not gateways assigned to the system
+        if (Aggredata.GLOBAL.getGateways().size() == 0){
+            profileDashboardPanel.setSelectedTab(2);
+            tabNavigationPanel.add(profileDashboardPanel, 0, 0);
+            contentPanel.add(new GatewaysPanel());
+
+
+        } else {
+            //Go to the month page by default
+            graphDashboardPanel.setSelectedTab(0);
+            tabNavigationPanel.add(graphDashboardPanel, 0, 0);
+            contentPanel.add(new MonthPanel());
+        }
 
 
         //Add handlers

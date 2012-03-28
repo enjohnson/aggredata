@@ -22,6 +22,7 @@ import com.ted.aggredata.client.guiService.UserSessionService;
 import com.ted.aggredata.model.GlobalPlaceholder;
 import com.ted.aggredata.model.ServerInfo;
 import com.ted.aggredata.model.User;
+import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +44,8 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
     @Autowired
     ServerInfo serverInfo;
 
+    @Autowired
+    GatewayService gatewayService;
 
     Logger logger = LoggerFactory.getLogger(UserSessionServiceImpl.class);
     public static final String USER_SESSION_KEY = "AGGREDATA_USER";
@@ -64,17 +67,10 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
             return null;
         }
 
-        GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
-        
         logger.info("Authentication success: " + SecurityContextHolder.getContext() .getAuthentication());
         User user = userService.getUserByUserName(username);
-        
-        globalPlaceholder.setSessionUser(user);
         getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
-
-        globalPlaceholder.setSessionUser(user);
-        globalPlaceholder.setServerInfo(serverInfo);
-        return globalPlaceholder;
+        return loadGlobal(user);
     }
 
     @Override
@@ -99,17 +95,33 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
         //Check to make sure the user has a valid spring securtity session
         if (SecurityContextHolder.getContext().getAuthentication() == null)
         {
+            logger.info("User not authenticated");
             return null;
         }
+
 
         //Grab the user object from the session
         if (logger.isInfoEnabled()) logger.info("Looking up user session");
         User user = (User) getThreadLocalRequest().getSession().getAttribute(USER_SESSION_KEY);
+        
+        if (user == null) {
+            logger.info("No user found in session");
+            return null;
+        }
+
         if (logger.isDebugEnabled()) logger.info("Found user object for: " + user);
 
+        
+        return loadGlobal(user);
+    }
+    
+    private GlobalPlaceholder loadGlobal(User user)
+    {
+        if (logger.isDebugEnabled()) logger.debug("Loading Globals for " + user);
         GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
         globalPlaceholder.setSessionUser(user);
         globalPlaceholder.setServerInfo(serverInfo);
+        globalPlaceholder.setGateways(gatewayService.getByUser(user));
         return globalPlaceholder;
     }
 
