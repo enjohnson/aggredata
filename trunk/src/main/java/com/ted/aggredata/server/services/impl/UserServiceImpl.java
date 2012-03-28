@@ -60,10 +60,8 @@ public class UserServiceImpl implements UserService {
     public User changePassword(User entity, String newPassword) {
         logger.debug("Changing user's password");
         User userEntity = userDao.findById(entity.getId());
-        userEntity.setPassword(newPassword);
-        userDao.save(userEntity);
+        userDao.updatePassword(userEntity, newPassword);
         return userEntity;
-
     }
 
     public User changeUserName(User entity, String newUsername) {

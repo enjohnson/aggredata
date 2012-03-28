@@ -50,7 +50,6 @@ public class GroupServiceTest {
     public void setUp() throws Exception {
         testUser = new User();
         testUser.setUsername("grouptestuser@theenergydetective.com");
-        testUser.setPassword("aggredata");
         testUser.setDefaultGroupId(0);
         testUser.setRole(User.ROLE_USER);
         testUser.setState(true);
@@ -59,7 +58,6 @@ public class GroupServiceTest {
 
         testUserMember = new User();
         testUserMember.setUsername("grouptestmember@theenergydetective.com");
-        testUserMember.setPassword("aggredata");
         testUserMember.setDefaultGroupId(0);
         testUserMember.setRole(User.ROLE_USER);
         testUserMember.setState(true);

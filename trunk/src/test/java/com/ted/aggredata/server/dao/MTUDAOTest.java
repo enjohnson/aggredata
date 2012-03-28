@@ -49,7 +49,6 @@ public class MTUDAOTest {
 
         User user = new User();
         user.setUsername(TestUtil.getUniqueKey());
-        user.setPassword(TestUtil.getUniqueKey());
         user = userDAO.create(user);
 
         Gateway gateway = new Gateway();
