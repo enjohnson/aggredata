@@ -33,7 +33,6 @@
         font-family: Arial, Verdana, Trebuchet, sans-serif;
         color: #FFF;
         text-align: center;
-        font-weight: boler;
         font-size: 12pt;
         vertical-align: middle;
     }
@@ -42,9 +41,9 @@
         font-family: Arial, Verdana, Trebuchet, sans-serif;
         color: #FFF;
         text-align: center;
-        font-weight: boler;
         font-size: 8pt;
         vertical-align: middle;
+        width:780px;
     }
 
 

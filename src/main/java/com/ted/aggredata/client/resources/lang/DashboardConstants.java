@@ -17,9 +17,13 @@
 
 package com.ted.aggredata.client.resources.lang;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Constants;
 
 public interface DashboardConstants extends Constants {
+
+    public static final DashboardConstants INSTANCE = GWT.create(DashboardConstants.class);
+
     String month();
     String day();
     String hour();
@@ -79,4 +83,10 @@ public interface DashboardConstants extends Constants {
     String profileSettingsFirstName();
 
     String profileSettingsCompanyName();
+
+
+
+    String gatewaysActivationInstructions1();
+
+    String gatewaysActivationInstructions2();
 }

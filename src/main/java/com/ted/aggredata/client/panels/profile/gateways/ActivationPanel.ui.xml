@@ -20,14 +20,11 @@
              xmlns:my='urn:import:com.ted.aggredata.client'>
     <ui:style src="../../Global.css"/>
 
+    <ui:with field='imgRes' type='com.ted.aggredata.client.resources.DashboardImageResource'/>
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
     <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
-        <my:widgets.ClearImage width="800" height="1px"/>
-        <g:Label styleName='{style.panelTitleText}' text='{txtRes.systemUsersTitle}'/>
-        <my:widgets.ClearImage width="800" height="3px"/>
-        <g:Label styleName='{style.panelInstructionText}' text='{txtRes.systemUsersInstructions}'/>
-        <my:widgets.ClearImage width="800" height="5px"/>
+
     </g:VerticalPanel>
 
 </ui:UiBinder>

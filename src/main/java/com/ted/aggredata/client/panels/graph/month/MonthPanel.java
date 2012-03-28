@@ -34,18 +34,11 @@ public class MonthPanel extends Composite {
     interface MyUiBinder extends UiBinder<Widget, MonthPanel> {
     }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
-    @UiField
-    Label titleLabel;
-    @UiField
-    Label instructionLabel;
 
 
     public MonthPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
-        titleLabel.setText(dashboardConstants.monthTitle());
-        instructionLabel.setText(dashboardConstants.monthInstructions());
 
     }
 
