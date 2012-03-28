@@ -30,6 +30,7 @@ import com.ted.aggredata.client.guiService.UserSessionServiceAsync;
 import com.ted.aggredata.client.panels.AggredataPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.LargeButton;
+import com.ted.aggredata.model.GlobalPlaceholder;
 import com.ted.aggredata.model.User;
 
 import java.util.logging.Level;
@@ -112,13 +113,16 @@ public class LoginFormPanel extends Composite {
         if (!error)
         {
             logger.info("Submitting authentication request");
-            userSessionService.logon(loginBox.getText(), passwordTextBox.getText(), new TEDAsyncCallback<User>() {
+            userSessionService.logon(loginBox.getText(), passwordTextBox.getText(), new TEDAsyncCallback<GlobalPlaceholder>() {
                 @Override
-                public void onSuccess(User result) {
-                    Globals.user = result;
+                public void onSuccess(GlobalPlaceholder result) {
+                    Globals.user = result.getSessionUser();
+                    Globals.serverInfo = result.getServerInfo();
+
                     if (result != null)
                     {
-                        logger.info("Login Successful");
+                        if (logger.isLoggable(Level.FINE)) logger.fine("Login Successful: " + Globals.user);
+                        if (logger.isLoggable(Level.FINE)) logger.fine("Server Info: " + Globals.serverInfo);
                         RootPanel.get(Aggredata.ROOT_PANEL).clear();
                         RootPanel.get(Aggredata.ROOT_PANEL).add(new AggredataPanel());
                     }   else

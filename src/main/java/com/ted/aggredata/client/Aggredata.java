@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.ted.aggredata.client.guiService.*;
 import com.ted.aggredata.client.panels.AggredataPanel;
 import com.ted.aggredata.client.panels.login.LoginPanel;
-import com.ted.aggredata.model.User;
+import com.ted.aggredata.model.GlobalPlaceholder;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,12 +39,15 @@ public class Aggredata implements EntryPoint {
         /**
          * Check to see if the user already has a valid session
          */
-        userSessionService.getUserFromSession(new TEDAsyncCallback<User>() {
+        userSessionService.getUserFromSession(new TEDAsyncCallback<GlobalPlaceholder>() {
             @Override
-            public void onSuccess(User result) {
-                Globals.user = result;
-                if (result != null){
-                    if (logger.isLoggable(Level.FINE)) logger.fine("Valid session found for user " + result.getUsername());
+            public void onSuccess(GlobalPlaceholder result) {
+                Globals.user = result.getSessionUser();
+                Globals.serverInfo = result.getServerInfo();
+                
+                if (result != null && Globals.user != null){
+                    if (logger.isLoggable(Level.FINE)) logger.fine("Valid session found for user " + Globals.user);
+                    if (logger.isLoggable(Level.FINE)) logger.fine("Server Info " + Globals.serverInfo);
                     RootPanel.get(ROOT_PANEL).clear();
                     RootPanel.get(ROOT_PANEL).add(new AggredataPanel());
                 }  else

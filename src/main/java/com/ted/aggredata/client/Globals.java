@@ -17,6 +17,7 @@
 
 package com.ted.aggredata.client;
 
+import com.ted.aggredata.model.ServerInfo;
 import com.ted.aggredata.model.User;
 
 /***
@@ -25,5 +26,7 @@ import com.ted.aggredata.model.User;
 public class Globals {
     
     public static User user;
+    public static ServerInfo serverInfo;
+
 
 }

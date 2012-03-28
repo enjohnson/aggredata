@@ -19,6 +19,8 @@ package com.ted.aggredata.server.guiServiceImpl;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.ted.aggredata.client.guiService.UserSessionService;
+import com.ted.aggredata.model.GlobalPlaceholder;
+import com.ted.aggredata.model.ServerInfo;
 import com.ted.aggredata.model.User;
 import com.ted.aggredata.server.services.UserService;
 import org.slf4j.Logger;
@@ -37,13 +39,16 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
     @Autowired
     UserService userService;
+    
+    @Autowired
+    ServerInfo serverInfo;
 
 
     Logger logger = LoggerFactory.getLogger(UserSessionServiceImpl.class);
     public static final String USER_SESSION_KEY = "AGGREDATA_USER";
 
     @Override
-    public User logon(String username, String password) {
+    public GlobalPlaceholder logon(String username, String password) {
         if (logger.isInfoEnabled()) logger.info("Processing logon request for " + username);
         getThreadLocalRequest().getSession().removeAttribute(USER_SESSION_KEY);
 
@@ -58,10 +63,18 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
             logger.warn("Authentication failed: " + e.getMessage());
             return null;
         }
+
+        GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
+        
         logger.info("Authentication success: " + SecurityContextHolder.getContext() .getAuthentication());
         User user = userService.getUserByUserName(username);
+        
+        globalPlaceholder.setSessionUser(user);
         getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
-        return user;
+
+        globalPlaceholder.setSessionUser(user);
+        globalPlaceholder.setServerInfo(serverInfo);
+        return globalPlaceholder;
     }
 
     @Override
@@ -81,7 +94,7 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
 
     @Override
-    public User getUserFromSession() {
+    public GlobalPlaceholder getUserFromSession() {
 
         //Check to make sure the user has a valid spring securtity session
         if (SecurityContextHolder.getContext().getAuthentication() == null)
@@ -93,7 +106,11 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
         if (logger.isInfoEnabled()) logger.info("Looking up user session");
         User user = (User) getThreadLocalRequest().getSession().getAttribute(USER_SESSION_KEY);
         if (logger.isDebugEnabled()) logger.info("Found user object for: " + user);
-        return user;
+
+        GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
+        globalPlaceholder.setSessionUser(user);
+        globalPlaceholder.setServerInfo(serverInfo);
+        return globalPlaceholder;
     }
 
 }

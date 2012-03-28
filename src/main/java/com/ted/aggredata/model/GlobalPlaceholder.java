@@ -1,4 +1,4 @@
-    /*
+/*
  * Copyright (c) 2012. The Energy Detective. All Rights Reserved
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,21 +15,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-    .helloText {
-        font-family: Arial, Verdana, Trebuchet, sans-serif;
-        color: #FFF;
-        text-align: left;
-        font-size: 11pt;
-        vertical-align: middle;
+package com.ted.aggredata.model;
+
+import java.io.Serializable;
+
+/**
+ * This is a placeholder model used by the GUI to allow a single asynchronous call to load a 
+ * multiple static runtime objects as login (saves overhead of multiple http requests
+ * for each login.
+ */
+public class GlobalPlaceholder implements Serializable {
+    User sessionUser;
+    ServerInfo serverInfo;
+
+    public User getSessionUser() {
+        return sessionUser;
     }
 
-    .helloTextName {
-        font-family: Arial, Verdana, Trebuchet, sans-serif;
-        color: #fbee9a;
-        text-align: left;
-        font-size: 11pt;
-        vertical-align: middle;
+    public void setSessionUser(User sessionUser) {
+        this.sessionUser = sessionUser;
     }
 
+    public ServerInfo getServerInfo() {
+        return serverInfo;
+    }
 
-
+    public void setServerInfo(ServerInfo serverInfo) {
+        this.serverInfo = serverInfo;
+    }
+}
