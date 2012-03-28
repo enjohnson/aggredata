@@ -34,18 +34,11 @@ public class MinutePanel extends Composite {
     interface MyUiBinder extends UiBinder<Widget, MinutePanel> {
     }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
-    @UiField
-    Label titleLabel;
-    @UiField
-    Label instructionLabel;
 
 
     public MinutePanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
-        titleLabel.setText(dashboardConstants.minuteTitle());
-        instructionLabel.setText(dashboardConstants.minuteInstructions());
 
     }
 

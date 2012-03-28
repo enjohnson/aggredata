@@ -34,18 +34,11 @@ public class ServerPanel extends Composite {
     interface MyUiBinder extends UiBinder<Widget, ServerPanel> {
     }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
-    @UiField
-    Label titleLabel;
-    @UiField
-    Label instructionLabel;
 
 
     public ServerPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
-        titleLabel.setText(dashboardConstants.systemServerTitle());
-        instructionLabel.setText(dashboardConstants.systemServerInstructions());
 
     }
 

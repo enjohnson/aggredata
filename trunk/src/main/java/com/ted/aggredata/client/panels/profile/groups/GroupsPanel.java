@@ -34,19 +34,11 @@ public class GroupsPanel extends Composite {
     interface MyUiBinder extends UiBinder<Widget, GroupsPanel> {
     }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
 
-
-    @UiField
-    Label titleLabel;
-    @UiField
-    Label instructionLabel;
 
     public GroupsPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
-        titleLabel.setText(dashboardConstants.groupsTitle());
-        instructionLabel.setText(dashboardConstants.groupsInstructions());
 
     }
 

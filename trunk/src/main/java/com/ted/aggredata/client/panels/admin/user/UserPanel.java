@@ -34,18 +34,10 @@ public class UserPanel extends Composite {
     interface MyUiBinder extends UiBinder<Widget, UserPanel> {
     }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
-    @UiField
-    Label titleLabel;
-    @UiField
-    Label instructionLabel;
-
 
     public UserPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
-        titleLabel.setText(dashboardConstants.systemUsers());
-        instructionLabel.setText(dashboardConstants.systemUsersInstructions());
 
     }
 

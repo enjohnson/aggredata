@@ -34,18 +34,11 @@ public class DayPanel extends Composite {
     interface MyUiBinder extends UiBinder<Widget, DayPanel> {
     }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
-    @UiField
-    Label titleLabel;
-    @UiField
-    Label instructionLabel;
 
 
     public DayPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
-        titleLabel.setText(dashboardConstants.dayTitle());
-        instructionLabel.setText(dashboardConstants.dayInstructions());
 
     }
 
