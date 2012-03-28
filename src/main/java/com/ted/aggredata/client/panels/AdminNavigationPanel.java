@@ -31,12 +31,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.ted.aggredata.client.Globals;
 import com.ted.aggredata.client.events.MenuClickedEvent;
 import com.ted.aggredata.client.events.MenuClickedHandler;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.MenuItem;
-import com.ted.aggredata.client.widgets.TEDLabel;
+import com.ted.aggredata.client.Aggredata;
 
 public class AdminNavigationPanel extends Composite implements HasHandlers{
 
@@ -61,7 +60,7 @@ public class AdminNavigationPanel extends Composite implements HasHandlers{
         handlerManager = new HandlerManager(this);
 
         helloLabel.setText(myConstants.hello());
-        usernameLabel.setText(Globals.user.getUsername());
+        usernameLabel.setText(Aggredata.GLOBAL.getSessionUser().getUsername());
 
         //TODO: DISABLE OWNER BUTTON IF USER IS NOT AN OWNER
         String width = "65px";

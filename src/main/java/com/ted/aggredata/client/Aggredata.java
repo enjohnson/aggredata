@@ -31,6 +31,10 @@ import java.util.logging.Logger;
 public class Aggredata implements EntryPoint {
     
     public static final String ROOT_PANEL = "appcontent";
+    
+    //Singleton reference to the users more common objects so we don't have to keep reloading them.
+    public static GlobalPlaceholder GLOBAL = null; 
+    
 
     final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
     static final Logger logger = Logger.getLogger(Aggredata.class.toString());
@@ -42,12 +46,11 @@ public class Aggredata implements EntryPoint {
         userSessionService.getUserFromSession(new TEDAsyncCallback<GlobalPlaceholder>() {
             @Override
             public void onSuccess(GlobalPlaceholder result) {
-                Globals.user = result.getSessionUser();
-                Globals.serverInfo = result.getServerInfo();
                 
-                if (result != null && Globals.user != null){
-                    if (logger.isLoggable(Level.FINE)) logger.fine("Valid session found for user " + Globals.user);
-                    if (logger.isLoggable(Level.FINE)) logger.fine("Server Info " + Globals.serverInfo);
+                GLOBAL = result;
+
+                if (GLOBAL != null && GLOBAL.getSessionUser() != null){
+                    if (logger.isLoggable(Level.FINE)) logger.fine("Valid session found for user " + GLOBAL);
                     RootPanel.get(ROOT_PANEL).clear();
                     RootPanel.get(ROOT_PANEL).add(new AggredataPanel());
                 }  else

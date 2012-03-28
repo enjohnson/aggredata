@@ -23,7 +23,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.Aggredata;
-import com.ted.aggredata.client.Globals;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.guiService.UserSessionService;
 import com.ted.aggredata.client.guiService.UserSessionServiceAsync;
@@ -116,13 +115,11 @@ public class LoginFormPanel extends Composite {
             userSessionService.logon(loginBox.getText(), passwordTextBox.getText(), new TEDAsyncCallback<GlobalPlaceholder>() {
                 @Override
                 public void onSuccess(GlobalPlaceholder result) {
-                    Globals.user = result.getSessionUser();
-                    Globals.serverInfo = result.getServerInfo();
+                    Aggredata.GLOBAL = result;
 
-                    if (result != null)
+                    if (result != null && Aggredata.GLOBAL.getSessionUser() != null)
                     {
-                        if (logger.isLoggable(Level.FINE)) logger.fine("Login Successful: " + Globals.user);
-                        if (logger.isLoggable(Level.FINE)) logger.fine("Server Info: " + Globals.serverInfo);
+                        if (logger.isLoggable(Level.FINE)) logger.fine("Login Successful: " + Aggredata.GLOBAL);
                         RootPanel.get(Aggredata.ROOT_PANEL).clear();
                         RootPanel.get(Aggredata.ROOT_PANEL).add(new AggredataPanel());
                     }   else

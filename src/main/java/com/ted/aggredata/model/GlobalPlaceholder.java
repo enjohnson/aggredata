@@ -18,6 +18,7 @@
 package com.ted.aggredata.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * This is a placeholder model used by the GUI to allow a single asynchronous call to load a 
@@ -27,6 +28,7 @@ import java.io.Serializable;
 public class GlobalPlaceholder implements Serializable {
     User sessionUser;
     ServerInfo serverInfo;
+    List<Gateway> gateways;
 
     public User getSessionUser() {
         return sessionUser;
@@ -43,4 +45,15 @@ public class GlobalPlaceholder implements Serializable {
     public void setServerInfo(ServerInfo serverInfo) {
         this.serverInfo = serverInfo;
     }
+
+    @Override
+    public String toString() {
+        StringBuffer b = new StringBuffer();
+        b.append("GlobalPlaceholder{");
+        b.append("User:" + sessionUser.toString());
+        b.append(", Server:" + serverInfo.toString());
+        b.append("}");
+        return b.toString();
+    }
+
 }
