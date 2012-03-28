@@ -31,10 +31,11 @@ import java.sql.SQLException;
 public class UserDAO extends AbstractDAO<User> {
 
     public static final String DELETE_USER_QUERY = "delete from aggredata.user where id=?";
-    public static final String GET_BY_USERNAME_QUERY = "select id, username, activationKey, defaultGroupId, role, password, state from aggredata.user where username= ?";
-    public static final String CREATE_USER_QUERY = "insert into aggredata.user (username, activationKey, defaultGroupId, role, password, state) values (?,?,?,?,?,?)";
+    public static final String GET_BY_USERNAME_QUERY = "select id, username, activationKey, defaultGroupId, role, state from aggredata.user where username= ?";
+    public static final String CREATE_USER_QUERY = "insert into aggredata.user (username, activationKey, defaultGroupId, role,  state) values (?,?,?,?,?)";
     public static final String COUNT_USER_QUERY = "select count(*) from  aggredata.user where username=?";
-    public static final String SAVE_USER_QUERY = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?, password=?, state=? where id = ?";
+    public static final String SAVE_USER_QUERY = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?,  state=? where id = ?";
+    public static final String UPDATE_PASSWORD = "update aggredata.user set password=? where id = ?";
 
 
     public UserDAO() {
@@ -50,7 +51,6 @@ public class UserDAO extends AbstractDAO<User> {
             user.setActivationKey(rs.getString("activationKey"));
             user.setDefaultGroupId(rs.getShort("defaultGroupId"));
             user.setRole(rs.getString("role"));
-            user.setPassword(rs.getString("password"));
             user.setState(rs.getBoolean("state"));
             return user;
         }
@@ -76,7 +76,7 @@ public class UserDAO extends AbstractDAO<User> {
     public User create(User user) {
         if (getJdbcTemplate().queryForInt(COUNT_USER_QUERY, user.getUsername()) == 0) {
             if (logger.isDebugEnabled()) logger.debug("creating new user " + user);
-            getJdbcTemplate().update(CREATE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole(), user.getPassword(), user.isState());
+            getJdbcTemplate().update(CREATE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole(), user.isState());
         } else {
             if (logger.isDebugEnabled()) logger.debug("User already exists. Skipping create. user=" + user);
         }
@@ -90,8 +90,17 @@ public class UserDAO extends AbstractDAO<User> {
             return create(user);
         } else {
             if (logger.isDebugEnabled()) logger.debug("Saving user " + user);
-            getJdbcTemplate().update(SAVE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole(), user.getPassword(), user.isState(), user.getId());
+            getJdbcTemplate().update(SAVE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole(), user.isState(), user.getId());
             return user;
+        }
+    }
+
+    public void updatePassword(User user, String password) {
+        if (user.getId() == null) {
+            logger.error("id is null. skipping password update.");
+        } else {
+            if (logger.isDebugEnabled()) logger.debug("Saving user " + user);
+            getJdbcTemplate().update(UPDATE_PASSWORD, password, user.getId());
         }
     }
 

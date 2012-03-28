@@ -26,6 +26,11 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -35,11 +40,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml",
-        "classpath:applicationContext-Test.xml"
+        "classpath:applicationContext-Test.xml",
+        "classpath:security-app-context.xml"
+        
 })
 
 
+
 public class UserServiceTest {
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
 
     Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
 
@@ -64,7 +76,6 @@ public class UserServiceTest {
 
         User testUser = new User();
         testUser.setUsername(testUserName);
-        testUser.setPassword("aggredata");
         testUser.setDefaultGroupId(0);
         testUser.setRole(User.ROLE_USER);
         testUser.setState(true);
@@ -82,9 +93,27 @@ public class UserServiceTest {
     public void testChangePassword() {
         User testUser = userService.getUserByUserName(testUserName);
         testUser = userService.changePassword(testUser, "password2");
-        Assert.assertEquals(testUser.getPassword(), "password2");
-        testUser = userService.getUserByUserName(testUserName);
-        Assert.assertEquals(testUser.getPassword(), "password2");
+
+        try {
+            Authentication request = new UsernamePasswordAuthenticationToken(testUserName, "password2");
+            if (authenticationManager == null) logger.error("AuthenticationManager is null");
+            Authentication result = authenticationManager.authenticate(request);
+            SecurityContextHolder.getContext().setAuthentication(result);
+        } catch (AuthenticationException e) {
+            Assert.fail("Authentication failed:" + e.getMessage());
+        }
+
+        testUser = userService.changePassword(testUser, "password3");
+        try {
+            Authentication request = new UsernamePasswordAuthenticationToken(testUserName, "password3");
+            if (authenticationManager == null) logger.error("AuthenticationManager is null");
+            Authentication result = authenticationManager.authenticate(request);
+            SecurityContextHolder.getContext().setAuthentication(result);
+        } catch (AuthenticationException e) {
+            Assert.fail("Authentication failed:" + e.getMessage());
+        }
+
+
     }
 
     @Test

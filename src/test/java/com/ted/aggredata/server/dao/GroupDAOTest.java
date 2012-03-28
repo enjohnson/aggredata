@@ -31,14 +31,12 @@ public class GroupDAOTest {
 
         groupOwner1 = new User();
         groupOwner1.setUsername(TestUtil.getUniqueKey());
-        groupOwner1.setPassword(TestUtil.getUniqueKey());
         groupOwner1.setActivationKey(TestUtil.getUniqueKey());
         groupOwner1.setRole("ROLE_USER");
         groupOwner1.setState(true);
 
         groupOwner2 = new User();
         groupOwner2.setUsername(TestUtil.getUniqueKey());
-        groupOwner2.setPassword(TestUtil.getUniqueKey());
         groupOwner2.setActivationKey(TestUtil.getUniqueKey());
         groupOwner2.setRole("ROLE_USER");
         groupOwner2.setState(true);

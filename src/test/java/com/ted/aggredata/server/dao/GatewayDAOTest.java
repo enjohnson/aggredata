@@ -46,7 +46,6 @@ public class GatewayDAOTest {
 
         gatewayOwner1 = new User();
         gatewayOwner1.setUsername(TestUtil.getUniqueKey());
-        gatewayOwner1.setPassword(TestUtil.getUniqueKey());
         gatewayOwner1.setActivationKey(TestUtil.getUniqueKey());
         gatewayOwner1.setRole("ROLE_USER");
         gatewayOwner1.setState(true);
