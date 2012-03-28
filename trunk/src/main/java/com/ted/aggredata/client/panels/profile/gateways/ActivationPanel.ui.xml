@@ -24,7 +24,7 @@
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
     <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
-
+        <g:Label styleName='{style.panelInstructionText}' text='{txtRes.gatewaysActivationInstructions1}'/>
     </g:VerticalPanel>
 
 </ui:UiBinder>

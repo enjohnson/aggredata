@@ -46,6 +46,14 @@ public class GlobalPlaceholder implements Serializable {
         this.serverInfo = serverInfo;
     }
 
+    public List<Gateway> getGateways() {
+        return gateways;
+    }
+
+    public void setGateways(List<Gateway> gateways) {
+        this.gateways = gateways;
+    }
+
     @Override
     public String toString() {
         StringBuffer b = new StringBuffer();
