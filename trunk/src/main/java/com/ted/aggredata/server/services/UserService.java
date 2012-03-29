@@ -88,7 +88,7 @@ public interface UserService {
      */
     public User getUserByUserName(String username);
 
-
+    public User saveUser(User entity);
     /**
      * Returns a user object with the given activation key
      *

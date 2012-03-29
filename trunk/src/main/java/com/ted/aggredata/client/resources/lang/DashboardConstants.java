@@ -83,8 +83,17 @@ public interface DashboardConstants extends Constants {
     String profileSettingsFirstName();
 
     String profileSettingsCompanyName();
-
-
+    String profileSettingsMiddleName();
+    String profileSettingsAddress();
+    String profileSettingsCity();
+    String profileSettingState();
+    String profileSettingsZip();
+    String profileSettingsPhoneNumber();
+    String profileSettingsCustom1();
+    String profileSettingsCustom2();
+    String profileSettingsCustom3();
+    String profileSettingsCustom4();
+    String profileSettingsCustom5();
 
 
     String minutes();

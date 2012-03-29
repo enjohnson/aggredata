@@ -95,6 +95,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    public User saveUser(User entity){
+        try {
+            logger.info("Saving user information");
+            return userDao.save(entity);
+        }catch (Exception ex){
+            logger.info("saveUser: " + ex.getMessage(), ex);
+            return null;
+        }
+    }
+
     @Override
     public User getUserByActivationKey(String key) {
         if (logger.isDebugEnabled()) logger.debug("Looking up user with activation key " + key);

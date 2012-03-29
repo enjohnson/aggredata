@@ -128,4 +128,12 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
         return globalPlaceholder;
     }
 
+    @Override
+    public User saveUser(User user){
+        logger.info("Saving user information");
+        getThreadLocalRequest().getSession().removeAttribute(USER_SESSION_KEY);
+        user = userService.saveUser(user);
+        getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
+        return user;
+    }
 }

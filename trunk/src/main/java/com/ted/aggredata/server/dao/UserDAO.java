@@ -43,13 +43,14 @@ public class UserDAO extends AbstractDAO<User> {
 
     public static final String DELETE_USER_QUERY = "delete from aggredata.user where id=?";
     public static final String GET_BY_USERNAME_QUERY = "select id, username, activationKey, defaultGroupId, role, state from aggredata.user where username= ?";
+    public static final String GET_BY_USERNAME_QUERY_SESSION = "select * from aggredata.user where username= ?";
     public static final String GET_BY_KEY_QUERY = "select id, username, activationKey, defaultGroupId, role, state from aggredata.user where activationKey= ?";
     public static final String CREATE_USER_QUERY = "insert into aggredata.user (username, activationKey, defaultGroupId, role,  state) values (?,?,?,?,?)";
     public static final String COUNT_USER_QUERY = "select count(*) from  aggredata.user where username=?";
     public static final String SAVE_USER_QUERY = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?,  state=? where id = ?";
     public static final String UPDATE_PASSWORD = "update aggredata.user set password=? where id = ?";
     public static final String UNIQUE_KEY_CHECK = "select count(*) from  aggredata.user where activationKey=?";
-
+    public static final String SAVE_USER_QUERY_SESSION = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?, state=?, firstName=?, lastName=?, middleName=?, address=?, city=?, addrState=?, zip=?, custom1=?, custom2=?, custom3=?, custom4=?, custom5=?, companyName=?, PhoneNumber=? where id=?";
 
     //Delete queries if a user is deleted
 
@@ -68,6 +69,20 @@ public class UserDAO extends AbstractDAO<User> {
             user.setDefaultGroupId(rs.getShort("defaultGroupId"));
             user.setRole(rs.getString("role"));
             user.setState(rs.getBoolean("state"));
+            user.setFirstName(rs.getString("firstName"));
+            user.setLastName(rs.getString("lastName"));
+            user.setMiddleName(rs.getString("middleName"));
+            user.setCity(rs.getString("city"));
+            user.setZip(rs.getString("zip"));
+            user.setPhoneNumber(rs.getString("phoneNumber"));
+            user.setAddrState(rs.getString("addrState"));
+            user.setAddress(rs.getString("address"));
+            user.setCompanyName(rs.getString("companyName"));
+            user.setCustom5(rs.getString("custom5"));
+            user.setCustom4(rs.getString("custom4"));
+            user.setCustom3(rs.getString("custom3"));
+            user.setCustom2(rs.getString("custom2"));
+            user.setCustom1(rs.getString("custom1"));
             return user;
         }
     };
@@ -77,7 +92,7 @@ public class UserDAO extends AbstractDAO<User> {
 
         try {
             if (logger.isDebugEnabled()) logger.debug("looking up user object for username " + username);
-            return getJdbcTemplate().queryForObject(GET_BY_USERNAME_QUERY, new Object[]{username}, rowMapper);
+            return getJdbcTemplate().queryForObject(GET_BY_USERNAME_QUERY_SESSION, new Object[]{username}, rowMapper);
         } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");
             return null;
@@ -116,7 +131,7 @@ public class UserDAO extends AbstractDAO<User> {
             return create(user);
         } else {
             if (logger.isDebugEnabled()) logger.debug("Saving user " + user);
-            getJdbcTemplate().update(SAVE_USER_QUERY, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole(), user.isState(), user.getId());
+            getJdbcTemplate().update(SAVE_USER_QUERY_SESSION, user.getUsername(), user.getActivationKey(), user.getDefaultGroupId(), user.getRole(), user.isState(), user.getFirstName(), user.getLastName(), user.getMiddleName(), user.getAddress(), user.getCity(), user.getAddrState(), user.getZip(), user.getCustom1(), user.getCustom2(), user.getCustom3(), user.getCustom4(), user.getCustom5(), user.getCompanyName(), user.getPhoneNumber(), user.getId());
             return user;
         }
     }

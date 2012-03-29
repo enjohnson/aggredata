@@ -36,7 +36,30 @@ public class User extends AggredataModel implements Serializable {
     private boolean state;
     private String activationKey;
     private int defaultGroupId;
+    private String firstName;
+    private String lastName;
+    private String middleName;
+    private String companyName;
+    private String address;
+    private String city;
+    private String addrState;
+    private String zip;
+    private String custom1;
+    private String custom2;
+    private String custom3;
+    private String custom4;
+    private String custom5;
+    private String phoneNumber;
 
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -82,7 +105,117 @@ public class User extends AggredataModel implements Serializable {
         this.defaultGroupId = defaultGroupId;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    
+    public String getFirstName(){
+        return firstName;
+    }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getLastName(){
+        return lastName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getMiddleName(){
+        return middleName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCompanyName(){
+        return companyName;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCity(){
+        return city;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public String getZip(){
+        return zip;
+    }
+
+    public void setAddrState(String addrState) {
+        this.addrState = addrState;
+    }
+
+    public String getAddrState(){
+        return addrState;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress(){
+        return address;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber(){
+        return phoneNumber;
+    }
+
+    public void setCustom1(String custom1) {
+        this.custom1 = custom1;
+    }
+
+    public String getCustom1(){
+        return custom1;
+    }
+
+    public void setCustom2(String custom2) {
+        this.custom2 = custom2;
+    }
+
+    public String getCustom2(){
+        return custom2;
+    }
+
+    public void setCustom3(String custom3) {
+        this.custom3 = custom3;
+    }
+
+    public String getCustom3(){
+        return custom3;
+    }
+
+    public void setCustom4(String custom4) {
+        this.custom4 = custom4;
+    }
+
+    public String getCustom4(){
+        return custom4;
+    }
+
+    public void setCustom5(String custom5) {
+        this.custom5 = custom5;
+    }
+
+    public String getCustom5(){
+        return custom5;
+    }
     @Override
     public String toString() {
         StringBuffer b = new StringBuffer();
