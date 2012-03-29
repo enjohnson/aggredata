@@ -47,11 +47,20 @@ public class UserDAOTest {
         createdUser.setActivationKey(activationKey2);
         createdUser.setState(false);
         createdUser.setRole("ROLE_NONE");
-
         userDAO.save(createdUser);
 
         //Save test and getUserByUserName test
         User savedUser = userDAO.getUserByUserName(username);
+        Assert.assertNotNull(savedUser);
+        Assert.assertEquals(savedUser.getUsername(), username);
+        Assert.assertEquals(savedUser.getActivationKey(), activationKey2);
+        Assert.assertEquals(savedUser.getRole(), "ROLE_NONE");
+        Assert.assertEquals(savedUser.isState(), false);
+
+        savedUser = userDAO.getUserByKey("nokey");
+        Assert.assertNull(savedUser);
+
+        savedUser = userDAO.getUserByKey(activationKey2);
         Assert.assertNotNull(savedUser);
         Assert.assertEquals(savedUser.getUsername(), username);
         Assert.assertEquals(savedUser.getActivationKey(), activationKey2);

@@ -18,6 +18,7 @@
 package com.ted.aggredata.server.services;
 
 import com.ted.aggredata.model.User;
+import com.ted.aggredata.server.util.TestUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -55,8 +56,8 @@ public class UserServiceTest {
 
     Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
 
-    static String testUserName = "testuser@theenergydetective.com";
-    static String testUserName2 = "testuser2@theenergydetective.com";
+    static String testUserName = TestUtil.getUniqueKey();
+    static String testUserName2 = TestUtil.getUniqueKey();
 
 
     @Autowired
@@ -79,12 +80,16 @@ public class UserServiceTest {
         testUser.setDefaultGroupId(0);
         testUser.setRole(User.ROLE_USER);
         testUser.setState(true);
+        testUser.setActivationKey(TestUtil.getUniqueKey());
 
         //Save the user
         userService.createUser(testUser);
 
         //Load the user
         testUser = userService.getUserByUserName(testUser.getUsername());
+        Assert.assertNotNull(testUser);
+
+        testUser = userService.getUserByActivationKey(testUser.getActivationKey());
         Assert.assertNotNull(testUser);
 
     }
@@ -130,6 +135,7 @@ public class UserServiceTest {
     @Test
     public void testUserDelete() {
         User testUser = userService.getUserByUserName(testUserName);
+
 
         //Delete the user
         userService.deleteUser(testUser);

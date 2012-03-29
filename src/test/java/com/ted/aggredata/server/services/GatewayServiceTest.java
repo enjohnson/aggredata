@@ -20,6 +20,7 @@ package com.ted.aggredata.server.services;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
+import com.ted.aggredata.server.dao.GatewayDAO;
 import com.ted.aggredata.server.util.TestUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -45,6 +46,9 @@ public class GatewayServiceTest {
     @Autowired
     protected GatewayService gatewayService;
 
+    @Autowired
+    protected GatewayDAO gatewayDAO;
+
     public static User testUser;
     public static User testUserMember;
     public static Group testGroup;
@@ -54,6 +58,13 @@ public class GatewayServiceTest {
 
     @Before
     public void setUp() throws Exception {
+
+        //Clean up old test data.
+        Gateway oldGateway = new Gateway();
+        oldGateway.setId(Long.parseLong("AAAAAA", 16));
+        gatewayDAO.delete(oldGateway);
+
+
         userEmailAddress = TestUtil.getUniqueKey() + "@theenergydetective.com";
         groupName = TestUtil.getUniqueKey();
 
