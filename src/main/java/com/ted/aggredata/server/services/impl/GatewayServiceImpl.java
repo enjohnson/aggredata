@@ -109,4 +109,9 @@ public class GatewayServiceImpl implements GatewayService {
     public List<Gateway> getByGroup(Group group) {
         return gatewayDAO.findByGroup(group);
     }
+
+    @Override
+    public Gateway getById(Long id) {
+        return gatewayDAO.findById(id);
+    }
 }

@@ -17,8 +17,10 @@
 
 package com.ted.aggredata.server.services.impl;
 
+import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
 import com.ted.aggredata.server.dao.UserDAO;
+import com.ted.aggredata.server.services.GroupService;
 import com.ted.aggredata.server.services.UserService;
 import com.ted.aggredata.server.util.KeyGenerator;
 import org.slf4j.Logger;
@@ -26,11 +28,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
     protected UserDAO userDao;
+
+    @Autowired
+    protected GroupService groupService;
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -77,21 +84,54 @@ public class UserServiceImpl implements UserService {
         try {
             logger.debug("Looking up user with username " + username);
             User user =  userDao.getUserByUserName(username);
-
-            //Check to make sure an activation key is generated. This should be done on
-            //user creation but this check is here in case we do a direct database
-            //load of users.
-            if (user.getActivationKey()== null || user.getActivationKey().length()==0){
-                if (logger.isDebugEnabled()) logger.debug("Generating new activation key for " + user);
-                user.setActivationKey(KeyGenerator.generateSecurityKey(10));
-                userDao.save(user);
-            }
-
-
+            checkUserConfig(user);
             return user;
         } catch (Exception ex) {
             logger.error("getUserByUserName:" + ex.getMessage(), ex);
             return null;
         }
+    }
+
+    @Override
+    public User getUserByActivationKey(String key) {
+        if (logger.isDebugEnabled()) logger.debug("Looking up user with activation key " + key);
+        User user = userDao.getUserByKey(key);
+        if (user == null) return null;
+        checkUserConfig(user);
+        return user;
+    }
+
+
+    /**
+     * This double checks that the user has an activation key and at least one group. Used in case users are
+     * created in the database directly.
+     * @param user
+     */
+    private void checkUserConfig(User user){
+        if (logger.isDebugEnabled()) logger.debug("Checking user configuration for " + user);
+
+        //Check to make sure an activation key is generated. This should be done on
+        //user creation but this check is here in case we do a direct database
+        //load of users.
+        if (user.getActivationKey()== null || user.getActivationKey().length()==0){
+            if (logger.isDebugEnabled()) logger.debug("Generating new activation key for " + user);
+
+            String key = KeyGenerator.generateSecurityKey(18);
+            while (!userDao.isUniqueKey(key)){
+                key = KeyGenerator.generateSecurityKey(18);
+            }
+            user.setActivationKey(key);
+            userDao.save(user);
+        }
+
+        //Check to see at least one group is create
+        List<Group> groupList = groupService.getByUser(user);
+        if (groupList == null || groupList.size() == 0)
+        {
+            if (logger.isDebugEnabled()) logger.debug("adding default group for " + user);
+            groupService.createGroup(user, "Default Group");
+        }
+        
+        
     }
 }

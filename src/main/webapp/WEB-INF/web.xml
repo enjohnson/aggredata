@@ -73,9 +73,19 @@
     </servlet>
 
 
+    <servlet>
+        <servlet-name>ActivationServlet</servlet-name>
+        <servlet-class>com.ted.aggredata.server.web.servlets.ActivationServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>UserSessionService</servlet-name>
         <url-pattern>/Aggredata/UserSessionService</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ActivationServlet</servlet-name>
+        <url-pattern>/activate</url-pattern>
     </servlet-mapping>
 
 </web-app>

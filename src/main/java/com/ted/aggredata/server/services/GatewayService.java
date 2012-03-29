@@ -90,4 +90,14 @@ public interface GatewayService {
      * @return
      */
     List<Gateway>getByGroup(Group group);
+
+
+    /***
+     * Looks up a gateway by its unique id
+     * @param id
+     * @return
+     */
+    Gateway getById(Long id);
 }
+
+
