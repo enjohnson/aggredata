@@ -24,6 +24,7 @@ import com.ted.aggredata.model.ServerInfo;
 import com.ted.aggredata.model.User;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.services.UserService;
+import com.ted.aggredata.server.util.KeyGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +123,8 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
         globalPlaceholder.setSessionUser(user);
         globalPlaceholder.setServerInfo(serverInfo);
         globalPlaceholder.setGateways(gatewayService.getByUser(user));
+        
+
         return globalPlaceholder;
     }
 

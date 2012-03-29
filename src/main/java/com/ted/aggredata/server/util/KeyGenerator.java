@@ -44,7 +44,7 @@ public class KeyGenerator {
         random.nextBytes(bytes);
         StringBuffer key = new StringBuffer();
         for (int i = 0; i < length; i++) {
-            key.append(SECURITY_KEY_CHARS[bytes[i] % SECURITY_KEY_CHARS.length]);
+            key.append(SECURITY_KEY_CHARS[Math.abs(bytes[i]) % SECURITY_KEY_CHARS.length]);
         }
         return key.toString();
     }
