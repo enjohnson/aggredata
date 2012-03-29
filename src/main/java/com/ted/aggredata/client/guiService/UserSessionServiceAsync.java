@@ -34,4 +34,6 @@ public interface UserSessionServiceAsync {
      * @return
      */
     void getUserFromSession(AsyncCallback<GlobalPlaceholder> async);
+    
+    void saveUser(User user, AsyncCallback<User> async);
 }
