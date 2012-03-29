@@ -44,7 +44,9 @@ public class UserServiceImpl implements UserService {
 
     public User createUser(User entity) {
         logger.debug("creating user " + entity);
-        return userDao.create(entity);
+        User user = userDao.create(entity);
+        checkUserConfig(user);
+        return user;
     }
 
     public void deleteUser(User entity) {
@@ -84,6 +86,7 @@ public class UserServiceImpl implements UserService {
         try {
             logger.debug("Looking up user with username " + username);
             User user =  userDao.getUserByUserName(username);
+            if (user == null) return null;
             checkUserConfig(user);
             return user;
         } catch (Exception ex) {

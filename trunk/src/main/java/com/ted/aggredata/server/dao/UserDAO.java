@@ -17,18 +17,29 @@
 
 package com.ted.aggredata.server.dao;
 
+import com.ted.aggredata.model.Gateway;
+import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
 import com.ted.aggredata.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * DAO for accessing the user object
  */
 public class UserDAO extends AbstractDAO<User> {
+
+    @Autowired
+    GatewayDAO gatewayDAO;
+
+    @Autowired
+    GroupDAO groupDAO;
+
 
     public static final String DELETE_USER_QUERY = "delete from aggredata.user where id=?";
     public static final String GET_BY_USERNAME_QUERY = "select id, username, activationKey, defaultGroupId, role, state from aggredata.user where username= ?";
@@ -38,6 +49,9 @@ public class UserDAO extends AbstractDAO<User> {
     public static final String SAVE_USER_QUERY = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?,  state=? where id = ?";
     public static final String UPDATE_PASSWORD = "update aggredata.user set password=? where id = ?";
     public static final String UNIQUE_KEY_CHECK = "select count(*) from  aggredata.user where activationKey=?";
+
+
+    //Delete queries if a user is deleted
 
 
     public UserDAO() {
@@ -117,6 +131,21 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     public void delete(User user) {
+        //We need to remove all data associated with the user.
+
+        List<Gateway> gatewayList = gatewayDAO.findByUserAccount(user);
+        List<Group> groupList =  groupDAO.findGroupsByUser(user);
+        for (Group group : groupList)
+        {
+            if (group.getRole() == Group.Role.OWNER) {
+                groupDAO.delete(group);
+            } else {
+                groupDAO.removeGroupMembership(user, group);
+            }
+        }
+
+        for (Gateway gateway : gatewayList) gatewayDAO.delete(gateway);
+
         if (logger.isDebugEnabled()) logger.debug("removing " + user + " from user table");
         getJdbcTemplate().update(DELETE_USER_QUERY, user.getId());
     }
