@@ -36,6 +36,7 @@ import com.ted.aggredata.client.panels.graph.hour.HourPanel;
 import com.ted.aggredata.client.panels.graph.minute.MinutePanel;
 import com.ted.aggredata.client.panels.graph.month.MonthPanel;
 import com.ted.aggredata.client.panels.login.LoginPanel;
+import com.ted.aggredata.client.panels.profile.activate.ActivationPanel;
 import com.ted.aggredata.client.panels.profile.gateways.GatewaysPanel;
 import com.ted.aggredata.client.panels.profile.groups.GroupsPanel;
 import com.ted.aggredata.client.panels.profile.settings.SettingsPanel;
@@ -74,15 +75,15 @@ public class MainPanel extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
 
         graphDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.month(), dashboardConstants.day(), dashboardConstants.hour(), dashboardConstants.minute()});
-        profileDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.accountSettings(), dashboardConstants.accountGroups(), dashboardConstants.accountTEDS()});
+        profileDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.accountSettings(), dashboardConstants.accountGroups(), dashboardConstants.accountTEDS() ,dashboardConstants.accountActivate()});
         systemAdministrationDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.systemUsers(), dashboardConstants.systemServer()});
 
 
         //Redirect the user to the gateway page if there are not gateways assigned to the system
         if (Aggredata.GLOBAL.getGateways().size() == 0){
-            profileDashboardPanel.setSelectedTab(2);
+            profileDashboardPanel.setSelectedTab(3);
             tabNavigationPanel.add(profileDashboardPanel, 0, 0);
-            contentPanel.add(new GatewaysPanel());
+            contentPanel.add(new ActivationPanel());
 
 
         } else {
@@ -145,6 +146,10 @@ public class MainPanel extends Composite {
                     }
                     case 2: {
                         contentPanel.add(new GatewaysPanel());
+                        break;
+                    }
+                    case 3: {
+                        contentPanel.add(new ActivationPanel());
                         break;
                     }
                 }

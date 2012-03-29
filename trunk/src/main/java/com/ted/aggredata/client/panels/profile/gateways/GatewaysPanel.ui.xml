@@ -28,8 +28,7 @@
         <g:Label styleName='{style.panelTitleText}' text='{txtRes.gatewaysTitle}'/>
         <my:widgets.ClearImage width="800" height="3px"/>
         <g:Label styleName='{style.panelInstructionText}' text='{txtRes.gatewaysInstructions}'/>
-        <my:widgets.ClearImage width="800" height="5px"/>
-        <my:panels.profile.gateways.ActivationPanel/>
+        <my:widgets.ClearImage width="800" height="20px"/>
     </g:VerticalPanel>
 
 </ui:UiBinder>

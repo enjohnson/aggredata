@@ -86,7 +86,24 @@ public interface DashboardConstants extends Constants {
 
 
 
-    String gatewaysActivationInstructions1();
 
-    String gatewaysActivationInstructions2();
+    String minutes();
+
+
+    String accountActivate();
+
+    String activateTitle();
+
+    String activateInstructions1();
+
+    String activateInstructions2();
+
+    String activateInstructions3();
+
+    String activationLabel1();
+
+    String activationLabel2();
+
+    String activationInstructions4();
+
 }

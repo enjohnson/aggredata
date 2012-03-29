@@ -27,7 +27,10 @@ public class ServerInfo implements Serializable {
     
     private String serverName;
     private int serverPort;
-    
+    private boolean useHttps;
+    private int postDelay;
+    private boolean highPrecision;
+
     public ServerInfo()
     {
     }
@@ -49,14 +52,63 @@ public class ServerInfo implements Serializable {
     }
 
 
+    public boolean isUseHttps() {
+        return useHttps;
+    }
+
+    public void setUseHttps(boolean useHttps) {
+        this.useHttps = useHttps;
+    }
+
+    public int getPostDelay() {
+        return postDelay;
+    }
+
+    public void setPostDelay(int postDelay) {
+        this.postDelay = postDelay;
+    }
+
+    public boolean isHighPrecision() {
+        return highPrecision;
+    }
+
+    public void setHighPrecision(boolean highPrecision) {
+        this.highPrecision = highPrecision;
+    }
+
     @Override
     public String toString() {
         StringBuffer b = new StringBuffer();
         b.append("ServerInfo{");
         b.append("ServerName:" + getServerName());
         b.append(", ServerPort:" + getServerPort());
+        b.append(", Use Https:" + isUseHttps());
+        b.append(", PostDelay:" + getPostDelay());
+        b.append(", HighPrecision:" + isHighPrecision());
         b.append("}");
         return b.toString();
     }
 
+
+    public String getActivationUrl() {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (isUseHttps()){
+            stringBuilder.append("https://");
+        } else {
+            stringBuilder.append("http://");
+        }
+
+        stringBuilder.append(getServerName());
+
+        //Append th eport if its a non-standard port
+        if ((isUseHttps() && getServerPort() != 443) || (!isUseHttps() && getServerPort() != 80)){
+            stringBuilder.append(":").append(getServerPort());
+        }
+
+        //TODO: See if we can make this a global constant somehwere else.
+        stringBuilder.append("/aggredata/activate");
+
+        return stringBuilder.toString();
+
+    }
 }
