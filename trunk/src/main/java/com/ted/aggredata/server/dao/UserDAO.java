@@ -32,10 +32,12 @@ public class UserDAO extends AbstractDAO<User> {
 
     public static final String DELETE_USER_QUERY = "delete from aggredata.user where id=?";
     public static final String GET_BY_USERNAME_QUERY = "select id, username, activationKey, defaultGroupId, role, state from aggredata.user where username= ?";
+    public static final String GET_BY_KEY_QUERY = "select id, username, activationKey, defaultGroupId, role, state from aggredata.user where activationKey= ?";
     public static final String CREATE_USER_QUERY = "insert into aggredata.user (username, activationKey, defaultGroupId, role,  state) values (?,?,?,?,?)";
     public static final String COUNT_USER_QUERY = "select count(*) from  aggredata.user where username=?";
     public static final String SAVE_USER_QUERY = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?,  state=? where id = ?";
     public static final String UPDATE_PASSWORD = "update aggredata.user set password=? where id = ?";
+    public static final String UNIQUE_KEY_CHECK = "select count(*) from  aggredata.user where activationKey=?";
 
 
     public UserDAO() {
@@ -62,6 +64,16 @@ public class UserDAO extends AbstractDAO<User> {
         try {
             if (logger.isDebugEnabled()) logger.debug("looking up user object for username " + username);
             return getJdbcTemplate().queryForObject(GET_BY_USERNAME_QUERY, new Object[]{username}, rowMapper);
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return null;
+        }
+    }
+
+    public User getUserByKey(String key) {
+        try {
+            if (logger.isDebugEnabled()) logger.debug("looking up user object for key " + key);
+            return getJdbcTemplate().queryForObject(GET_BY_KEY_QUERY, new Object[]{key}, rowMapper);
         } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");
             return null;
@@ -107,5 +119,15 @@ public class UserDAO extends AbstractDAO<User> {
     public void delete(User user) {
         if (logger.isDebugEnabled()) logger.debug("removing " + user + " from user table");
         getJdbcTemplate().update(DELETE_USER_QUERY, user.getId());
+    }
+
+
+    /**
+     * Checks to see if an activation key is already assigned to a user
+     * @param key
+     * @return
+     */
+    public Boolean isUniqueKey(String key) {
+        return (getJdbcTemplate().queryForInt(UNIQUE_KEY_CHECK, key) == 0);
     }
 }

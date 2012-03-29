@@ -89,4 +89,13 @@ public interface UserService {
     public User getUserByUserName(String username);
 
 
+    /**
+     * Returns a user object with the given activation key
+     *
+     * @param key
+     * @return
+     */
+    public User getUserByActivationKey(String key);
+
+
 }
