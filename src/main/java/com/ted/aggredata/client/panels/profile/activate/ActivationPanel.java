@@ -15,13 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.client.panels.profile.gateways;
+package com.ted.aggredata.client.panels.profile.activate;
 
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.ted.aggredata.client.Aggredata;
+import com.ted.aggredata.client.panels.profile.gateways.GatewaysPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 
 import java.util.logging.Logger;
@@ -35,9 +39,30 @@ public class ActivationPanel extends Composite {
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
     DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
+    @UiField
+    Label activationUrlLabel;
+    @UiField
+    Label activationKeyLabel;
+    @UiField
+    Label postTimeLabel;
 
     public ActivationPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
+        activationUrlLabel.setText(Aggredata.GLOBAL.getServerInfo().getActivationUrl());
+        activationKeyLabel.setText(Aggredata.GLOBAL.getSessionUser().getActivationKey());
+        
+        StringBuilder finalParagraph = new StringBuilder();
+        finalParagraph.append(dashboardConstants.activationInstructions4());
+        finalParagraph.append(" ");
+        finalParagraph.append(Aggredata.GLOBAL.getServerInfo().getPostDelay());
+        finalParagraph.append(" ");
+        finalParagraph.append(dashboardConstants.minutes());
+        finalParagraph.append(".");
+        postTimeLabel.setText(finalParagraph.toString());
+
+
+
+        
     }
 }

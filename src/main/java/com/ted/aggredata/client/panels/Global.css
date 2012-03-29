@@ -47,6 +47,16 @@
     }
 
 
+    .panelText {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #FFF;
+        text-align: left;
+        font-size: 10pt;
+        vertical-align: middle;
+        width:780px;
+    }
+
+
 
     .formLabel {
         font-family: Arial, Verdana, Trebuchet, sans-serif;
@@ -55,6 +65,7 @@
         font-size: 11pt;
         vertical-align: middle;
         width: 100px;
+
     }
 
     .formField {
@@ -72,3 +83,12 @@
         font-size: 11pt;
         vertical-align: middle;
     }
+
+    .formLabelLeft {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #FFF;
+        text-align: left;
+        font-size: 11pt;
+        vertical-align: middle;
+    }
+
