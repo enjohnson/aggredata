@@ -20,6 +20,7 @@ package com.ted.aggredata.server.services.impl;
 import com.ted.aggredata.model.User;
 import com.ted.aggredata.server.dao.UserDAO;
 import com.ted.aggredata.server.services.UserService;
+import com.ted.aggredata.server.util.KeyGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +76,19 @@ public class UserServiceImpl implements UserService {
     public User getUserByUserName(String username) {
         try {
             logger.debug("Looking up user with username " + username);
-            return userDao.getUserByUserName(username);
+            User user =  userDao.getUserByUserName(username);
+
+            //Check to make sure an activation key is generated. This should be done on
+            //user creation but this check is here in case we do a direct database
+            //load of users.
+            if (user.getActivationKey()== null || user.getActivationKey().length()==0){
+                if (logger.isDebugEnabled()) logger.debug("Generating new activation key for " + user);
+                user.setActivationKey(KeyGenerator.generateSecurityKey(10));
+                userDao.save(user);
+            }
+
+
+            return user;
         } catch (Exception ex) {
             logger.error("getUserByUserName:" + ex.getMessage(), ex);
             return null;
