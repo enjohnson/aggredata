@@ -44,6 +44,7 @@ public class UserDAO extends AbstractDAO<User> {
     public static final String DELETE_USER_QUERY = "delete from aggredata.user where id=?";
     public static final String GET_BY_USERNAME_QUERY = "select id, username, activationKey, defaultGroupId, role, state from aggredata.user where username= ?";
     public static final String GET_BY_USERNAME_QUERY_SESSION = "select * from aggredata.user where username= ?";
+    public static final String GET_BY_KEY_QUERY_SESSION = "select * from aggredata.user where activationKey= ?";
     public static final String GET_BY_KEY_QUERY = "select id, username, activationKey, defaultGroupId, role, state from aggredata.user where activationKey= ?";
     public static final String CREATE_USER_QUERY = "insert into aggredata.user (username, activationKey, defaultGroupId, role,  state) values (?,?,?,?,?)";
     public static final String COUNT_USER_QUERY = "select count(*) from  aggredata.user where username=?";
@@ -102,7 +103,7 @@ public class UserDAO extends AbstractDAO<User> {
     public User getUserByKey(String key) {
         try {
             if (logger.isDebugEnabled()) logger.debug("looking up user object for key " + key);
-            return getJdbcTemplate().queryForObject(GET_BY_KEY_QUERY, new Object[]{key}, rowMapper);
+            return getJdbcTemplate().queryForObject(GET_BY_KEY_QUERY_SESSION, new Object[]{key}, rowMapper);
         } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");
             return null;
