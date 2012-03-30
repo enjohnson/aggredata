@@ -34,7 +34,7 @@ import com.ted.aggredata.model.User;
 import java.util.logging.Logger;
 
 public class SettingsPanel extends Composite {
-
+    private boolean isValid;
     static Logger logger = Logger.getLogger(SettingsPanel.class.toString());
     private User user = Aggredata.GLOBAL.getSessionUser();
     interface MyUiBinder extends UiBinder<Widget, SettingsPanel> {
@@ -115,7 +115,21 @@ public class SettingsPanel extends Composite {
         custom4Label.setText(dashboardConstants.profileSettingsCustom4());
         custom5Label.setText(dashboardConstants.profileSettingsCustom5());
 
-        //set text to current text fields
+        //set text to current text fields and set max length to the current database field lengths
+        firstNameField.setMaxLength(50);
+        lastNameField.setMaxLength(50);
+        middleNameField.setMaxLength(50);
+        addressField.setMaxLength(50);
+        cityField.setMaxLength(50);
+        stateField.setMaxLength(15);
+        companyNameField.setMaxLength(100);
+        phoneNumberField.setMaxLength(25);
+        zipField.setMaxLength(15);
+        custom1Field.setMaxLength(100);
+        custom2Field.setMaxLength(100);
+        custom3Field.setMaxLength(100);
+        custom4Field.setMaxLength(100);
+        custom5Field.setMaxLength(100);
 
         custom5Field.setText(user.getCustom5());
         custom4Field.setText(user.getCustom4());
@@ -131,12 +145,18 @@ public class SettingsPanel extends Composite {
         phoneNumberField.setText(user.getPhoneNumber());
         zipField.setText(user.getZip());
         companyNameField.setText(user.getCompanyName());
+
+
         
         saveButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 //Save the object
-                commitUserData();
+                isValid = doValidation();
+                if (isValid)
+                {
+                    commitUserData();
+                }
                 //Window.alert("Save clicked!");
              }
         });
@@ -174,90 +194,72 @@ public class SettingsPanel extends Composite {
 
     private void commitUserData()
     {
-        firstNameFieldError.setText("");
-        lastNameFieldError.setText("");
-        companyNameFieldError.setText("");
-        middleNameFieldError.setText("");
-        addressFieldError.setText("");
-        cityFieldError.setText("");
-        zipFieldError.setText("");
-        stateFieldError.setText("");
-        custom1FieldError.setText("");
-        phoneNumberFieldError.setText("");
-        custom2FieldError.setText("");
-        custom3FieldError.setText("");
-        custom4FieldError.setText("");
-        custom5FieldError.setText("");
 
-        boolean error = false;
-        if (firstNameField.getText().trim().length()==0)
-        {
-            error = true;
-            firstNameFieldError.setText("Required");
-        }
+        user.setAddress(addressField.getText().trim());
+        user.setAddrState(stateField.getText().trim());
+        user.setCity(cityField.getText().trim());
+        user.setZip(zipField.getText().trim());
+        user.setFirstName(firstNameField.getText().trim());
+        user.setLastName(lastNameField.getText().trim());
+        user.setCompanyName(companyNameField.getText().trim());
+        user.setCustom1(custom1Field.getText().trim());
+        user.setCustom2(custom2Field.getText().trim());
+        user.setCustom3(custom3Field.getText().trim());
+        user.setCustom4(custom4Field.getText().trim());
+        user.setCustom5(custom5Field.getText().trim());
+        user.setPhoneNumber(phoneNumberField.getText().trim());
+        user.setMiddleName(middleNameField.getText().trim());
 
-        if (lastNameField.getText().trim().length()==0)
-        {
-            error = true;
-            lastNameFieldError.setText("Required");
-        }
-
-        if(!error)
-        {
-            user.setAddress(addressField.getText().trim());
-            user.setAddrState(stateField.getText().trim());
-            user.setCity(cityField.getText().trim());
-            user.setZip(zipField.getText().trim());
-            user.setFirstName(firstNameField.getText().trim());
-            user.setLastName(lastNameField.getText().trim());
-            user.setCompanyName(companyNameField.getText().trim());
-            user.setCustom1(custom1Field.getText().trim());
-            user.setCustom2(custom2Field.getText().trim());
-            user.setCustom3(custom3Field.getText().trim());
-            user.setCustom4(custom4Field.getText().trim());
-            user.setCustom5(custom5Field.getText().trim());
-            user.setPhoneNumber(phoneNumberField.getText().trim());
-            user.setMiddleName(middleNameField.getText().trim());
-
-            userSessionService.saveUser(user, new TEDAsyncCallback<User>() {
-                @Override
-                public void onSuccess(User result) {
-                    user = result;
-                    if (result != null)
-                    {
-                        Window.alert("User account updated.");
-                    }
+        userSessionService.saveUser(user, new TEDAsyncCallback<User>() {
+            @Override
+            public void onSuccess(User result) {
+                user = result;
+                if (result != null)
+                {
+                    Window.alert("User account updated.");
                 }
+            }
             });
         }
 
+        /**
+         * Performs the field validation. Returns false if any of the fields fail validation
+         * @return
+         */
+        private boolean doValidation()
+        {
+            boolean isValid = true;
+
+            firstNameFieldError.setText("");
+            lastNameFieldError.setText("");
+            companyNameFieldError.setText("");
+            middleNameFieldError.setText("");
+            addressFieldError.setText("");
+            cityFieldError.setText("");
+            zipFieldError.setText("");
+            stateFieldError.setText("");
+            custom1FieldError.setText("");
+            phoneNumberFieldError.setText("");
+            custom2FieldError.setText("");
+            custom3FieldError.setText("");
+            custom4FieldError.setText("");
+            custom5FieldError.setText("");
+
+            if (firstNameField.getText().trim().length()==0)
+            {
+                isValid = false;
+                firstNameFieldError.setText("Required");
+            }
+
+            if (lastNameField.getText().trim().length()==0)
+            {
+                isValid = false;
+                lastNameFieldError.setText("Required");
+            }
+
+            return isValid;
+
         }
     }
-    /**
-     * Performs the field validation. Returns false if any of the fields fail validation
-     * @return
-     */
-//    private boolean doValidation()
-//    {
-//        boolean isValid = true;
-//
-//        firstNameFieldError.setText("");
-//        lastNameFieldError.setText("");
-//        companyNameFieldError.setText("");
-//
-//        if (firstNameField.getText().trim().length()==0)
-//        {
-//            isValid = false;
-//            firstNameFieldError.setText("Required");
-//        }
-//
-//        if (lastNameField.getText().trim().length()==0)
-//        {
-//            isValid = false;
-//            lastNameFieldError.setText("Required");
-//        }
-//
-//        return isValid;
-//
-//    }
+
 
