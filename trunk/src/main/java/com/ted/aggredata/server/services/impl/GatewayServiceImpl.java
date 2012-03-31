@@ -17,10 +17,7 @@
 
 package com.ted.aggredata.server.services.impl;
 
-import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.Group;
-import com.ted.aggredata.model.MTU;
-import com.ted.aggredata.model.User;
+import com.ted.aggredata.model.*;
 import com.ted.aggredata.server.dao.*;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.util.KeyGenerator;
@@ -119,10 +116,28 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Override
     public MTU getMTU(Gateway gateway, Long mtuId) {
-        MTU mtu = mtuDAO.findById(mtuId);
+        MTU mtu = mtuDAO.findById(gateway.getId(), mtuId);
         if (mtu==null) return null;
         if (mtu.getGatewayId().equals(gateway.getId())) return mtu;
         if (logger.isDebugEnabled()) logger.debug("MTU " + Long.toHexString(mtuId) + " does not belong to gateway " + gateway);
         return null;
+    }
+
+    @Override
+    public EnergyData postEnergyData(Gateway gateway, MTU mtu, Integer timestamp, Double watts, Double rate, Double minCost) {
+        EnergyData energyData = new EnergyData();
+        energyData.setGatewayId(gateway.getId());
+        energyData.setMtuId(mtu.getId());
+        energyData.setTimestamp(timestamp);
+        energyData.setEnergy(watts);
+        energyData.setRate(rate);
+        energyData.setMinuteCost(minCost);
+        energyDataDAO.create(energyData);
+        return energyData;
+    }
+
+    @Override
+    public EnergyData findByLastPost(Gateway gateway, MTU mtu, Integer timestamp) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

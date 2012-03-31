@@ -90,14 +90,13 @@ ENGINE = InnoDB;
 -- Table `aggredata`.`energydata`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `aggredata`.`energydata` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `gatewayId` INT UNSIGNED NOT NULL ,
   `mtuId` INT UNSIGNED NOT NULL ,
-  `timestamp` INT NOT NULL ,
-  `rate` DECIMAL(8,5) NULL ,
+  `timestamp` INT UNSIGNED NOT NULL ,
+  `rate` DECIMAL(10,5) NULL ,
   `energy` DECIMAL(25,4) NULL ,
   `minuteCost` DECIMAL(8,5) NULL ,
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`gatewayId`, 'mtuId', 'timestamp') ,
   INDEX `mtu_id` (`mtuId` ASC) ,
   INDEX `timestamp` (`timestamp` ASC, `mtuId` ASC))
 ENGINE = InnoDB

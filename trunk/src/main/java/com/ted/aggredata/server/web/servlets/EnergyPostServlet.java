@@ -61,6 +61,7 @@ public class EnergyPostServlet extends HttpServlet {
 
 
 
+
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
@@ -129,10 +130,10 @@ public class EnergyPostServlet extends HttpServlet {
             for (int i=0; i < mtuCount; i++)
             {
                 Element mtuNode = (Element)mtuList.item(i);
-                String mtuIdString = mtuNode.getAttributeNode("ID").getValue();
+                String mtuIdString = mtuNode.getAttribute("ID");
                 Long mtuId = Long.parseLong(mtuIdString, 16);
 
-                int type = Integer.parseInt(mtuNode.getAttributeNode("type").getValue());
+                int type = Integer.parseInt(mtuNode.getAttribute("type"));
                 if (logger.isDebugEnabled()) logger.debug("Processing gateway " + gatewayIdString + "- MTU: " + mtuIdString + " type:" + type);
 
                 MTU mtu = gatewayService.getMTU(gateway, mtuId);
@@ -142,6 +143,35 @@ public class EnergyPostServlet extends HttpServlet {
                 }
 
                 if (logger.isDebugEnabled()) logger.debug("Adding cumulative data to " + mtu + " for " + gateway);
+
+                NodeList cumulativeDataList = mtuNode.getElementsByTagName("cumulative");
+                int cumulativeDataListCount = cumulativeDataList.getLength();
+                if (logger.isDebugEnabled()) logger.debug("Posting " + cumulativeDataListCount + " energy readings for " + mtu);
+
+                EnergyData lastCumulativeValue = null;
+
+                for (int c=0; c < cumulativeDataListCount; c++)
+                {
+                    Element cumulativeNode = (Element) cumulativeDataList.item(c);
+                    Integer timestamp = Integer.parseInt(cumulativeNode.getAttribute("timestamp"));
+                    Double rate = Double.parseDouble(cumulativeNode.getAttribute("rate"));
+                    Double energy = Double.parseDouble(cumulativeNode.getAttribute("watts"));
+                    Double minuteCost = 0d;
+
+                    if (lastCumulativeValue== null) {
+                        lastCumulativeValue = gatewayService.findByLastPost(gateway, mtu, timestamp);
+                    }
+
+                    //Make sure that we are not dealing with the first entry for this gateway/mtu
+                    if (lastCumulativeValue != null){
+                        Double wattDifference = energy - lastCumulativeValue.getEnergy();
+                        wattDifference = wattDifference / 1000; //Rate is on kWh
+                        minuteCost = (wattDifference * rate);
+                    }
+
+                    lastCumulativeValue = gatewayService.postEnergyData(gateway, mtu, timestamp, energy, rate, minuteCost);
+                    if (logger.isDebugEnabled()) logger.debug("Posted " + lastCumulativeValue);
+                }
 
 
             }
