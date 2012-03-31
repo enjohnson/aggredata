@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * Single entry of power com.ted.aggredata.dao
  */
-public class EnergyData extends AggredataModel implements Serializable {
+public class EnergyData  implements Serializable {
     private Long gatewayId;
     private Long mtuId;
     private Integer timestamp;
@@ -106,13 +106,12 @@ public class EnergyData extends AggredataModel implements Serializable {
     public String toString() {
         StringBuffer b = new StringBuffer();
         b.append("EnergyData{");
-        b.append(",id:" + getId());
+        b.append("gatewayId:" + gatewayId);
+        b.append(", mtuId:" + mtuId);
         b.append(",timestamp:" + timestamp);
         b.append(", rate:" + rate);
         b.append(", energy:" + energy);
         b.append(", minuteCost:" + minuteCost);
-        b.append(", gatewayId:" + gatewayId);
-        b.append(", mtuId:" + mtuId);
         b.append("}");
         return b.toString();
     }

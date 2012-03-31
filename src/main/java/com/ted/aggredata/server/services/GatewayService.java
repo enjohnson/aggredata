@@ -17,10 +17,7 @@
 
 package com.ted.aggredata.server.services;
 
-import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.Group;
-import com.ted.aggredata.model.MTU;
-import com.ted.aggredata.model.User;
+import com.ted.aggredata.model.*;
 
 import java.util.List;
 
@@ -106,6 +103,28 @@ public interface GatewayService {
      * @return
      */
     MTU getMTU(Gateway gateway, Long mtuId);
+
+    /***
+     * Creates a new EnergyData entry in the system
+     * @param gateway
+     * @param mtu
+     * @param timestamp
+     * @param watts
+     * @param rate
+     * @param minCost
+     * @return
+     */
+    EnergyData postEnergyData(Gateway gateway, MTU mtu, Integer timestamp, Double watts, Double rate, Double minCost);
+
+    /***
+     * Finds the most recently posted entry for the gateway/mtu
+     * @param gateway
+     * @param mtu
+     * @param timestamp
+     * @return
+     */
+    EnergyData findByLastPost(Gateway gateway, MTU mtu, Integer timestamp);
+
 }
 
 

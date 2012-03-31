@@ -20,6 +20,7 @@ package com.ted.aggredata.server.dao;
 import com.ted.aggredata.model.EnergyData;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.MTU;
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -34,8 +35,11 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
 
     public static String DELETE_ENERGY_DATA = "delete from  aggredata.energydata where gatewayId= ? and mtuId=?";
     public static String POST_ENERGY_DATA = "insert into aggredata.energydata (gatewayId, mtuId, timestamp, rate, energy, minuteCost) values (?,?,?,?,?,?)";
-    public static String FIND_BY_DATE_RANGE = "select id, gatewayId, mtuId, timestamp, rate, energy , minuteCost from aggredata.energydata where mtuId=? and gatewayId=? and timestamp>=? and timestamp < ?";
-    public static String FIND_LAST_BY_MTU = "select top 1 id, gatewayId, mtuId, timestamp, rate, energy, minuteCost from aggredata.energydata where gatewayId= ? and mtuId=? and timestamp < ?";
+    public static String SAVE_ENERGY_DATA = "update aggredata.energydata set rate=?, energy=?, minuteCost=? where gatewayId=?, mtuId=?, timestamp=?";
+
+    public static String FIND_BY_DATE_RANGE = "select  gatewayId, mtuId, timestamp, rate, energy , minuteCost from aggredata.energydata where mtuId=? and gatewayId=? and timestamp>=? and timestamp < ?";
+    public static String FIND_LAST_BY_MTU = "select  gatewayId, mtuId, timestamp, rate, energy, minuteCost from aggredata.energydata where gatewayId= ? and mtuId=? and timestamp < ? order by timestamp desc limit 1";
+    public static String FIND_BY_TIMESTAMP = "select  gatewayId, mtuId, timestamp, rate, energy, minuteCost from aggredata.energydata where gatewayId= ? and mtuId=? and timestamp = ?";
 
     public EnergyDataDAO() {
         super("aggredata.energyData");
@@ -44,7 +48,6 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
     private RowMapper<EnergyData> rowMapper = new RowMapper<EnergyData>() {
         public EnergyData mapRow(ResultSet rs, int rowNum) throws SQLException {
             EnergyData energyData = new EnergyData();
-            energyData.setId(rs.getLong("id"));
             energyData.setGatewayId(rs.getLong("gatewayId"));
             energyData.setMtuId(rs.getLong("mtuId"));
             energyData.setTimestamp(rs.getInt("timestamp"));
@@ -88,8 +91,37 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
             return null;
         }
     }
+
+
+    /**
+     * Returns the most recent energy data for the specified mtu
+     *
+     * @param gatewayId
+     * @param mtuId
+     * @param timestamp
+     * @return
+     */
+    public EnergyData findByTimestamp(Long gatewayId, Long mtuId, long timestamp) {
+        try {
+            return getJdbcTemplate().queryForObject(FIND_BY_TIMESTAMP, new Object[]{gatewayId, mtuId, timestamp}, getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return null;
+        }
+    }
+
+
+    /**
+     * Creates or updates energy data in the database.
+     * @param energyData
+     */
     public void create(EnergyData energyData) {
-        getJdbcTemplate().update(POST_ENERGY_DATA, energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp(), energyData.getRate(), energyData.getEnergy(), energyData.getMinuteCost());
+        EnergyData oldEnergyData =  findByTimestamp(energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp());
+        if (oldEnergyData == null){
+            getJdbcTemplate().update(POST_ENERGY_DATA, energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp(), energyData.getRate(), energyData.getEnergy(), energyData.getMinuteCost());
+        } else {
+            getJdbcTemplate().update(SAVE_ENERGY_DATA, energyData.getRate(), energyData.getEnergy(), energyData.getMinuteCost(),  energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp());
+        }
     }
 
 
@@ -106,6 +138,13 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
      */
     public void deleteEnergyData(Gateway gateway, MTU mtu) {
         getJdbcTemplate().update(DELETE_ENERGY_DATA, gateway.getId(), mtu.getId());
+    }
+
+
+    @Override
+    public EnergyData findById(Long id) {
+        logger.error("EnergyData findById not implemented");
+        throw new NotImplementedException();
     }
 
 
