@@ -79,7 +79,7 @@ public class GatewayDAO extends AbstractDAO<Gateway> {
 
 
     public void save(Gateway gateway) {
-        getJdbcTemplate().update(SAVE_GATEWAY_QUERY, gateway.getWeatherLocationId(), gateway.getUserAccountId(), gateway.getSecurityKey(), gateway.getState(), gateway.getSecurityKey(), gateway.description, gateway.getId());
+        getJdbcTemplate().update(SAVE_GATEWAY_QUERY, gateway.getWeatherLocationId(), gateway.getUserAccountId(), gateway.getState(), gateway.getSecurityKey(), gateway.description, gateway.getId());
     }
 
     public void delete(Gateway gateway){

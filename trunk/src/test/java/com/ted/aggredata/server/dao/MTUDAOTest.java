@@ -72,22 +72,22 @@ public class MTUDAOTest {
         Assert.assertNotNull(mtu.getId());
         
         
-        MTU mtu2 = mtuDAO.findById(MTU_TEST_ID);
+        MTU mtu2 = mtuDAO.findById(gateway.getId(), MTU_TEST_ID);
         Assert.assertEquals(mtu2.getId(), mtu.getId());
         Assert.assertEquals(mtuDAO.getByGateway(gateway).size(), 1);
         
-        MTU mtu3 = mtuDAO.findById(MTU_TEST_ID);
+        MTU mtu3 = mtuDAO.findById(gateway.getId(), MTU_TEST_ID);
         mtu3.setDescription(TestUtil.getUniqueKey());
         mtu3.setType(MTU.MTUType.STAND_ALONE);
         mtuDAO.save(mtu3);
         
-        MTU mtu4 = mtuDAO.findById(MTU_TEST_ID);
+        MTU mtu4 = mtuDAO.findById(gateway.getId(), MTU_TEST_ID);
         Assert.assertEquals(mtu3.getId(), mtu4.getId());
         Assert.assertEquals(mtu3.getDescription(), mtu4.getDescription());
         Assert.assertEquals(mtu3.getType(), mtu4.getType());
 
-        mtuDAO.delete(mtu4);
-        Assert.assertNull(mtuDAO.findById(MTU_TEST_ID));
+        mtuDAO.delete(gateway, mtu4);
+        Assert.assertNull(mtuDAO.findById(gateway.getId(), MTU_TEST_ID));
 
         gatewayDAO.delete(gateway);
         userDAO.delete(user);

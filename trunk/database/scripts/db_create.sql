@@ -1,3 +1,5 @@
+ drop schema aggredata;
+ 
  /*
  * Copyright (c) 2012. The Energy Detective. All Rights Reserved
  *
@@ -57,13 +59,12 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`gateway` (
   `securityKey` VARCHAR(20) NULL ,
   `description` VARCHAR(1000) NULL ,
   `weatherLocationId` INT UNSIGNED NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `weather_location_id` (`weatherLocationId` ASC) ,
-  CONSTRAINT `weather_location_id`
-    FOREIGN KEY (`weatherLocationId` )
-    REFERENCES `aggredata`.`weatherlocation` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `custom1` VARCHAR(100) NULL ,
+  `custom2` VARCHAR(100) NULL ,
+  `custom3` VARCHAR(100) NULL ,
+  `custom4` VARCHAR(100) NULL ,
+  `custom5` VARCHAR(100) NULL ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
@@ -75,7 +76,7 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`mtu` (
   `gatewayId` INT UNSIGNED NOT NULL ,
   `type` INT NULL ,
   `description` VARCHAR(1000) NULL ,
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`id`, `gatewayId`) ,
   INDEX `gateway_id` (`gatewayId` ASC) ,
   CONSTRAINT `gateway_id`
     FOREIGN KEY (`gatewayId` )
@@ -90,18 +91,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `aggredata`.`energydata` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `gatewayId` INT UNSIGNED NOT NULL ,
   `mtuId` INT UNSIGNED NOT NULL ,
   `timestamp` INT NOT NULL ,
   `rate` DECIMAL(8,5) NULL ,
   `energy` DECIMAL(25,4) NULL ,
+  `minuteCost` DECIMAL(8,5) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `mtu_id` (`mtuId` ASC) ,
-  INDEX `timestamp` (`timestamp` ASC, `mtuId` ASC) ,
-  CONSTRAINT `mtu_id`
-    FOREIGN KEY (`mtuId` )
-    REFERENCES `aggredata`.`mtu` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  INDEX `timestamp` (`timestamp` ASC, `mtuId` ASC))
 ENGINE = InnoDB
 COMMENT = 'Table that stores all energy data posted from each gateway';
 
@@ -142,6 +140,11 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`group` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT  ,
   `description` VARCHAR(1000) NULL ,
   `owneruserId` INT UNSIGNED NOT NULL ,
+  `custom1` VARCHAR(100) NULL ,
+  `custom2` VARCHAR(100) NULL ,
+  `custom3` VARCHAR(100) NULL ,
+  `custom4` VARCHAR(100) NULL ,
+  `custom5` VARCHAR(100) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 COMMENT = 'groups of gateways.\n\n';

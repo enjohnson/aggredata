@@ -72,6 +72,10 @@
         <servlet-class>com.ted.aggredata.server.guiServiceImpl.UserSessionServiceImpl</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>EnergyPostServlet</servlet-name>
+        <servlet-class>com.ted.aggredata.server.web.servlets.EnergyPostServlet</servlet-class>
+    </servlet>
 
     <servlet>
         <servlet-name>ActivationServlet</servlet-name>
@@ -86,6 +90,11 @@
     <servlet-mapping>
         <servlet-name>ActivationServlet</servlet-name>
         <url-pattern>/activate</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>EnergyPostServlet</servlet-name>
+        <url-pattern>/postData</url-pattern>
     </servlet-mapping>
 
 </web-app>

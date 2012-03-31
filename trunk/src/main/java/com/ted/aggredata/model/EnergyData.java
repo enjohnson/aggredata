@@ -23,10 +23,12 @@ import java.io.Serializable;
  * Single entry of power com.ted.aggredata.dao
  */
 public class EnergyData extends AggredataModel implements Serializable {
+    private Long gatewayId;
     private Long mtuId;
     private Integer timestamp;
     private Double rate;
     private Double energy;
+    private Double minuteCost;
 
     public EnergyData() {
 
@@ -84,6 +86,21 @@ public class EnergyData extends AggredataModel implements Serializable {
         this.energy = energy;
     }
 
+    public Double getMinuteCost() {
+        return minuteCost;
+    }
+
+    public void setMinuteCost(Double minuteCost) {
+        this.minuteCost = minuteCost;
+    }
+
+    public Long getGatewayId() {
+        return gatewayId;
+    }
+
+    public void setGatewayId(Long gatewayId) {
+        this.gatewayId = gatewayId;
+    }
 
     @Override
     public String toString() {
@@ -93,6 +110,8 @@ public class EnergyData extends AggredataModel implements Serializable {
         b.append(",timestamp:" + timestamp);
         b.append(", rate:" + rate);
         b.append(", energy:" + energy);
+        b.append(", minuteCost:" + minuteCost);
+        b.append(", gatewayId:" + gatewayId);
         b.append(", mtuId:" + mtuId);
         b.append("}");
         return b.toString();

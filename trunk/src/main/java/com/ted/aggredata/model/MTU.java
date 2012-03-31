@@ -33,6 +33,16 @@ public class MTU extends AggredataModel implements Serializable {
    String description;
 
 
+    public static MTUType ordinalToMTUType(int ordinalValue){
+        if (ordinalValue == 0) return MTUType.LOAD;
+        if (ordinalValue == 1) return MTUType.GENERATION;
+        if (ordinalValue == 2) return MTUType.ADJUSTED_NET;
+        if (ordinalValue == 3) return MTUType.STAND_ALONE;
+        if (ordinalValue == 5) return MTUType.STAND_ALONE_NET;
+        return MTUType.LOAD;
+    }
+
+
     /**
      * ID of the gateway this MTU is assigned to
      *
