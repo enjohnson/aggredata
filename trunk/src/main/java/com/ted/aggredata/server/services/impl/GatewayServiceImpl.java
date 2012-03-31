@@ -138,6 +138,6 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Override
     public EnergyData findByLastPost(Gateway gateway, MTU mtu, Integer timestamp) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return energyDataDAO.findByLastPost(gateway, mtu, timestamp);
     }
 }

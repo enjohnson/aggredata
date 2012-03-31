@@ -160,13 +160,18 @@ public class EnergyPostServlet extends HttpServlet {
 
                     if (lastCumulativeValue== null) {
                         lastCumulativeValue = gatewayService.findByLastPost(gateway, mtu, timestamp);
+                        if (logger.isDebugEnabled()) logger.debug("Last Post:" + lastCumulativeValue);
                     }
 
                     //Make sure that we are not dealing with the first entry for this gateway/mtu
                     if (lastCumulativeValue != null){
                         Double wattDifference = energy - lastCumulativeValue.getEnergy();
+
                         wattDifference = wattDifference / 1000; //Rate is on kWh
+
+                        logger.debug("kW:" + wattDifference);
                         minuteCost = (wattDifference * rate);
+
                     }
 
                     lastCumulativeValue = gatewayService.postEnergyData(gateway, mtu, timestamp, energy, rate, minuteCost);
