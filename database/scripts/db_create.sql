@@ -1,5 +1,4 @@
- drop schema aggredata;
- 
+  
  /*
  * Copyright (c) 2012. The Energy Detective. All Rights Reserved
  *
@@ -96,9 +95,8 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`energydata` (
   `rate` DECIMAL(10,5) NULL ,
   `energy` DECIMAL(25,4) NULL ,
   `minuteCost` DECIMAL(8,5) NULL ,
-  PRIMARY KEY (`gatewayId`, 'mtuId', 'timestamp') ,
-  INDEX `mtu_id` (`mtuId` ASC) ,
-  INDEX `timestamp` (`timestamp` ASC, `mtuId` ASC))
+  PRIMARY KEY (`gatewayId`, `mtuId`, `timestamp`) ,
+  INDEX `timestamp` (`timestamp` ASC, `gatewayId` ASC, `mtuID` ASC))
 ENGINE = InnoDB
 COMMENT = 'Table that stores all energy data posted from each gateway';
 

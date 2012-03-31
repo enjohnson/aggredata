@@ -118,6 +118,7 @@ public class ActivationServlet extends HttpServlet {
             responseXML.append("<PostURL>/aggredata/postData</PostURL>");
             responseXML.append("<AuthToken>").append(gateway.getSecurityKey()).append("</AuthToken>");
             responseXML.append("<PostRate>").append(serverInfo.getPostDelay()).append("</PostRate>");
+            responseXML.append("<HighPrec>").append((serverInfo.isHighPrecision()?"T":"F")).append("</HighPrec>");
             responseXML.append("</ted500ActivationResponse>\r\n");
 
             if (logger.isDebugEnabled()) logger.debug("Writing response xml:" + responseXML);
