@@ -56,6 +56,7 @@ public class GatewayServiceImpl implements GatewayService {
         gateway.setId(Long.parseLong(serialNumber, 16));
         gateway.setUserAccountId(userAccount.getId());
         gateway.setDescription(description);
+        gateway.setState(true);
         try{
             gateway = gatewayDAO.create(gateway);    
         } catch (Exception ex){
@@ -97,6 +98,7 @@ public class GatewayServiceImpl implements GatewayService {
         String key = KeyGenerator.generateSecurityKey(18);
         gateway.setState(true);
         gateway.setSecurityKey(key);
+        gatewayDAO.save(gateway);
         return gateway;
     }
 
@@ -113,5 +115,14 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public Gateway getById(Long id) {
         return gatewayDAO.findById(id);
+    }
+
+    @Override
+    public MTU getMTU(Gateway gateway, Long mtuId) {
+        MTU mtu = mtuDAO.findById(mtuId);
+        if (mtu==null) return null;
+        if (mtu.getGatewayId().equals(gateway.getId())) return mtu;
+        if (logger.isDebugEnabled()) logger.debug("MTU " + Long.toHexString(mtuId) + " does not belong to gateway " + gateway);
+        return null;
     }
 }

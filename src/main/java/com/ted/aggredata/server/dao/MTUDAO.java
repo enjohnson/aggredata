@@ -17,8 +17,11 @@
 
 package com.ted.aggredata.server.dao;
 
+import com.ted.aggredata.model.EnergyData;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.MTU;
+import org.apache.commons.lang.NotImplementedException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -31,11 +34,15 @@ import java.util.List;
  */
 public class MTUDAO extends AbstractDAO<MTU> {
 
-
-    public static String DELETE_MTU_QUERY = "delete from aggredata.mtu where id=?";
+    @Autowired
+    EnergyDataDAO energyDataDAO;
+    
+    
+    public static String DELETE_MTU_QUERY = "delete from aggredata.mtu where id=? and gatewayId=?";
     public static String CREATE_MTU_QUERY = "insert into aggredata.mtu (id, gatewayId,  type, description) values (?,?,?,?)";
-    public static String SAVE_MTU_QUERY = "update aggredata.mtu set gatewayId=?, type=?, description=? where id=?";
+    public static String SAVE_MTU_QUERY = "update aggredata.mtu set gatewayId=?, type=?, description=? where id=? and gatewayId=?";
     public static String GET_BY_GATEWAY_QUERY = "select id, gatewayId,  type, description from aggredata.mtu where gatewayId=?";
+    public static String FIND_BY_ID_QUERY = "select id, gatewayId,  type, description from aggredata.mtu where gatewayId=? and id=?";
 
     public MTUDAO() {
         super("aggredata.mtu");
@@ -52,22 +59,20 @@ public class MTUDAO extends AbstractDAO<MTU> {
         }
     };
 
-    public MTU create(Gateway gateway, MTU newMTU) {
-        MTU mtu = findById(newMTU.getId());
+    public MTU create(Gateway gateway, MTU newMTU){
+        MTU mtu = findById(gateway.getId(), newMTU.getId());
         if (mtu == null) {
             if (logger.isDebugEnabled()) logger.debug("creating new mtu " + newMTU);
             getJdbcTemplate().update(CREATE_MTU_QUERY, newMTU.getId(), gateway.getId(), newMTU.getType().ordinal(), newMTU.getDescription());
-            return findById(newMTU.getId());
+            return findById(gateway.getId(), newMTU.getId());
         }
-        if (logger.isDebugEnabled()) logger.debug("mtu " + newMTU + " already exists");
         return mtu;
-
     }
 
 
     public void save(MTU mtu) {
         if (logger.isDebugEnabled()) logger.debug("saving  mtu " + mtu);
-        getJdbcTemplate().update(SAVE_MTU_QUERY, mtu.getGatewayId(),  mtu.getType().ordinal(), mtu.getDescription(), mtu.getId());
+        getJdbcTemplate().update(SAVE_MTU_QUERY, mtu.getGatewayId(),  mtu.getType().ordinal(), mtu.getDescription(), mtu.getId(), mtu.getGatewayId());
     }
 
 
@@ -92,9 +97,26 @@ public class MTUDAO extends AbstractDAO<MTU> {
         return rowMapper;
     }
 
-    public void delete(MTU mtu) {
+    public void delete(Gateway gateway, MTU mtu) {
+        energyDataDAO.deleteEnergyData(gateway, mtu);
         if (logger.isDebugEnabled()) logger.debug("removing " + mtu + " from mtu table");
-        getJdbcTemplate().update(DELETE_MTU_QUERY, mtu.getId());
+        getJdbcTemplate().update(DELETE_MTU_QUERY, mtu.getId(), gateway.getId());
     }
 
+
+    @Override
+    public MTU findById(Long id) {
+        logger.error("MTU findById not implemented");
+        throw new NotImplementedException();
+    }
+
+
+    public MTU findById(Long gatewayId, Long mtuId){
+      try {
+            return getJdbcTemplate().queryForObject(FIND_BY_ID_QUERY, new Object[]{gatewayId, mtuId}, getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return null;
+        }
+    }
 }

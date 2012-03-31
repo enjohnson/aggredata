@@ -98,6 +98,15 @@ public interface GatewayService {
      * @return
      */
     Gateway getById(Long id);
+
+    /**
+     * Looks up the MTU for the specific gateway
+     * @param gateway
+     * @param mtuId
+     * @return
+     */
+    MTU getMTU(Gateway gateway, Long mtuId);
 }
+
 
 

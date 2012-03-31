@@ -18,6 +18,7 @@
 package com.ted.aggredata.server.dao;
 
 import com.ted.aggredata.model.EnergyData;
+import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.MTU;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -31,9 +32,10 @@ import java.util.List;
  */
 public class EnergyDataDAO extends AbstractDAO<EnergyData> {
 
-    public static String POST_ENERGY_DATA = "insert into aggredata.energydata (mtuId, timestamp, rate, energy) values (?,?,?,?)";
-    public static String DELETE_ENERGY_DATA = "delete from aggredata.energydata where mtuId=?";
-    public static String FIND_BY_MTU = "select id, mtuId, timestamp, rate, energy from aggredata.energydata where mtuId=? and timestamp>=? and timestamp < ?";
+    public static String DELETE_ENERGY_DATA = "delete from  aggredata.energydata where gatewayId= ? and mtuId=?";
+    public static String POST_ENERGY_DATA = "insert into aggredata.energydata (gatewayId, mtuId, timestamp, rate, energy, minuteCost) values (?,?,?,?,?,?)";
+    public static String FIND_BY_DATE_RANGE = "select id, gatewayId, mtuId, timestamp, rate, energy , minuteCost from aggredata.energydata where mtuId=? and gatewayId=? and timestamp>=? and timestamp < ?";
+    public static String FIND_LAST_BY_MTU = "select top 1 id, gatewayId, mtuId, timestamp, rate, energy, minuteCost from aggredata.energydata where gatewayId= ? and mtuId=? and timestamp < ?";
 
     public EnergyDataDAO() {
         super("aggredata.energyData");
@@ -43,10 +45,12 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
         public EnergyData mapRow(ResultSet rs, int rowNum) throws SQLException {
             EnergyData energyData = new EnergyData();
             energyData.setId(rs.getLong("id"));
+            energyData.setGatewayId(rs.getLong("gatewayId"));
             energyData.setMtuId(rs.getLong("mtuId"));
             energyData.setTimestamp(rs.getInt("timestamp"));
             energyData.setRate(rs.getDouble("rate"));
             energyData.setEnergy(rs.getDouble("energy"));
+            energyData.setMinuteCost(rs.getDouble("minuteCost"));
             return energyData;
         }
     };
@@ -54,22 +58,38 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
     /**
      * Returns a list of energy data based on the time range.
      *
+     * @param gateway
      * @param mtu
      * @param timestampStart
      * @param timestampEnd
      * @return
      */
-    public List<EnergyData> findByMTU(MTU mtu, long timestampStart, long timestampEnd) {
+    public List<EnergyData> findByDateRange(Gateway gateway, MTU mtu, long timestampStart, long timestampEnd) {
         try {
-            return getJdbcTemplate().query(FIND_BY_MTU, new Object[]{mtu.getId(), timestampStart, timestampEnd}, getRowMapper());
+            return getJdbcTemplate().query(FIND_BY_DATE_RANGE, new Object[]{gateway.getId(), mtu.getId(), timestampStart, timestampEnd}, getRowMapper());
         } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");
             return null;
         }
     }
 
+    /**
+     * Returns the most recent energy data for the specified mtu
+     *
+     * @param mtu
+     * @param timestamp
+     * @return
+     */
+    public EnergyData findByLastPost(Gateway gateway, MTU mtu, long timestamp) {
+        try {
+            return getJdbcTemplate().queryForObject(FIND_LAST_BY_MTU, new Object[]{gateway.getId(), mtu.getId(), timestamp}, getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return null;
+        }
+    }
     public void create(EnergyData energyData) {
-        getJdbcTemplate().update(POST_ENERGY_DATA, energyData.getMtuId(), energyData.getTimestamp(), energyData.getRate(), energyData.getEnergy());
+        getJdbcTemplate().update(POST_ENERGY_DATA, energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp(), energyData.getRate(), energyData.getEnergy(), energyData.getMinuteCost());
     }
 
 
@@ -81,10 +101,11 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
     /**
      * Removes data for the given MTU
      *
+     * @param gateway
      * @param mtu
      */
-    public void removeEnergyData(MTU mtu) {
-        getJdbcTemplate().update(DELETE_ENERGY_DATA, mtu.getId());
+    public void deleteEnergyData(Gateway gateway, MTU mtu) {
+        getJdbcTemplate().update(DELETE_ENERGY_DATA, gateway.getId(), mtu.getId());
     }
 
 

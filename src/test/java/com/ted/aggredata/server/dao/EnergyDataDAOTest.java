@@ -78,6 +78,7 @@ public class EnergyDataDAOTest {
         for (int i=0; i < 10; i++)
         {
             EnergyData energyData = new EnergyData();
+            energyData.setGatewayId(gateway.getId());
             energyData.setMtuId(mtu.getId());
             energyData.setEnergy(10000d);
             energyData.setRate(1.0000d);
@@ -86,7 +87,7 @@ public class EnergyDataDAOTest {
         }
 
 
-        List<EnergyData> energyDataList = energyDataDAO.findByMTU(mtu, 10001, 10005);
+        List<EnergyData> energyDataList = energyDataDAO.findByDateRange(gateway, mtu, 10001, 10005);
         Assert.assertEquals(energyDataList.size(), 4);
         
         for (int i=0; i < 4; i++)
@@ -95,12 +96,12 @@ public class EnergyDataDAOTest {
             
         }
 
-        energyDataDAO.removeEnergyData(mtu);
-        energyDataList = energyDataDAO.findByMTU(mtu, 10001, 10005);
+        energyDataDAO.deleteEnergyData(gateway, mtu);
+        energyDataList = energyDataDAO.findByDateRange(gateway, mtu, 10001, 10005);
 
         Assert.assertEquals(0, energyDataList.size());
 
-        mtuDAO.delete(mtu);
+        mtuDAO.delete(gateway, mtu);
         gatewayDAO.delete(gateway);
         userDAO.delete(user);
         

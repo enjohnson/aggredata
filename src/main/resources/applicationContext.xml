@@ -40,6 +40,9 @@
     <bean id="serverInfo" class="com.ted.aggredata.model.ServerInfo">
         <property name="serverName" value="${server.name?aggredata.theenergydetective.com}"/>
         <property name="serverPort" value="${server.port?80}"/>
+        <property name="useHttps" value="${server.useHttps?false}"/>
+        <property name="postDelay" value="${server.postDelay?1}"/>
+        <property name="highPrecision" value="${server.useHighPrecision?true}"/>
     </bean>
 
 
