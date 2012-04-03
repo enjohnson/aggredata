@@ -136,4 +136,14 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
         getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
         return user;
     }
+
+    @Override
+    public User changePassword(User user, String Password)
+    {
+        logger.info("Updating Password");
+        getThreadLocalRequest().getSession().removeAttribute(USER_SESSION_KEY);
+        userService.changePassword(user, Password);
+        getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
+        return user;
+    }
 }

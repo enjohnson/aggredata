@@ -36,4 +36,6 @@ public interface UserSessionServiceAsync {
     void getUserFromSession(AsyncCallback<GlobalPlaceholder> async);
     
     void saveUser(User user, AsyncCallback<User> async);
+
+    void changePassword(User user, String Password, AsyncCallback<User> async);
 }
