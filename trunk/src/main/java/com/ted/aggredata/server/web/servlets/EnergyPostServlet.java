@@ -36,7 +36,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 
 /****
@@ -46,6 +45,7 @@ import java.util.List;
 public class EnergyPostServlet extends HttpServlet {
     
     static Logger logger = LoggerFactory.getLogger(EnergyPostServlet.class);
+    static DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     
     @Autowired
     UserService userService;
@@ -70,14 +70,13 @@ public class EnergyPostServlet extends HttpServlet {
 
 
 
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.debug("EnergyPost POST received");
-
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(request.getInputStream());
+            logger.debug("EnergyPost POST received");
 
+            DocumentBuilder db = documentBuilderFactory.newDocumentBuilder();
+            Document doc = db.parse(request.getInputStream());
 
             //Validate security token
             NamedNodeMap ted5000Attributes = doc.getElementsByTagName("ted5000").item(0).getAttributes();
@@ -180,11 +179,6 @@ public class EnergyPostServlet extends HttpServlet {
 
 
             }
-
-
-
-
-
 
 
 
