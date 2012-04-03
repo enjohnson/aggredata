@@ -48,4 +48,6 @@ public interface UserSessionService extends RemoteService {
     public GlobalPlaceholder getUserFromSession();
 
     public User saveUser(User user);
+    
+    public User changePassword(User user, String Password);
 }

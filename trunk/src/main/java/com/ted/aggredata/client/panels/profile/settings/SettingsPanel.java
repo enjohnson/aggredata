@@ -29,8 +29,11 @@ import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.guiService.UserSessionService;
 import com.ted.aggredata.client.guiService.UserSessionServiceAsync;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.client.widgets.HugeButton;
 import com.ted.aggredata.client.widgets.LargeButton;
 import com.ted.aggredata.model.User;
+//import sun.font.TrueTypeFont;
+
 import java.util.logging.Logger;
 
 public class SettingsPanel extends Composite {
@@ -39,53 +42,33 @@ public class SettingsPanel extends Composite {
     private User user = Aggredata.GLOBAL.getSessionUser();
     interface MyUiBinder extends UiBinder<Widget, SettingsPanel> {
     }
+    private String uname = "";
+    private String password = "";
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
     final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
     @UiField Label titleLabel;
     @UiField Label instructionLabel;
-    @UiField Label lastNameLabel;
     @UiField TextBox lastNameField;
     @UiField Label lastNameFieldError;
-    @UiField Label firstNameLabel;
-    @UiField TextBox firstNameField;
     @UiField Label firstNameFieldError;
-    @UiField Label companyNameLabel;
+    @UiField TextBox firstNameField;
     @UiField TextBox companyNameField;
-    @UiField Label companyNameFieldError;
-    @UiField Label middleNameLabel;
     @UiField TextBox middleNameField;
-    @UiField Label middleNameFieldError;
-    @UiField Label addressLabel;
     @UiField TextBox addressField;
-    @UiField Label addressFieldError;
-    @UiField Label cityLabel;
     @UiField TextBox cityField;
-    @UiField Label cityFieldError;
-    @UiField Label stateLabel;
     @UiField TextBox stateField;
-    @UiField Label stateFieldError;
-    @UiField Label zipLabel;
     @UiField TextBox zipField;
-    @UiField Label zipFieldError;
-    @UiField Label phoneNumberLabel;
     @UiField TextBox phoneNumberField;
-    @UiField Label phoneNumberFieldError;
-    @UiField Label custom1Label;
     @UiField TextBox custom1Field;
-    @UiField Label custom1FieldError;
-    @UiField Label custom2Label;
     @UiField TextBox custom2Field;
-    @UiField Label custom2FieldError;
-    @UiField Label custom3Label;
     @UiField TextBox custom3Field;
-    @UiField Label custom3FieldError;
-    @UiField Label custom4Label;
     @UiField TextBox custom4Field;
-    @UiField Label custom4FieldError;
-    @UiField Label custom5Label;
     @UiField TextBox custom5Field;
-    @UiField Label custom5FieldError;
+    @UiField
+    HugeButton changeUname;
+    @UiField
+    HugeButton changePassword;
     @UiField
     LargeButton saveButton;
     @UiField
@@ -100,20 +83,6 @@ public class SettingsPanel extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
         titleLabel.setText(dashboardConstants.settingsTitle());
         instructionLabel.setText(dashboardConstants.settingsInstructions());
-        lastNameLabel.setText(dashboardConstants.profileSettingsLastName());
-        firstNameLabel.setText(dashboardConstants.profileSettingsFirstName());
-        companyNameLabel.setText(dashboardConstants.profileSettingsCompanyName());
-        middleNameLabel.setText(dashboardConstants.profileSettingsMiddleName());
-        addressLabel.setText(dashboardConstants.profileSettingsAddress());
-        cityLabel.setText(dashboardConstants.profileSettingsCity());
-        stateLabel.setText(dashboardConstants.profileSettingState());
-        zipLabel.setText(dashboardConstants.profileSettingsZip());
-        phoneNumberLabel.setText(dashboardConstants.profileSettingsPhoneNumber());
-        custom1Label.setText(dashboardConstants.profileSettingsCustom1());
-        custom2Label.setText(dashboardConstants.profileSettingsCustom2());
-        custom3Label.setText(dashboardConstants.profileSettingsCustom3());
-        custom4Label.setText(dashboardConstants.profileSettingsCustom4());
-        custom5Label.setText(dashboardConstants.profileSettingsCustom5());
 
         //set text to current text fields and set max length to the current database field lengths
         firstNameField.setMaxLength(50);
@@ -161,7 +130,22 @@ public class SettingsPanel extends Composite {
              }
         });
 
-        
+        changePassword.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                changePword();
+                //Window.alert("Reset clicked!");
+            }
+        });
+
+        changeUname.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                changeUname();
+                //Window.alert("Reset clicked!");
+            }
+        });
+
         resetButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
@@ -172,6 +156,38 @@ public class SettingsPanel extends Composite {
         
         mainPanel.setCellHorizontalAlignment(buttonPanel, HasHorizontalAlignment.ALIGN_CENTER);
 
+    }
+
+    private void changeUname()
+    {
+        boolean confirm;
+        uname = Window.prompt("Please enter in a new username", "");
+        confirm = Window.confirm("Are you sure?");
+        if (confirm) 
+        {
+            user.setUsername(uname);
+            commitUserData();
+        }
+    }
+
+    private void changePword()
+    {
+        boolean confirm;
+        password = Window.prompt("Please enter in a new password", "");
+        confirm = Window.confirm("Are you sure?");
+        if (confirm)
+        {
+            userSessionService.changePassword(user, password, new TEDAsyncCallback<User>() {
+                @Override
+                public void onSuccess(User result) {
+                    user = result;
+                    if (result != null)
+                    {
+                        Window.alert("User account updated.");
+                    }
+                }
+            });
+        }
     }
 
     private void resetUserFormData()
@@ -211,14 +227,14 @@ public class SettingsPanel extends Composite {
         user.setMiddleName(middleNameField.getText().trim());
 
         userSessionService.saveUser(user, new TEDAsyncCallback<User>() {
-            @Override
-            public void onSuccess(User result) {
-                user = result;
-                if (result != null)
-                {
-                    Window.alert("User account updated.");
-                }
+        @Override
+        public void onSuccess(User result) {
+            user = result;
+            if (result != null)
+            {
+                Window.alert("User account updated.");
             }
+        }
             });
         }
 
@@ -226,40 +242,28 @@ public class SettingsPanel extends Composite {
          * Performs the field validation. Returns false if any of the fields fail validation
          * @return
          */
-        private boolean doValidation()
+    private boolean doValidation()
+    {
+        boolean isValid = true;
+
+        firstNameFieldError.setText("");
+        lastNameFieldError.setText("");
+
+        if (firstNameField.getText().trim().length()==0)
         {
-            boolean isValid = true;
-
-            firstNameFieldError.setText("");
-            lastNameFieldError.setText("");
-            companyNameFieldError.setText("");
-            middleNameFieldError.setText("");
-            addressFieldError.setText("");
-            cityFieldError.setText("");
-            zipFieldError.setText("");
-            stateFieldError.setText("");
-            custom1FieldError.setText("");
-            phoneNumberFieldError.setText("");
-            custom2FieldError.setText("");
-            custom3FieldError.setText("");
-            custom4FieldError.setText("");
-            custom5FieldError.setText("");
-
-            if (firstNameField.getText().trim().length()==0)
-            {
-                isValid = false;
-                firstNameFieldError.setText("Required");
-            }
-
-            if (lastNameField.getText().trim().length()==0)
-            {
-                isValid = false;
-                lastNameFieldError.setText("Required");
-            }
-
-            return isValid;
-
+            isValid = false;
+            firstNameFieldError.setText("Required");
         }
+
+        if (lastNameField.getText().trim().length()==0)
+        {
+            isValid = false;
+            lastNameFieldError.setText("Required");
+        }
+
+        return isValid;
+
+    }
     }
 
 
