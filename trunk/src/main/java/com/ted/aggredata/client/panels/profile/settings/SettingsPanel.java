@@ -124,6 +124,7 @@ public class SettingsPanel extends Composite {
                 isValid = doValidation();
                 if (isValid)
                 {
+                    saveUserData();
                     commitUserData();
                 }
                 //Window.alert("Save clicked!");
@@ -208,9 +209,7 @@ public class SettingsPanel extends Composite {
         companyNameField.setText(user.getCompanyName());
     }
 
-    private void commitUserData()
-    {
-
+    private void saveUserData(){
         user.setAddress(addressField.getText().trim());
         user.setAddrState(stateField.getText().trim());
         user.setCity(cityField.getText().trim());
@@ -225,7 +224,10 @@ public class SettingsPanel extends Composite {
         user.setCustom5(custom5Field.getText().trim());
         user.setPhoneNumber(phoneNumberField.getText().trim());
         user.setMiddleName(middleNameField.getText().trim());
+    }
 
+    private void commitUserData()
+    {
         userSessionService.saveUser(user, new TEDAsyncCallback<User>() {
         @Override
         public void onSuccess(User result) {
