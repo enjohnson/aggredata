@@ -24,21 +24,28 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.google.gwt.user.client.ui.FlexTable;
 
 import java.util.logging.Logger;
 
 public class UserPanel extends Composite {
-
+    @UiField FlexTable table;
     static Logger logger = Logger.getLogger(UserPanel.class.toString());
-
     interface MyUiBinder extends UiBinder<Widget, UserPanel> {
     }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
     public UserPanel()
     {
+        setupTable();
         initWidget(uiBinder.createAndBindUi(this));
-
     }
 
+    private void setupTable()
+    {
+        table = new FlexTable();
+        table.setText(0, 0, "Header 1");
+        table.setText(0, 1, "Header 2");
+        table.insertRow(1);
+    }
 }
