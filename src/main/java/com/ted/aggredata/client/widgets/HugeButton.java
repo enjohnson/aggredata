@@ -27,15 +27,15 @@ import com.ted.aggredata.client.resources.DashboardImageResource;
  */
 public class HugeButton extends Composite {
 
-    final ClearImage clearImage = new ClearImage("150px", "45px");
+    final ClearImage clearImage = new ClearImage("200px", "45px");
 
     public @UiConstructor HugeButton(String buttonString)
     {
         AbsolutePanel mainPanel = new AbsolutePanel();
-        mainPanel.setSize("150px", "45px");
+        mainPanel.setSize("200px", "45px");
 
-        Image buttonImage = new Image(DashboardImageResource.INSTANCE.largeButton());
-        TEDLabel label = new TEDLabel(buttonString, "150px", "largeButtonTextStyle", HasHorizontalAlignment.ALIGN_CENTER);
+        Image buttonImage = new Image(DashboardImageResource.INSTANCE.hugeButton());
+        TEDLabel label = new TEDLabel(buttonString, "200px", "largeButtonTextStyle", HasHorizontalAlignment.ALIGN_CENTER);
         label.setHeight("45px");
         mainPanel.add(buttonImage, 0, 0);
         mainPanel.add(label, 0,8);
