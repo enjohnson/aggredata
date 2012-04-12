@@ -54,3 +54,16 @@ body {
     cursor: hand;
 
 }
+
+
+.smallButtonTextStyle {
+    font-family: Arial, Verdana, Trebuchet, sans-serif;
+    color: #FFF;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 8pt;
+    vertical-align: middle;
+    cursor: pointer;
+    cursor: hand;
+
+}

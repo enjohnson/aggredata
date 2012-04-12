@@ -19,27 +19,31 @@ package com.ted.aggredata.client.widgets;
 
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiConstructor;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Image;
 import com.ted.aggredata.client.resources.DashboardImageResource;
 
 /**
  * Generic widget wrapper for a large graphical button
  */
-public class HugeButton extends Composite {
+public class SmallButton extends Composite {
 
-    final ClearImage clearImage = new ClearImage("200px", "45px");
-    final Image buttonImage = new Image(DashboardImageResource.INSTANCE.hugeButton());
+    final ClearImage clearImage = new ClearImage("65px", "20px");
+    final Image buttonImage = new Image(DashboardImageResource.INSTANCE.smallButton());
 
-    public @UiConstructor HugeButton(String buttonString)
+    public @UiConstructor
+    SmallButton(String buttonString)
     {
         AbsolutePanel mainPanel = new AbsolutePanel();
-        mainPanel.setSize("200px", "45px");
+        mainPanel.setSize("65px", "20px");
 
 
-        TEDLabel label = new TEDLabel(buttonString, "200px", "largeButtonTextStyle", HasHorizontalAlignment.ALIGN_CENTER);
-        label.setHeight("45px");
+        TEDLabel label = new TEDLabel(buttonString, "65px", "smallButtonTextStyle", HasHorizontalAlignment.ALIGN_CENTER);
+        label.setHeight("20px");
         mainPanel.add(buttonImage, 0, 0);
-        mainPanel.add(label, 0,8);
+        mainPanel.add(label, 0,4);
         mainPanel.add(clearImage, 0,0);
         initWidget(mainPanel);
     }
@@ -50,7 +54,7 @@ public class HugeButton extends Composite {
 
     public void setVisible(boolean visible)
     {
-        buttonImage.setVisible(visible);
-        clearImage.setVisible(visible);
+         buttonImage.setVisible(visible);
+         clearImage.setVisible(visible);
     }
 }

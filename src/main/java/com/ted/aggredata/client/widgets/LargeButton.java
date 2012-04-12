@@ -28,13 +28,13 @@ import com.ted.aggredata.client.resources.DashboardImageResource;
 public class LargeButton extends Composite {
 
     final ClearImage clearImage = new ClearImage("113px", "35px");
-
+    final Image buttonImage = new Image(DashboardImageResource.INSTANCE.largeButton());
     public @UiConstructor LargeButton(String buttonString)
     {
         AbsolutePanel mainPanel = new AbsolutePanel();
         mainPanel.setSize("113px", "35px");
 
-        Image buttonImage = new Image(DashboardImageResource.INSTANCE.largeButton());
+
         TEDLabel label = new TEDLabel(buttonString, "113px", "largeButtonTextStyle", HasHorizontalAlignment.ALIGN_CENTER);
         label.setHeight("35px");
         mainPanel.add(buttonImage, 0, 0);
@@ -45,5 +45,11 @@ public class LargeButton extends Composite {
     
     public void addClickHandler(ClickHandler clickHandler){
         clearImage.addClickHandler(clickHandler);
+    }
+
+    public void setVisible(boolean visible)
+    {
+        buttonImage.setVisible(visible);
+        clearImage.setVisible(visible);
     }
 }

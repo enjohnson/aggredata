@@ -114,4 +114,15 @@ public interface DashboardConstants extends Constants {
 
     String activationInstructions4();
 
+    String groupSettingsDescription();
+
+    String groupSettingsCustom1();
+
+    String groupSettingsCustom2();
+
+    String groupSettingsCustom3();
+
+    String groupSettingsCustom4();
+
+    String groupSettingsCustom5();
 }
