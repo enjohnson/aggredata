@@ -20,31 +20,43 @@ package com.ted.aggredata.client.panels.profile.groups;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
-import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.google.gwt.user.client.ui.*;
+import com.ted.aggredata.client.widgets.SmallButton;
 
 import java.util.logging.Logger;
 
-public class GroupsPanel extends Composite {
+public class GroupGatewaysPanel extends Composite {
 
-    static Logger logger = Logger.getLogger(GroupsPanel.class.toString());
+    static Logger logger = Logger.getLogger(GroupGatewaysPanel.class.toString());
 
-    interface MyUiBinder extends UiBinder<Widget, GroupsPanel> {
+    interface MyUiBinder extends UiBinder<Widget, GroupGatewaysPanel> {
     }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+
     @UiField
-    GroupDetailsPanel groupDetailsPanel;
+    ListBox gatewayListBox;
     @UiField
-    GroupSelectionPanel groupSelectionPanel;
+    SmallButton addButton;
+    @UiField
+    SmallButton deleteButton;
 
 
-    public GroupsPanel()
+    public GroupGatewaysPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
-        groupDetailsPanel.setEnabled(false);
 
+    }
+
+    /**
+     * Sets all the fields of this panel to be enabled or disabled
+     * @param enabled
+     */
+    public void setEnabled(boolean enabled)
+    {
+
+        gatewayListBox.setEnabled(enabled);
+        addButton.setVisible(!enabled);
+        deleteButton.setVisible(!enabled);
     }
 
 }

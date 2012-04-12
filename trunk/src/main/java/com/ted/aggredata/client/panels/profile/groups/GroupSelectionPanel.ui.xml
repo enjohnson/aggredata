@@ -22,19 +22,15 @@
 
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
-    <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
-        <my:widgets.ClearImage width="800" height="1px"/>
-        <g:Label styleName='{style.panelTitleText}' text='{txtRes.groupsTitle}'/>
-        <my:widgets.ClearImage width="800" height="3px"/>
-        <g:Label styleName='{style.panelInstructionText}' text='{txtRes.groupsInstructions}'/>
-        <my:widgets.ClearImage width="800" height="5px"/>
+    <g:CaptionPanel captionText="Your Groups" width="220px">
+    <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
+        <g:ListBox width="200px"  ui:field="groupListBox" visibleItemCount="25" styleName="{style.panelInstructionText}"/>
+        <my:widgets.ClearImage width="220px" height="5px"/>
         <g:HorizontalPanel>
-            <my:widgets.ClearImage width="20px" height="200px"/>
-            <my:panels.profile.groups.GroupSelectionPanel ui:field="groupSelectionPanel"/>
-            <my:widgets.ClearImage width="25px" height="200px"/>
-            <my:panels.profile.groups.GroupDetailsPanel ui:field="groupDetailsPanel"/>
-            <my:widgets.ClearImage width="100px" height="200px"/>
+            <my:widgets.SmallButton ui:field="addButton" buttonString="Add"/>
+            <my:widgets.SmallButton ui:field="deleteButton" buttonString="Delete"/>
         </g:HorizontalPanel>
     </g:VerticalPanel>
+    </g:CaptionPanel>
 
 </ui:UiBinder>

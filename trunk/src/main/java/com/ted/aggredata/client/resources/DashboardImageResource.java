@@ -61,6 +61,10 @@ public interface DashboardImageResource extends ClientBundle {
     @Source("images/hugeButton.png")
     ImageResource hugeButton();
 
+    @Source("images/smallButton.png")
+    ImageResource smallButton();
+
+
     @Source("images/gatewayactsample.jpg")
     ImageResource gatewayActivationSample();
 
