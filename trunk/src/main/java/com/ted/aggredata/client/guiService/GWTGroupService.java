@@ -32,19 +32,16 @@ public interface GWTGroupService extends RemoteService {
 
     /**
      * Finds groups for the specific user
-     * @param user
      * @return
      */
-    public List<Group> findGroups(User user);
-
+    public List<Group> findGroups();
 
     /**
      * Creates a new group
      *
-     * @param user        The user creating the group. This user will be added as a OWNER of the group.
      * @param description
      */
-    public Group createGroup(User user, String description);
+    public Group createGroup(String description);
 
     /**
      * Saves a group
@@ -52,6 +49,11 @@ public interface GWTGroupService extends RemoteService {
      * @param group
      */
     public Group saveGroup(Group group);
+
+    /**
+     * Delete Group
+     */
+    public void deleteGroup(Group group);
 
 
 }

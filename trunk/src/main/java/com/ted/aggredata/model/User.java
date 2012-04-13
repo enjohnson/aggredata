@@ -228,22 +228,7 @@ public class User extends AggredataModel implements Serializable {
         return b.toString();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        User user = (User) o;
-
-        if (defaultGroupId != user.defaultGroupId) return false;
-        if (state != user.state) return false;
-        if (activationKey != null ? !activationKey.equals(user.activationKey) : user.activationKey != null)
-            return false;
-        if (role != user.role) return false;
-        if (username != null ? !username.equals(user.username) : user.username != null) return false;
-
-        return true;
-    }
 
     @Override
     public int hashCode() {

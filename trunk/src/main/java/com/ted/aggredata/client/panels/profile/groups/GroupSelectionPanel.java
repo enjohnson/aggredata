@@ -22,19 +22,25 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.ted.aggredata.client.Aggredata;
+import com.ted.aggredata.client.dialogs.OKPopup;
+import com.ted.aggredata.client.dialogs.YesNoPopup;
 import com.ted.aggredata.client.events.GroupSelectedEvent;
 import com.ted.aggredata.client.events.GroupSelectedHandler;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
+import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.SmallButton;
 import com.ted.aggredata.model.Group;
 
@@ -65,6 +71,7 @@ public class GroupSelectionPanel extends Composite {
     final GWTGroupServiceAsync groupService = (GWTGroupServiceAsync) GWT.create(GWTGroupService.class);
 
     List<Group> groupList = new ArrayList<Group>();
+    Group selectedGroup;
 
     public GroupSelectionPanel()
     {
@@ -86,7 +93,7 @@ public class GroupSelectionPanel extends Composite {
                 logger.info("Adding new group");
                 final int index = groupListBox.getItemCount();
 
-                groupService.createGroup(Aggredata.GLOBAL.getSessionUser(), "New Group " + index, new TEDAsyncCallback<Group>() {
+                groupService.createGroup( "New Group " + index, new TEDAsyncCallback<Group>() {
                     @Override
                     public void onSuccess(Group group) {
 
@@ -94,6 +101,52 @@ public class GroupSelectionPanel extends Composite {
                         groupList.add(group);
                         groupListBox.setSelectedIndex(index);
                         fireSelectedGroup();
+                    }
+                });
+            }
+        });
+
+        deleteButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                if (groupListBox.getSelectedIndex() == -1) return;
+
+                final DashboardConstants dc = DashboardConstants.INSTANCE;
+                deleteButton.setEnabled(false);
+
+                if (groupListBox.getItemCount() == 1) {
+                    OKPopup okPopup = new OKPopup( dc.deleteGroupCantDeleteTitle(), dc.deleteGroupCantDeleteText());
+                    okPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
+                        @Override
+                        public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                            deleteButton.setEnabled(true);
+                        }
+                    });
+                    return;
+                }
+
+
+                StringBuilder delMessage = new StringBuilder();
+                delMessage.append(dc.deleteGroupMessage()).append(" \"").append(selectedGroup.getDescription()).append("\"?");
+                final YesNoPopup popup = new YesNoPopup(dc.deleteGroupTitle(), delMessage.toString());
+                popup.addCloseHandler(new CloseHandler<PopupPanel>() {
+                    @Override
+                    public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                        deleteButton.setEnabled(true);
+                        if (popup.getValue() == YesNoPopup.YES) {
+                            logger.info("deleting group " + selectedGroup);
+                            groupService.deleteGroup(selectedGroup, new TEDAsyncCallback<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    groupList.remove(selectedGroup);
+                                    if (groupList.size() == 0) groupListBox.setSelectedIndex(-1);
+                                    else groupListBox.setSelectedIndex(0);
+                                    redrawGroupList();
+                                    fireSelectedGroup();
+                                }
+                            });
+                        }
+
                     }
                 });
             }
@@ -140,10 +193,10 @@ public class GroupSelectionPanel extends Composite {
         if (logger.isLoggable(Level.FINE)) logger.fine("Row " + index + " selected");
         Long groupId = new Long(groupListBox.getValue(index));
 
-        Group selectedGroup = null;
+
         for (Group group: groupList) {
             if (group.getId().equals(groupId)){
-                selectedGroup = group;
+                this.selectedGroup = group;
                 break;
             }
         }

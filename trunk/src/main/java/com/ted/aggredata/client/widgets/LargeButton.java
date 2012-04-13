@@ -25,31 +25,10 @@ import com.ted.aggredata.client.resources.DashboardImageResource;
 /**
  * Generic widget wrapper for a large graphical button
  */
-public class LargeButton extends Composite {
+public class LargeButton extends TEDButton {
 
-    final ClearImage clearImage = new ClearImage("113px", "35px");
-    final Image buttonImage = new Image(DashboardImageResource.INSTANCE.largeButton());
     public @UiConstructor LargeButton(String buttonString)
     {
-        AbsolutePanel mainPanel = new AbsolutePanel();
-        mainPanel.setSize("113px", "35px");
-
-
-        TEDLabel label = new TEDLabel(buttonString, "113px", "largeButtonTextStyle", HasHorizontalAlignment.ALIGN_CENTER);
-        label.setHeight("35px");
-        mainPanel.add(buttonImage, 0, 0);
-        mainPanel.add(label, 0,8);
-        mainPanel.add(clearImage, 0,0);
-        initWidget(mainPanel);
-    }
-    
-    public void addClickHandler(ClickHandler clickHandler){
-        clearImage.addClickHandler(clickHandler);
-    }
-
-    public void setVisible(boolean visible)
-    {
-        buttonImage.setVisible(visible);
-        clearImage.setVisible(visible);
+        super(DashboardImageResource.INSTANCE.largeButton(), buttonString, "113px", "35px", "largeButtonTextStyle" , 8 );
     }
 }

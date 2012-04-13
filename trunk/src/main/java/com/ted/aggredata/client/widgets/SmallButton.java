@@ -26,35 +26,13 @@ import com.google.gwt.user.client.ui.Image;
 import com.ted.aggredata.client.resources.DashboardImageResource;
 
 /**
- * Generic widget wrapper for a large graphical button
+ * Generic widget wrapper for a small graphical button
  */
-public class SmallButton extends Composite {
-
-    final ClearImage clearImage = new ClearImage("65px", "20px");
-    final Image buttonImage = new Image(DashboardImageResource.INSTANCE.smallButton());
+public class SmallButton extends TEDButton {
 
     public @UiConstructor
     SmallButton(String buttonString)
     {
-        AbsolutePanel mainPanel = new AbsolutePanel();
-        mainPanel.setSize("65px", "20px");
-
-
-        TEDLabel label = new TEDLabel(buttonString, "65px", "smallButtonTextStyle", HasHorizontalAlignment.ALIGN_CENTER);
-        label.setHeight("20px");
-        mainPanel.add(buttonImage, 0, 0);
-        mainPanel.add(label, 0,4);
-        mainPanel.add(clearImage, 0,0);
-        initWidget(mainPanel);
-    }
-
-    public void addClickHandler(ClickHandler clickHandler){
-        clearImage.addClickHandler(clickHandler);
-    }
-
-    public void setVisible(boolean visible)
-    {
-         buttonImage.setVisible(visible);
-         clearImage.setVisible(visible);
+        super(DashboardImageResource.INSTANCE.smallButton(), buttonString, "65px", "20px", "smallButtonTextStyle", 4 );
     }
 }
