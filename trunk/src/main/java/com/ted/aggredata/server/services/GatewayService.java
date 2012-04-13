@@ -78,7 +78,7 @@ public interface GatewayService {
      * @param user
      * @return
      */
-    List<Gateway> getByUser(User user);
+    List<Gateway> findByUser(User user);
 
 
     /***
@@ -86,7 +86,7 @@ public interface GatewayService {
      * @param group
      * @return
      */
-    List<Gateway>getByGroup(Group group);
+    List<Gateway> findByGroup(Group group);
 
 
     /***

@@ -22,15 +22,10 @@
 
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
-    <g:CaptionPanel captionText="Gateways" width="220px">
-        <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
-            <g:ListBox width="200px"  ui:field="gatewayListBox" visibleItemCount="10" styleName="{style.panelInstructionText}"/>
-            <my:widgets.ClearImage width="220px" height="5px"/>
-            <g:HorizontalPanel>
-                <my:widgets.SmallButton ui:field="addButton" buttonString="Add"/>
-                <my:widgets.SmallButton ui:field="deleteButton" buttonString="Delete"/>
-            </g:HorizontalPanel>
-        </g:VerticalPanel>
+    <g:CaptionPanel captionText="Gateways" width="320px">
+        <g:ScrollPanel width="320px" height="200px">
+            <g:VerticalPanel ui:field="gatewayListPanel" horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP"/>
+        </g:ScrollPanel>
     </g:CaptionPanel>
 
 </ui:UiBinder>

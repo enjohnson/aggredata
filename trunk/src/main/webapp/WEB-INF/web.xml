@@ -82,6 +82,12 @@
         <servlet-class>com.ted.aggredata.server.guiServiceImpl.GWTGroupServiceImpl</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>GWTGatewayService</servlet-name>
+        <servlet-class>com.ted.aggredata.server.guiServiceImpl.GWTGatewayServiceImpl</servlet-class>
+    </servlet>
+
+
 
     <servlet>
         <servlet-name>EnergyPostServlet</servlet-name>
@@ -107,6 +113,11 @@
     <servlet-mapping>
         <servlet-name>GWTGroupService</servlet-name>
         <url-pattern>/Aggredata/GWTGroupService</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>GWTGatewayService</servlet-name>
+        <url-pattern>/Aggredata/GWTGatewayService</url-pattern>
     </servlet-mapping>
 
 

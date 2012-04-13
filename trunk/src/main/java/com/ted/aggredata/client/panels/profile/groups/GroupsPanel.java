@@ -26,10 +26,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.ted.aggredata.client.Aggredata;
 import com.ted.aggredata.client.events.GroupSelectedEvent;
 import com.ted.aggredata.client.events.GroupSelectedHandler;
-import com.ted.aggredata.client.guiService.GWTGroupService;
-import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
-import com.ted.aggredata.client.guiService.TEDAsyncCallback;
+import com.ted.aggredata.client.guiService.*;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 
 import java.util.List;
@@ -50,8 +49,11 @@ public class GroupsPanel extends Composite {
 
 
     final GWTGroupServiceAsync groupService = (GWTGroupServiceAsync) GWT.create(GWTGroupService.class);
+    final GWTGatewayServiceAsync gatewayService = (GWTGatewayServiceAsync) GWT.create(GWTGatewayService.class);
 
     List<Group> groupList;
+    List<Gateway> gatewayList;
+
 
 
     public GroupsPanel()
@@ -63,22 +65,35 @@ public class GroupsPanel extends Composite {
             @Override
             public void onGroupSelected(GroupSelectedEvent event) {
                 logger.fine("Group Selected: " + event.getGroup());
-                groupDetailsPanel.setGroup(event.getGroup());
+                final Group selectedGroup = event.getGroup();
+                gatewayService.findGateways(event.getGroup(), new TEDAsyncCallback<List<Gateway>>() {
+                    @Override
+                    public void onSuccess(List<Gateway> gateways) {
+                        groupDetailsPanel.setGroup(selectedGroup, gateways);
+                    }
+                });
+
             }
         });
 
-
-        //Load the groups for the user and populate the listbox
-        groupService.findGroups( new TEDAsyncCallback<List<Group>>() {
+        logger.fine("Looking up gateways");
+        gatewayService.findGateways(new TEDAsyncCallback<List<Gateway>>() {
             @Override
-            public void onSuccess(List<Group> groups) {
-                if (logger.isLoggable(Level.INFO)) logger.info("Found " + groups.size() + groups);
-                groupList = groups;
-                groupSelectionPanel.setGroupList(groupList);
-                groupDetailsPanel.setGroupList(groupList);
+            public void onSuccess(List<Gateway> gateways) {
+                gatewayList = gateways;
+                //Load the groups for the user and populate the listbox
+                logger.fine("Looking up groups");
+                groupService.findGroups( new TEDAsyncCallback<List<Group>>() {
+                    @Override
+                    public void onSuccess(List<Group> groups) {
+                        if (logger.isLoggable(Level.INFO)) logger.info("Found " + groups.size() + groups);
+                        groupList = groups;
+                        groupSelectionPanel.setGroupList(groupList);
+                        groupDetailsPanel.setGroupList(groupList, gatewayList);
+                    }
+                });
             }
         });
-
     }
 
 }

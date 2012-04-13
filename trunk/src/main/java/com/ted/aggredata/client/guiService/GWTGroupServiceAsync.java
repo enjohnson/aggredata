@@ -20,6 +20,7 @@ package com.ted.aggredata.client.guiService;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
 
@@ -46,4 +47,6 @@ public interface GWTGroupServiceAsync {
      * Delete Group
      */
     void deleteGroup(Group group, AsyncCallback<Void> async);
+
+
 }
