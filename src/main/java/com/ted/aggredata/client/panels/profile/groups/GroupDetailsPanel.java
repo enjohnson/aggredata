@@ -29,9 +29,11 @@ import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.widgets.SmallButton;
+import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,6 +77,9 @@ public class GroupDetailsPanel extends Composite {
     Group group;
     Integer groupHashCode = 0;
     List<Group> groupList = new ArrayList<Group>();
+    List<Gateway> userGatewayList = new ArrayList<Gateway>();
+    List<Gateway> groupGatewayList = new ArrayList<Gateway>();
+
 
 
     ChangeHandler saveChangeHanlder = new ChangeHandler() {
@@ -104,8 +109,9 @@ public class GroupDetailsPanel extends Composite {
 
     }
 
-    public void setGroupList(List<Group> groupList) {
+    public void setGroupList(List<Group> groupList, List<Gateway> userGatewayList) {
         this.groupList = groupList;
+        this.userGatewayList = userGatewayList;
     }
 
 
@@ -169,9 +175,8 @@ public class GroupDetailsPanel extends Composite {
         }
     }
 
-    public void setGroup(Group group)
+    public void setGroup(Group group, List<Gateway> groupGatewayList)
     {
-
         if (logger.isLoggable(Level.FINE)) logger.fine("Setting group " + group);
         setEnabled(group!=null);
         descriptionField.setValue(group.getDescription());
@@ -182,7 +187,9 @@ public class GroupDetailsPanel extends Composite {
         custom5Field.setValue(group.getCustom5());
         this.group = group;
         groupHashCode = group.hashCode();
-       validate();
+        this.groupGatewayList = groupGatewayList;
+        groupGatewaysPanel.setMap(group, userGatewayList, groupGatewayList);
+        validate();
     }
 
 

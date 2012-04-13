@@ -100,12 +100,12 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
-    public List<Gateway> getByUser(User user) {
+    public List<Gateway> findByUser(User user) {
         return gatewayDAO.findByUserAccount(user);
     }
 
     @Override
-    public List<Gateway> getByGroup(Group group) {
+    public List<Gateway> findByGroup(Group group) {
         return gatewayDAO.findByGroup(group);
     }
 

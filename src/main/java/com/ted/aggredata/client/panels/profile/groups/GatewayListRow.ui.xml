@@ -19,18 +19,10 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:my='urn:import:com.ted.aggredata.client'>
     <ui:style src="../../Global.css"/>
-
-    <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
-
-    <g:CaptionPanel captionText="Your Groups" width="220px">
-    <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
-        <g:ListBox width="200px"  ui:field="groupListBox" visibleItemCount="25" styleName="{style.formListBox}"/>
-        <my:widgets.ClearImage width="220px" height="5px"/>
-        <g:HorizontalPanel>
-            <my:widgets.SmallButton ui:field="addButton" buttonString="Add"/>
-            <my:widgets.SmallButton ui:field="deleteButton" buttonString="Delete"/>
-        </g:HorizontalPanel>
-    </g:VerticalPanel>
-    </g:CaptionPanel>
+    <g:HorizontalPanel ui:field="mainPanel">
+        <g:CheckBox ui:field="groupMemberCheckBox" />
+        <my:widgets.ClearImage width="3px" height="1px"/>
+        <g:Label ui:field="gatewayDescription" width="280px"  styleName="{style.gatewayListLabel}"/>
+    </g:HorizontalPanel>
 
 </ui:UiBinder>

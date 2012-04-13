@@ -22,41 +22,68 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.widgets.SmallButton;
+import com.ted.aggredata.model.Gateway;
+import com.ted.aggredata.model.Group;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class GroupGatewaysPanel extends Composite {
 
     static Logger logger = Logger.getLogger(GroupGatewaysPanel.class.toString());
 
+
     interface MyUiBinder extends UiBinder<Widget, GroupGatewaysPanel> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
     @UiField
-    ListBox gatewayListBox;
-    @UiField
-    SmallButton addButton;
-    @UiField
-    SmallButton deleteButton;
+    VerticalPanel gatewayListPanel;
 
 
-    public GroupGatewaysPanel()
-    {
+    //A list of gateways currently in this group
+    final HashMap<Long, Gateway> groupGatewayMap = new HashMap<Long, Gateway>();
+
+
+    public GroupGatewaysPanel() {
         initWidget(uiBinder.createAndBindUi(this));
+
 
     }
 
-    /**
-     * Sets all the fields of this panel to be enabled or disabled
-     * @param enabled
-     */
-    public void setEnabled(boolean enabled)
-    {
+    public void setEnabled(boolean enabled) {
+        for (int i = 0; i < gatewayListPanel.getWidgetCount(); i++) {
+            GatewayListRow row = (GatewayListRow) gatewayListPanel.getWidget(i);
+            row.setEnabled(enabled);
+        }
+    }
 
-        gatewayListBox.setEnabled(enabled);
-        addButton.setVisible(!enabled);
-        deleteButton.setVisible(!enabled);
+    public void clear() {
+        groupGatewayMap.clear();
+        gatewayListPanel.clear();
+    }
+
+    public void setMap(Group selectedGroup, List<Gateway> userGateways, List<Gateway> groupGateways) {
+        groupGatewayMap.clear();
+        gatewayListPanel.clear();
+
+        //Build a list of group gateways.
+        for (Gateway gateway : groupGateways) {
+
+            groupGatewayMap.put(gateway.getId(), gateway);
+        }
+
+
+        //Build the selection rows
+        for (Gateway gateway : userGateways) {
+            boolean isGroupMember = (null != groupGatewayMap.get(gateway.getId()));
+            boolean oddRow = ((i % 2) == 0);
+            GatewayListRow row = new GatewayListRow(selectedGroup, gateway, isGroupMember, oddRow);
+            gatewayListPanel.add(row);
+        }
+
     }
 
 }

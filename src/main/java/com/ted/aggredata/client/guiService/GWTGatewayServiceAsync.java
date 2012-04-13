@@ -17,25 +17,30 @@
 
 package com.ted.aggredata.client.guiService;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.GlobalPlaceholder;
-import com.ted.aggredata.model.User;
+import com.ted.aggredata.model.Group;
 
 import java.util.List;
 
-/**
- * Client Side Interface for the service to check user sessions.
- */
-@RemoteServiceRelativePath("GWTUserService")
-public interface GWTUserService extends RemoteService {
+public interface GWTGatewayServiceAsync {
+    /**
+     * Finds gateways for the  user
+     *
+     * @return
+     */
+    void findGateways(AsyncCallback<List<Gateway>> async);
 
-    public User saveUser(User user);
-    
-    public User changePassword(User user, String Password);
-    public User changeUsername(User user, String username);
+    /**
+     * Finds gateways for the  group
+     *
+     * @return
+     */
+    void findGateways(Group group, AsyncCallback<List<Gateway>> async);
 
+    void removeGatewayFromGroup(Group group, Gateway gateway, AsyncCallback<Void> async);
 
-
+    void addGatewayToGroup(Group group, Gateway gateway, AsyncCallback<Void> async);
 }

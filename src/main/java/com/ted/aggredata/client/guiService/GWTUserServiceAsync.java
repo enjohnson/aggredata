@@ -20,8 +20,11 @@ package com.ted.aggredata.client.guiService;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.GlobalPlaceholder;
 import com.ted.aggredata.model.User;
+
+import java.util.List;
 
 public interface GWTUserServiceAsync {
     void saveUser(User user, AsyncCallback<User> async);
@@ -29,4 +32,6 @@ public interface GWTUserServiceAsync {
     void changePassword(User user, String Password, AsyncCallback<User> async);
 
     void changeUsername(User user, String username, AsyncCallback<User> async);
+
+
 }

@@ -39,6 +39,7 @@
     <servlet path='/UserSessionService' class=' com.ted.aggredata.server.guiServiceImpl.UserSessionServiceImpl'/>
     <servlet path='/GWTUserService' class=' com.ted.aggredata.server.guiServiceImpl.GWTUserServiceImpl'/>
     <servlet path='/GWTGroupService' class=' com.ted.aggredata.server.guiServiceImpl.GWTGroupServiceImpl'/>
+    <servlet path='/GWTGatewayService' class=' com.ted.aggredata.server.guiServiceImpl.GWTGatewayServiceImpl'/>
 
     <source path="client"/>
     <source path="model"/>
