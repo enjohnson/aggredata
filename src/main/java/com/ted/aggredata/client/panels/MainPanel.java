@@ -80,7 +80,7 @@ public class MainPanel extends Composite {
 
 
         //Redirect the user to the gateway page if there are not gateways assigned to the system
-        if (Aggredata.GLOBAL.getGateways().size() == 0){
+        if (Aggredata.GLOBAL.getShowActivation()){
             profileDashboardPanel.setSelectedTab(3);
             tabNavigationPanel.add(profileDashboardPanel, 0, 0);
             contentPanel.add(new ActivationPanel());

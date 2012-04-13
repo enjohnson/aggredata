@@ -23,8 +23,17 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.ted.aggredata.client.Aggredata;
+import com.ted.aggredata.client.events.GroupSelectedEvent;
+import com.ted.aggredata.client.events.GroupSelectedHandler;
+import com.ted.aggredata.client.guiService.GWTGroupService;
+import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
+import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.model.Group;
 
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GroupsPanel extends Composite {
@@ -40,10 +49,35 @@ public class GroupsPanel extends Composite {
     GroupSelectionPanel groupSelectionPanel;
 
 
+    final GWTGroupServiceAsync groupService = (GWTGroupServiceAsync) GWT.create(GWTGroupService.class);
+
+    List<Group> groupList;
+
+
     public GroupsPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
         groupDetailsPanel.setEnabled(false);
+
+        groupSelectionPanel.addGroupSelectedHandler(new GroupSelectedHandler() {
+            @Override
+            public void onGroupSelected(GroupSelectedEvent event) {
+                logger.fine("Group Selected: " + event.getGroup());
+                groupDetailsPanel.setGroup(event.getGroup());
+            }
+        });
+
+
+        //Load the groups for the user and populate the listbox
+        groupService.findGroups(Aggredata.GLOBAL.getSessionUser(), new TEDAsyncCallback<List<Group>>() {
+            @Override
+            public void onSuccess(List<Group> groups) {
+                if (logger.isLoggable(Level.INFO)) logger.info("Found " + groups.size() + groups);
+                groupList = groups;
+                groupSelectionPanel.setGroupList(groupList);
+                groupDetailsPanel.setGroupList(groupList);
+            }
+        });
 
     }
 

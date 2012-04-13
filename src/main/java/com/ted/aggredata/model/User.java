@@ -252,6 +252,21 @@ public class User extends AggredataModel implements Serializable {
         result = 31 * result + (state ? 1 : 0);
         result = 31 * result + (activationKey != null ? activationKey.hashCode() : 0);
         result = 31 * result + defaultGroupId;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
+        result = 31 * result + (companyName != null ? companyName.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (addrState != null ? addrState.hashCode() : 0);
+        result = 31 * result + (zip != null ? zip.hashCode() : 0);
+        result = 31 * result + (custom1 != null ? custom1.hashCode() : 0);
+        result = 31 * result + (custom2 != null ? custom2.hashCode() : 0);
+        result = 31 * result + (custom3 != null ? custom3.hashCode() : 0);
+        result = 31 * result + (custom4 != null ? custom4.hashCode() : 0);
+        result = 31 * result + (custom5 != null ? custom5.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
     }
 }

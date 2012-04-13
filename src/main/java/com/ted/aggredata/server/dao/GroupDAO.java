@@ -21,6 +21,8 @@ import com.ted.aggredata.model.AggredataModel;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -33,13 +35,15 @@ import java.util.List;
  */
 public class GroupDAO extends AbstractDAO<Group> {
 
-    
+
+    static Logger logger = LoggerFactory.getLogger(GroupDAO.class);
+
     public static String DELETE_GROUP_QUERY = "delete from aggredata.group where id=?";
-    public static String CREATE_GROUP_QUERY = "insert into aggredata.group (ownerUserId, description) values (?,?)";
+    public static String CREATE_GROUP_QUERY = "insert into aggredata.group (ownerUserId, description,custom1,custom2,custom3,custom4,custom5) values (?,?,?,?,?,?,?)";
     public static String COUNT_GROUP_QUERY = "select count(*) from aggredata.group where ownerUserId=? and description=?";
-    public static String SAVE_GROUP_QUERY = "update aggredata.group set ownerUserId=?, description=? where id=?";
-    public static String GET_GROUP_QUERY = "select g.id, g.ownerUserId, g.description, ? as role from aggredata.group g where g.description=? and g.ownerUserId=?";
-    public static String GET_GROUPS_BY_USER_QUERY = "select g.id, g.ownerUserId, g.description, ug.role from aggredata.group g, aggredata.usergroup ug where ug.groupId = g.id and ug.userId=?";
+    public static String SAVE_GROUP_QUERY = "update aggredata.group set ownerUserId=?, description=?,custom1=?,custom2=?,custom3=?,custom4=?,custom5=? where id=?";
+    public static String GET_GROUP_QUERY = "select g.id, g.ownerUserId, g.description, g.custom1,g.custom2,g.custom3,g.custom4,g.custom5, ? as role from aggredata.group g where g.description=? and g.ownerUserId=?";
+    public static String GET_GROUPS_BY_USER_QUERY = "select g.id, g.ownerUserId, g.description, g.custom1,g.custom2,g.custom3,g.custom4,g.custom5, ug.role from aggredata.group g, aggredata.usergroup ug where ug.groupId = g.id and ug.userId=?";
     public static String ADD_GROUP_MEMBERSHIP_QUERY = "insert into aggredata.usergroup(userId, groupId, role) values (?,?,?)";
     public static String ADD_GROUP_MEMBERSHIP_COUNT_QUERY = "select count(*) from aggredata.usergroup where userId=? and groupId=?";
     public static String UPDATE_GROUP_MEMBERSHIP_QUERY = "update aggredata.usergroup set role = ? where userId=? and groupId=?";
@@ -60,6 +64,11 @@ public class GroupDAO extends AbstractDAO<Group> {
             group.setOwnerUserId(rs.getLong("ownerUserId"));
             group.setRole(Group.Role.values()[rs.getInt("role")]);
             group.setDescription(rs.getString("description"));
+            group.setCustom1(rs.getString("custom1"));
+            group.setCustom2(rs.getString("custom2"));
+            group.setCustom3(rs.getString("custom3"));
+            group.setCustom4(rs.getString("custom4"));
+            group.setCustom5(rs.getString("custom5"));
             return group;
         }
     };
@@ -93,7 +102,13 @@ public class GroupDAO extends AbstractDAO<Group> {
             group.setDescription(description);
             group.setOwnerUserId(user.getId());
             group.setRole(Group.Role.OWNER);
-            getJdbcTemplate().update(CREATE_GROUP_QUERY, group.getOwnerUserId(), group.getDescription());
+            getJdbcTemplate().update(CREATE_GROUP_QUERY, group.getOwnerUserId(),
+                                                         group.getDescription(),
+                                                         group.getCustom1(),
+                                                         group.getCustom2(),
+                                                         group.getCustom3(),
+                                                         group.getCustom4(),
+                                                         group.getCustom5());
 
             //Add the user/group mapping to the database join table/
             Group newGroup = getOwnedGroup(user, group.getDescription());
@@ -105,10 +120,16 @@ public class GroupDAO extends AbstractDAO<Group> {
     }
 
     public void save(Group group) {
-        getJdbcTemplate().update(SAVE_GROUP_QUERY, group.getOwnerUserId(), group.getDescription(), group.getId());
+        getJdbcTemplate().update(SAVE_GROUP_QUERY, group.getOwnerUserId(),
+                                                   group.getDescription(),
+                                                   group.getCustom1(),
+                                                   group.getCustom2(),
+                                                   group.getCustom3(),
+                                                   group.getCustom4(),
+                                                   group.getCustom5(),
+                                                   group.getId());
     }
 
-    
     /**
      * Removes a group from the membership table
      *

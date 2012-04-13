@@ -18,6 +18,8 @@
 package com.ted.aggredata.client.panels.profile.settings;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -25,9 +27,8 @@ import com.google.gwt.user.client.ui.*;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.ted.aggredata.client.Aggredata;
-import com.ted.aggredata.client.guiService.TEDAsyncCallback;
-import com.ted.aggredata.client.guiService.UserSessionService;
-import com.ted.aggredata.client.guiService.UserSessionServiceAsync;
+import com.ted.aggredata.client.guiService.*;
+import com.ted.aggredata.client.panels.login.LoginPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.HugeButton;
 import com.ted.aggredata.client.widgets.LargeButton;
@@ -39,50 +40,80 @@ import java.util.logging.Logger;
 public class SettingsPanel extends Composite {
     private boolean isValid;
     static Logger logger = Logger.getLogger(SettingsPanel.class.toString());
-    private User user = Aggredata.GLOBAL.getSessionUser();
+    final User user;
+
     interface MyUiBinder extends UiBinder<Widget, SettingsPanel> {
     }
+
     private String uname = "";
     private String password = "";
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
+
+    final GWTUserServiceAsync gwtUserService = (GWTUserServiceAsync) GWT.create(GWTUserService.class);
     final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
-    @UiField Label titleLabel;
-    @UiField Label instructionLabel;
-    @UiField TextBox lastNameField;
-    @UiField Label lastNameFieldError;
-    @UiField Label firstNameFieldError;
-    @UiField TextBox firstNameField;
-    @UiField TextBox companyNameField;
-    @UiField TextBox middleNameField;
-    @UiField TextBox addressField;
-    @UiField TextBox cityField;
-    @UiField TextBox stateField;
-    @UiField TextBox zipField;
-    @UiField TextBox phoneNumberField;
-    @UiField TextBox custom1Field;
-    @UiField TextBox custom2Field;
-    @UiField TextBox custom3Field;
-    @UiField TextBox custom4Field;
-    @UiField TextBox custom5Field;
+
+    @UiField
+    Label titleLabel;
+    @UiField
+    Label instructionLabel;
+    @UiField
+    TextBox lastNameField;
+    @UiField
+    Label lastNameFieldError;
+    @UiField
+    Label firstNameFieldError;
+    @UiField
+    TextBox firstNameField;
+    @UiField
+    TextBox companyNameField;
+    @UiField
+    TextBox middleNameField;
+    @UiField
+    TextBox addressField;
+    @UiField
+    TextBox cityField;
+    @UiField
+    TextBox stateField;
+    @UiField
+    TextBox zipField;
+    @UiField
+    TextBox phoneNumberField;
+    @UiField
+    TextBox custom1Field;
+    @UiField
+    TextBox custom2Field;
+    @UiField
+    TextBox custom3Field;
+    @UiField
+    TextBox custom4Field;
+    @UiField
+    TextBox custom5Field;
     @UiField
     HugeButton changeUname;
     @UiField
     HugeButton changePassword;
     @UiField
-    LargeButton saveButton;
-    @UiField
-    LargeButton resetButton;
-    @UiField
-    HorizontalPanel buttonPanel;
-    @UiField
     VerticalPanel mainPanel;
 
-    public SettingsPanel()
-    {
+    int userHashCode = 0;
+
+    ChangeHandler saveChangeHanlder = new ChangeHandler() {
+        @Override
+        public void onChange(ChangeEvent changeEvent) {
+            doSave();
+        }
+    };
+
+    public SettingsPanel() {
         initWidget(uiBinder.createAndBindUi(this));
+        user = Aggredata.GLOBAL.getSessionUser();
+
         titleLabel.setText(dashboardConstants.settingsTitle());
         instructionLabel.setText(dashboardConstants.settingsInstructions());
+
+
+        userHashCode = user.hashCode();
 
         //set text to current text fields and set max length to the current database field lengths
         firstNameField.setMaxLength(50);
@@ -116,20 +147,21 @@ public class SettingsPanel extends Composite {
         companyNameField.setText(user.getCompanyName());
 
 
-        
-        saveButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent clickEvent) {
-                //Save the object
-                isValid = doValidation();
-                if (isValid)
-                {
-                    saveUserData();
-                    commitUserData();
-                }
-                //Window.alert("Save clicked!");
-             }
-        });
+        firstNameField.addChangeHandler(saveChangeHanlder);
+        middleNameField.addChangeHandler(saveChangeHanlder);
+        lastNameField.addChangeHandler(saveChangeHanlder);
+        companyNameField.addChangeHandler(saveChangeHanlder);
+        addressField.addChangeHandler(saveChangeHanlder);
+        cityField.addChangeHandler(saveChangeHanlder);
+        stateField.addChangeHandler(saveChangeHanlder);
+        zipField.addChangeHandler(saveChangeHanlder);
+        phoneNumberField.addChangeHandler(saveChangeHanlder);
+        custom1Field.addChangeHandler(saveChangeHanlder);
+        custom2Field.addChangeHandler(saveChangeHanlder);
+        custom3Field.addChangeHandler(saveChangeHanlder);
+        custom4Field.addChangeHandler(saveChangeHanlder);
+        custom5Field.addChangeHandler(saveChangeHanlder);
+
 
         changePassword.addClickHandler(new ClickHandler() {
             @Override
@@ -147,118 +179,112 @@ public class SettingsPanel extends Composite {
             }
         });
 
-        resetButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent clickEvent) {
-                resetUserFormData();
-                //Window.alert("Reset clicked!");
-            }
-        });
-        
-        mainPanel.setCellHorizontalAlignment(buttonPanel, HasHorizontalAlignment.ALIGN_CENTER);
 
     }
 
-    private void changeUname()
-    {
+
+    //TODO: Make the username/password a dialog. Also use resource strings.
+
+    private void changeUname() {
         boolean confirm;
         uname = Window.prompt("Please enter in a new username", "");
         confirm = Window.confirm("Are you sure?");
-        if (confirm) 
-        {
-            user.setUsername(uname);
-            commitUserData();
-        }
-    }
+        if (confirm) {
 
-    private void changePword()
-    {
-        boolean confirm;
-        password = Window.prompt("Please enter in a new password", "");
-        confirm = Window.confirm("Are you sure?");
-        if (confirm)
-        {
-            userSessionService.changePassword(user, password, new TEDAsyncCallback<User>() {
+            gwtUserService.changeUsername(user, uname, new TEDAsyncCallback<User>() {
                 @Override
                 public void onSuccess(User result) {
-                    user = result;
-                    if (result != null)
-                    {
-                        Window.alert("User account updated.");
-                    }
+                    Window.alert("Username Changed. You will have to log back into Aggredata.");
+                    logout();
                 }
             });
         }
     }
 
-    private void resetUserFormData()
-    {
-        custom5Field.setText(user.getCustom5());
-        custom4Field.setText(user.getCustom4());
-        custom3Field.setText(user.getCustom3());
-        custom2Field.setText(user.getCustom2());
-        custom1Field.setText(user.getCustom1());
-        firstNameField.setText(user.getFirstName());
-        lastNameField.setText(user.getLastName());
-        middleNameField.setText(user.getMiddleName());
-        addressField.setText(user.getAddress());
-        stateField.setText(user.getAddrState());
-        cityField.setText(user.getCity());
-        phoneNumberField.setText(user.getPhoneNumber());
-        zipField.setText(user.getZip());
-        companyNameField.setText(user.getCompanyName());
-    }
+    //TODO: Make the username/password a dialog. Also use resource strings.
 
-    private void saveUserData(){
-        user.setAddress(addressField.getText().trim());
-        user.setAddrState(stateField.getText().trim());
-        user.setCity(cityField.getText().trim());
-        user.setZip(zipField.getText().trim());
-        user.setFirstName(firstNameField.getText().trim());
-        user.setLastName(lastNameField.getText().trim());
-        user.setCompanyName(companyNameField.getText().trim());
-        user.setCustom1(custom1Field.getText().trim());
-        user.setCustom2(custom2Field.getText().trim());
-        user.setCustom3(custom3Field.getText().trim());
-        user.setCustom4(custom4Field.getText().trim());
-        user.setCustom5(custom5Field.getText().trim());
-        user.setPhoneNumber(phoneNumberField.getText().trim());
-        user.setMiddleName(middleNameField.getText().trim());
-    }
-
-    private void commitUserData()
-    {
-        userSessionService.saveUser(user, new TEDAsyncCallback<User>() {
-        @Override
-        public void onSuccess(User result) {
-            user = result;
-            if (result != null)
-            {
-                Window.alert("User account updated.");
-            }
-        }
+    private void changePword() {
+        boolean confirm;
+        password = Window.prompt("Please enter in a new password", "");
+        confirm = Window.confirm("Are you sure?");
+        if (confirm) {
+            gwtUserService.changePassword(user, password, new TEDAsyncCallback<User>() {
+                @Override
+                public void onSuccess(User result) {
+                    Window.alert("Password Changed. You will have to log back into Aggredata.");
+                    logout();
+                }
             });
         }
+    }
 
-        /**
-         * Performs the field validation. Returns false if any of the fields fail validation
-         * @return
-         */
-    private boolean doValidation()
-    {
+    private void logout() {
+
+
+        userSessionService.logoff(new TEDAsyncCallback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                logger.info("User has sucessfully logged out");
+                RootPanel.get(Aggredata.ROOT_PANEL).clear();
+                RootPanel.get(Aggredata.ROOT_PANEL).add(new LoginPanel());
+            }
+        });
+
+
+    }
+
+
+
+    private void doSave() {
+        logger.fine("settings panel doSave called");
+        if (doValidation()) {
+            logger.fine("validation passed");
+            user.setAddress(addressField.getText().trim());
+            user.setAddrState(stateField.getText().trim());
+            user.setCity(cityField.getText().trim());
+            user.setZip(zipField.getText().trim());
+            user.setFirstName(firstNameField.getText().trim());
+            user.setLastName(lastNameField.getText().trim());
+            user.setCompanyName(companyNameField.getText().trim());
+            user.setCustom1(custom1Field.getText().trim());
+            user.setCustom2(custom2Field.getText().trim());
+            user.setCustom3(custom3Field.getText().trim());
+            user.setCustom4(custom4Field.getText().trim());
+            user.setCustom5(custom5Field.getText().trim());
+            user.setPhoneNumber(phoneNumberField.getText().trim());
+            user.setMiddleName(middleNameField.getText().trim());
+
+            logger.fine("hashcode check: " + user.hashCode() + " = " + userHashCode);
+            if (user.hashCode() != userHashCode) {
+                logger.fine("Calling save service");
+                gwtUserService.saveUser(user, new TEDAsyncCallback<User>() {
+                    @Override
+                    public void onSuccess(User user) {
+                        userHashCode = user.hashCode();
+                    }
+                });
+            }
+        }
+    }
+
+
+    /**
+     * Performs the field validation. Returns false if any of the fields fail validation
+     *
+     * @return
+     */
+    private boolean doValidation() {
         boolean isValid = true;
 
         firstNameFieldError.setText("");
         lastNameFieldError.setText("");
 
-        if (firstNameField.getText().trim().length()==0)
-        {
+        if (firstNameField.getText().trim().length() == 0) {
             isValid = false;
             firstNameFieldError.setText("Required");
         }
 
-        if (lastNameField.getText().trim().length()==0)
-        {
+        if (lastNameField.getText().trim().length() == 0) {
             isValid = false;
             lastNameFieldError.setText("Required");
         }
@@ -266,6 +292,6 @@ public class SettingsPanel extends Composite {
         return isValid;
 
     }
-    }
+}
 
 

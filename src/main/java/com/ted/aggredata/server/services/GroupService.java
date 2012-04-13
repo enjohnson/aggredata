@@ -104,4 +104,10 @@ public interface GroupService {
     public void removeGatewayFromGroup(User user, Group group, Gateway gateway);
 
 
+    /**
+     * Saves the group
+     * @param group
+     */
+    public Group saveGroup(Group group);
+
 }

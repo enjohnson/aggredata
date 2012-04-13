@@ -15,23 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.client.guiService;
+package com.ted.aggredata.client.events;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.ted.aggredata.model.GlobalPlaceholder;
-import com.ted.aggredata.model.User;
+import com.google.gwt.event.shared.EventHandler;
 
-public interface UserSessionServiceAsync {
-    void logon(String username, String password, AsyncCallback<GlobalPlaceholder> async);
-
-    void logoff(AsyncCallback<Void> async);
-
-    /**
-     * Checks to see if the user is currently in a valid/logged in session.
-     *
-     * @return
-     */
-    void getUserFromSession(AsyncCallback<GlobalPlaceholder> async);
+/**
+ * Handler for when a tab is clicked
+ */
+public interface GroupSelectedHandler extends EventHandler {
+    void onGroupSelected(GroupSelectedEvent event);
 }

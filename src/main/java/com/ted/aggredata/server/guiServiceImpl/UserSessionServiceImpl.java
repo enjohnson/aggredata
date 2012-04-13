@@ -17,14 +17,13 @@
 
 package com.ted.aggredata.server.guiServiceImpl;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.ted.aggredata.client.guiService.UserSessionService;
 import com.ted.aggredata.model.GlobalPlaceholder;
 import com.ted.aggredata.model.ServerInfo;
 import com.ted.aggredata.model.User;
 import com.ted.aggredata.server.services.GatewayService;
+import com.ted.aggredata.server.services.GroupService;
 import com.ted.aggredata.server.services.UserService;
-import com.ted.aggredata.server.util.KeyGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +46,9 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
     @Autowired
     GatewayService gatewayService;
+
+    @Autowired
+    GroupService groupService;
 
     Logger logger = LoggerFactory.getLogger(UserSessionServiceImpl.class);
     public static final String USER_SESSION_KEY = "AGGREDATA_USER";
@@ -122,28 +124,9 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
         GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
         globalPlaceholder.setSessionUser(user);
         globalPlaceholder.setServerInfo(serverInfo);
-        globalPlaceholder.setGateways(gatewayService.getByUser(user));
-        
-
+        globalPlaceholder.setShowActivation(gatewayService.countByUser(user) == 0);
         return globalPlaceholder;
     }
 
-    @Override
-    public User saveUser(User user){
-        logger.info("Saving user information");
-        getThreadLocalRequest().getSession().removeAttribute(USER_SESSION_KEY);
-        user = userService.saveUser(user);
-        getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
-        return user;
-    }
 
-    @Override
-    public User changePassword(User user, String Password)
-    {
-        logger.info("Updating Password");
-        getThreadLocalRequest().getSession().removeAttribute(USER_SESSION_KEY);
-        userService.changePassword(user, Password);
-        getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
-        return user;
-    }
 }

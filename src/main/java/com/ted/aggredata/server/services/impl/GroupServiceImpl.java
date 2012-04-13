@@ -116,4 +116,16 @@ public class GroupServiceImpl implements GroupService {
         if (logger.isWarnEnabled()) logger.warn("User " + user + " does not have access to group: " + group);
     }
 
+    @Override
+    public Group saveGroup(Group group) {
+        if (group.getId() == null) {
+            logger.error("Group must be created first.");
+            return null;
+        }
+        if (logger.isInfoEnabled()) logger.info("Saving " + group);
+        groupDAO.save(group);
+        return group;
+    }
+
+
 }
