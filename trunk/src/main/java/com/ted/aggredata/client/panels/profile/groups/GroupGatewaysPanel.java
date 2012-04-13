@@ -77,9 +77,10 @@ public class GroupGatewaysPanel extends Composite {
 
 
         //Build the selection rows
+        int i=0;
         for (Gateway gateway : userGateways) {
             boolean isGroupMember = (null != groupGatewayMap.get(gateway.getId()));
-            boolean oddRow = ((i % 2) == 0);
+            boolean oddRow = ((i++ % 2) == 0);
             GatewayListRow row = new GatewayListRow(selectedGroup, gateway, isGroupMember, oddRow);
             gatewayListPanel.add(row);
         }
