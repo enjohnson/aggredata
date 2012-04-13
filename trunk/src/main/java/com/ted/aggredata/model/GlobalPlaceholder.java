@@ -28,7 +28,7 @@ import java.util.List;
 public class GlobalPlaceholder implements Serializable {
     User sessionUser;
     ServerInfo serverInfo;
-    List<Gateway> gateways;
+    Boolean showActivation = false;
 
     public User getSessionUser() {
         return sessionUser;
@@ -46,12 +46,12 @@ public class GlobalPlaceholder implements Serializable {
         this.serverInfo = serverInfo;
     }
 
-    public List<Gateway> getGateways() {
-        return gateways;
+    public Boolean getShowActivation() {
+        return showActivation;
     }
 
-    public void setGateways(List<Gateway> gateways) {
-        this.gateways = gateways;
+    public void setShowActivation(Boolean showActivation) {
+        this.showActivation = showActivation;
     }
 
     @Override

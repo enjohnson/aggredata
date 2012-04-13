@@ -17,21 +17,41 @@
 
 package com.ted.aggredata.client.guiService;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.ted.aggredata.model.GlobalPlaceholder;
+import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
 
-public interface UserSessionServiceAsync {
-    void logon(String username, String password, AsyncCallback<GlobalPlaceholder> async);
+import java.util.List;
 
-    void logoff(AsyncCallback<Void> async);
+/**
+ * Client Side Interface for the service to check user sessions.
+ */
+@RemoteServiceRelativePath("GWTGroupService")
+public interface GWTGroupService extends RemoteService {
 
     /**
-     * Checks to see if the user is currently in a valid/logged in session.
-     *
+     * Finds groups for the specific user
+     * @param user
      * @return
      */
-    void getUserFromSession(AsyncCallback<GlobalPlaceholder> async);
+    public List<Group> findGroups(User user);
+
+
+    /**
+     * Creates a new group
+     *
+     * @param user        The user creating the group. This user will be added as a OWNER of the group.
+     * @param description
+     */
+    public Group createGroup(User user, String description);
+
+    /**
+     * Saves a group
+     *
+     * @param group
+     */
+    public Group saveGroup(Group group);
+
+
 }

@@ -140,4 +140,9 @@ public class GatewayServiceImpl implements GatewayService {
     public EnergyData findByLastPost(Gateway gateway, MTU mtu, Integer timestamp) {
         return energyDataDAO.findByLastPost(gateway, mtu, timestamp);
     }
+
+    @Override
+    public Integer countByUser(User user) {
+        return gatewayDAO.countByUserAccount(user);
+    }
 }

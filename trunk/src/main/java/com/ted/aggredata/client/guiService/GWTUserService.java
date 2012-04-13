@@ -17,21 +17,20 @@
 
 package com.ted.aggredata.client.guiService;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.ted.aggredata.model.GlobalPlaceholder;
 import com.ted.aggredata.model.User;
 
-public interface UserSessionServiceAsync {
-    void logon(String username, String password, AsyncCallback<GlobalPlaceholder> async);
+/**
+ * Client Side Interface for the service to check user sessions.
+ */
+@RemoteServiceRelativePath("GWTUserService")
+public interface GWTUserService extends RemoteService {
 
-    void logoff(AsyncCallback<Void> async);
+    public User saveUser(User user);
+    
+    public User changePassword(User user, String Password);
+    public User changeUsername(User user, String username);
 
-    /**
-     * Checks to see if the user is currently in a valid/logged in session.
-     *
-     * @return
-     */
-    void getUserFromSession(AsyncCallback<GlobalPlaceholder> async);
 }

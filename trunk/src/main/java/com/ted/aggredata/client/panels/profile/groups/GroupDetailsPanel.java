@@ -18,14 +18,27 @@
 package com.ted.aggredata.client.panels.profile.groups;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import com.ted.aggredata.client.guiService.GWTGroupService;
+import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
+import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.widgets.SmallButton;
+import com.ted.aggredata.model.Group;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GroupDetailsPanel extends Composite {
+
+    final GWTGroupServiceAsync groupService = (GWTGroupServiceAsync) GWT.create(GWTGroupService.class);
 
     static Logger logger = Logger.getLogger(GroupDetailsPanel.class.toString());
 
@@ -59,12 +72,42 @@ public class GroupDetailsPanel extends Composite {
     @UiField
     GroupGatewaysPanel groupGatewaysPanel;
 
+    Group group;
+    Integer groupHashCode = 0;
+    List<Group> groupList = new ArrayList<Group>();
+
+
+    ChangeHandler saveChangeHanlder = new ChangeHandler() {
+        @Override
+        public void onChange(ChangeEvent changeEvent) {
+            if (group != null) doSave();
+        }
+    };
 
     public GroupDetailsPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
 
+        descriptionField.addKeyUpHandler(new KeyUpHandler() {
+            @Override
+            public void onKeyUp(KeyUpEvent keyUpEvent) {
+                validate();
+            }
+        });
+
+        descriptionField.addChangeHandler(saveChangeHanlder);
+        custom1Field.addChangeHandler(saveChangeHanlder);
+        custom2Field.addChangeHandler(saveChangeHanlder);
+        custom3Field.addChangeHandler(saveChangeHanlder);
+        custom4Field.addChangeHandler(saveChangeHanlder);
+        custom5Field.addChangeHandler(saveChangeHanlder);
+
     }
+
+    public void setGroupList(List<Group> groupList) {
+        this.groupList = groupList;
+    }
+
 
     /**
      * Sets all the fields of this panel to be enabled or disabled
@@ -82,4 +125,65 @@ public class GroupDetailsPanel extends Composite {
         groupGatewaysPanel.setEnabled(enabled);
 
     }
+
+
+    public boolean validate(){
+        boolean valid = true;
+        descriptionFieldError.setText("");
+
+        if (group == null) return true;
+        if (descriptionField.getText().trim().length() == 0) {
+            valid = false;
+            descriptionFieldError.setText("Required");
+        }
+
+        for (Group g:groupList){
+            if (!g.getId().equals(group.getId()) && g.getDescription().toLowerCase().equals(descriptionField.getText().trim().toLowerCase())){
+                valid = false;
+                descriptionFieldError.setText("Already Used");
+            }
+        }
+
+        return valid;
+    }
+
+    private void doSave()
+    {
+        if (validate())
+        {
+            group.setDescription(descriptionField.getText().trim());
+            group.setCustom1(custom1Field.getText().trim());
+            group.setCustom2(custom2Field.getText().trim());
+            group.setCustom3(custom3Field.getText().trim());
+            group.setCustom4(custom4Field.getText().trim());
+            group.setCustom5(custom5Field.getText().trim());
+            if (group.hashCode() != groupHashCode){
+                logger.info("Group is dirty. Saving " + group);
+                groupService.saveGroup(group, new TEDAsyncCallback<Group>() {
+                    @Override
+                    public void onSuccess(Group group) {
+                        groupHashCode = group.hashCode();
+                    }
+                });
+            }
+        }
+    }
+
+    public void setGroup(Group group)
+    {
+
+        if (logger.isLoggable(Level.FINE)) logger.fine("Setting group " + group);
+        setEnabled(group!=null);
+        descriptionField.setValue(group.getDescription());
+        custom1Field.setValue(group.getCustom1());
+        custom2Field.setValue(group.getCustom2());
+        custom3Field.setValue(group.getCustom3());
+        custom4Field.setValue(group.getCustom4());
+        custom5Field.setValue(group.getCustom5());
+        this.group = group;
+        groupHashCode = group.hashCode();
+       validate();
+    }
+
+
 }

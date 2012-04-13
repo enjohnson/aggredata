@@ -20,7 +20,7 @@ package com.ted.aggredata.client.guiService;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.ted.aggredata.model.GlobalPlaceholder;
-import com.ted.aggredata.model.User;
+
 
 /**
  * Client Side Interface for the service to check user sessions.
@@ -47,7 +47,4 @@ public interface UserSessionService extends RemoteService {
      */
     public GlobalPlaceholder getUserFromSession();
 
-    public User saveUser(User user);
-    
-    public User changePassword(User user, String Password);
 }

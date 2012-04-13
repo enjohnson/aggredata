@@ -15,21 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.model;
+package com.ted.aggredata.client.events;
 
-import java.io.Serializable;
+import com.google.gwt.event.shared.GwtEvent;
+import com.ted.aggredata.model.Group;
 
-public abstract class AggredataModel implements Serializable {
+/**
+ * Event fired off when a group is selected
+ */
+public class GroupSelectedEvent extends GwtEvent<GroupSelectedHandler> {
+    public static Type<GroupSelectedHandler> TYPE = new Type<GroupSelectedHandler>();
 
-    private Long id;
+    final Group group;
 
-    public Long getId() {
-        return id;
+
+    public GroupSelectedEvent(Group group) {
+        this.group = group;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public Type<GroupSelectedHandler> getAssociatedType() {
+        return TYPE;
     }
 
+    @Override
+    protected void dispatch(GroupSelectedHandler handler) {
+        handler.onGroupSelected(this);
+    }
 
+    public Group getGroup() {
+        return group;
+    }
 }

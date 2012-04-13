@@ -24,7 +24,7 @@
 
     <g:CaptionPanel captionText="Your Groups" width="220px">
     <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
-        <g:ListBox width="200px"  ui:field="groupListBox" visibleItemCount="25" styleName="{style.panelInstructionText}"/>
+        <g:ListBox width="200px"  ui:field="groupListBox" visibleItemCount="22" styleName="{style.formListBox}"/>
         <my:widgets.ClearImage width="220px" height="5px"/>
         <g:HorizontalPanel>
             <my:widgets.SmallButton ui:field="addButton" buttonString="Add"/>

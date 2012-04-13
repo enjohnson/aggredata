@@ -36,7 +36,7 @@
         <intercept-url pattern="/**/*.jpg" access="permitAll" />
         <intercept-url pattern="/**/*.png" access="permitAll" />
         <intercept-url pattern="/**/*.gif" access="permitAll" />
-        <intercept-url pattern="/**/*UserSessionService*" access="permitAll" />
+        <intercept-url pattern="/**/UserSessionService" access="permitAll" />
         <intercept-url pattern="/**/activate" access="permitAll" />
         <intercept-url pattern="/**/postData" access="permitAll" />
 

@@ -23,15 +23,10 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.ted.aggredata.model.GlobalPlaceholder;
 import com.ted.aggredata.model.User;
 
-public interface UserSessionServiceAsync {
-    void logon(String username, String password, AsyncCallback<GlobalPlaceholder> async);
+public interface GWTUserServiceAsync {
+    void saveUser(User user, AsyncCallback<User> async);
 
-    void logoff(AsyncCallback<Void> async);
+    void changePassword(User user, String Password, AsyncCallback<User> async);
 
-    /**
-     * Checks to see if the user is currently in a valid/logged in session.
-     *
-     * @return
-     */
-    void getUserFromSession(AsyncCallback<GlobalPlaceholder> async);
+    void changeUsername(User user, String username, AsyncCallback<User> async);
 }

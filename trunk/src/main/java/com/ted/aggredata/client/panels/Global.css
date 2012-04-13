@@ -62,7 +62,7 @@
         font-family: Arial, Verdana, Trebuchet, sans-serif;
         color: #FFF;
         text-align: right;
-        font-size: 11pt;
+        font-size: 10pt;
         vertical-align: middle;
         width: 100px;
 
@@ -70,17 +70,26 @@
 
     .formField {
         font-family: Arial, Verdana, Trebuchet, sans-serif;
-        color: #FFF;
-        text-align: right;
-        font-size: 11pt;
+        color: #000;
+        text-align: left;
+        font-size: 10pt;
         vertical-align: middle;
     }
+
+    .formListBox {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #000;
+        text-align: left;
+        font-size: 9pt;
+        vertical-align: middle;
+    }
+
 
     .formError {
         font-family: Arial, Verdana, Trebuchet, sans-serif;
         color: red;
         text-align: right;
-        font-size: 11pt;
+        font-size: 9pt;
         vertical-align: middle;
     }
 

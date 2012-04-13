@@ -125,6 +125,13 @@ public interface GatewayService {
      */
     EnergyData findByLastPost(Gateway gateway, MTU mtu, Integer timestamp);
 
+
+    /**
+     * Returns the number of registered Gateways for the specified user
+     * @param user
+     * @return
+     */
+    public Integer countByUser(User user);
 }
 
 

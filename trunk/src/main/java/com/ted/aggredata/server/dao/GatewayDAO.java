@@ -37,6 +37,7 @@ public class GatewayDAO extends AbstractDAO<Gateway> {
     public static String CREATE_GATEWAY_QUERY = "insert into aggredata.gateway (id, weatherLocationId, userAccountId,  state, securityKey, description) values (?,?,?,?,?,?)";
     public static String SAVE_GATEWAY_QUERY = "update aggredata.gateway set weatherLocationId=?, userAccountId=?,  state=?, securityKey=?, description=? where id=?";
     public static String GET_BY_USER_ACCOUNT_QUERY = "select id, weatherLocationId, userAccountId,  state, securityKey, description from aggredata.gateway where userAccountId=?";
+    public static String COUNT_BY_USER_ACCOUNT_QUERY = "select count(*) from aggredata.gateway where userAccountId=?";
     public static String GET_BY_GROUP_QUERY = "select g.id, weatherLocationId, userAccountId,  state, securityKey, description from aggredata.gateway g, aggredata.gatewaygroup gg where g.id = gg.gatewayId and gg.groupId=?";
 
     public static String ADD_GATEWAY_TO_GROUP_QUERY = "insert into aggredata.gatewaygroup (groupId, gatewayId) values (?,?)";
@@ -110,6 +111,9 @@ public class GatewayDAO extends AbstractDAO<Gateway> {
     }
 
 
+    public Integer countByUserAccount(User user) {
+        return getJdbcTemplate().queryForInt(COUNT_BY_USER_ACCOUNT_QUERY, user.getId());
+    }
 
 
     public List<Gateway> findByGroup(Group group)

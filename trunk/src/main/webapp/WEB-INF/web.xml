@@ -73,6 +73,17 @@
     </servlet>
 
     <servlet>
+        <servlet-name>GWTUserService</servlet-name>
+        <servlet-class>com.ted.aggredata.server.guiServiceImpl.GWTUserServiceImpl</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>GWTGroupService</servlet-name>
+        <servlet-class>com.ted.aggredata.server.guiServiceImpl.GWTGroupServiceImpl</servlet-class>
+    </servlet>
+
+
+    <servlet>
         <servlet-name>EnergyPostServlet</servlet-name>
         <servlet-class>com.ted.aggredata.server.web.servlets.EnergyPostServlet</servlet-class>
     </servlet>
@@ -86,6 +97,18 @@
         <servlet-name>UserSessionService</servlet-name>
         <url-pattern>/Aggredata/UserSessionService</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>GWTUserService</servlet-name>
+        <url-pattern>/Aggredata/GWTUserService</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>GWTGroupService</servlet-name>
+        <url-pattern>/Aggredata/GWTGroupService</url-pattern>
+    </servlet-mapping>
+
 
     <servlet-mapping>
         <servlet-name>ActivationServlet</servlet-name>
