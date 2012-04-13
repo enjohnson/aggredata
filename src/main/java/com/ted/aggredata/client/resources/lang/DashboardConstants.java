@@ -125,4 +125,18 @@ public interface DashboardConstants extends Constants {
     String groupSettingsCustom4();
 
     String groupSettingsCustom5();
+
+    String yes();
+
+    String no();
+
+    String deleteGroupTitle();
+
+    String deleteGroupMessage();
+
+    String ok();
+
+    String deleteGroupCantDeleteTitle();
+
+    String deleteGroupCantDeleteText();
 }

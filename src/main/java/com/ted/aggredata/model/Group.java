@@ -112,19 +112,7 @@ public class Group extends AggredataModel implements Serializable {
         return b.toString();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        Group group = (Group) o;
-
-        if (description != null ? !description.equals(group.description) : group.description != null) return false;
-        if (ownerUserId != null ? !ownerUserId.equals(group.ownerUserId) : group.ownerUserId != null) return false;
-        if (role != group.role) return false;
-
-        return true;
-    }
 
     @Override
     public int hashCode() {

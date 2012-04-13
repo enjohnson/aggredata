@@ -69,7 +69,7 @@ public class GroupsPanel extends Composite {
 
 
         //Load the groups for the user and populate the listbox
-        groupService.findGroups(Aggredata.GLOBAL.getSessionUser(), new TEDAsyncCallback<List<Group>>() {
+        groupService.findGroups( new TEDAsyncCallback<List<Group>>() {
             @Override
             public void onSuccess(List<Group> groups) {
                 if (logger.isLoggable(Level.INFO)) logger.info("Found " + groups.size() + groups);

@@ -31,22 +31,47 @@ public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements G
 
     @Autowired
     GroupService groupService;
-    
+
+
     Logger logger = LoggerFactory.getLogger(GWTGroupServiceImpl.class);
 
+    private User getCurrentUser() {
+        return (User) getThreadLocalRequest().getSession().getAttribute(UserSessionServiceImpl.USER_SESSION_KEY);
+    }
+
     @Override
-    public List<Group> findGroups(User user) {
-        if (logger.isDebugEnabled()) logger.debug("Looking up groups for " + user);
+    public List<Group> findGroups() {
+        User user = getCurrentUser();
+        if (logger.isInfoEnabled()) logger.info("Looking up groups for " + user);
         return groupService.getByUser(user);
     }
 
     @Override
-    public Group createGroup(User user, String description) {
+    public Group createGroup(String description) {
+        User user = getCurrentUser();
+        if (logger.isInfoEnabled()) logger.info("creating group" + description + " for " + user);
         return groupService.createGroup(user, description);
     }
 
     @Override
     public Group saveGroup(Group group) {
-        return  groupService.saveGroup(group);
+        User user = getCurrentUser();
+        if (user.getId().equals(group.getOwnerUserId())) {
+            if (logger.isInfoEnabled()) logger.info("saving group " + group);
+            return  groupService.saveGroup(group);
+        }
+        logger.warn("Security violation. " + user + " attempted to save " + group);
+        return group;
+    }
+
+    @Override
+    public void deleteGroup(Group group) {
+        User user = getCurrentUser();
+        if (user.getId().equals(group.getOwnerUserId())) {
+            if (logger.isInfoEnabled()) logger.info("deleting group " + group);
+            groupService.deleteGroup(group);
+        } else {
+            logger.warn("Security violation. " + user + " attempted to delete " + group);
+        }
     }
 }
