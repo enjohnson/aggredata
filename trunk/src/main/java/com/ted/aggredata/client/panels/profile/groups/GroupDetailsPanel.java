@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
+import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.SmallButton;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
@@ -73,6 +74,8 @@ public class GroupDetailsPanel extends Composite {
     Label custom5FieldError;
     @UiField
     GroupGatewaysPanel groupGatewaysPanel;
+    @UiField
+    CaptionPanel captionPanel;
 
     Group group;
     Integer groupHashCode = 0;
@@ -92,6 +95,8 @@ public class GroupDetailsPanel extends Composite {
     public GroupDetailsPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
+
+        captionPanel.setCaptionHTML("<span style='color:white'>" + DashboardConstants.INSTANCE.groupDetails() + "</span>");
 
         descriptionField.addKeyUpHandler(new KeyUpHandler() {
             @Override

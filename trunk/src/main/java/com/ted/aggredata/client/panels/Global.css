@@ -24,6 +24,18 @@
         background: #000000 url(images/background.jpg) center top no-repeat;
     }
 
+    .captionHeader{
+        color: #FFFFFF;
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        text-align: center;
+        font-size: 10pt;
+        vertical-align: middle;
+        color: #FFFFFF;
+
+    }
+
+
+
     .mainBody {
         padding: 0px !important;
         margin: 0px !important;
@@ -117,14 +129,6 @@
         vertical-align: middle;
     }
 
-    .captionHeader{
-        font-family: Arial, Verdana, Trebuchet, sans-serif;
-        text-align: center;
-        font-size: 10pt;
-        vertical-align: middle;
-        color: #FFFFFF;
-
-    }
 
 
 

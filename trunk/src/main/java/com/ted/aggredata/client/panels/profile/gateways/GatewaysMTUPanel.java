@@ -20,10 +20,12 @@ package com.ted.aggredata.client.panels.profile.gateways;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.ted.aggredata.client.panels.profile.groups.GatewayListRow;
+import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
@@ -46,10 +48,12 @@ public class GatewaysMTUPanel extends Composite {
 
     @UiField
     VerticalPanel mtuListPanel;
+    @UiField
+    CaptionPanel captionPanel;
 
     public GatewaysMTUPanel() {
         initWidget(uiBinder.createAndBindUi(this));
-
+        captionPanel.setCaptionHTML("<span style='color:white'>MTUs</span>");
 
     }
 

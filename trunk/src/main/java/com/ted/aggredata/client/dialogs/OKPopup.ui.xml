@@ -21,7 +21,7 @@
     <ui:style src="../panels/Global.css"/>
 
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
-    <g:CaptionPanel ui:field="captionPanel" width="220px">
+    <g:CaptionPanel ui:field="captionPanel" width="220px" styleName="{style.captionHeader}">
     <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
         <my:widgets.ClearImage width="220px" height="5px"/>
         <g:HorizontalPanel>

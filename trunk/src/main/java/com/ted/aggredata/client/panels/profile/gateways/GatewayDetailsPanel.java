@@ -24,11 +24,9 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.guiService.*;
+import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
@@ -77,6 +75,8 @@ public class GatewayDetailsPanel extends Composite {
     TextBox serialNumberField;
     @UiField
     GatewaysMTUPanel gatewayMTUPanel;
+    @UiField
+    CaptionPanel captionPanel;
 
     Gateway gateway;
     Integer gatewayHashCode = 0;
@@ -93,6 +93,8 @@ public class GatewayDetailsPanel extends Composite {
     public GatewayDetailsPanel()
     {
         initWidget(uiBinder.createAndBindUi(this));
+
+        captionPanel.setCaptionHTML("<span style='color:white'>" + DashboardConstants.INSTANCE.gatewayDetails() + "</span>");
 
         descriptionField.addKeyUpHandler(new KeyUpHandler() {
             @Override
