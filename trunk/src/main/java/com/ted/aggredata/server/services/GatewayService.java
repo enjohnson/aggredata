@@ -132,6 +132,32 @@ public interface GatewayService {
      * @return
      */
     public Integer countByUser(User user);
+
+    /**
+     * Updates the gateway information
+     * @param gateway
+     */
+    public void saveGateway(Gateway gateway);
+
+    /**
+     * Saves an MTU
+     * @param mtu
+     */
+    public void saveMTU(MTU mtu);
+
+    /**
+     * Returns a list of MTUs for the specified gateway
+     * @param gateway
+     * @return
+     */
+    public List<MTU> findMTUByGateway(Gateway gateway);
+
+    /**
+     * Deletes the MTU and its history from the database
+     * @param gateway
+     * @param mtu
+     */
+    public void deleteMTU(Gateway gateway, MTU mtu);
 }
 
 

@@ -22,6 +22,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
+import com.ted.aggredata.model.MTU;
 
 import java.util.List;
 
@@ -43,4 +44,14 @@ public interface GWTGatewayServiceAsync {
     void removeGatewayFromGroup(Group group, Gateway gateway, AsyncCallback<Void> async);
 
     void addGatewayToGroup(Group group, Gateway gateway, AsyncCallback<Void> async);
+
+    void deleteGateway(Gateway gateway, AsyncCallback<Void> async);
+
+    void saveGateway(Gateway gateway, AsyncCallback<Gateway> async);
+
+    void saveMTU(Gateway gateway, MTU mtu, AsyncCallback<MTU> async);
+
+    void findMTU(Gateway gateway, AsyncCallback<List<MTU>> async);
+
+    void deleteMTU(Gateway gateway, MTU mtu, AsyncCallback<Void> async);
 }

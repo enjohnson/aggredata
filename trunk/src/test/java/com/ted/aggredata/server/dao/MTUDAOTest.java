@@ -1,7 +1,6 @@
 package com.ted.aggredata.server.dao;
 
 import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
 import com.ted.aggredata.model.User;
 import com.ted.aggredata.server.util.TestUtil;
@@ -11,8 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml",
@@ -74,7 +71,7 @@ public class MTUDAOTest {
         
         MTU mtu2 = mtuDAO.findById(gateway.getId(), MTU_TEST_ID);
         Assert.assertEquals(mtu2.getId(), mtu.getId());
-        Assert.assertEquals(mtuDAO.getByGateway(gateway).size(), 1);
+        Assert.assertEquals(mtuDAO.findByGateway(gateway).size(), 1);
         
         MTU mtu3 = mtuDAO.findById(gateway.getId(), MTU_TEST_ID);
         mtu3.setDescription(TestUtil.getUniqueKey());

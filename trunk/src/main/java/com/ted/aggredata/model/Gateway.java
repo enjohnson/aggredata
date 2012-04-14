@@ -29,6 +29,12 @@ public class Gateway extends AggredataModel implements Serializable {
     public boolean state;
     public String securityKey;
     public String description;
+    public String custom1;
+    public String custom2;
+    public String custom3;
+    public String custom4;
+    public String custom5;
+
 
     /**
      * the unique location id of the weather location associated with this gateway
@@ -98,6 +104,45 @@ public class Gateway extends AggredataModel implements Serializable {
         this.description = description;
     }
 
+    public String getCustom1() {
+        return custom1;
+    }
+
+    public void setCustom1(String custom1) {
+        this.custom1 = custom1;
+    }
+
+    public String getCustom2() {
+        return custom2;
+    }
+
+    public void setCustom2(String custom2) {
+        this.custom2 = custom2;
+    }
+
+    public String getCustom3() {
+        return custom3;
+    }
+
+    public void setCustom3(String custom3) {
+        this.custom3 = custom3;
+    }
+
+    public String getCustom4() {
+        return custom4;
+    }
+
+    public void setCustom4(String custom4) {
+        this.custom4 = custom4;
+    }
+
+    public String getCustom5() {
+        return custom5;
+    }
+
+    public void setCustom5(String custom5) {
+        this.custom5 = custom5;
+    }
 
     @Override
     public String toString() {
@@ -111,5 +156,20 @@ public class Gateway extends AggredataModel implements Serializable {
         b.append(", description:" + description);
         b.append("}");
         return b.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = weatherLocationId != null ? weatherLocationId.hashCode() : 0;
+        result = 31 * result + (userAccountId != null ? userAccountId.hashCode() : 0);
+        result = 31 * result + (state ? 1 : 0);
+        result = 31 * result + (securityKey != null ? securityKey.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (custom1 != null ? custom1.hashCode() : 0);
+        result = 31 * result + (custom2 != null ? custom2.hashCode() : 0);
+        result = 31 * result + (custom3 != null ? custom3.hashCode() : 0);
+        result = 31 * result + (custom4 != null ? custom4.hashCode() : 0);
+        result = 31 * result + (custom5 != null ? custom5.hashCode() : 0);
+        return result;
     }
 }
