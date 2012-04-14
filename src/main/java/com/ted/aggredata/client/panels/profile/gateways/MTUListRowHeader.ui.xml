@@ -19,13 +19,15 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:my='urn:import:com.ted.aggredata.client'>
     <ui:style src="../../Global.css"/>
-
-    <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
-
-    <g:CaptionPanel captionText="Gateways" width="320px" styleName="{style.captionHeader}">
-        <g:ScrollPanel width="320px" height="200px">
-            <g:VerticalPanel ui:field="gatewayListPanel" horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP"/>
-        </g:ScrollPanel>
-    </g:CaptionPanel>
+        <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
+    <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP" ui:field="mainPanel">
+        <my:widgets.ClearImage width="10" height="1px"/>
+        <g:Label  width="50px" styleName="{style.gridHeader}" text="{txtRes.mtuSerialNumber}"/>
+        <my:widgets.ClearImage width="2" height="1px"/>
+        <g:Label  width="100px" styleName="{style.gridHeader}" text="{txtRes.mtuDescription}"/>
+        <my:widgets.ClearImage width="2" height="1px"/>
+        <g:Label  width="75px" styleName="{style.gridHeader}" text="{txtRes.mtuType}"/>
+        <my:widgets.ClearImage width="65px" height="1px"/>
+    </g:HorizontalPanel>
 
 </ui:UiBinder>

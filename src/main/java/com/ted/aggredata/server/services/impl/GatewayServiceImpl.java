@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Transactional
@@ -144,5 +143,25 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public Integer countByUser(User user) {
         return gatewayDAO.countByUserAccount(user);
+    }
+
+    @Override
+    public void saveGateway(Gateway gateway) {
+        gatewayDAO.save(gateway);
+    }
+
+    @Override
+    public void saveMTU(MTU mtu) {
+        mtuDAO.save(mtu);
+    }
+
+    @Override
+    public List<MTU> findMTUByGateway(Gateway gateway) {
+        return mtuDAO.findByGateway(gateway);
+    }
+
+    @Override
+    public void deleteMTU(Gateway gateway, MTU mtu) {
+        mtuDAO.delete(gateway,  mtu);
     }
 }

@@ -19,23 +19,16 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:my='urn:import:com.ted.aggredata.client'>
     <ui:style src="../../Global.css"/>
-
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
-
-
-    <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
-        <my:widgets.ClearImage width="800" height="1px"/>
-        <g:Label styleName='{style.panelTitleText}' text='{txtRes.gatewaysTitle}'/>
-        <my:widgets.ClearImage width="800" height="3px"/>
-        <g:Label styleName='{style.panelInstructionText}' text='{txtRes.gatewaysInstructions}'/>
-        <my:widgets.ClearImage width="800" height="5px"/>
-        <g:HorizontalPanel>
-            <my:widgets.ClearImage width="20px" height="200px"/>
-            <my:panels.profile.gateways.GatewaySelectionPanel ui:field="gatewaySelectionPanel"/>
-            <my:widgets.ClearImage width="25px" height="200px"/>
-            <my:panels.profile.gateways.GatewayDetailsPanel ui:field="gatewayDetailsPanel"/>
-            <my:widgets.ClearImage width="100px" height="200px"/>
-        </g:HorizontalPanel>
-    </g:VerticalPanel>
+    <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP" ui:field="mainPanel">
+        <my:widgets.ClearImage width="10" height="1px"/>
+        <g:TextBox ui:field="serialNumberField" width="50px" styleName="{style.mtuTypeField}"/>
+        <my:widgets.ClearImage width="2" height="1px"/>
+        <g:TextBox ui:field="descriptionField" width="100px" styleName="{style.mtuTypeField}"/>
+        <my:widgets.ClearImage width="2" height="1px"/>
+        <g:TextBox ui:field="typeField" width="80px" styleName="{style.mtuTypeField}"/>
+        <my:widgets.ClearImage width="4" height="1px"/>
+        <my:widgets.SmallButton ui:field="deleteButton" buttonString="{txtRes.delete}"/>
+    </g:HorizontalPanel>
 
 </ui:UiBinder>

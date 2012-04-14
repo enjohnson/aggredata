@@ -21,6 +21,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
+import com.ted.aggredata.model.MTU;
 
 import java.util.List;
 
@@ -42,8 +43,18 @@ public interface GWTGatewayService extends RemoteService {
      */
     public List<Gateway> findGateways(Group group);
 
+    public List<MTU> findMTU(Gateway gateway);
+
     public void addGatewayToGroup(Group group, Gateway gateway);
 
     public void removeGatewayFromGroup(Group group, Gateway gateway);
+
+    public void deleteGateway(Gateway gateway);
+
+    public Gateway saveGateway(Gateway gateway);
+
+    public MTU saveMTU(Gateway gateway, MTU mtu);
+
+    public void deleteMTU(Gateway gateway, MTU mtu);
 
 }

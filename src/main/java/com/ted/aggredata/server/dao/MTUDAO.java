@@ -82,7 +82,7 @@ public class MTUDAO extends AbstractDAO<MTU> {
      * @param gateway
      * @return
      */
-    public List<MTU> getByGateway(Gateway gateway) {
+    public List<MTU> findByGateway(Gateway gateway) {
         try {
             return getJdbcTemplate().query(GET_BY_GATEWAY_QUERY, new Object[]{gateway.getId()}, getRowMapper());
         } catch (EmptyResultDataAccessException ex) {

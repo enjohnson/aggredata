@@ -20,6 +20,7 @@ package com.ted.aggredata.server.guiServiceImpl;
 import com.ted.aggredata.client.guiService.GWTGatewayService;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
+import com.ted.aggredata.model.MTU;
 import com.ted.aggredata.model.User;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.services.GroupService;
@@ -60,6 +61,12 @@ public class GWTGatewayServiceImpl extends SpringRemoteServiceServlet implements
     }
 
     @Override
+    public List<MTU> findMTU(Gateway gateway) {
+        if (logger.isInfoEnabled()) logger.info("Looking up all mtus for " + gateway);
+        return gatewayService.findMTUByGateway(gateway);
+    }
+
+    @Override
     public void addGatewayToGroup(Group group, Gateway gateway) {
         User user = getCurrentUser();
         if (logger.isInfoEnabled()) logger.info(user + " adding " + gateway + " to " + group);
@@ -73,5 +80,62 @@ public class GWTGatewayServiceImpl extends SpringRemoteServiceServlet implements
         User user = getCurrentUser();
         if (logger.isInfoEnabled()) logger.info(user + " removing " + gateway + " from " + group);
         groupService.removeGatewayFromGroup(user, group, gateway);
+    }
+
+    @Override
+    public void deleteGateway(Gateway gateway) {
+        User user = getCurrentUser();
+        if (user.getId().equals(gateway.getUserAccountId())) {
+            if (logger.isInfoEnabled()) logger.info(user + " deleting " + gateway);
+            gatewayService.deleteGateway(gateway);
+        } else {
+            logger.warn("Access error. " + user + " attempting to delete " + gateway);
+        }
+    }
+
+    @Override
+    public Gateway saveGateway(Gateway gateway) {
+        User user = getCurrentUser();
+        if (user.getId().equals(gateway.getUserAccountId())) {
+            if (logger.isInfoEnabled()) logger.info(user + " deleting " + gateway);
+            gatewayService.saveGateway(gateway);
+        } else {
+            logger.warn("Access error. " + user + " attempting to modify " + gateway);
+        }
+        return gateway;
+    }
+
+    @Override
+    public MTU saveMTU(Gateway gateway, MTU mtu) {
+        User user = getCurrentUser();
+        if (mtu.getGatewayId().equals(gateway.getId())) {
+            if (user.getId().equals(gateway.getUserAccountId())) {
+                if (logger.isInfoEnabled()) logger.info(user + " modifying " + mtu);
+                gatewayService.saveMTU(mtu);
+            } else {
+                logger.warn("Access error. " + user + " attempting to modify " + mtu);
+            }
+        } else {
+            logger.warn("Access error. " + user + " attempting to modify " + mtu + " that does not belong to " + gateway);
+        }
+
+        return mtu;
+
+    }
+
+    @Override
+    public void deleteMTU(Gateway gateway, MTU mtu) {
+        User user = getCurrentUser();
+        if (mtu.getGatewayId().equals(gateway.getId())) {
+            if (user.getId().equals(gateway.getUserAccountId())) {
+                if (logger.isInfoEnabled()) logger.info(user + " deleting " + mtu);
+                gatewayService.deleteMTU(gateway, mtu);
+            } else {
+                logger.warn("Access error. " + user + " attempting to deleting " + mtu);
+            }
+        } else {
+            logger.warn("Access error. " + user + " attempting to delete " + mtu + " that does not belong to " + gateway);
+        }
+
     }
 }

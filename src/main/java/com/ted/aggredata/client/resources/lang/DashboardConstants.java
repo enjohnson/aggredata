@@ -139,4 +139,44 @@ public interface DashboardConstants extends Constants {
     String deleteGroupCantDeleteTitle();
 
     String deleteGroupCantDeleteText();
+
+    String add();
+
+    String delete();
+
+    String yourGroups();
+
+    String yourGateways();
+
+    String deleteGatewayTitle();
+
+    String deleteGatewayMessage();
+
+    String groupDetails();
+
+    String gatewayDetails();
+
+    String gatewaySerialNumber();
+
+    String gatewaySettingsDescription();
+
+    String gatewaySettingsCustom1();
+
+    String gatewaySettingsCustom2();
+
+    String gatewaySettingsCustom3();
+
+    String gatewaySettingsCustom4();
+
+    String gatewaySettingsCustom5();
+
+    String mtuSerialNumber();
+
+    String mtuDescription();
+
+    String mtuType();
+
+    String deleteMTUTitle();
+
+    String deleteMTUMessage();
 }
