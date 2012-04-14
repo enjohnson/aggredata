@@ -22,7 +22,7 @@
 
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
-    <g:CaptionPanel captionText="MTUs" width="320px" styleName="{style.captionHeader}">
+    <g:CaptionPanel ui:field="captionPanel" width="320px" styleName="{style.captionHeader}">
         <g:ScrollPanel width="320px" height="175px">
             <g:VerticalPanel ui:field="mtuListPanel" horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP"/>
         </g:ScrollPanel>

@@ -28,10 +28,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.dialogs.YesNoPopup;
 import com.ted.aggredata.client.events.GatewaySelectedEvent;
 import com.ted.aggredata.client.events.GatewaySelectedHandler;
@@ -57,6 +54,8 @@ public class GatewaySelectionPanel extends Composite {
     SmallButton deleteButton;
     @UiField
     ListBox gatewayListBox;
+    @UiField
+    CaptionPanel captionPanel;
 
     final private HandlerManager handlerManager;
 
@@ -70,6 +69,7 @@ public class GatewaySelectionPanel extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
         handlerManager = new HandlerManager(this);
 
+        captionPanel.setCaptionHTML("<span style='color:white'>" + DashboardConstants.INSTANCE.yourGateways() + "</span>");
 
         gatewayListBox.addChangeHandler(new ChangeHandler() {
             @Override

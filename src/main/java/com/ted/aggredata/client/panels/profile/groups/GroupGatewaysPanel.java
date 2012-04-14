@@ -21,6 +21,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.SmallButton;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
@@ -41,6 +42,8 @@ public class GroupGatewaysPanel extends Composite {
 
     @UiField
     VerticalPanel gatewayListPanel;
+    @UiField
+    CaptionPanel captionPanel;
 
 
     //A list of gateways currently in this group
@@ -49,7 +52,7 @@ public class GroupGatewaysPanel extends Composite {
 
     public GroupGatewaysPanel() {
         initWidget(uiBinder.createAndBindUi(this));
-
+        captionPanel.setCaptionHTML("<span style='color:white'>Gateways</span>");
 
     }
 

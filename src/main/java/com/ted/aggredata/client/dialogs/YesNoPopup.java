@@ -52,7 +52,7 @@ public class YesNoPopup extends PopupPanel {
         setWidget(uiBinder.createAndBindUi(this));
         this.getElement().getStyle().setBorderColor("#c3c1c1");
         this.getElement().getStyle().setBackgroundColor("#1c1c1c");
-        captionPanel.setCaptionText(title);
+        captionPanel.setCaptionHTML("<span style='color:white'>" + title + "</span>");
         messageLabel.setText(text);
 
         this.center();

@@ -22,7 +22,7 @@
 
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
-    <g:CaptionPanel captionText="{txtRes.yourGateways}" width="220px" styleName="{style.captionHeader}">
+    <g:CaptionPanel ui:field="captionPanel" width="220px" styleName="{style.captionHeader}">
     <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
         <g:ListBox width="200px"  ui:field="gatewayListBox" visibleItemCount="25" styleName="{style.formListBox}"/>
         <my:widgets.ClearImage width="220px" height="5px"/>
