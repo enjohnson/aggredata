@@ -79,12 +79,13 @@ public class GatewayDAO extends AbstractDAO<Gateway> {
                     gateway.getUserAccountId(),
                     gateway.getState(),
                     gateway.getSecurityKey(),
+                    gateway.description,
                     gateway.getCustom1(),
                     gateway.getCustom2(),
                     gateway.getCustom3(),
                     gateway.getCustom4(),
-                    gateway.getCustom5(),
-                    gateway.description);
+                    gateway.getCustom5()
+                    );
             return findById(gateway.getId());
         } else {
             logger.error("Gateway with serial number " + Long.toHexString(gateway.getId()) + " already exists in the database:" + gateway);
