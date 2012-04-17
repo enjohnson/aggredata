@@ -217,4 +217,12 @@ public interface DashboardConstants extends Constants {
     String sideBarDateHeader();
 
     String sideBarDateDetails();
+
+    String startDate();
+
+    String endDate();
+
+    String sideBarTypeHeader();
+
+    String sideBarTypeDetails();
 }

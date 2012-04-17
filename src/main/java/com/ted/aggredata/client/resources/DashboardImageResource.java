@@ -68,4 +68,7 @@ public interface DashboardImageResource extends ClientBundle {
     @Source("images/gatewayactsample.jpg")
     ImageResource gatewayActivationSample();
 
+    @Source("images/sideDivider.png")
+    ImageResource sideDivider();
+
 }

@@ -18,11 +18,24 @@
 package com.ted.aggredata.client.panels.side;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
+
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.DateBox;
 
+import com.ted.aggredata.client.events.DateRangeSelectedEvent;
+import com.ted.aggredata.client.events.DateRangeSelectedHandler;
+
+
+import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -36,10 +49,74 @@ public class DateSelectionWidget extends Composite {
     static Logger logger = Logger.getLogger(GraphSidePanel.class.toString());
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
+    private static DateBox.DefaultFormat dateBoxFormat = new DateBox.DefaultFormat(DateTimeFormat.getFormat("MM/dd/yyyy"));
+
     final private HandlerManager handlerManager;
+    @UiField
+    DateBox startDateBox;
+    @UiField
+    DateBox endDateBox;
+
+    Date lastStartDate;
+    Date lastEndDate;
 
     public DateSelectionWidget() {
         initWidget(uiBinder.createAndBindUi(this));
         handlerManager = new HandlerManager(this);
+        startDateBox.setFormat(dateBoxFormat);
+        endDateBox.setFormat(dateBoxFormat);
+
+
+        startDateBox.addValueChangeHandler(new ValueChangeHandler<Date>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Date> dateValueChangeEvent) {
+                lastStartDate = dateValueChangeEvent.getValue();
+
+                if (lastStartDate.after(lastEndDate)) {
+                    lastEndDate = lastStartDate;
+                    endDateBox.setValue(lastEndDate);
+                }
+
+                if (logger.isLoggable(Level.FINE)) logger.fine("Firing Date Range Selector for " + lastStartDate + " to " + lastEndDate);
+                handlerManager.fireEvent(new DateRangeSelectedEvent(lastStartDate, lastEndDate));
+            }
+        });
+
+        endDateBox.addValueChangeHandler(new ValueChangeHandler<Date>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Date> dateValueChangeEvent) {
+                lastEndDate = dateValueChangeEvent.getValue();
+                if (lastStartDate.after(lastEndDate)) {
+                    lastEndDate = lastStartDate;
+                    endDateBox.setValue(lastEndDate);
+                }
+                if (logger.isLoggable(Level.FINE)) logger.fine("Firing Date Range Selector for " + lastStartDate + " to " + lastEndDate);
+                handlerManager.fireEvent(new DateRangeSelectedEvent(lastStartDate, lastEndDate));
+            }
+        });
+
+    }
+
+    public void setStartDate(Date startDate) {
+        startDateBox.setValue(startDate);
+        lastStartDate = startDate;
+    }
+
+    public Date getStartDate() {
+        return lastStartDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        endDateBox.setValue(endDate);
+        lastEndDate = endDate;
+    }
+
+    public Date getEndDate() {
+        return lastEndDate;
+    }
+
+
+    public HandlerRegistration addDateRangeSelectedHandler(DateRangeSelectedHandler handler) {
+        return handlerManager.addHandler(DateRangeSelectedEvent.TYPE, handler);
     }
 }

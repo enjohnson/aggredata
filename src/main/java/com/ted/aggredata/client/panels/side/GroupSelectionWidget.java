@@ -18,21 +18,15 @@
 package com.ted.aggredata.client.panels.side;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Tree;
-import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.events.GroupSelectedEvent;
 import com.ted.aggredata.client.events.GroupSelectedHandler;
-import com.ted.aggredata.client.guiService.GWTGroupService;
-import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
-import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.model.Group;
 
 import java.util.List;
@@ -49,46 +43,56 @@ public class GroupSelectionWidget extends Composite {
     static Logger logger = Logger.getLogger(GraphSidePanel.class.toString());
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-    final GWTGroupServiceAsync groupService = (GWTGroupServiceAsync) GWT.create(GWTGroupService.class);
-
+    private HandlerManager handlerManager = null;
     @UiField
-    Tree groupTree;
+    VerticalPanel groupPanel;
+    @UiField
+    ScrollPanel scrollPanel;
 
-    List<Group> groupList;
-    final private HandlerManager handlerManager;
+    Group selectedGroup;
 
     public GroupSelectionWidget() {
         initWidget(uiBinder.createAndBindUi(this));
         handlerManager = new HandlerManager(this);
-        groupTree.clear();
+        groupPanel.clear();
 
-        //TODO: Add gateways as leafs under the groups so that they can be individually selectable
-        groupService.findGroups(new TEDAsyncCallback<List<Group>>() {
-            @Override
-            public void onSuccess(List<Group> groups) {
-                for (Group group : groups) {
-                    groupList = groups;
-                    TreeItem groupTreeItem = new GroupTreeItem(group);
-                    groupTree.addItem(groupTreeItem);
 
+
+
+
+    }
+
+    public void setGroups(List<Group> groups, Group selectedGroup) {
+        groupPanel.clear();
+        for (final Group group : groups) {
+
+            if (groups.size() > 1) scrollPanel.setHeight("200px");
+
+            RadioButton radioButton = new RadioButton("radioGroup", group.getDescription());
+            groupPanel.add(radioButton);
+
+            //Set the default value
+            if (selectedGroup.getId().equals(group.getId())) radioButton.setValue(true);
+            this.selectedGroup = selectedGroup;
+
+            //Add the click handler
+            radioButton.addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(ClickEvent clickEvent) {
+                    selectGroup(group);
                 }
-            }
-        });
+            });
+        }
+    }
 
-        groupTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
-            @Override
-            public void onSelection(SelectionEvent<TreeItem> treeItemSelectionEvent) {
-                logger.fine("tree item selected");
-                TreeItem treeItem = treeItemSelectionEvent.getSelectedItem();
-                if (treeItem instanceof GroupTreeItem) {
-                    GroupTreeItem groupTreeItem = (GroupTreeItem) treeItem;
-                    logger.fine("group selected " + groupTreeItem.getGroup());
-                    handlerManager.fireEvent(new GroupSelectedEvent(groupTreeItem.getGroup()));
-                }
-            }
-        });
+    private Group getValue() {
+        return selectedGroup;
+    }
 
-
+    private void selectGroup(Group group) {
+        this.selectedGroup = group;
+        logger.fine("Group selected: " + group);
+        handlerManager.fireEvent(new GroupSelectedEvent(group));
     }
 
     public HandlerRegistration addGroupSelectedHandler(GroupSelectedHandler handler) {

@@ -25,15 +25,13 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.ted.aggredata.client.Aggredata;
-import com.ted.aggredata.client.events.MenuClickedEvent;
-import com.ted.aggredata.client.events.MenuClickedHandler;
-import com.ted.aggredata.client.events.TabClickedEvent;
-import com.ted.aggredata.client.events.TabClickedHandler;
+import com.ted.aggredata.client.events.*;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.guiService.UserSessionService;
 import com.ted.aggredata.client.guiService.UserSessionServiceAsync;
 import com.ted.aggredata.client.panels.admin.system.ServerPanel;
 import com.ted.aggredata.client.panels.admin.user.UserPanel;
+import com.ted.aggredata.client.panels.graph.GraphOptionChangeable;
 import com.ted.aggredata.client.panels.graph.day.DayPanel;
 import com.ted.aggredata.client.panels.graph.hour.HourPanel;
 import com.ted.aggredata.client.panels.graph.minute.MinutePanel;
@@ -72,8 +70,21 @@ public class MainPanel extends Composite {
     final DashboardTabPanel graphDashboardPanel;
     final DashboardTabPanel profileDashboardPanel;
     final DashboardTabPanel systemAdministrationDashboardPanel;
+    final GraphSidePanel graphSidePanel;
 
     DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
+
+    //Event handler if any of the left hand side graphing options have changed
+    GraphOptionsChangedHandler graphOptionsChangedHandler = new GraphOptionsChangedHandler() {
+        @Override
+        public void onGraphingOptionsChanged(GraphOptionsChangedEvent event) {
+               if (contentPanel.getWidget(0) instanceof GraphOptionChangeable) {
+                   GraphOptionChangeable graphOptionChangeable = (GraphOptionChangeable) contentPanel.getWidget(0);
+                   graphOptionChangeable.onGraphOptionChange(event.getGroup(), event.getStartDate(), event.getEndDate(), event.getGraphType());
+               }
+        }
+    };
+
 
     public MainPanel() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -81,6 +92,9 @@ public class MainPanel extends Composite {
         graphDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.month(), dashboardConstants.day(), dashboardConstants.hour(), dashboardConstants.minute()});
         profileDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.accountSettings(), dashboardConstants.accountGroups(), dashboardConstants.accountTEDS(), dashboardConstants.accountActivate()});
         systemAdministrationDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.systemUsers(), dashboardConstants.systemServer()});
+        graphSidePanel = new GraphSidePanel();
+        graphSidePanel.addGraphOptionsChangedHandler(graphOptionsChangedHandler);
+
 
 
         //Redirect the user to the gateway page if there are not gateways assigned to the system
@@ -95,7 +109,8 @@ public class MainPanel extends Composite {
             graphDashboardPanel.setSelectedTab(0);
             tabNavigationPanel.add(graphDashboardPanel, 0, 0);
             contentPanel.add(new MonthPanel());
-            sidePanel.add(new GraphSidePanel(), 0, 0);
+            sidePanel.add(graphSidePanel, 0, 0);
+            graphSidePanel.reset();
         }
 
 
@@ -113,7 +128,8 @@ public class MainPanel extends Composite {
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ENERGY) {
                     tabNavigationPanel.add(graphDashboardPanel, 0, 0);
                     contentPanel.add(new MonthPanel());
-                    sidePanel.add(new GraphSidePanel(), 0, 0);
+                    sidePanel.add(graphSidePanel, 0, 0);
+                    graphSidePanel.reset();
                     graphDashboardPanel.setSelectedTab(0);
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.PROFILE) {
                     tabNavigationPanel.add(profileDashboardPanel, 0, 0);

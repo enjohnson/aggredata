@@ -35,7 +35,7 @@
     <entry-point class='com.ted.aggredata.client.Aggredata'/>
 
     <extend-property name="locale" values="en"/>
-    <!--<set-property-fallback name="locale" value="en"/>-->
+
 
     <servlet path='/UserSessionService' class=' com.ted.aggredata.server.guiServiceImpl.UserSessionServiceImpl'/>
     <servlet path='/GWTUserService' class=' com.ted.aggredata.server.guiServiceImpl.GWTUserServiceImpl'/>
