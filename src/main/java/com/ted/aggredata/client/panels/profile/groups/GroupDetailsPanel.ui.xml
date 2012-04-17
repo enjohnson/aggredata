@@ -23,14 +23,14 @@
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
     <g:CaptionPanel ui:field="captionPanel" width="220px" styleName="{style.captionHeader}">
-    <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
+        <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
             <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10" height="1px"/>
                 <g:Label styleName='{style.formLabel}' text='{txtRes.groupSettingsDescription}' width="120px"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
                 <g:TextBox ui:field="descriptionField" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:Label ui:field="descriptionFieldError" styleName="{style.formError}" width="80px"  />
+                <g:Label ui:field="descriptionFieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
             <my:widgets.ClearImage width="2" height="5"/>
@@ -39,9 +39,9 @@
                 <my:widgets.ClearImage width="10" height="1px"/>
                 <g:Label styleName='{style.formLabel}' text='{txtRes.groupSettingsCustom1}' width="120px"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:TextBox ui:field="custom1Field" width="150px" styleName="{style.formField}" />
+                <g:TextBox ui:field="custom1Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:Label ui:field="custom1FieldError" styleName="{style.formError}" width="80px" />
+                <g:Label ui:field="custom1FieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
             <my:widgets.ClearImage width="2" height="5"/>
@@ -50,9 +50,9 @@
                 <my:widgets.ClearImage width="10" height="1px"/>
                 <g:Label styleName='{style.formLabel}' text='{txtRes.groupSettingsCustom2}' width="120px"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:TextBox ui:field="custom2Field" width="150px"  styleName="{style.formField}"/>
+                <g:TextBox ui:field="custom2Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:Label ui:field="custom2FieldError" styleName="{style.formError}" width="80px" />
+                <g:Label ui:field="custom2FieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
             <my:widgets.ClearImage width="2" height="5"/>
@@ -61,9 +61,9 @@
                 <my:widgets.ClearImage width="10" height="1px"/>
                 <g:Label styleName='{style.formLabel}' text='{txtRes.groupSettingsCustom3}' width="120px"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:TextBox ui:field="custom3Field" width="150px"  styleName="{style.formField}"/>
+                <g:TextBox ui:field="custom3Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:Label ui:field="custom3FieldError" styleName="{style.formError}" width="80px" />
+                <g:Label ui:field="custom3FieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
             <my:widgets.ClearImage width="2" height="5"/>
@@ -72,9 +72,9 @@
                 <my:widgets.ClearImage width="10" height="1px"/>
                 <g:Label styleName='{style.formLabel}' text='{txtRes.groupSettingsCustom4}' width="120px"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:TextBox ui:field="custom4Field" width="150px" styleName="{style.formField}" />
+                <g:TextBox ui:field="custom4Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:Label ui:field="custom4FieldError" styleName="{style.formError}" width="80px" />
+                <g:Label ui:field="custom4FieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
             <my:widgets.ClearImage width="2" height="5"/>
@@ -83,9 +83,9 @@
                 <my:widgets.ClearImage width="10" height="1px"/>
                 <g:Label styleName='{style.formLabel}' text='{txtRes.groupSettingsCustom5}' width="120px"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:TextBox ui:field="custom5Field" width="150px"  styleName="{style.formField}"/>
+                <g:TextBox ui:field="custom5Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:Label ui:field="custom5FieldError" styleName="{style.formError}" width="80px" />
+                <g:Label ui:field="custom5FieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
             <my:widgets.ClearImage width="2" height="5"/>
@@ -93,8 +93,7 @@
             <my:panels.profile.groups.GroupGatewaysPanel ui:field="groupGatewaysPanel"/>
 
 
-            
-    </g:VerticalPanel>
+        </g:VerticalPanel>
     </g:CaptionPanel>
 
 </ui:UiBinder>

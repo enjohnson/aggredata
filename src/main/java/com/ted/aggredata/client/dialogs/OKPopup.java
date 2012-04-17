@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 public class OKPopup extends PopupPanel {
 
     static Logger logger = Logger.getLogger(OKPopup.class.toString());
+
     interface MyUiBinder extends UiBinder<Widget, OKPopup> {
     }
 
@@ -42,9 +43,12 @@ public class OKPopup extends PopupPanel {
     int value = 0;
     public static int OK = 1;
 
-    @UiField CaptionPanel captionPanel;
-    @UiField Label messageLabel;
-    @UiField SmallButton okButton;
+    @UiField
+    CaptionPanel captionPanel;
+    @UiField
+    Label messageLabel;
+    @UiField
+    SmallButton okButton;
 
 
     public OKPopup(String title, String text) {

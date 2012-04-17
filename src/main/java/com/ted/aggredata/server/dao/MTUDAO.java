@@ -17,7 +17,6 @@
 
 package com.ted.aggredata.server.dao;
 
-import com.ted.aggredata.model.EnergyData;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.MTU;
 import org.apache.commons.lang.NotImplementedException;
@@ -36,8 +35,8 @@ public class MTUDAO extends AbstractDAO<MTU> {
 
     @Autowired
     EnergyDataDAO energyDataDAO;
-    
-    
+
+
     public static String DELETE_MTU_QUERY = "delete from aggredata.mtu where id=? and gatewayId=?";
     public static String CREATE_MTU_QUERY = "insert into aggredata.mtu (id, gatewayId,  type, description) values (?,?,?,?)";
     public static String SAVE_MTU_QUERY = "update aggredata.mtu set gatewayId=?, type=?, description=? where id=? and gatewayId=?";
@@ -59,7 +58,7 @@ public class MTUDAO extends AbstractDAO<MTU> {
         }
     };
 
-    public MTU create(Gateway gateway, MTU newMTU){
+    public MTU create(Gateway gateway, MTU newMTU) {
         MTU mtu = findById(gateway.getId(), newMTU.getId());
         if (mtu == null) {
             if (logger.isDebugEnabled()) logger.debug("creating new mtu " + newMTU);
@@ -72,7 +71,7 @@ public class MTUDAO extends AbstractDAO<MTU> {
 
     public void save(MTU mtu) {
         if (logger.isDebugEnabled()) logger.debug("saving  mtu " + mtu);
-        getJdbcTemplate().update(SAVE_MTU_QUERY, mtu.getGatewayId(),  mtu.getType().ordinal(), mtu.getDescription(), mtu.getId(), mtu.getGatewayId());
+        getJdbcTemplate().update(SAVE_MTU_QUERY, mtu.getGatewayId(), mtu.getType().ordinal(), mtu.getDescription(), mtu.getId(), mtu.getGatewayId());
     }
 
 
@@ -111,8 +110,8 @@ public class MTUDAO extends AbstractDAO<MTU> {
     }
 
 
-    public MTU findById(Long gatewayId, Long mtuId){
-      try {
+    public MTU findById(Long gatewayId, Long mtuId) {
+        try {
             return getJdbcTemplate().queryForObject(FIND_BY_ID_QUERY, new Object[]{gatewayId, mtuId}, getRowMapper());
         } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");

@@ -28,10 +28,8 @@ import com.ted.aggredata.client.guiService.GWTGatewayService;
 import com.ted.aggredata.client.guiService.GWTGatewayServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.Group;
 
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GatewaysPanel extends Composite {
@@ -42,6 +40,7 @@ public class GatewaysPanel extends Composite {
 
     interface MyUiBinder extends UiBinder<Widget, GatewaysPanel> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     @UiField
     GatewayDetailsPanel gatewayDetailsPanel;
@@ -50,8 +49,7 @@ public class GatewaysPanel extends Composite {
 
     List<Gateway> gatewayList;
 
-    public GatewaysPanel()
-    {
+    public GatewaysPanel() {
         initWidget(uiBinder.createAndBindUi(this));
 
         gatewayDetailsPanel.setEnabled(false);

@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * Single entry of power com.ted.aggredata.dao
  */
-public class EnergyData  implements Serializable {
+public class EnergyData implements Serializable {
     private Long gatewayId;
     private Long mtuId;
     private Integer timestamp;

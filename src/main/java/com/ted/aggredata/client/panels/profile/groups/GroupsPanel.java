@@ -21,13 +21,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.ted.aggredata.client.Aggredata;
 import com.ted.aggredata.client.events.GroupSelectedEvent;
 import com.ted.aggredata.client.events.GroupSelectedHandler;
 import com.ted.aggredata.client.guiService.*;
-import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 
@@ -41,6 +38,7 @@ public class GroupsPanel extends Composite {
 
     interface MyUiBinder extends UiBinder<Widget, GroupsPanel> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     @UiField
     GroupDetailsPanel groupDetailsPanel;
@@ -55,9 +53,7 @@ public class GroupsPanel extends Composite {
     List<Gateway> gatewayList;
 
 
-
-    public GroupsPanel()
-    {
+    public GroupsPanel() {
         initWidget(uiBinder.createAndBindUi(this));
         groupDetailsPanel.setEnabled(false);
 
@@ -83,7 +79,7 @@ public class GroupsPanel extends Composite {
                 gatewayList = gateways;
                 //Load the groups for the user and populate the listbox
                 logger.fine("Looking up groups");
-                groupService.findGroups( new TEDAsyncCallback<List<Group>>() {
+                groupService.findGroups(new TEDAsyncCallback<List<Group>>() {
                     @Override
                     public void onSuccess(List<Group> groups) {
                         if (logger.isLoggable(Level.INFO)) logger.info("Found " + groups.size() + groups);

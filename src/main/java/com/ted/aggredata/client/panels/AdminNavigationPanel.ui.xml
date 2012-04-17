@@ -22,7 +22,7 @@
     <g:VerticalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
         <g:HorizontalPanel>
 
-            <g:Label styleName="{style.helloText}" ui:field="helloLabel" />
+            <g:Label styleName="{style.helloText}" ui:field="helloLabel"/>
             <my:widgets.ClearImage width="3px" height="1px"/>
             <g:Label styleName="{style.helloTextName}" ui:field="usernameLabel"/>
         </g:HorizontalPanel>

@@ -17,8 +17,6 @@
 
 package com.ted.aggredata.server.dao;
 
-import com.ted.aggredata.model.AggredataModel;
-import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
 import org.slf4j.Logger;
@@ -52,7 +50,6 @@ public class GroupDAO extends AbstractDAO<Group> {
     public static String REMOVE_GROUP_FROM_GATEWAYGROUP_QUERY = "delete from aggredata.gatewaygroup where groupId=?";
 
 
-
     public GroupDAO() {
         super("aggredata.group");
     }
@@ -73,8 +70,9 @@ public class GroupDAO extends AbstractDAO<Group> {
         }
     };
 
-    /***
+    /**
      * Returns the group for the particular user but only if they are the owner.
+     *
      * @param user
      * @param description
      * @return
@@ -89,8 +87,9 @@ public class GroupDAO extends AbstractDAO<Group> {
     }
 
 
-    /***
+    /**
      * Creates a new group for the specified user.
+     *
      * @param user
      * @param description
      * @return
@@ -103,12 +102,12 @@ public class GroupDAO extends AbstractDAO<Group> {
             group.setOwnerUserId(user.getId());
             group.setRole(Group.Role.OWNER);
             getJdbcTemplate().update(CREATE_GROUP_QUERY, group.getOwnerUserId(),
-                                                         group.getDescription(),
-                                                         group.getCustom1(),
-                                                         group.getCustom2(),
-                                                         group.getCustom3(),
-                                                         group.getCustom4(),
-                                                         group.getCustom5());
+                    group.getDescription(),
+                    group.getCustom1(),
+                    group.getCustom2(),
+                    group.getCustom3(),
+                    group.getCustom4(),
+                    group.getCustom5());
 
             //Add the user/group mapping to the database join table/
             Group newGroup = getOwnedGroup(user, group.getDescription());
@@ -121,13 +120,13 @@ public class GroupDAO extends AbstractDAO<Group> {
 
     public void save(Group group) {
         getJdbcTemplate().update(SAVE_GROUP_QUERY, group.getOwnerUserId(),
-                                                   group.getDescription(),
-                                                   group.getCustom1(),
-                                                   group.getCustom2(),
-                                                   group.getCustom3(),
-                                                   group.getCustom4(),
-                                                   group.getCustom5(),
-                                                   group.getId());
+                group.getDescription(),
+                group.getCustom1(),
+                group.getCustom2(),
+                group.getCustom3(),
+                group.getCustom4(),
+                group.getCustom5(),
+                group.getId());
     }
 
     /**
@@ -137,7 +136,7 @@ public class GroupDAO extends AbstractDAO<Group> {
      * @param group
      */
     public void removeGroupMembership(User user, Group group) {
-        if (logger.isDebugEnabled()) logger.debug("removing " + user  + " from " + group);
+        if (logger.isDebugEnabled()) logger.debug("removing " + user + " from " + group);
         getJdbcTemplate().update(REMOVE_GROUP_MEMBERSHIP_QUERY, user.getId(), group.getId());
     }
 
@@ -191,9 +190,6 @@ public class GroupDAO extends AbstractDAO<Group> {
         logger.debug("Deleting group");
         getJdbcTemplate().update(DELETE_GROUP_QUERY, new Object[]{group.getId()});
     }
-
-
-
 
 
     @Override

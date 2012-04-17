@@ -18,32 +18,22 @@
 package com.ted.aggredata.server.guiServiceImpl;
 
 import com.ted.aggredata.client.guiService.GWTUserService;
-import com.ted.aggredata.client.guiService.UserSessionService;
-import com.ted.aggredata.model.GlobalPlaceholder;
-import com.ted.aggredata.model.ServerInfo;
 import com.ted.aggredata.model.User;
-import com.ted.aggredata.server.services.GatewayService;
-import com.ted.aggredata.server.services.GroupService;
 import com.ted.aggredata.server.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GWTUserService {
 
     @Autowired
     UserService userService;
-    
+
     Logger logger = LoggerFactory.getLogger(GWTUserServiceImpl.class);
     public static final String USER_SESSION_KEY = "AGGREDATA_USER";
 
     @Override
-    public User saveUser(User user){
+    public User saveUser(User user) {
         logger.info("Saving user information");
         getThreadLocalRequest().getSession().removeAttribute(USER_SESSION_KEY);
         user = userService.saveUser(user);
@@ -52,8 +42,7 @@ public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GW
     }
 
     @Override
-    public User changePassword(User user, String Password)
-    {
+    public User changePassword(User user, String Password) {
         logger.info("Updating Password");
         getThreadLocalRequest().getSession().removeAttribute(USER_SESSION_KEY);
         userService.changePassword(user, Password);

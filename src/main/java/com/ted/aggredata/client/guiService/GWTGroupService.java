@@ -19,9 +19,7 @@ package com.ted.aggredata.client.guiService;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
-import com.ted.aggredata.model.User;
 
 import java.util.List;
 
@@ -33,6 +31,7 @@ public interface GWTGroupService extends RemoteService {
 
     /**
      * Finds groups for the specific user
+     *
      * @return
      */
     public List<Group> findGroups();
@@ -55,8 +54,6 @@ public interface GWTGroupService extends RemoteService {
      * Delete Group
      */
     public void deleteGroup(Group group);
-
-
 
 
 }

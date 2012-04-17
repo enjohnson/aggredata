@@ -18,14 +18,13 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
         >
-    <ui:style src="../../Global.css"/>
-
+    <ui:style src="../Global.css"/>
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
-    <g:CaptionPanel ui:field="captionPanel" width="320px" styleName="{style.captionHeader}">
-        <g:ScrollPanel width="320px" height="200px">
-            <g:VerticalPanel ui:field="gatewayListPanel" horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP"/>
-        </g:ScrollPanel>
-    </g:CaptionPanel>
+    <g:VerticalPanel>
+        <g:Label width="180px" styleName="{style.sideBarHeader}" text="{txtRes.sideBarDateHeader}"/>
+        <g:Label width="180px" styleName="{style.sideBarInstructions}" text="{txtRes.sideBarDateDetails}"/>
+    </g:VerticalPanel>
+
 
 </ui:UiBinder>

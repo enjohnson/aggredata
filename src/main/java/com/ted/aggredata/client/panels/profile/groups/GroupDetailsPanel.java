@@ -29,12 +29,10 @@ import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
-import com.ted.aggredata.client.widgets.SmallButton;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +45,7 @@ public class GroupDetailsPanel extends Composite {
 
     interface MyUiBinder extends UiBinder<Widget, GroupDetailsPanel> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     @UiField
     TextBox descriptionField;
@@ -84,7 +83,6 @@ public class GroupDetailsPanel extends Composite {
     List<Gateway> groupGatewayList = new ArrayList<Gateway>();
 
 
-
     ChangeHandler saveChangeHanlder = new ChangeHandler() {
         @Override
         public void onChange(ChangeEvent changeEvent) {
@@ -92,8 +90,7 @@ public class GroupDetailsPanel extends Composite {
         }
     };
 
-    public GroupDetailsPanel()
-    {
+    public GroupDetailsPanel() {
         initWidget(uiBinder.createAndBindUi(this));
 
         captionPanel.setCaptionHTML("<span style='color:white'>" + DashboardConstants.INSTANCE.groupDetails() + "</span>");
@@ -122,10 +119,10 @@ public class GroupDetailsPanel extends Composite {
 
     /**
      * Sets all the fields of this panel to be enabled or disabled
+     *
      * @param enabled
      */
-    public void setEnabled(boolean enabled)
-    {
+    public void setEnabled(boolean enabled) {
 
         descriptionField.setEnabled(enabled);
         custom1Field.setEnabled(enabled);
@@ -138,7 +135,7 @@ public class GroupDetailsPanel extends Composite {
     }
 
 
-    public boolean validate(){
+    public boolean validate() {
         boolean valid = true;
         descriptionFieldError.setText("");
 
@@ -148,8 +145,8 @@ public class GroupDetailsPanel extends Composite {
             descriptionFieldError.setText("Required");
         }
 
-        for (Group g:groupList){
-            if (!g.getId().equals(group.getId()) && g.getDescription().toLowerCase().equals(descriptionField.getText().trim().toLowerCase())){
+        for (Group g : groupList) {
+            if (!g.getId().equals(group.getId()) && g.getDescription().toLowerCase().equals(descriptionField.getText().trim().toLowerCase())) {
                 valid = false;
                 descriptionFieldError.setText("Already Used");
             }
@@ -158,17 +155,15 @@ public class GroupDetailsPanel extends Composite {
         return valid;
     }
 
-    private void doSave()
-    {
-        if (validate())
-        {
+    private void doSave() {
+        if (validate()) {
             group.setDescription(descriptionField.getText().trim());
             group.setCustom1(custom1Field.getText().trim());
             group.setCustom2(custom2Field.getText().trim());
             group.setCustom3(custom3Field.getText().trim());
             group.setCustom4(custom4Field.getText().trim());
             group.setCustom5(custom5Field.getText().trim());
-            if (group.hashCode() != groupHashCode){
+            if (group.hashCode() != groupHashCode) {
                 logger.info("Group is dirty. Saving " + group);
                 groupService.saveGroup(group, new TEDAsyncCallback<Group>() {
                     @Override
@@ -180,10 +175,9 @@ public class GroupDetailsPanel extends Composite {
         }
     }
 
-    public void setGroup(Group group, List<Gateway> groupGatewayList)
-    {
+    public void setGroup(Group group, List<Gateway> groupGatewayList) {
         if (logger.isLoggable(Level.FINE)) logger.fine("Setting group " + group);
-        setEnabled(group!=null);
+        setEnabled(group != null);
         descriptionField.setValue(group.getDescription());
         custom1Field.setValue(group.getCustom1());
         custom2Field.setValue(group.getCustom2());

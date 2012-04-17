@@ -17,12 +17,7 @@
 
 package com.ted.aggredata.client.widgets;
 
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiConstructor;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Image;
 import com.ted.aggredata.client.resources.DashboardImageResource;
 
 /**
@@ -30,9 +25,9 @@ import com.ted.aggredata.client.resources.DashboardImageResource;
  */
 public class SmallButton extends TEDButton {
 
-    public @UiConstructor
-    SmallButton(String buttonString)
-    {
-        super(DashboardImageResource.INSTANCE.smallButton(), buttonString, "65px", "20px", "smallButtonTextStyle", 4 );
+    public
+    @UiConstructor
+    SmallButton(String buttonString) {
+        super(DashboardImageResource.INSTANCE.smallButton(), buttonString, "65px", "20px", "smallButtonTextStyle", 4);
     }
 }

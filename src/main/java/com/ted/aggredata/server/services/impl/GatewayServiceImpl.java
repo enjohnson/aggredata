@@ -18,7 +18,10 @@
 package com.ted.aggredata.server.services.impl;
 
 import com.ted.aggredata.model.*;
-import com.ted.aggredata.server.dao.*;
+import com.ted.aggredata.server.dao.EnergyDataDAO;
+import com.ted.aggredata.server.dao.GatewayDAO;
+import com.ted.aggredata.server.dao.GroupDAO;
+import com.ted.aggredata.server.dao.MTUDAO;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.util.KeyGenerator;
 import org.slf4j.Logger;
@@ -37,7 +40,7 @@ public class GatewayServiceImpl implements GatewayService {
     @Autowired
     protected GroupDAO groupDAO;
 
-    
+
     @Autowired
     protected MTUDAO mtuDAO;
 
@@ -53,9 +56,9 @@ public class GatewayServiceImpl implements GatewayService {
         gateway.setUserAccountId(userAccount.getId());
         gateway.setDescription(description);
         gateway.setState(true);
-        try{
-            gateway = gatewayDAO.create(gateway);    
-        } catch (Exception ex){
+        try {
+            gateway = gatewayDAO.create(gateway);
+        } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             return null;
         }
@@ -70,11 +73,10 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
 
-
     public MTU addMTU(Gateway gateway, String mtuSerialNumber, MTU.MTUType type, String description) {
         if (logger.isInfoEnabled()) logger.info("Adding MTU " + mtuSerialNumber + " to " + gateway);
         MTU mtu = new MTU();
-        mtu.setId(Long.parseLong(mtuSerialNumber,16));
+        mtu.setId(Long.parseLong(mtuSerialNumber, 16));
         mtu.setDescription(description);
         mtu.setType(type);
         mtu.setGatewayId(gateway.getId());
@@ -116,7 +118,7 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public MTU getMTU(Gateway gateway, Long mtuId) {
         MTU mtu = mtuDAO.findById(gateway.getId(), mtuId);
-        if (mtu==null) return null;
+        if (mtu == null) return null;
         if (mtu.getGatewayId().equals(gateway.getId())) return mtu;
         if (logger.isDebugEnabled()) logger.debug("MTU " + Long.toHexString(mtuId) + " does not belong to gateway " + gateway);
         return null;
@@ -162,6 +164,6 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Override
     public void deleteMTU(Gateway gateway, MTU mtu) {
-        mtuDAO.delete(gateway,  mtu);
+        mtuDAO.delete(gateway, mtu);
     }
 }

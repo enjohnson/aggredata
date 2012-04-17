@@ -17,7 +17,6 @@
 
 package com.ted.aggredata.server.dao;
 
-import com.ted.aggredata.model.AggredataModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +71,6 @@ public abstract class AbstractDAO<T> {
         }
         return jdbcTemplate;
     }
-
 
 
 }

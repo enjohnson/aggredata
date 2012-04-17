@@ -19,7 +19,6 @@ package com.ted.aggredata.server.dao;
 
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
-import com.ted.aggredata.model.MTU;
 import com.ted.aggredata.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -150,9 +149,8 @@ public class UserDAO extends AbstractDAO<User> {
         //We need to remove all data associated with the user.
 
         List<Gateway> gatewayList = gatewayDAO.findByUserAccount(user);
-        List<Group> groupList =  groupDAO.findGroupsByUser(user);
-        for (Group group : groupList)
-        {
+        List<Group> groupList = groupDAO.findGroupsByUser(user);
+        for (Group group : groupList) {
             if (group.getRole() == Group.Role.OWNER) {
                 groupDAO.delete(group);
             } else {
@@ -169,6 +167,7 @@ public class UserDAO extends AbstractDAO<User> {
 
     /**
      * Checks to see if an activation key is already assigned to a user
+     *
      * @param key
      * @return
      */

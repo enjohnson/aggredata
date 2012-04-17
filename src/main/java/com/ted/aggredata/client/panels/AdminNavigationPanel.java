@@ -26,27 +26,30 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.ted.aggredata.client.Aggredata;
 import com.ted.aggredata.client.events.MenuClickedEvent;
 import com.ted.aggredata.client.events.MenuClickedHandler;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.MenuItem;
-import com.ted.aggredata.client.Aggredata;
 
-public class AdminNavigationPanel extends Composite implements HasHandlers{
+public class AdminNavigationPanel extends Composite implements HasHandlers {
 
     interface MyUiBinder extends UiBinder<Widget, AdminNavigationPanel> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-    @UiField Label usernameLabel;
-    @UiField Label helloLabel;
-    @UiField HorizontalPanel menuOptionsPanel;
-    
+    @UiField
+    Label usernameLabel;
+    @UiField
+    Label helloLabel;
+    @UiField
+    HorizontalPanel menuOptionsPanel;
+
     final MenuItem accountMenuItem;
     final MenuItem adminMenuItem;
     final MenuItem energyMenuItem;
@@ -55,7 +58,7 @@ public class AdminNavigationPanel extends Composite implements HasHandlers{
 
     DashboardConstants myConstants = GWT.create(DashboardConstants.class);
 
-    public AdminNavigationPanel(){
+    public AdminNavigationPanel() {
         initWidget(uiBinder.createAndBindUi(this));
         handlerManager = new HandlerManager(this);
 
@@ -64,7 +67,7 @@ public class AdminNavigationPanel extends Composite implements HasHandlers{
 
         //TODO: DISABLE OWNER BUTTON IF USER IS NOT AN OWNER
         String width = "65px";
-        
+
         accountMenuItem = new MenuItem(myConstants.profile(), true, width, "12px");
         adminMenuItem = new MenuItem(myConstants.admin(), false, width, "12px");
         energyMenuItem = new MenuItem(myConstants.energyData(), false, width, "12px");
@@ -85,8 +88,7 @@ public class AdminNavigationPanel extends Composite implements HasHandlers{
         accountMenuItem.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (!accountMenuItem.isSelected())
-                {
+                if (!accountMenuItem.isSelected()) {
                     accountMenuItem.setSelected(true);
                     energyMenuItem.setSelected(false);
                     adminMenuItem.setSelected(false);
@@ -99,8 +101,7 @@ public class AdminNavigationPanel extends Composite implements HasHandlers{
         energyMenuItem.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (!energyMenuItem.isSelected())
-                {
+                if (!energyMenuItem.isSelected()) {
                     accountMenuItem.setSelected(false);
                     energyMenuItem.setSelected(true);
                     adminMenuItem.setSelected(false);
@@ -113,8 +114,7 @@ public class AdminNavigationPanel extends Composite implements HasHandlers{
         adminMenuItem.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (!adminMenuItem.isSelected())
-                {
+                if (!adminMenuItem.isSelected()) {
                     accountMenuItem.setSelected(false);
                     energyMenuItem.setSelected(false);
                     adminMenuItem.setSelected(true);
@@ -128,8 +128,7 @@ public class AdminNavigationPanel extends Composite implements HasHandlers{
         logoutMenuItem.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (!logoutMenuItem.isSelected())
-                {
+                if (!logoutMenuItem.isSelected()) {
                     accountMenuItem.setSelected(false);
                     energyMenuItem.setSelected(false);
                     adminMenuItem.setSelected(false);

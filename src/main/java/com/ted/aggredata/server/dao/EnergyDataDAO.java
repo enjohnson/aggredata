@@ -113,17 +113,17 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
 
     /**
      * Creates or updates energy data in the database.
+     *
      * @param energyData
      */
     public void create(EnergyData energyData) {
-        EnergyData oldEnergyData =  findByTimestamp(energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp());
-        if (oldEnergyData == null){
+        EnergyData oldEnergyData = findByTimestamp(energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp());
+        if (oldEnergyData == null) {
             getJdbcTemplate().update(POST_ENERGY_DATA, energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp(), energyData.getRate(), energyData.getEnergy(), energyData.getMinuteCost());
         } else {
-            getJdbcTemplate().update(SAVE_ENERGY_DATA, energyData.getRate(), energyData.getEnergy(), energyData.getMinuteCost(),  energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp());
+            getJdbcTemplate().update(SAVE_ENERGY_DATA, energyData.getRate(), energyData.getEnergy(), energyData.getMinuteCost(), energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp());
         }
     }
-
 
 
     public RowMapper<EnergyData> getRowMapper() {

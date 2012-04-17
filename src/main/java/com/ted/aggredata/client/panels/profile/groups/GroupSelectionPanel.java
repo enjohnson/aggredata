@@ -29,7 +29,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
-import com.ted.aggredata.client.Aggredata;
 import com.ted.aggredata.client.dialogs.OKPopup;
 import com.ted.aggredata.client.dialogs.YesNoPopup;
 import com.ted.aggredata.client.events.GroupSelectedEvent;
@@ -49,12 +48,12 @@ import java.util.logging.Logger;
 public class GroupSelectionPanel extends Composite {
 
 
-
     static Logger logger = Logger.getLogger(GroupSelectionPanel.class.toString());
 
 
     interface MyUiBinder extends UiBinder<Widget, GroupSelectionPanel> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     @UiField
     SmallButton addButton;
@@ -72,8 +71,7 @@ public class GroupSelectionPanel extends Composite {
     List<Group> groupList = new ArrayList<Group>();
     Group selectedGroup;
 
-    public GroupSelectionPanel()
-    {
+    public GroupSelectionPanel() {
         initWidget(uiBinder.createAndBindUi(this));
         handlerManager = new HandlerManager(this);
 
@@ -93,7 +91,7 @@ public class GroupSelectionPanel extends Composite {
                 logger.info("Adding new group");
                 final int index = groupListBox.getItemCount();
 
-                groupService.createGroup( "New Group " + index, new TEDAsyncCallback<Group>() {
+                groupService.createGroup("New Group " + index, new TEDAsyncCallback<Group>() {
                     @Override
                     public void onSuccess(Group group) {
 
@@ -115,7 +113,7 @@ public class GroupSelectionPanel extends Composite {
                 deleteButton.setEnabled(false);
 
                 if (groupListBox.getItemCount() == 1) {
-                    OKPopup okPopup = new OKPopup( dc.deleteGroupCantDeleteTitle(), dc.deleteGroupCantDeleteText());
+                    OKPopup okPopup = new OKPopup(dc.deleteGroupCantDeleteTitle(), dc.deleteGroupCantDeleteText());
                     okPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
                         @Override
                         public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
@@ -156,6 +154,7 @@ public class GroupSelectionPanel extends Composite {
 
     /**
      * Sets the current group list
+     *
      * @param groupList
      */
     public void setGroupList(List<Group> groupList) {
@@ -170,14 +169,11 @@ public class GroupSelectionPanel extends Composite {
     /**
      * Redraws/refreshes the groupListBox. the selected index is not lost.
      */
-    public void redrawGroupList()
-    {
+    public void redrawGroupList() {
         int selectedIndex = groupListBox.getSelectedIndex();
         groupListBox.clear();
-        for (Group group : groupList)
-        {
-            if (group.getRole() == Group.Role.OWNER)
-            {
+        for (Group group : groupList) {
+            if (group.getRole() == Group.Role.OWNER) {
                 if (logger.isLoggable(Level.FINE)) logger.fine("Adding group " + group + " to list box");
                 groupListBox.addItem(group.getDescription(), group.getId().toString());
             }
@@ -185,17 +181,17 @@ public class GroupSelectionPanel extends Composite {
         groupListBox.setSelectedIndex(selectedIndex);
     }
 
-    /***
+    /**
      * Method to fire an event w/ the selected group
      */
-    private void fireSelectedGroup(){
+    private void fireSelectedGroup() {
         int index = groupListBox.getSelectedIndex();
         if (logger.isLoggable(Level.FINE)) logger.fine("Row " + index + " selected");
         Long groupId = new Long(groupListBox.getValue(index));
 
 
-        for (Group group: groupList) {
-            if (group.getId().equals(groupId)){
+        for (Group group : groupList) {
+            if (group.getId().equals(groupId)) {
                 this.selectedGroup = group;
                 break;
             }
@@ -207,7 +203,7 @@ public class GroupSelectionPanel extends Composite {
         }
     }
 
-    public HandlerRegistration addGroupSelectedHandler (GroupSelectedHandler handler) {
+    public HandlerRegistration addGroupSelectedHandler(GroupSelectedHandler handler) {
         return handlerManager.addHandler(GroupSelectedEvent.TYPE, handler);
     }
 

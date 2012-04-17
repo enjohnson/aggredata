@@ -42,17 +42,18 @@ import java.io.PrintWriter;
 import java.util.List;
 
 
-/****
+/**
+ * *
  * This is the servlet that handles activation of a new gateway. It checks the security key against enabled user accounts
  * and adds the gateway and mtu's if one does not exists. If a gateway exists, it updates the gateway as active if it has been marked inactive.
  */
 public class ActivationServlet extends HttpServlet {
-    
+
     static Logger logger = LoggerFactory.getLogger(ActivationServlet.class);
-    
+
     @Autowired
     UserService userService;
-    
+
     @Autowired
     GatewayService gatewayService;
 
@@ -68,7 +69,7 @@ public class ActivationServlet extends HttpServlet {
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
                 config.getServletContext());
     }
-    
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("ActivationServlet POST received");
 
@@ -81,7 +82,7 @@ public class ActivationServlet extends HttpServlet {
             if (logger.isDebugEnabled()) logger.info("Received activation request for " + gatewayIdString + " with key " + unique);
 
             User user = userService.getUserByActivationKey(unique);
-            if (user==null){
+            if (user == null) {
                 if (logger.isWarnEnabled()) logger.warn("No user found with activation key " + unique);
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return;
@@ -90,19 +91,18 @@ public class ActivationServlet extends HttpServlet {
 
             Long gatewayId = Long.parseLong(gatewayIdString, 16);
             Gateway gateway = gatewayService.getById(gatewayId);
-            if (gateway != null){
-                if (gateway.getUserAccountId() != user.getId()){
+            if (gateway != null) {
+                if (gateway.getUserAccountId() != user.getId()) {
                     if (logger.isWarnEnabled()) logger.warn("Attempt to activate a gateway owned by another user: " + gateway);
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                     return;
                 }
                 if (logger.isDebugEnabled()) logger.debug("Reactivating gateway " + gatewayIdString + " for " + user);
-            } else 
-            {
+            } else {
                 if (logger.isDebugEnabled()) logger.debug("Creating gateway " + gatewayIdString + " for " + user);
                 List<Group> groupList = groupService.getByUser(user);
 
-                if (groupList.size() == 0){
+                if (groupList.size() == 0) {
                     logger.info(user + " does not have any groups. Creating a default group.");
                     Group group = groupService.createGroup(user, "Default Group");
                     groupList.add(group);
@@ -111,12 +111,12 @@ public class ActivationServlet extends HttpServlet {
                 gateway = gatewayService.createGateway(groupList.get(0), user, gatewayIdString, "Gateway " + gatewayIdString);
             }
 
-            if (logger.isInfoEnabled()) logger.info("Activating gateway " + gateway +" for " + user);
+            if (logger.isInfoEnabled()) logger.info("Activating gateway " + gateway + " for " + user);
             gateway = gatewayService.activateGateway(gateway);
 
-            
+
             logger.debug("Returning activation response");
-            
+
             StringBuilder responseXML = new StringBuilder();
             responseXML.append("<ted500ActivationResponse>\r\n");
             responseXML.append("<PostServer>").append(serverInfo.getServerName()).append("</PostServer>");
@@ -125,7 +125,7 @@ public class ActivationServlet extends HttpServlet {
             responseXML.append("<PostURL>/aggredata/postData</PostURL>");
             responseXML.append("<AuthToken>").append(gateway.getSecurityKey()).append("</AuthToken>");
             responseXML.append("<PostRate>").append(serverInfo.getPostDelay()).append("</PostRate>");
-            responseXML.append("<HighPrec>").append((serverInfo.isHighPrecision()?"T":"F")).append("</HighPrec>");
+            responseXML.append("<HighPrec>").append((serverInfo.isHighPrecision() ? "T" : "F")).append("</HighPrec>");
             responseXML.append("</ted500ActivationResponse>\r\n");
 
             if (logger.isDebugEnabled()) logger.debug("Writing response xml:" + responseXML);

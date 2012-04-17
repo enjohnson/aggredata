@@ -24,13 +24,9 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.ted.aggredata.client.panels.profile.groups.GatewayListRow;
-import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -69,12 +65,12 @@ public class GatewaysMTUPanel extends Composite {
     }
 
 
-    public void setMTUList(Gateway gateway, List<MTU> mtuList){
+    public void setMTUList(Gateway gateway, List<MTU> mtuList) {
         mtuListPanel.clear();
         mtuListPanel.add(header);
 
         //Build the selection rows
-        int i=0;
+        int i = 0;
         for (MTU mtu : mtuList) {
             boolean oddRow = ((i++ % 2) == 0);
             MTUListRow row = new MTUListRow(gateway, mtu, oddRow);

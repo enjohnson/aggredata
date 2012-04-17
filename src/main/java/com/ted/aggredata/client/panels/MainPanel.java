@@ -20,7 +20,10 @@ package com.ted.aggredata.client.panels;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.ted.aggredata.client.Aggredata;
 import com.ted.aggredata.client.events.MenuClickedEvent;
 import com.ted.aggredata.client.events.MenuClickedHandler;
@@ -40,6 +43,7 @@ import com.ted.aggredata.client.panels.profile.activate.ActivationPanel;
 import com.ted.aggredata.client.panels.profile.gateways.GatewaysPanel;
 import com.ted.aggredata.client.panels.profile.groups.GroupsPanel;
 import com.ted.aggredata.client.panels.profile.settings.SettingsPanel;
+import com.ted.aggredata.client.panels.side.GraphSidePanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 
 import java.util.logging.Logger;
@@ -75,12 +79,12 @@ public class MainPanel extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
 
         graphDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.month(), dashboardConstants.day(), dashboardConstants.hour(), dashboardConstants.minute()});
-        profileDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.accountSettings(), dashboardConstants.accountGroups(), dashboardConstants.accountTEDS() ,dashboardConstants.accountActivate()});
+        profileDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.accountSettings(), dashboardConstants.accountGroups(), dashboardConstants.accountTEDS(), dashboardConstants.accountActivate()});
         systemAdministrationDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.systemUsers(), dashboardConstants.systemServer()});
 
 
         //Redirect the user to the gateway page if there are not gateways assigned to the system
-        if (Aggredata.GLOBAL.getShowActivation()){
+        if (Aggredata.GLOBAL.getShowActivation()) {
             profileDashboardPanel.setSelectedTab(3);
             tabNavigationPanel.add(profileDashboardPanel, 0, 0);
             contentPanel.add(new ActivationPanel());
@@ -91,6 +95,7 @@ public class MainPanel extends Composite {
             graphDashboardPanel.setSelectedTab(0);
             tabNavigationPanel.add(graphDashboardPanel, 0, 0);
             contentPanel.add(new MonthPanel());
+            sidePanel.add(new GraphSidePanel(), 0, 0);
         }
 
 
@@ -100,14 +105,15 @@ public class MainPanel extends Composite {
             public void onMenuClicked(MenuClickedEvent event) {
                 tabNavigationPanel.clear();
                 contentPanel.clear();
+                sidePanel.clear();
                 if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ADMIN) {
                     tabNavigationPanel.add(systemAdministrationDashboardPanel);
                     contentPanel.add(new UserPanel());
                     systemAdministrationDashboardPanel.setSelectedTab(0);
-
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ENERGY) {
                     tabNavigationPanel.add(graphDashboardPanel, 0, 0);
                     contentPanel.add(new MonthPanel());
+                    sidePanel.add(new GraphSidePanel(), 0, 0);
                     graphDashboardPanel.setSelectedTab(0);
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.PROFILE) {
                     tabNavigationPanel.add(profileDashboardPanel, 0, 0);

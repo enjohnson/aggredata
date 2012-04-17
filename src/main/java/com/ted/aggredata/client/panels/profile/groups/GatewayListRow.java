@@ -42,6 +42,7 @@ public class GatewayListRow extends Composite {
 
     interface MyUiBinder extends UiBinder<Widget, GatewayListRow> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     @UiField
     CheckBox groupMemberCheckBox;
@@ -69,12 +70,12 @@ public class GatewayListRow extends Composite {
         groupMemberCheckBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
             @Override
             public void onValueChange(ValueChangeEvent<Boolean> booleanValueChangeEvent) {
-                if (booleanValueChangeEvent.getValue()){
+                if (booleanValueChangeEvent.getValue()) {
                     logger.info("Adding " + gateway + " to " + selectedGroup);
                     gatewayService.addGatewayToGroup(selectedGroup, gateway, new TEDAsyncCallback<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            logger.fine(gateway + " addeed to " +selectedGroup);
+                            logger.fine(gateway + " addeed to " + selectedGroup);
                         }
                     });
 
@@ -83,7 +84,7 @@ public class GatewayListRow extends Composite {
                     gatewayService.removeGatewayFromGroup(selectedGroup, gateway, new TEDAsyncCallback<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            logger.fine(gateway + " addeed to " +selectedGroup);
+                            logger.fine(gateway + " addeed to " + selectedGroup);
                         }
                     });
 

@@ -37,9 +37,11 @@ public class TEDButton extends Composite {
     final AbsolutePanel mainPanel = new AbsolutePanel();
     boolean enabled = true;
 
-    public @UiConstructor TEDButton(ImageResource imgResource, String text, String width, String height, String style, int textOffset) {
+    public
+    @UiConstructor
+    TEDButton(ImageResource imgResource, String text, String width, String height, String style, int textOffset) {
         clearImage = new ClearImage(width, height);
-        buttonImage= new Image(imgResource);
+        buttonImage = new Image(imgResource);
 
 
         mainPanel.setSize(width, height);
@@ -49,7 +51,7 @@ public class TEDButton extends Composite {
 
         mainPanel.add(buttonImage, 0, 0);
         mainPanel.add(label, 0, textOffset);
-        mainPanel.add(clearImage, 0,0);
+        mainPanel.add(clearImage, 0, 0);
         enabled = true;
         initWidget(mainPanel);
 
@@ -59,7 +61,7 @@ public class TEDButton extends Composite {
         this.enabled = enabled;
         mainPanel.remove(clearImage);
         if (enabled) {
-            mainPanel.add(clearImage,0,0);
+            mainPanel.add(clearImage, 0, 0);
         }
     }
 
@@ -67,12 +69,11 @@ public class TEDButton extends Composite {
         return enabled;
     }
 
-    public void addClickHandler(ClickHandler clickHandler){
+    public void addClickHandler(ClickHandler clickHandler) {
         clearImage.addClickHandler(clickHandler);
     }
 
-    public void setVisible(boolean visible)
-    {
+    public void setVisible(boolean visible) {
         buttonImage.setVisible(visible);
         clearImage.setVisible(visible);
     }

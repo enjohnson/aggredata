@@ -40,7 +40,7 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
     @Autowired
     UserService userService;
-    
+
     @Autowired
     ServerInfo serverInfo;
 
@@ -60,7 +60,7 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
         try {
             Authentication request = new UsernamePasswordAuthenticationToken(username, password);
-            
+
             if (authenticationManager == null) logger.error("AuthenticationManager is null");
             Authentication result = authenticationManager.authenticate(request);
 
@@ -70,7 +70,7 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
             return null;
         }
 
-        logger.info("Authentication success: " + SecurityContextHolder.getContext() .getAuthentication());
+        logger.info("Authentication success: " + SecurityContextHolder.getContext().getAuthentication());
         User user = userService.getUserByUserName(username);
         getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
         return loadGlobal(user);
@@ -96,8 +96,7 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
     public GlobalPlaceholder getUserFromSession() {
 
         //Check to make sure the user has a valid spring securtity session
-        if (SecurityContextHolder.getContext().getAuthentication() == null)
-        {
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
             logger.info("User not authenticated");
             return null;
         }
@@ -106,7 +105,7 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
         //Grab the user object from the session
         if (logger.isInfoEnabled()) logger.info("Looking up user session");
         User user = (User) getThreadLocalRequest().getSession().getAttribute(USER_SESSION_KEY);
-        
+
         if (user == null) {
             logger.info("No user found in session");
             return null;
@@ -114,12 +113,11 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
         if (logger.isDebugEnabled()) logger.info("Found user object for: " + user);
 
-        
+
         return loadGlobal(user);
     }
-    
-    private GlobalPlaceholder loadGlobal(User user)
-    {
+
+    private GlobalPlaceholder loadGlobal(User user) {
         if (logger.isDebugEnabled()) logger.debug("Loading Globals for " + user);
         GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
         globalPlaceholder.setSessionUser(user);

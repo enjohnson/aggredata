@@ -58,7 +58,7 @@ public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements G
         User user = getCurrentUser();
         if (user.getId().equals(group.getOwnerUserId())) {
             if (logger.isInfoEnabled()) logger.info("saving group " + group);
-            return  groupService.saveGroup(group);
+            return groupService.saveGroup(group);
         }
         logger.warn("Security violation. " + user + " attempted to save " + group);
         return group;

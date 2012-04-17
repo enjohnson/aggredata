@@ -23,12 +23,11 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
-/***
+/**
  * Simple suplerclass of all Aggredata RemoteServiceServlets. This is primarialy intended
  * to allow for Spring integration as well as include some common utility classes.
- *
+ * <p/>
  * Thanks to Max Matveev for posting this solution to his blog: http://blog.maxmatveev.com/2011/02/simple-spring-bean-autowiring-in-gwt.html
- *
  */
 public class SpringRemoteServiceServlet extends RemoteServiceServlet {
 

@@ -25,28 +25,44 @@ public interface DashboardConstants extends Constants {
     public static final DashboardConstants INSTANCE = GWT.create(DashboardConstants.class);
 
     String month();
+
     String day();
+
     String hour();
+
     String minute();
+
     String hello();
+
     String profile();
+
     String admin();
+
     String logout();
+
     String energyData();
-    
+
     String accountSettings();
+
     String accountGroups();
+
     String accountTEDS();
-    
+
     String userNameLabel();
+
     String passwordLabel();
-    
-    
+
+
     String settingsTitle();
+
     String settingsInstructions();
+
     String groupsTitle();
+
     String groupsInstructions();
+
     String gatewaysTitle();
+
     String gatewaysInstructions();
 
     String monthTitle();
@@ -80,18 +96,31 @@ public interface DashboardConstants extends Constants {
 
     //Settings panel
     String profileSettingsLastName();
+
     String profileSettingsFirstName();
+
     String profileSettingsCompanyName();
+
     String profileSettingsMiddleName();
+
     String profileSettingsAddress();
+
     String profileSettingsCity();
+
     String profileSettingState();
+
     String profileSettingsZip();
+
     String profileSettingsPhoneNumber();
+
     String profileSettingsCustom1();
+
     String profileSettingsCustom2();
+
     String profileSettingsCustom3();
+
     String profileSettingsCustom4();
+
     String profileSettingsCustom5();
 
 
@@ -179,4 +208,13 @@ public interface DashboardConstants extends Constants {
     String deleteMTUTitle();
 
     String deleteMTUMessage();
+
+
+    String sideBarGroupHeader();
+
+    String sideBarGroupDetails();
+
+    String sideBarDateHeader();
+
+    String sideBarDateDetails();
 }
