@@ -21,24 +21,23 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.resources.DashboardImageResource;
 
-/***
+/**
  * Wrapper for a single menu item on the navigation menu.
  */
 public class MenuItem extends Composite {
-    
+
     final Boolean isLeftMost;
     final TEDLabel label;
-    Boolean selected; 
+    Boolean selected;
 
-    
-    public MenuItem(String text, boolean isLeftMost, String width, String height)
-    {
+
+    public MenuItem(String text, boolean isLeftMost, String width, String height) {
         HorizontalPanel mainPanel = new HorizontalPanel();
         this.isLeftMost = isLeftMost;
         label = new TEDLabel(text, width, "menuText", HasHorizontalAlignment.ALIGN_CENTER);
         label.setHeight(height);
         selected = false;
-        
+
         if (!isLeftMost) {
             final Image divImage = new Image(DashboardImageResource.INSTANCE.menuDivider());
             mainPanel.add(divImage);
@@ -46,31 +45,28 @@ public class MenuItem extends Composite {
         }
         mainPanel.add(label);
         mainPanel.setCellVerticalAlignment(label, HasVerticalAlignment.ALIGN_BOTTOM);
-        
+
         initWidget(mainPanel);
     }
 
 
-    public Boolean isSelected(){
+    public Boolean isSelected() {
         return selected;
     }
 
 
-    public void setSelected(Boolean selected)
-    {
-        if (selected)
-        {
+    public void setSelected(Boolean selected) {
+        if (selected) {
             this.selected = true;
             label.setStylePrimaryName("menuTextSelected");
         } else {
             this.selected = false;
             label.setStylePrimaryName("menuText");
         }
-        
+
     }
 
-    public void addClickHandler(ClickHandler handler)
-    {
+    public void addClickHandler(ClickHandler handler) {
         label.addClickHandler(handler);
     }
 }

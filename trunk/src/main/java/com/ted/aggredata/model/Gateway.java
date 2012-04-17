@@ -63,7 +63,6 @@ public class Gateway extends AggredataModel implements Serializable {
     }
 
 
-
     /**
      * whether or not this gateway is currently enabled. gateways need to be enabled to receive post com.ted.aggredata.dao
      * and to have their com.ted.aggredata.dao accessed by the api.

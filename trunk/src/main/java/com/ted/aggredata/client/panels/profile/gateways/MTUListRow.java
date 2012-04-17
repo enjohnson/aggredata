@@ -24,8 +24,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
@@ -37,7 +35,6 @@ import com.ted.aggredata.client.panels.profile.groups.GroupGatewaysPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.SmallButton;
 import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
 
 import java.util.logging.Logger;
@@ -53,6 +50,7 @@ public class MTUListRow extends Composite {
 
     interface MyUiBinder extends UiBinder<Widget, MTUListRow> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
     final MTU mtu;
@@ -70,10 +68,10 @@ public class MTUListRow extends Composite {
 
     public MTUListRow(final Gateway gateway, final MTU mtu, boolean isOdd) {
         initWidget(uiBinder.createAndBindUi(this));
-        this.mtu  = mtu;
+        this.mtu = mtu;
 
         if (isOdd) {
-        //    mainPanel.getElement().getStyle().setBackgroundColor("#222222");
+            //    mainPanel.getElement().getStyle().setBackgroundColor("#222222");
         }
 
         serialNumberField.setReadOnly(true);
@@ -82,10 +80,10 @@ public class MTUListRow extends Composite {
         typeField.setReadOnly(true);
         typeField.setEnabled(false);
 
-        if (mtu.getType().equals(MTU.MTUType.STAND_ALONE))          typeField.setText("STD ALONE");
-        else if (mtu.getType().equals(MTU.MTUType.LOAD))            typeField.setText("LOAD");
-        else if (mtu.getType().equals(MTU.MTUType.ADJUSTED_NET))    typeField.setText("ADJ LOAD");
-        else if (mtu.getType().equals(MTU.MTUType.GENERATION))      typeField.setText("GEN");
+        if (mtu.getType().equals(MTU.MTUType.STAND_ALONE)) typeField.setText("STD ALONE");
+        else if (mtu.getType().equals(MTU.MTUType.LOAD)) typeField.setText("LOAD");
+        else if (mtu.getType().equals(MTU.MTUType.ADJUSTED_NET)) typeField.setText("ADJ LOAD");
+        else if (mtu.getType().equals(MTU.MTUType.GENERATION)) typeField.setText("GEN");
         else if (mtu.getType().equals(MTU.MTUType.STAND_ALONE_NET)) typeField.setText("STD ALONE");
 
 

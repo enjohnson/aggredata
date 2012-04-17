@@ -41,13 +41,13 @@
                 <g:HorizontalPanel>
                     <g:Label styleName='{style.formLabel}' text='{txtRes.activationLabel1}' width="200px"/>
                     <my:widgets.ClearImage width="4px" height="1px"/>
-                    <g:Label styleName='{style.formLabelLeft}'  ui:field="activationUrlLabel" width="600px"/>
+                    <g:Label styleName='{style.formLabelLeft}' ui:field="activationUrlLabel" width="600px"/>
                 </g:HorizontalPanel>
                 <my:widgets.ClearImage width="1px" height="5px"/>
                 <g:HorizontalPanel>
                     <g:Label styleName='{style.formLabel}' text='{txtRes.activationLabel2}' width="200px"/>
                     <my:widgets.ClearImage width="4px" height="1px"/>
-                    <g:Label styleName='{style.formLabelLeft}'  ui:field="activationKeyLabel" width="600px"/>
+                    <g:Label styleName='{style.formLabelLeft}' ui:field="activationKeyLabel" width="600px"/>
                 </g:HorizontalPanel>
                 <my:widgets.ClearImage width="1px" height="30px"/>
                 <g:Label styleName='{style.panelText}' text='{txtRes.activationInstructions4}' width="700px" ui:field="postTimeLabel"/>

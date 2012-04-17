@@ -17,7 +17,10 @@
 
 package com.ted.aggredata.server.web.servlets;
 
-import com.ted.aggredata.model.*;
+import com.ted.aggredata.model.EnergyData;
+import com.ted.aggredata.model.Gateway;
+import com.ted.aggredata.model.MTU;
+import com.ted.aggredata.model.ServerInfo;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.services.GroupService;
 import com.ted.aggredata.server.services.UserService;
@@ -25,7 +28,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -38,18 +44,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-/****
+/**
+ * *
  * This is the servlet that handles activation of a new gateway. It checks the security key against enabled user accounts
  * and adds the gateway and mtu's if one does not exists. If a gateway exists, it updates the gateway as active if it has been marked inactive.
  */
 public class EnergyPostServlet extends HttpServlet {
-    
+
     static Logger logger = LoggerFactory.getLogger(EnergyPostServlet.class);
     static DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-    
+
     @Autowired
     UserService userService;
-    
+
     @Autowired
     GatewayService gatewayService;
 
@@ -60,15 +67,11 @@ public class EnergyPostServlet extends HttpServlet {
     ServerInfo serverInfo;
 
 
-
-
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
                 config.getServletContext());
     }
-
-
 
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -90,7 +93,7 @@ public class EnergyPostServlet extends HttpServlet {
             Gateway gateway = gatewayService.getById(Long.parseLong(gatewayIdString, 16));
 
             //Check to see if gateway exists
-            if (gateway == null){
+            if (gateway == null) {
                 if (logger.isWarnEnabled()) logger.warn("Gateway with id " + gatewayIdString + " not found in database");
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 PrintWriter out = response.getWriter();
@@ -100,7 +103,7 @@ public class EnergyPostServlet extends HttpServlet {
             }
 
             //Check security key
-            if (!gateway.getSecurityKey().equals(securityKey)){
+            if (!gateway.getSecurityKey().equals(securityKey)) {
                 if (logger.isWarnEnabled()) logger.warn("Attempted post to gateway " + gatewayIdString + " with an invalid authentication key");
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 PrintWriter out = response.getWriter();
@@ -110,7 +113,7 @@ public class EnergyPostServlet extends HttpServlet {
             }
 
             //Check to see if its enabled
-            if (!gateway.getState()){
+            if (!gateway.getState()) {
                 if (logger.isWarnEnabled()) logger.warn("Gateway with id " + gatewayIdString + " is not enabled to receive posts.");
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 PrintWriter out = response.getWriter();
@@ -123,12 +126,11 @@ public class EnergyPostServlet extends HttpServlet {
 
 
             //Process each MTU
-            NodeList mtuList =  doc.getElementsByTagName("MTU");
+            NodeList mtuList = doc.getElementsByTagName("MTU");
             int mtuCount = mtuList.getLength();
             if (logger.isDebugEnabled()) logger.debug("Gateway " + gatewayIdString + "- MTU Count: " + mtuCount);
-            for (int i=0; i < mtuCount; i++)
-            {
-                Element mtuNode = (Element)mtuList.item(i);
+            for (int i = 0; i < mtuCount; i++) {
+                Element mtuNode = (Element) mtuList.item(i);
                 String mtuIdString = mtuNode.getAttribute("ID");
                 Long mtuId = Long.parseLong(mtuIdString, 16);
 
@@ -136,7 +138,7 @@ public class EnergyPostServlet extends HttpServlet {
                 if (logger.isDebugEnabled()) logger.debug("Processing gateway " + gatewayIdString + "- MTU: " + mtuIdString + " type:" + type);
 
                 MTU mtu = gatewayService.getMTU(gateway, mtuId);
-                if (mtu == null){
+                if (mtu == null) {
                     logger.info("MTU with id " + mtuIdString + " not found for " + gateway + ". Adding the MTU to the gateway");
                     mtu = gatewayService.addMTU(gateway, mtuIdString, MTU.ordinalToMTUType(type), "MTU " + mtuIdString);
                 }
@@ -149,21 +151,20 @@ public class EnergyPostServlet extends HttpServlet {
 
                 EnergyData lastCumulativeValue = null;
 
-                for (int c=0; c < cumulativeDataListCount; c++)
-                {
+                for (int c = 0; c < cumulativeDataListCount; c++) {
                     Element cumulativeNode = (Element) cumulativeDataList.item(c);
                     Integer timestamp = Integer.parseInt(cumulativeNode.getAttribute("timestamp"));
                     Double rate = Double.parseDouble(cumulativeNode.getAttribute("rate"));
                     Double energy = Double.parseDouble(cumulativeNode.getAttribute("watts"));
                     Double minuteCost = 0d;
 
-                    if (lastCumulativeValue== null) {
+                    if (lastCumulativeValue == null) {
                         lastCumulativeValue = gatewayService.findByLastPost(gateway, mtu, timestamp);
                         if (logger.isDebugEnabled()) logger.debug("Last Post:" + lastCumulativeValue);
                     }
 
                     //Make sure that we are not dealing with the first entry for this gateway/mtu
-                    if (lastCumulativeValue != null){
+                    if (lastCumulativeValue != null) {
                         Double wattDifference = energy - lastCumulativeValue.getEnergy();
 
                         wattDifference = wattDifference / 1000; //Rate is on kWh
@@ -179,7 +180,6 @@ public class EnergyPostServlet extends HttpServlet {
 
 
             }
-
 
 
             if (logger.isDebugEnabled()) logger.debug("Writing success response");

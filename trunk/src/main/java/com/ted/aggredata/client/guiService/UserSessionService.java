@@ -28,21 +28,23 @@ import com.ted.aggredata.model.GlobalPlaceholder;
 @RemoteServiceRelativePath("UserSessionService")
 public interface UserSessionService extends RemoteService {
 
-    /***
+    /**
      * Creates a user session
+     *
      * @param username
      * @param password
      * @return
      */
     public GlobalPlaceholder logon(String username, String password);
 
-    /***
+    /**
      * Logs the current user out of their session
      */
     public void logoff();
 
-    /***
+    /**
      * Checks to see if the user is currently in a valid/logged in session.
+     *
      * @return
      */
     public GlobalPlaceholder getUserFromSession();

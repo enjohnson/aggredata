@@ -88,6 +88,7 @@ public interface GroupService {
 
     /**
      * Adds a Gateway to a specific group
+     *
      * @param user
      * @param group
      * @param gateway
@@ -97,6 +98,7 @@ public interface GroupService {
 
     /**
      * Removes a gateway from a specific group
+     *
      * @param user
      * @param group
      * @param gateway
@@ -106,6 +108,7 @@ public interface GroupService {
 
     /**
      * Saves the group
+     *
      * @param group
      */
     public Group saveGroup(Group group);

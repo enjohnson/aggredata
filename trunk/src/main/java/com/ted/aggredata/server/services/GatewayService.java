@@ -43,7 +43,6 @@ public interface GatewayService {
     public void deleteGateway(Gateway gateway);
 
 
-
     /**
      * Adds a new MTU to the system. If the serial number already exists it will be moved to a new gateway.
      *
@@ -73,24 +72,28 @@ public interface GatewayService {
     public Gateway activateGateway(Gateway gateway);
 
 
-    /****
+    /**
+     * *
      * Returns a list of gateways for the specified user
+     *
      * @param user
      * @return
      */
     List<Gateway> findByUser(User user);
 
 
-    /***
+    /**
      * Returns a list of gateways for the specified group
+     *
      * @param group
      * @return
      */
     List<Gateway> findByGroup(Group group);
 
 
-    /***
+    /**
      * Looks up a gateway by its unique id
+     *
      * @param id
      * @return
      */
@@ -98,14 +101,16 @@ public interface GatewayService {
 
     /**
      * Looks up the MTU for the specific gateway
+     *
      * @param gateway
      * @param mtuId
      * @return
      */
     MTU getMTU(Gateway gateway, Long mtuId);
 
-    /***
+    /**
      * Creates a new EnergyData entry in the system
+     *
      * @param gateway
      * @param mtu
      * @param timestamp
@@ -116,8 +121,9 @@ public interface GatewayService {
      */
     EnergyData postEnergyData(Gateway gateway, MTU mtu, Integer timestamp, Double watts, Double rate, Double minCost);
 
-    /***
+    /**
      * Finds the most recently posted entry for the gateway/mtu
+     *
      * @param gateway
      * @param mtu
      * @param timestamp
@@ -128,6 +134,7 @@ public interface GatewayService {
 
     /**
      * Returns the number of registered Gateways for the specified user
+     *
      * @param user
      * @return
      */
@@ -135,18 +142,21 @@ public interface GatewayService {
 
     /**
      * Updates the gateway information
+     *
      * @param gateway
      */
     public void saveGateway(Gateway gateway);
 
     /**
      * Saves an MTU
+     *
      * @param mtu
      */
     public void saveMTU(MTU mtu);
 
     /**
      * Returns a list of MTUs for the specified gateway
+     *
      * @param gateway
      * @return
      */
@@ -154,6 +164,7 @@ public interface GatewayService {
 
     /**
      * Deletes the MTU and its history from the database
+     *
      * @param gateway
      * @param mtu
      */

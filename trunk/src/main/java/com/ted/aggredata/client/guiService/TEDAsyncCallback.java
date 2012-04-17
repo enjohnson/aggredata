@@ -31,8 +31,8 @@ import java.util.logging.Logger;
  * Extends AsyncCallback for generic error handling on any RPC call.
  * Specifically it handles the onFailure for common routing, logging, and redirection.
  */
-public abstract class TEDAsyncCallback<T> implements AsyncCallback<T>{
-    
+public abstract class TEDAsyncCallback<T> implements AsyncCallback<T> {
+
     static Logger logger = Logger.getLogger(TEDAsyncCallback.class.toString());
 
     static Integer STATUS_CODE_UNAUTHORIZED = 401;
@@ -40,22 +40,19 @@ public abstract class TEDAsyncCallback<T> implements AsyncCallback<T>{
     @Override
     public void onFailure(Throwable caught) {
 
-        GWT.log("-----"+ (caught instanceof StatusCodeException));
-        if (caught instanceof StatusCodeException)
-        {
+        GWT.log("-----" + (caught instanceof StatusCodeException));
+        if (caught instanceof StatusCodeException) {
             StatusCodeException statusCodeException = (StatusCodeException) caught;
             logger.log(Level.SEVERE, "Status Code Exception:" + statusCodeException.getStatusCode());
             if (statusCodeException.getStatusCode() == STATUS_CODE_UNAUTHORIZED) {
                 logger.log(Level.INFO, "Redirecting user to login page");
                 RootPanel.get(Aggredata.ROOT_PANEL).clear();
                 RootPanel.get(Aggredata.ROOT_PANEL).add(new LoginPanel());  //Redirect the user to the login panel.
-            } else
-            {
+            } else {
                 logger.log(Level.SEVERE, "Critcal Failure " + caught.getMessage(), caught);
                 //TODO: Critical Dialog and reload
             }
-        }  else
-        {
+        } else {
             logger.log(Level.SEVERE, "AsyncCallback Failure " + caught.getMessage(), caught);
             //TODO: Critical Dialog and reload
         }

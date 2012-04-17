@@ -15,28 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.client.panels.graph.day;
+package com.ted.aggredata.client.panels.side;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.TreeItem;
+import com.ted.aggredata.model.Group;
 
-import java.util.logging.Logger;
+/**
+ * Represents a group tree item in the group tree
+ */
+public class GroupTreeItem extends TreeItem {
 
-public class DayPanel extends Composite {
+    final Group group;
 
-    static Logger logger = Logger.getLogger(DayPanel.class.toString());
-
-    interface MyUiBinder extends UiBinder<Widget, DayPanel> {
+    public GroupTreeItem(Group group) {
+        super(group.getDescription());
+        this.group = group;
     }
 
-    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-
-
-    public DayPanel() {
-        initWidget(uiBinder.createAndBindUi(this));
-
+    public Group getGroup() {
+        return group;
     }
-
 }

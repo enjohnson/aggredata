@@ -30,7 +30,6 @@ import com.ted.aggredata.client.panels.AggredataPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.LargeButton;
 import com.ted.aggredata.model.GlobalPlaceholder;
-import com.ted.aggredata.model.User;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,16 +37,25 @@ import java.util.logging.Logger;
 
 public class LoginFormPanel extends Composite {
 
-    @UiField FocusPanel mainPanel;
-    @UiField TextBox loginBox;
-    @UiField PasswordTextBox passwordTextBox;
-    @UiField Label completionLabel1;
-    @UiField Label completionLabel2;
-    @UiField LargeButton submitButton;
-    @UiField Label formErrorLabel;
-    @UiField Label usernameLabel;
-    @UiField Label passwordLabel;
-    
+    @UiField
+    FocusPanel mainPanel;
+    @UiField
+    TextBox loginBox;
+    @UiField
+    PasswordTextBox passwordTextBox;
+    @UiField
+    Label completionLabel1;
+    @UiField
+    Label completionLabel2;
+    @UiField
+    LargeButton submitButton;
+    @UiField
+    Label formErrorLabel;
+    @UiField
+    Label usernameLabel;
+    @UiField
+    Label passwordLabel;
+
     static Logger logger = Logger.getLogger(LoginFormPanel.class.toString());
     final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
     DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
@@ -56,6 +64,7 @@ public class LoginFormPanel extends Composite {
     }
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+
     public LoginFormPanel() {
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -75,8 +84,6 @@ public class LoginFormPanel extends Composite {
         });
 
 
-
-
         submitButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -87,8 +94,7 @@ public class LoginFormPanel extends Composite {
     }
 
 
-    private void attemptLogon()
-    {
+    private void attemptLogon() {
 //Reset any old messages
         completionLabel1.setText("");
         completionLabel2.setText("");
@@ -96,34 +102,31 @@ public class LoginFormPanel extends Composite {
 
         boolean error = false;
         logger.log(Level.FINE, "Submit button clicked");
-        if (loginBox.getText().trim().length()==0){
+        if (loginBox.getText().trim().length() == 0) {
             logger.warning("Missing username");
             completionLabel1.setText("Required");
             error = true;
         }
 
-        if (passwordTextBox.getText().trim().length()==0){
+        if (passwordTextBox.getText().trim().length() == 0) {
             logger.warning("Missing password");
             completionLabel2.setText("Required");
             error = true;
         }
 
         //Don't bother to submit if there is an error.
-        if (!error)
-        {
+        if (!error) {
             logger.info("Submitting authentication request");
             userSessionService.logon(loginBox.getText(), passwordTextBox.getText(), new TEDAsyncCallback<GlobalPlaceholder>() {
                 @Override
                 public void onSuccess(GlobalPlaceholder result) {
                     Aggredata.GLOBAL = result;
 
-                    if (result != null && Aggredata.GLOBAL.getSessionUser() != null)
-                    {
+                    if (result != null && Aggredata.GLOBAL.getSessionUser() != null) {
                         if (logger.isLoggable(Level.FINE)) logger.fine("Login Successful: " + Aggredata.GLOBAL);
                         RootPanel.get(Aggredata.ROOT_PANEL).clear();
                         RootPanel.get(Aggredata.ROOT_PANEL).add(new AggredataPanel());
-                    }   else
-                    {
+                    } else {
 
                         formErrorLabel.setText("Invalid Username or Password. Please try again.");
                     }

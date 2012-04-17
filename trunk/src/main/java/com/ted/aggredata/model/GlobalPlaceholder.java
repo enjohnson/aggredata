@@ -18,10 +18,9 @@
 package com.ted.aggredata.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * This is a placeholder model used by the GUI to allow a single asynchronous call to load a 
+ * This is a placeholder model used by the GUI to allow a single asynchronous call to load a
  * multiple static runtime objects as login (saves overhead of multiple http requests
  * for each login.
  */

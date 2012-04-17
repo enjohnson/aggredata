@@ -20,9 +20,10 @@ package com.ted.aggredata.client.panels.profile.groups;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.*;
-import com.ted.aggredata.client.resources.lang.DashboardConstants;
-import com.ted.aggredata.client.widgets.SmallButton;
+import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 
@@ -80,7 +81,7 @@ public class GroupGatewaysPanel extends Composite {
 
 
         //Build the selection rows
-        int i=0;
+        int i = 0;
         for (Gateway gateway : userGateways) {
             boolean isGroupMember = (null != groupGatewayMap.get(gateway.getId()));
             boolean oddRow = ((i++ % 2) == 0);

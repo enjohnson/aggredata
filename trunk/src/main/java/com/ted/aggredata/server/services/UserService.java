@@ -23,8 +23,7 @@ import com.ted.aggredata.model.User;
  * Public interface to the user management service
  */
 public interface UserService {
-    
-    
+
 
     /**
      * Creates a new entity in the database
@@ -89,6 +88,7 @@ public interface UserService {
     public User getUserByUserName(String username);
 
     public User saveUser(User entity);
+
     /**
      * Returns a user object with the given activation key
      *

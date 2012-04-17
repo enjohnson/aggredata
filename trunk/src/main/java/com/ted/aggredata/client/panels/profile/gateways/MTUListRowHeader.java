@@ -18,27 +18,16 @@
 package com.ted.aggredata.client.panels.profile.gateways;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.ted.aggredata.client.guiService.GWTGatewayService;
-import com.ted.aggredata.client.guiService.GWTGatewayServiceAsync;
-import com.ted.aggredata.client.guiService.TEDAsyncCallback;
-import com.ted.aggredata.client.panels.profile.groups.GroupGatewaysPanel;
-import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.MTU;
-
-import java.util.logging.Logger;
 
 public class MTUListRowHeader extends Composite {
     interface MyUiBinder extends UiBinder<Widget, MTUListRowHeader> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+
     public MTUListRowHeader() {
         initWidget(uiBinder.createAndBindUi(this));
     }

@@ -17,9 +17,7 @@
 
 package com.ted.aggredata.client.widgets;
 
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiConstructor;
-import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.resources.DashboardImageResource;
 
 /**
@@ -27,8 +25,9 @@ import com.ted.aggredata.client.resources.DashboardImageResource;
  */
 public class LargeButton extends TEDButton {
 
-    public @UiConstructor LargeButton(String buttonString)
-    {
-        super(DashboardImageResource.INSTANCE.largeButton(), buttonString, "113px", "35px", "largeButtonTextStyle" , 8 );
+    public
+    @UiConstructor
+    LargeButton(String buttonString) {
+        super(DashboardImageResource.INSTANCE.largeButton(), buttonString, "113px", "35px", "largeButtonTextStyle", 8);
     }
 }

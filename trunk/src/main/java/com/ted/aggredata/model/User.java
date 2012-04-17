@@ -27,9 +27,8 @@ import java.io.Serializable;
 public class User extends AggredataModel implements Serializable {
 
     public static String ROLE_USER = "ROLE_USER";
-    public static String ROLE_ADMIN= "ROLE_ADMIN";
+    public static String ROLE_ADMIN = "ROLE_ADMIN";
 
-    
 
     private String username;
     private String role;
@@ -108,8 +107,8 @@ public class User extends AggredataModel implements Serializable {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    
-    public String getFirstName(){
+
+    public String getFirstName() {
         return firstName;
     }
 
@@ -117,7 +116,7 @@ public class User extends AggredataModel implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getLastName(){
+    public String getLastName() {
         return lastName;
     }
 
@@ -125,7 +124,7 @@ public class User extends AggredataModel implements Serializable {
         this.middleName = middleName;
     }
 
-    public String getMiddleName(){
+    public String getMiddleName() {
         return middleName;
     }
 
@@ -133,7 +132,7 @@ public class User extends AggredataModel implements Serializable {
         this.companyName = companyName;
     }
 
-    public String getCompanyName(){
+    public String getCompanyName() {
         return companyName;
     }
 
@@ -141,7 +140,7 @@ public class User extends AggredataModel implements Serializable {
         this.city = city;
     }
 
-    public String getCity(){
+    public String getCity() {
         return city;
     }
 
@@ -149,7 +148,7 @@ public class User extends AggredataModel implements Serializable {
         this.zip = zip;
     }
 
-    public String getZip(){
+    public String getZip() {
         return zip;
     }
 
@@ -157,7 +156,7 @@ public class User extends AggredataModel implements Serializable {
         this.addrState = addrState;
     }
 
-    public String getAddrState(){
+    public String getAddrState() {
         return addrState;
     }
 
@@ -165,7 +164,7 @@ public class User extends AggredataModel implements Serializable {
         this.address = address;
     }
 
-    public String getAddress(){
+    public String getAddress() {
         return address;
     }
 
@@ -173,7 +172,7 @@ public class User extends AggredataModel implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPhoneNumber(){
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -181,7 +180,7 @@ public class User extends AggredataModel implements Serializable {
         this.custom1 = custom1;
     }
 
-    public String getCustom1(){
+    public String getCustom1() {
         return custom1;
     }
 
@@ -189,7 +188,7 @@ public class User extends AggredataModel implements Serializable {
         this.custom2 = custom2;
     }
 
-    public String getCustom2(){
+    public String getCustom2() {
         return custom2;
     }
 
@@ -197,7 +196,7 @@ public class User extends AggredataModel implements Serializable {
         this.custom3 = custom3;
     }
 
-    public String getCustom3(){
+    public String getCustom3() {
         return custom3;
     }
 
@@ -205,7 +204,7 @@ public class User extends AggredataModel implements Serializable {
         this.custom4 = custom4;
     }
 
-    public String getCustom4(){
+    public String getCustom4() {
         return custom4;
     }
 
@@ -213,9 +212,10 @@ public class User extends AggredataModel implements Serializable {
         this.custom5 = custom5;
     }
 
-    public String getCustom5(){
+    public String getCustom5() {
         return custom5;
     }
+
     @Override
     public String toString() {
         StringBuffer b = new StringBuffer();
@@ -227,7 +227,6 @@ public class User extends AggredataModel implements Serializable {
         b.append("}");
         return b.toString();
     }
-
 
 
     @Override

@@ -22,20 +22,20 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.Aggredata;
 import com.ted.aggredata.client.guiService.*;
 import com.ted.aggredata.client.panels.login.LoginPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.HugeButton;
-import com.ted.aggredata.client.widgets.LargeButton;
 import com.ted.aggredata.model.User;
-//import sun.font.TrueTypeFont;
 
 import java.util.logging.Logger;
+
+//import sun.font.TrueTypeFont;
 
 public class SettingsPanel extends Composite {
     private boolean isValid;
@@ -232,7 +232,6 @@ public class SettingsPanel extends Composite {
 
 
     }
-
 
 
     private void doSave() {

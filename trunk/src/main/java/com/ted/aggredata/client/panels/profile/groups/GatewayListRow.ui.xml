@@ -20,9 +20,9 @@
              xmlns:my='urn:import:com.ted.aggredata.client'>
     <ui:style src="../../Global.css"/>
     <g:HorizontalPanel ui:field="mainPanel">
-        <g:CheckBox ui:field="groupMemberCheckBox" />
+        <g:CheckBox ui:field="groupMemberCheckBox"/>
         <my:widgets.ClearImage width="3px" height="1px"/>
-        <g:Label ui:field="gatewayDescription" width="280px"  styleName="{style.gatewayListLabel}"/>
+        <g:Label ui:field="gatewayDescription" width="280px" styleName="{style.gatewayListLabel}"/>
     </g:HorizontalPanel>
 
 </ui:UiBinder>

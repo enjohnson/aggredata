@@ -22,8 +22,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.ted.aggredata.client.widgets.SmallButton;
 
 import java.util.logging.Logger;
@@ -32,6 +34,7 @@ import java.util.logging.Logger;
 public class YesNoPopup extends PopupPanel {
 
     static Logger logger = Logger.getLogger(YesNoPopup.class.toString());
+
     interface MyUiBinder extends UiBinder<Widget, YesNoPopup> {
     }
 
@@ -41,10 +44,14 @@ public class YesNoPopup extends PopupPanel {
     int value = 0;
     public static int YES = 1;
     public static int NO = 0;
-    @UiField CaptionPanel captionPanel;
-    @UiField Label messageLabel;
-    @UiField SmallButton yesButton;
-    @UiField SmallButton noButton;
+    @UiField
+    CaptionPanel captionPanel;
+    @UiField
+    Label messageLabel;
+    @UiField
+    SmallButton yesButton;
+    @UiField
+    SmallButton noButton;
 
 
     public YesNoPopup(String title, String text) {

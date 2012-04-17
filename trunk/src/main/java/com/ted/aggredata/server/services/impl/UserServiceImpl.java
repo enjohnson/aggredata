@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByUserName(String username) {
         try {
             logger.debug("Looking up user with username " + username);
-            User user =  userDao.getUserByUserName(username);
+            User user = userDao.getUserByUserName(username);
             if (user == null) return null;
             checkUserConfig(user);
             return user;
@@ -95,11 +95,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public User saveUser(User entity){
+    public User saveUser(User entity) {
         try {
             logger.info("Saving user information");
             return userDao.save(entity);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             logger.info("saveUser: " + ex.getMessage(), ex);
             return null;
         }
@@ -118,19 +118,20 @@ public class UserServiceImpl implements UserService {
     /**
      * This double checks that the user has an activation key and at least one group. Used in case users are
      * created in the database directly.
+     *
      * @param user
      */
-    private void checkUserConfig(User user){
+    private void checkUserConfig(User user) {
         if (logger.isDebugEnabled()) logger.debug("Checking user configuration for " + user);
 
         //Check to make sure an activation key is generated. This should be done on
         //user creation but this check is here in case we do a direct database
         //load of users.
-        if (user.getActivationKey()== null || user.getActivationKey().length()==0){
+        if (user.getActivationKey() == null || user.getActivationKey().length() == 0) {
             if (logger.isDebugEnabled()) logger.debug("Generating new activation key for " + user);
 
             String key = KeyGenerator.generateSecurityKey(18);
-            while (!userDao.isUniqueKey(key)){
+            while (!userDao.isUniqueKey(key)) {
                 key = KeyGenerator.generateSecurityKey(18);
             }
             user.setActivationKey(key);
@@ -139,12 +140,11 @@ public class UserServiceImpl implements UserService {
 
         //Check to see at least one group is create
         List<Group> groupList = groupService.getByUser(user);
-        if (groupList == null || groupList.size() == 0)
-        {
+        if (groupList == null || groupList.size() == 0) {
             if (logger.isDebugEnabled()) logger.debug("adding default group for " + user);
             groupService.createGroup(user, "Default Group");
         }
-        
-        
+
+
     }
 }

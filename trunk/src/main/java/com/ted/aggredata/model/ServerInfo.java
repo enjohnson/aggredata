@@ -19,20 +19,19 @@ package com.ted.aggredata.model;
 
 import java.io.Serializable;
 
-/***
+/**
  * This is a model that contains the server runtime properties (mostly used by the
  * client as the Spring properties file can be referenced directly serverside
  */
 public class ServerInfo implements Serializable {
-    
+
     private String serverName;
     private int serverPort;
     private boolean useHttps;
     private int postDelay;
     private boolean highPrecision;
 
-    public ServerInfo()
-    {
+    public ServerInfo() {
     }
 
     public String getServerName() {
@@ -92,7 +91,7 @@ public class ServerInfo implements Serializable {
 
     public String getActivationUrl() {
         StringBuilder stringBuilder = new StringBuilder();
-        if (isUseHttps()){
+        if (isUseHttps()) {
             stringBuilder.append("https://");
         } else {
             stringBuilder.append("http://");
@@ -101,7 +100,7 @@ public class ServerInfo implements Serializable {
         stringBuilder.append(getServerName());
 
         //Append th eport if its a non-standard port
-        if ((isUseHttps() && getServerPort() != 443) || (!isUseHttps() && getServerPort() != 80)){
+        if ((isUseHttps() && getServerPort() != 443) || (!isUseHttps() && getServerPort() != 80)) {
             stringBuilder.append(":").append(getServerPort());
         }
 

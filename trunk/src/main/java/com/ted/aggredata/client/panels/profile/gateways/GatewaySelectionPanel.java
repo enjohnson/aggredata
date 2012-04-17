@@ -32,7 +32,9 @@ import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.dialogs.YesNoPopup;
 import com.ted.aggredata.client.events.GatewaySelectedEvent;
 import com.ted.aggredata.client.events.GatewaySelectedHandler;
-import com.ted.aggredata.client.guiService.*;
+import com.ted.aggredata.client.guiService.GWTGatewayService;
+import com.ted.aggredata.client.guiService.GWTGatewayServiceAsync;
+import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.SmallButton;
 import com.ted.aggredata.model.Gateway;
@@ -49,6 +51,7 @@ public class GatewaySelectionPanel extends Composite {
 
     interface MyUiBinder extends UiBinder<Widget, GatewaySelectionPanel> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     @UiField
     SmallButton deleteButton;
@@ -64,8 +67,7 @@ public class GatewaySelectionPanel extends Composite {
     List<Gateway> gatewayList = new ArrayList<Gateway>();
     Gateway selectedGateway;
 
-    public GatewaySelectionPanel()
-    {
+    public GatewaySelectionPanel() {
         initWidget(uiBinder.createAndBindUi(this));
         handlerManager = new HandlerManager(this);
 
@@ -128,29 +130,27 @@ public class GatewaySelectionPanel extends Composite {
     /**
      * Redraws/refreshes the groupListBox. the selected index is not lost.
      */
-    public void redrawGatewayList()
-    {
+    public void redrawGatewayList() {
         int selectedIndex = gatewayListBox.getSelectedIndex();
         gatewayListBox.clear();
-        for (Gateway gateway : gatewayList)
-        {
+        for (Gateway gateway : gatewayList) {
             if (logger.isLoggable(Level.FINE)) logger.fine("Adding gateway " + gateway + " to list box");
             gatewayListBox.addItem(gateway.getDescription(), gateway.getId().toString());
         }
         gatewayListBox.setSelectedIndex(selectedIndex);
     }
 
-    /***
+    /**
      * Method to fire an event w/ the selected gateway
      */
-    private void fireSelectedGroup(){
+    private void fireSelectedGroup() {
         int index = gatewayListBox.getSelectedIndex();
         if (logger.isLoggable(Level.FINE)) logger.fine("Row " + index + " selected");
         Long gatewayId = new Long(gatewayListBox.getValue(index));
 
 
-        for (Gateway gateway: gatewayList) {
-            if (gateway.getId().equals(gatewayId)){
+        for (Gateway gateway : gatewayList) {
+            if (gateway.getId().equals(gatewayId)) {
                 this.selectedGateway = gateway;
                 break;
             }
@@ -162,7 +162,7 @@ public class GatewaySelectionPanel extends Composite {
         }
     }
 
-    public HandlerRegistration addGatewaySelectedHandler (GatewaySelectedHandler handler) {
+    public HandlerRegistration addGatewaySelectedHandler(GatewaySelectedHandler handler) {
         return handlerManager.addHandler(GatewaySelectedEvent.TYPE, handler);
     }
 

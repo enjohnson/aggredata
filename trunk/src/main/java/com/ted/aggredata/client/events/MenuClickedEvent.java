@@ -25,7 +25,9 @@ import com.google.gwt.event.shared.GwtEvent;
 public class MenuClickedEvent extends GwtEvent<MenuClickedHandler> {
     public static Type<MenuClickedHandler> TYPE = new Type<MenuClickedHandler>();
 
-    public enum MenuOptions {PROFILE, ENERGY, ADMIN, LOGOUT};
+    public enum MenuOptions {PROFILE, ENERGY, ADMIN, LOGOUT}
+
+    ;
 
     private final MenuOptions menuOption;
 

@@ -33,12 +33,14 @@ public interface GWTGatewayService extends RemoteService {
 
     /**
      * Finds gateways for the  user
+     *
      * @return
      */
     public List<Gateway> findGateways();
 
     /**
      * Finds gateways for the  group
+     *
      * @return
      */
     public List<Gateway> findGateways(Group group);

@@ -30,10 +30,10 @@ public class MTU extends AggredataModel implements Serializable {
 
     Long gatewayId;
     MTUType type;
-   String description;
+    String description;
 
 
-    public static MTUType ordinalToMTUType(int ordinalValue){
+    public static MTUType ordinalToMTUType(int ordinalValue) {
         if (ordinalValue == 0) return MTUType.LOAD;
         if (ordinalValue == 1) return MTUType.GENERATION;
         if (ordinalValue == 2) return MTUType.ADJUSTED_NET;

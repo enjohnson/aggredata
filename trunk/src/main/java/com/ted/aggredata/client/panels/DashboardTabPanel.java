@@ -27,7 +27,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.ted.aggredata.client.events.TabClickedEvent;
 import com.ted.aggredata.client.events.TabClickedHandler;
-import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.DashboardTab;
 
 /**
@@ -36,33 +35,31 @@ import com.ted.aggredata.client.widgets.DashboardTab;
 public class DashboardTabPanel extends Composite implements HasHandlers {
 
 
-    final DashboardTab dashboardTab[] = new DashboardTab[4]; 
+    final DashboardTab dashboardTab[] = new DashboardTab[4];
     final private HandlerManager handlerManager;
     final Integer numberOfTabs;
 
-    public DashboardTabPanel(String...tabs) {
+    public DashboardTabPanel(String... tabs) {
 
         numberOfTabs = tabs.length;
         GWT.log("NUMBER OF TABS:" + numberOfTabs);
 
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
         handlerManager = new HandlerManager(this);
-        
-        for (int i=0; i < numberOfTabs; i++)
-        {
+
+        for (int i = 0; i < numberOfTabs; i++) {
             final int index = i;
-            dashboardTab[i] = new DashboardTab(tabs[i], (i==0));
+            dashboardTab[i] = new DashboardTab(tabs[i], (i == 0));
             horizontalPanel.add(dashboardTab[i]);
-            dashboardTab[i].setSelected((i==0), i>1);
+            dashboardTab[i].setSelected((i == 0), i > 1);
             dashboardTab[i].addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
-                    if (!dashboardTab[index].isSelected()){
-                        for (int j=0; j < numberOfTabs; j++)
-                        {
+                    if (!dashboardTab[index].isSelected()) {
+                        for (int j = 0; j < numberOfTabs; j++) {
                             //If the index of the tab is the same that is selected, we mark the select flag as true;
                             //if the index is at least 2 higher than the selected index, we mark the div flag as true
-                            dashboardTab[j].setSelected(j==index, j>(index+1));
+                            dashboardTab[j].setSelected(j == index, j > (index + 1));
                         }
                         handlerManager.fireEvent(new TabClickedEvent(index));
                     }
@@ -77,11 +74,10 @@ public class DashboardTabPanel extends Composite implements HasHandlers {
     }
 
     public void setSelectedTab(int index) {
-        for (int j=0; j < numberOfTabs; j++)
-        {
+        for (int j = 0; j < numberOfTabs; j++) {
             //If the index of the tab is the same that is selected, we mark the select flag as true;
             //if the index is at least 2 higher than the selected index, we mark the div flag as true
-            dashboardTab[j].setSelected(j==index, j>(index+1));
+            dashboardTab[j].setSelected(j == index, j > (index + 1));
         }
     }
 }

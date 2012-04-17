@@ -23,13 +23,13 @@
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
     <g:CaptionPanel ui:field="captionPanel" width="220px" styleName="{style.captionHeader}">
-    <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
-        <g:ListBox width="200px"  ui:field="gatewayListBox" visibleItemCount="25" styleName="{style.formListBox}"/>
-        <my:widgets.ClearImage width="220px" height="5px"/>
-        <g:HorizontalPanel>
-            <my:widgets.SmallButton ui:field="deleteButton" buttonString="{txtRes.delete}"/>
-        </g:HorizontalPanel>
-    </g:VerticalPanel>
+        <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
+            <g:ListBox width="200px" ui:field="gatewayListBox" visibleItemCount="25" styleName="{style.formListBox}"/>
+            <my:widgets.ClearImage width="220px" height="5px"/>
+            <g:HorizontalPanel>
+                <my:widgets.SmallButton ui:field="deleteButton" buttonString="{txtRes.delete}"/>
+            </g:HorizontalPanel>
+        </g:VerticalPanel>
     </g:CaptionPanel>
 
 </ui:UiBinder>

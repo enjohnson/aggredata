@@ -36,6 +36,7 @@ public class ActivationPanel extends Composite {
 
     interface MyUiBinder extends UiBinder<Widget, ActivationPanel> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
     DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
@@ -46,12 +47,11 @@ public class ActivationPanel extends Composite {
     @UiField
     Label postTimeLabel;
 
-    public ActivationPanel()
-    {
+    public ActivationPanel() {
         initWidget(uiBinder.createAndBindUi(this));
         activationUrlLabel.setText(Aggredata.GLOBAL.getServerInfo().getActivationUrl());
         activationKeyLabel.setText(Aggredata.GLOBAL.getSessionUser().getActivationKey());
-        
+
         StringBuilder finalParagraph = new StringBuilder();
         finalParagraph.append(dashboardConstants.activationInstructions4());
         finalParagraph.append(" ");
@@ -62,7 +62,5 @@ public class ActivationPanel extends Composite {
         postTimeLabel.setText(finalParagraph.toString());
 
 
-
-        
     }
 }

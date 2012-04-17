@@ -25,10 +25,11 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
-import com.ted.aggredata.client.guiService.*;
+import com.ted.aggredata.client.guiService.GWTGatewayService;
+import com.ted.aggredata.client.guiService.GWTGatewayServiceAsync;
+import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class GatewayDetailsPanel extends Composite {
 
     interface MyUiBinder extends UiBinder<Widget, GatewayDetailsPanel> {
     }
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     @UiField
     TextBox descriptionField;
@@ -90,8 +92,7 @@ public class GatewayDetailsPanel extends Composite {
         }
     };
 
-    public GatewayDetailsPanel()
-    {
+    public GatewayDetailsPanel() {
         initWidget(uiBinder.createAndBindUi(this));
 
         captionPanel.setCaptionHTML("<span style='color:white'>" + DashboardConstants.INSTANCE.gatewayDetails() + "</span>");
@@ -121,10 +122,10 @@ public class GatewayDetailsPanel extends Composite {
 
     /**
      * Sets all the fields of this panel to be enabled or disabled
+     *
      * @param enabled
      */
-    public void setEnabled(boolean enabled)
-    {
+    public void setEnabled(boolean enabled) {
 
         descriptionField.setEnabled(enabled);
         custom1Field.setEnabled(enabled);
@@ -137,7 +138,7 @@ public class GatewayDetailsPanel extends Composite {
     }
 
 
-    public boolean validate(){
+    public boolean validate() {
         boolean valid = true;
         descriptionFieldError.setText("");
 
@@ -147,8 +148,8 @@ public class GatewayDetailsPanel extends Composite {
             descriptionFieldError.setText("Required");
         }
 
-        for (Gateway g: gatewayList){
-            if (!g.getId().equals(gateway.getId()) && g.getDescription().toLowerCase().equals(descriptionField.getText().trim().toLowerCase())){
+        for (Gateway g : gatewayList) {
+            if (!g.getId().equals(gateway.getId()) && g.getDescription().toLowerCase().equals(descriptionField.getText().trim().toLowerCase())) {
                 valid = false;
                 descriptionFieldError.setText("Already Used");
             }
@@ -157,17 +158,15 @@ public class GatewayDetailsPanel extends Composite {
         return valid;
     }
 
-    private void doSave()
-    {
-        if (validate())
-        {
+    private void doSave() {
+        if (validate()) {
             gateway.setDescription(descriptionField.getText().trim());
             gateway.setCustom1(custom1Field.getText().trim());
             gateway.setCustom2(custom2Field.getText().trim());
             gateway.setCustom3(custom3Field.getText().trim());
             gateway.setCustom4(custom4Field.getText().trim());
             gateway.setCustom5(custom5Field.getText().trim());
-            if (gateway.hashCode() != gatewayHashCode){
+            if (gateway.hashCode() != gatewayHashCode) {
                 logger.info("gateway is dirty. Saving " + gateway);
                 gatewayService.saveGateway(gateway, new TEDAsyncCallback<Gateway>() {
                     @Override
@@ -179,10 +178,9 @@ public class GatewayDetailsPanel extends Composite {
         }
     }
 
-    public void setGateway(final Gateway gateway)
-    {
+    public void setGateway(final Gateway gateway) {
         if (logger.isLoggable(Level.FINE)) logger.fine("Setting gateway " + gateway);
-        setEnabled(gateway!=null);
+        setEnabled(gateway != null);
         serialNumberField.setValue(Long.toHexString(gateway.getId()).toUpperCase());
         descriptionField.setValue(gateway.getDescription());
         custom1Field.setValue(gateway.getCustom1());

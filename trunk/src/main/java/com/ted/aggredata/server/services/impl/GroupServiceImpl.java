@@ -62,17 +62,17 @@ public class GroupServiceImpl implements GroupService {
     }
 
     public List<Group> getByUser(User user) {
-        if (logger.isDebugEnabled())logger.debug("Returning all groups for the user " + user);
+        if (logger.isDebugEnabled()) logger.debug("Returning all groups for the user " + user);
         return groupDAO.findGroupsByUser(user);
     }
 
     public void addUserToGroup(User user, Group group, Group.Role role) {
-        if (logger.isDebugEnabled())logger.debug("Adding " + user + " to " + group + " with the role of " + role);
+        if (logger.isDebugEnabled()) logger.debug("Adding " + user + " to " + group + " with the role of " + role);
         groupDAO.addGroupMembership(user, group, role);
     }
 
     public void removeUserFromGroup(User user, Group group) {
-        if (logger.isDebugEnabled())logger.debug("Removing " + user + " from " + group);
+        if (logger.isDebugEnabled()) logger.debug("Removing " + user + " from " + group);
         groupDAO.removeGroupMembership(user, group);
     }
 
@@ -85,10 +85,8 @@ public class GroupServiceImpl implements GroupService {
     public void addGatewayToGroup(User user, Group group, Gateway gateway) {
         //Check user permissions first
         List<Group> groupList = groupDAO.findGroupsByUser(user);
-        for (Group userGroup : groupList)
-        {
-            if (userGroup.getId() == group.getId() && (userGroup.getRole() == Group.Role.OWNER || userGroup.getRole() == Group.Role.MEMBER))
-            {
+        for (Group userGroup : groupList) {
+            if (userGroup.getId() == group.getId() && (userGroup.getRole() == Group.Role.OWNER || userGroup.getRole() == Group.Role.MEMBER)) {
                 if (logger.isInfoEnabled()) logger.info("Adding " + gateway + " from " + group);
                 gatewayDAO.addGatewayToGroup(gateway, group);
                 return;
@@ -97,17 +95,15 @@ public class GroupServiceImpl implements GroupService {
 
         if (logger.isWarnEnabled()) logger.warn("User " + user + " does not have access to group: " + group);
 
-        
+
     }
 
     @Override
     public void removeGatewayFromGroup(User user, Group group, Gateway gateway) {
         //Check user permissions first
         List<Group> groupList = groupDAO.findGroupsByUser(user);
-        for (Group userGroup : groupList)
-        {
-            if (userGroup.getId() == group.getId() && (userGroup.getRole() == Group.Role.OWNER || userGroup.getRole() == Group.Role.MEMBER))
-            {
+        for (Group userGroup : groupList) {
+            if (userGroup.getId() == group.getId() && (userGroup.getRole() == Group.Role.OWNER || userGroup.getRole() == Group.Role.MEMBER)) {
                 if (logger.isInfoEnabled()) logger.info("Adding " + gateway + " from " + group);
                 gatewayDAO.removeGatewayFromGroup(gateway, group);
                 return;

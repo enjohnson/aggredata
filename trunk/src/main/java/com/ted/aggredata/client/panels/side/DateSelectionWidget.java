@@ -15,35 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.client.panels.login;
+package com.ted.aggredata.client.panels.side;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
-import com.ted.aggredata.client.resources.DashboardImageResource;
 
+import java.util.logging.Logger;
 
-public class LoginPanel extends Composite {
+/**
+ * Side Panel Widget that allows a group to be selected.
+ */
+public class DateSelectionWidget extends Composite {
 
-    @UiField
-    AbsolutePanel contentPanel;
-
-    interface MyUiBinder extends UiBinder<Widget, LoginPanel> {
+    interface MyUiBinder extends UiBinder<Widget, DateSelectionWidget> {
     }
 
+    static Logger logger = Logger.getLogger(GraphSidePanel.class.toString());
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-    public LoginPanel() {
-        initWidget(uiBinder.createAndBindUi(this));
-        contentPanel.setSize("550px", "280px");
-        contentPanel.add(new Image(DashboardImageResource.INSTANCE.smallPanel()), 0, 25);
-        contentPanel.add(new Image(DashboardImageResource.INSTANCE.tedLogo()), 20, 0);
-        contentPanel.add(new Image(DashboardImageResource.INSTANCE.aggreDataMedium()), 280, 30);
-        contentPanel.add(new LoginFormPanel(), 10, 80);
-    }
+    final private HandlerManager handlerManager;
 
+    public DateSelectionWidget() {
+        initWidget(uiBinder.createAndBindUi(this));
+        handlerManager = new HandlerManager(this);
+    }
 }
