@@ -23,15 +23,19 @@
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
     <g:VerticalPanel>
-        <g:Label width="180px" styleName="{style.sideBarHeader}" text="{txtRes.sideBarGroupHeader}"/>
-        <g:Label width="180px" styleName="{style.sideBarInstructions}" text="{txtRes.sideBarGroupDetails}"/>
-        <g:ScrollPanel width="180px" height="100px" ui:field="scrollPanel">
-            <g:HorizontalPanel>
-                <my:widgets.ClearImage width="20px" height="4px"/>
-                <g:VerticalPanel ui:field="groupPanel"/>
-            </g:HorizontalPanel>
-        </g:ScrollPanel>
+        <g:Label width="180px" styleName="{style.sideBarHeader}" text="{txtRes.sideBarTypeHeader}"/>
+        <g:Label width="180px" styleName="{style.sideBarInstructions}" text="{txtRes.sideBarTypeDetails}"/>
+        <my:widgets.ClearImage width="2px" height="5px"/>
+        <g:HorizontalPanel>
+            <my:widgets.ClearImage width="20px" height="4px"/>
+            <g:VerticalPanel>
+                <g:RadioButton name="type"  text="Energy" ui:field="energyRadioButton"/>
+                <g:RadioButton name="type"  text="Cost" ui:field="costRadioButton"/>
+            </g:VerticalPanel>
+        </g:HorizontalPanel>
+
     </g:VerticalPanel>
+
 
 
 </ui:UiBinder>

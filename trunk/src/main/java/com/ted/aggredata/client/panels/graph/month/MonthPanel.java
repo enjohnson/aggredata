@@ -19,9 +19,11 @@ package com.ted.aggredata.client.panels.graph.month;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.visualization.client.AbstractDataTable;
@@ -32,12 +34,19 @@ import com.google.gwt.visualization.client.VisualizationUtils;
 import com.google.gwt.visualization.client.events.SelectHandler;
 import com.google.gwt.visualization.client.visualizations.PieChart;
 import com.google.gwt.visualization.client.visualizations.PieChart.Options;
+import com.ted.aggredata.client.panels.graph.GraphOptionChangeable;
+import com.ted.aggredata.model.Enums;
+import com.ted.aggredata.model.Group;
 
+import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MonthPanel extends Composite {
+public class MonthPanel extends Composite implements GraphOptionChangeable{
 
     static Logger logger = Logger.getLogger(MonthPanel.class.toString());
+
+
 
     interface MyUiBinder extends UiBinder<Widget, MonthPanel> {
     }
@@ -45,6 +54,8 @@ public class MonthPanel extends Composite {
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     @UiField
     VerticalPanel graphPanel;
+    @UiField
+    Label optionInfoLabel;
 
 
     public MonthPanel() {
@@ -66,6 +77,14 @@ public class MonthPanel extends Composite {
 
 
     }
+
+    @Override
+    public void onGraphOptionChange(Group group, Date startDate, Date endDate, Enums.GraphType graphType) {
+        if (logger.isLoggable(Level.FINE)) logger.fine("Graph Option Change Called: " + group + " " + startDate + " " + endDate + " " + graphType);
+        DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("MM/dd/yyyy");
+        optionInfoLabel.setText("Graphing  " + graphType  +" for the group" + group.getDescription() +" and the date range " +dateTimeFormat.format(startDate) + " to " + dateTimeFormat.format(endDate));
+    }
+
 
     private SelectHandler createSelectHandler(final PieChart chart) {
         return new SelectHandler() {

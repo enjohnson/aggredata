@@ -25,8 +25,12 @@
         <g:Label styleName='{style.panelTitleText}' text='{txtRes.monthTitle}'/>
         <my:widgets.ClearImage width="800" height="3px"/>
         <g:Label styleName='{style.panelInstructionText}' text='{txtRes.monthInstructions}'/>
+        <my:widgets.ClearImage width="800" height="3px"/>
+        <g:Label styleName='{style.panelInstructionText}' ui:field="optionInfoLabel"/>
+
         <my:widgets.ClearImage width="800" height="20px"/>
         <g:VerticalPanel ui:field="graphPanel"/>
+
 
 
     </g:VerticalPanel>

@@ -19,13 +19,19 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:my='urn:import:com.ted.aggredata.client'>
     <ui:style src="../Global.css"/>
+    <ui:with field='imgRes' type='com.ted.aggredata.client.resources.DashboardImageResource'/>
+
     <g:VerticalPanel>
         <my:widgets.ClearImage width="1px" height="7px"/>
         <my:panels.side.GroupSelectionWidget ui:field="groupSelectionWidget"/>
-        <!-- Graph Date/Time Selection -->
-        <!-- Graph Data (kW/Cost)Selection -->
-        <!-- Graph Type (Bar/Pie)Selection -->
-
+        <my:widgets.ClearImage width="1px" height="7px"/>
+        <g:Image resource="{imgRes.sideDivider}"/>
+        <my:widgets.ClearImage width="1px" height="7px"/>
+        <my:panels.side.DateSelectionWidget ui:field="dateSelectionWidget"/>
+        <my:widgets.ClearImage width="1px" height="7px"/>
+        <g:Image resource="{imgRes.sideDivider}"/>
+        <my:widgets.ClearImage width="1px" height="7px"/>
+        <my:panels.side.TypeSelectionWidget ui:field="typeSelectionWidget"/>
     </g:VerticalPanel>
 
 
