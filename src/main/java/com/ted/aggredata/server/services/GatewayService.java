@@ -117,9 +117,10 @@ public interface GatewayService {
      * @param watts
      * @param rate
      * @param minCost
+     * @param energyDifference
      * @return
      */
-    EnergyData postEnergyData(Gateway gateway, MTU mtu, Integer timestamp, Double watts, Double rate, Double minCost);
+    EnergyData postEnergyData(Gateway gateway, MTU mtu, Integer timestamp, Double watts, Double rate, Double minCost, Double energyDifference);
 
     /**
      * Finds the most recently posted entry for the gateway/mtu

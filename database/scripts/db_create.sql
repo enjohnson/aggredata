@@ -94,6 +94,7 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`energydata` (
   `timestamp` INT UNSIGNED NOT NULL ,
   `rate` DECIMAL(10,5) NULL ,
   `energy` DECIMAL(25,4) NULL ,
+  `energyDifference` DECIMAL(25,4) NULL ,
   `minuteCost` DECIMAL(8,5) NULL ,
   PRIMARY KEY (`gatewayId`, `mtuId`, `timestamp`) ,
   INDEX `timestamp` (`timestamp` ASC, `gatewayId` ASC, `mtuID` ASC))
