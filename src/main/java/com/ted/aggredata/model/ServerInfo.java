@@ -30,6 +30,7 @@ public class ServerInfo implements Serializable {
     private boolean useHttps;
     private int postDelay;
     private boolean highPrecision;
+    private String timezone;
 
     public ServerInfo() {
     }
@@ -75,6 +76,14 @@ public class ServerInfo implements Serializable {
         this.highPrecision = highPrecision;
     }
 
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
+
     @Override
     public String toString() {
         StringBuffer b = new StringBuffer();
@@ -84,6 +93,7 @@ public class ServerInfo implements Serializable {
         b.append(", Use Https:" + isUseHttps());
         b.append(", PostDelay:" + getPostDelay());
         b.append(", HighPrecision:" + isHighPrecision());
+        b.append(", timezone:" + getTimezone());
         b.append("}");
         return b.toString();
     }

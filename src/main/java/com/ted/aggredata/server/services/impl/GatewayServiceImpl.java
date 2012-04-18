@@ -18,10 +18,7 @@
 package com.ted.aggredata.server.services.impl;
 
 import com.ted.aggredata.model.*;
-import com.ted.aggredata.server.dao.EnergyDataDAO;
-import com.ted.aggredata.server.dao.GatewayDAO;
-import com.ted.aggredata.server.dao.GroupDAO;
-import com.ted.aggredata.server.dao.MTUDAO;
+import com.ted.aggredata.server.dao.*;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.util.KeyGenerator;
 import org.slf4j.Logger;
@@ -35,6 +32,10 @@ import java.util.List;
 public class GatewayServiceImpl implements GatewayService {
 
     @Autowired
+    ServerInfo serverInfo;
+
+
+    @Autowired
     protected GatewayDAO gatewayDAO;
 
     @Autowired
@@ -46,6 +47,9 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Autowired
     protected EnergyDataDAO energyDataDAO;
+
+    @Autowired
+    protected EnergyDataHistoryDAO energyDataHistoryDAO;
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -167,4 +171,20 @@ public class GatewayServiceImpl implements GatewayService {
     public void deleteMTU(Gateway gateway, MTU mtu) {
         mtuDAO.delete(gateway, mtu);
     }
+
+    @Override
+    public List<EnergyDataHistory> findMonthlyHistory(User user, Gateway gateway, MTU mtu, Long timestampStart, long timestampEnd) {
+        return energyDataHistoryDAO.findMonthHistory(gateway, mtu, timestampStart, timestampEnd, serverInfo.getTimezone(), user.getTimezone());
+    }
+
+    @Override
+    public List<EnergyDataHistory> findDailyHistory(User user, Gateway gateway, MTU mtu, Long timestampStart, long timestampEnd) {
+        return energyDataHistoryDAO.findDailyHistory(gateway, mtu, timestampStart, timestampEnd, serverInfo.getTimezone(), user.getTimezone());
+    }
+
+    @Override
+    public List<EnergyDataHistory> findHourlyHistory(User user, Gateway gateway, MTU mtu, Long timestampStart, long timestampEnd) {
+        return energyDataHistoryDAO.findDailyHistory(gateway, mtu, timestampStart, timestampEnd, serverInfo.getTimezone(), user.getTimezone());
+    }
+
 }

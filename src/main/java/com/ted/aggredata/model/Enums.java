@@ -19,4 +19,34 @@ package com.ted.aggredata.model;
 
 public class Enums {
     public enum GraphType { ENERGY, COST};
+
+
+    public static String[] timezones = {
+            "US/Alaska",
+            "US/Aleutian",
+            "US/Arizona",
+            "US/Central",
+            "US/East-Indiana",
+            "US/Eastern",
+            "US/Hawaii",
+            "US/Indiana-Starke",
+            "US/Michigan",
+            "US/Mountain",
+            "US/Pacific",
+            "US/Pacific-New",
+            "US/Samoa",
+            "UTC",
+            "Canada/Atlantic",
+            "Canada/Central",
+            "Canada/East-Saskatchewan",
+            "Canada/Eastern",
+            "Canada/Mountain",
+            "Canada/Newfoundland",
+            "Canada/Pacific",
+            "Canada/Saskatchewan",
+            "Canada/Yukon"};
+
+
+
+
 }

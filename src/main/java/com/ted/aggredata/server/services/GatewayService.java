@@ -170,6 +170,13 @@ public interface GatewayService {
      * @param mtu
      */
     public void deleteMTU(Gateway gateway, MTU mtu);
+
+
+
+    public List<EnergyDataHistory> findMonthlyHistory(User user, Gateway gateway, MTU mtu, Long timestampStart, long timestampEnd);
+    public List<EnergyDataHistory> findDailyHistory(User user, Gateway gateway,  MTU mtu, Long timestampStart, long timestampEnd);
+    public List<EnergyDataHistory> findHourlyHistory(User user,Gateway gateway,  MTU mtu, Long timestampStart, long timestampEnd);
+
 }
 
 

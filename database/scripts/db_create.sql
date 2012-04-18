@@ -126,6 +126,7 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`user` (
   `role` VARCHAR(45) NULL ,
   `state` INT NULL ,
   `activationKey` VARCHAR(20) NULL ,
+  `timezone` VARCHAR(40) NULL ,
   `defaultgroupId` INT UNSIGNED NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
