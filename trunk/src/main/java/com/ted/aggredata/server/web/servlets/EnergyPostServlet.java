@@ -156,6 +156,7 @@ public class EnergyPostServlet extends HttpServlet {
                     Integer timestamp = Integer.parseInt(cumulativeNode.getAttribute("timestamp"));
                     Double rate = Double.parseDouble(cumulativeNode.getAttribute("rate"));
                     Double energy = Double.parseDouble(cumulativeNode.getAttribute("watts"));
+                    Double energyDifference = 0d;
                     Double minuteCost = 0d;
 
                     if (lastCumulativeValue == null) {
@@ -166,7 +167,7 @@ public class EnergyPostServlet extends HttpServlet {
                     //Make sure that we are not dealing with the first entry for this gateway/mtu
                     if (lastCumulativeValue != null) {
                         Double wattDifference = energy - lastCumulativeValue.getEnergy();
-
+                        energyDifference = wattDifference;
                         wattDifference = wattDifference / 1000; //Rate is on kWh
 
                         logger.debug("kW:" + wattDifference);
@@ -174,7 +175,7 @@ public class EnergyPostServlet extends HttpServlet {
 
                     }
 
-                    lastCumulativeValue = gatewayService.postEnergyData(gateway, mtu, timestamp, energy, rate, minuteCost);
+                    lastCumulativeValue = gatewayService.postEnergyData(gateway, mtu, timestamp, energy, rate, minuteCost, energyDifference);
                     if (logger.isDebugEnabled()) logger.debug("Posted " + lastCumulativeValue);
                 }
 

@@ -29,6 +29,7 @@ public class EnergyData implements Serializable {
     private Double rate;
     private Double energy;
     private Double minuteCost;
+    private Double energyDifference;
 
     public EnergyData() {
 
@@ -102,6 +103,14 @@ public class EnergyData implements Serializable {
         this.gatewayId = gatewayId;
     }
 
+    public Double getEnergyDifference() {
+        return energyDifference;
+    }
+
+    public void setEnergyDifference(Double energyDifference) {
+        this.energyDifference = energyDifference;
+    }
+
     @Override
     public String toString() {
         StringBuffer b = new StringBuffer();
@@ -112,7 +121,10 @@ public class EnergyData implements Serializable {
         b.append(", rate:" + rate);
         b.append(", energy:" + energy);
         b.append(", minuteCost:" + minuteCost);
+        b.append(", energyDifference:" + energyDifference);
         b.append("}");
         return b.toString();
     }
+
+
 }

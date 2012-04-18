@@ -125,7 +125,7 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
-    public EnergyData postEnergyData(Gateway gateway, MTU mtu, Integer timestamp, Double watts, Double rate, Double minCost) {
+    public EnergyData postEnergyData(Gateway gateway, MTU mtu, Integer timestamp, Double watts, Double rate, Double minCost, Double energyDifference) {
         EnergyData energyData = new EnergyData();
         energyData.setGatewayId(gateway.getId());
         energyData.setMtuId(mtu.getId());
@@ -133,6 +133,7 @@ public class GatewayServiceImpl implements GatewayService {
         energyData.setEnergy(watts);
         energyData.setRate(rate);
         energyData.setMinuteCost(minCost);
+        energyData.setEnergyDifference(energyDifference);
         energyDataDAO.create(energyData);
         return energyData;
     }
