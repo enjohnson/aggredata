@@ -49,6 +49,7 @@ public class User extends AggredataModel implements Serializable {
     private String custom4;
     private String custom5;
     private String phoneNumber;
+    private String timezone;
 
     private Long id;
 
@@ -216,6 +217,14 @@ public class User extends AggredataModel implements Serializable {
         return custom5;
     }
 
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
+
     @Override
     public String toString() {
         StringBuffer b = new StringBuffer();
@@ -250,6 +259,7 @@ public class User extends AggredataModel implements Serializable {
         result = 31 * result + (custom4 != null ? custom4.hashCode() : 0);
         result = 31 * result + (custom5 != null ? custom5.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        result = 31 * result + (timezone != null ? timezone.hashCode() : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
     }

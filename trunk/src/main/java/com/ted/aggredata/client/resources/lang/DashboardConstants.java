@@ -123,6 +123,7 @@ public interface DashboardConstants extends Constants {
 
     String profileSettingsCustom5();
 
+    String profileSettingsTimezone();
 
     String minutes();
 

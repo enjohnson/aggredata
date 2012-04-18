@@ -43,6 +43,9 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
 
 
 
+
+
+
     public EnergyDataDAO() {
         super("aggredata.energyData");
     }

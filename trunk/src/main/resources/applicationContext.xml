@@ -43,6 +43,7 @@
         <property name="useHttps" value="${server.useHttps?false}"/>
         <property name="postDelay" value="${server.postDelay?1}"/>
         <property name="highPrecision" value="${server.useHighPrecision?true}"/>
+        <property name="timezone" value="${server.timezone?EST}"/>
     </bean>
 
 
@@ -69,6 +70,7 @@
     <bean name="mtuDAO" class=" com.ted.aggredata.server.dao.MTUDAO"/>
     <bean name="gatewayDAO" class=" com.ted.aggredata.server.dao.GatewayDAO"/>
     <bean name="energyDataDAO" class=" com.ted.aggredata.server.dao.EnergyDataDAO"/>
+    <bean name="energyDataHistoryDAO" class=" com.ted.aggredata.server.dao.EnergyDataHistoryDAO"/>
 
 
     <bean name="userService" class="com.ted.aggredata.server.services.impl.UserServiceImpl" scope="session"/>

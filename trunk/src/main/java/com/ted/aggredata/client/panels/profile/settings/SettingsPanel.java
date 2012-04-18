@@ -31,6 +31,7 @@ import com.ted.aggredata.client.guiService.*;
 import com.ted.aggredata.client.panels.login.LoginPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.HugeButton;
+import com.ted.aggredata.model.Enums;
 import com.ted.aggredata.model.User;
 
 import java.util.logging.Logger;
@@ -95,6 +96,8 @@ public class SettingsPanel extends Composite {
     HugeButton changePassword;
     @UiField
     VerticalPanel mainPanel;
+    @UiField
+    ListBox timeZoneField;
 
     int userHashCode = 0;
 
@@ -147,6 +150,8 @@ public class SettingsPanel extends Composite {
         companyNameField.setText(user.getCompanyName());
 
 
+
+
         firstNameField.addChangeHandler(saveChangeHanlder);
         middleNameField.addChangeHandler(saveChangeHanlder);
         lastNameField.addChangeHandler(saveChangeHanlder);
@@ -161,6 +166,21 @@ public class SettingsPanel extends Composite {
         custom3Field.addChangeHandler(saveChangeHanlder);
         custom4Field.addChangeHandler(saveChangeHanlder);
         custom5Field.addChangeHandler(saveChangeHanlder);
+        timeZoneField.addChangeHandler(saveChangeHanlder);
+
+
+
+        int index = 0;
+        for (String tz: Enums.timezones) {
+            timeZoneField.addItem(tz);
+            if (tz.equals(user.getTimezone())) {
+                timeZoneField.setSelectedIndex(index);
+            }
+            index++;
+        }
+
+
+
 
 
         changePassword.addClickHandler(new ClickHandler() {
@@ -252,6 +272,12 @@ public class SettingsPanel extends Composite {
             user.setCustom5(custom5Field.getText().trim());
             user.setPhoneNumber(phoneNumberField.getText().trim());
             user.setMiddleName(middleNameField.getText().trim());
+
+            //Save the timezone
+            int si = timeZoneField.getSelectedIndex();
+            String tz = timeZoneField.getItemText(si);
+            user.setTimezone(tz);
+
 
             logger.fine("hashcode check: " + user.hashCode() + " = " + userHashCode);
             if (user.hashCode() != userHashCode) {
