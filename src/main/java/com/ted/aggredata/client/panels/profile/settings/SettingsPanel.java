@@ -33,6 +33,7 @@ import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.HugeButton;
 import com.ted.aggredata.model.Enums;
 import com.ted.aggredata.model.User;
+import org.w3c.css.sac.ElementSelector;
 
 import java.util.logging.Logger;
 
@@ -47,7 +48,9 @@ public class SettingsPanel extends Composite {
     }
 
     private String uname = "";
+    private int unameLength = 5;
     private String password = "";
+    private int passLength = 5;
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
 
@@ -208,16 +211,24 @@ public class SettingsPanel extends Composite {
     private void changeUname() {
         boolean confirm;
         uname = Window.prompt("Please enter in a new username", "");
-        confirm = Window.confirm("Are you sure?");
-        if (confirm) {
-
-            gwtUserService.changeUsername(user, uname, new TEDAsyncCallback<User>() {
-                @Override
-                public void onSuccess(User result) {
-                    Window.alert("Username Changed. You will have to log back into Aggredata.");
-                    logout();
-                }
-            });
+        if (uname.length() >= unameLength){
+            confirm = Window.confirm("Are you sure?");
+            if (confirm) {
+                    gwtUserService.changeUsername(user, uname, new TEDAsyncCallback<User>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        Window.alert("Username Changed. You will have to log back into Aggredata.");
+                        logout();
+                    }
+                });
+             }
+        }
+        else if (uname.length() < unameLength & uname.length() > 0 )
+        {
+            Window.alert("Username must be " + unameLength + " characters or greater.");
+        }
+        else {
+            Window.alert("No Username was entered.");
         }
     }
 
@@ -226,15 +237,25 @@ public class SettingsPanel extends Composite {
     private void changePword() {
         boolean confirm;
         password = Window.prompt("Please enter in a new password", "");
-        confirm = Window.confirm("Are you sure?");
-        if (confirm) {
-            gwtUserService.changePassword(user, password, new TEDAsyncCallback<User>() {
-                @Override
-                public void onSuccess(User result) {
-                    Window.alert("Password Changed. You will have to log back into Aggredata.");
-                    logout();
-                }
-            });
+        if (password.length() >= passLength){
+            confirm = Window.confirm("Are you sure?");
+            if (confirm) {
+                 gwtUserService.changePassword(user, password, new TEDAsyncCallback<User>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        Window.alert("Password Changed. You will have to log back into Aggredata.");
+                        logout();
+                    }
+                });
+            }
+        }
+        else if (password.length() < passLength & password.length() > 0 )
+        {
+            Window.alert("Password must be " + passLength + " characters or greater.");
+        }
+        else
+        {
+            Window.alert("No Password was entered.");
         }
     }
 
