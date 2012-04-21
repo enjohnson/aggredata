@@ -84,10 +84,13 @@ public class HistoryServiceImpl implements HistoryService {
 
     private List<EnergyDataHistory> getHistory(Enums.HistoryType type, User user, Gateway gateway, MTU mtu, long startTime, long endTime) {
 
-        if (type.equals(Enums.HistoryType.MONTHLY)) return energyDataHistoryDAO.findMonthHistory(gateway, mtu, startTime/1000, endTime/1000, serverInfo.getTimezone(), user.getTimezone());
-        if (type.equals(Enums.HistoryType.DAILY)) return energyDataHistoryDAO.findDailyHistory(gateway, mtu, startTime/1000, endTime/1000, serverInfo.getTimezone(), user.getTimezone());
-        if (type.equals(Enums.HistoryType.HOURLY)) return energyDataHistoryDAO.findHourlyHistory(gateway, mtu, startTime/1000, endTime/1000, serverInfo.getTimezone(), user.getTimezone());
+        if(logger.isDebugEnabled()) logger.debug("Looking up history for " + serverInfo.getTimezone() + " " + user.getTimezone());
+        if (type.equals(Enums.HistoryType.MONTHLY)) return energyDataHistoryDAO.findMonthHistory(gateway, mtu, startTime, endTime, serverInfo.getTimezone(), user.getTimezone());
+        if (type.equals(Enums.HistoryType.DAILY)) return energyDataHistoryDAO.findDailyHistory(gateway, mtu, startTime, endTime, serverInfo.getTimezone(), user.getTimezone());
+        if (type.equals(Enums.HistoryType.HOURLY)) return energyDataHistoryDAO.findHourlyHistory(gateway, mtu, startTime, endTime, serverInfo.getTimezone(), user.getTimezone());
+
         return new ArrayList<EnergyDataHistory>();
+
 
     }
 

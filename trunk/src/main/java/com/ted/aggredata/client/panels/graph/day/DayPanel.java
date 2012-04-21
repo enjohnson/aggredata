@@ -50,14 +50,14 @@ public class DayPanel extends BarGraphPanel {
     @Override
     protected Date fixStartDate(Date startDate) {
         Date theDate = new Date(startDate.getTime());
-        theDate.setHours(1);
+        theDate.setHours(0);
         return theDate;
     }
 
     @Override
     protected Date fixEndDate(Date endDate) {
         Date theDate = new Date(endDate.getTime());
-        theDate.setHours(1);
+        theDate.setHours(0);
         CalendarUtil.addDaysToDate(theDate, 1);
         return theDate;
     }

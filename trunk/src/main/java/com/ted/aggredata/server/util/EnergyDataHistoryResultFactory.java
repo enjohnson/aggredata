@@ -38,9 +38,9 @@ public class EnergyDataHistoryResultFactory {
      */
     private class GatewayBucket {
         public boolean hasNet = false;
-        public HashMap<Date, EnergyDataHistory> loadMap = new HashMap<Date, EnergyDataHistory>();
-        public HashMap<Date, EnergyDataHistory> genMap = new HashMap<Date, EnergyDataHistory>();
-        public HashMap<Date, EnergyDataHistory> netMap = new HashMap<Date, EnergyDataHistory>();
+        public HashMap<EnergyDataHistoryDate, EnergyDataHistory> loadMap = new HashMap<EnergyDataHistoryDate, EnergyDataHistory>();
+        public HashMap<EnergyDataHistoryDate, EnergyDataHistory> genMap = new HashMap<EnergyDataHistoryDate, EnergyDataHistory>();
+        public HashMap<EnergyDataHistoryDate, EnergyDataHistory> netMap = new HashMap<EnergyDataHistoryDate, EnergyDataHistory>();
     }
 
     //Comparator for the set keys
@@ -51,7 +51,7 @@ public class EnergyDataHistoryResultFactory {
     }
 
     //Holds all the unique date keys for the group.
-    HashMap<Date, Long> dateKeyMap;
+    HashMap<EnergyDataHistoryDate, Long> dateKeyMap;
 
     //The buckets for each gateway
     HashMap<Long , GatewayBucket> gatewayBucketHashMap;
@@ -66,7 +66,7 @@ public class EnergyDataHistoryResultFactory {
 
     public EnergyDataHistoryResultFactory(Group group, List<Gateway> gatewayList){
         //Initialize the factory holders
-        dateKeyMap = new HashMap<Date, Long>();
+        dateKeyMap = new HashMap<EnergyDataHistoryDate, Long>();
         gatewayBucketHashMap = new HashMap<Long, GatewayBucket>();
         this.gatewayList = gatewayList;
         this.group = group;
@@ -103,11 +103,11 @@ public class EnergyDataHistoryResultFactory {
         //Iterate over the MTU's data add add it into the appropriate total bucket.
         for (EnergyDataHistory history : energyDataHistoryList) {
 
-            Date key = history.getHistoryDate();
+            EnergyDataHistoryDate key = history.getHistoryDate();
             //Keep a unique list of keys.
             if (!dateKeyMap.containsKey(key)) {
                 if (logger.isDebugEnabled()) logger.debug("Adding new date key of " +key);
-                dateKeyMap.put(key, key.getTime());
+                dateKeyMap.put(key, key.getTime().getTime());
             }
 
             EnergyDataHistory gwHistory = null;
@@ -137,7 +137,7 @@ public class EnergyDataHistoryResultFactory {
      */
     public EnergyDataHistoryQueryResult getCombinedHistory() {
         //Sort the keys now that all history has been loaded
-        List<Date> sortedKeys = asSortedList(dateKeyMap.keySet());
+        List<EnergyDataHistoryDate> sortedKeys = asSortedList(dateKeyMap.keySet());
 
 
         EnergyDataHistoryQueryResult result = new EnergyDataHistoryQueryResult();
@@ -150,7 +150,7 @@ public class EnergyDataHistoryResultFactory {
             int index = 0;
             ArrayList<EnergyDataHistory> gatewayHistory = new ArrayList<EnergyDataHistory>();
             result.getGatewayHistoryList().put(gwId, gatewayHistory);
-            for (Date key: sortedKeys){
+            for (EnergyDataHistoryDate key: sortedKeys){
                 EnergyDataHistory groupEnergyDataHistory = null;
                 logger.debug("Adding " + key);
 
@@ -195,7 +195,7 @@ public class EnergyDataHistoryResultFactory {
      * @param bucket
      * @return
      */
-    private EnergyDataHistory getGatewayTotal(Date key, Long gwId, GatewayBucket bucket)
+    private EnergyDataHistory getGatewayTotal(EnergyDataHistoryDate key, Long gwId, GatewayBucket bucket)
     {
         double totalEnergyLoad = 0;
         double totalEnergyGen = 0;

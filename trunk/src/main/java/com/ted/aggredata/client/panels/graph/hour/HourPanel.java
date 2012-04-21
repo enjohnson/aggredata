@@ -48,14 +48,17 @@ public class HourPanel extends BarGraphPanel {
     @Override
     protected Date fixStartDate(Date startDate) {
         Date theDate = new Date(startDate.getTime());
+        theDate.setHours(0);
         theDate.setMinutes(0);
         return theDate;
     }
 
     @Override
     protected Date fixEndDate(Date endDate) {
-        Date theDate = new Date(endDate.getTime() + (3600*1000));
+        Date theDate = new Date(endDate.getTime());
+        theDate.setHours(0);
         theDate.setMinutes(0);
+        CalendarUtil.addDaysToDate(theDate, 1);
         return theDate;
     }
 

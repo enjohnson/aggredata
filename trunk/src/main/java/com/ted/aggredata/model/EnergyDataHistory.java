@@ -30,7 +30,7 @@ public class EnergyDataHistory implements Serializable  {
 
     private Long gatewayId;
     private Long mtuId;
-    private Date historyDate;
+    private EnergyDataHistoryDate historyDate;
     private Double energy;
     private Double cost;
 
@@ -45,11 +45,11 @@ public class EnergyDataHistory implements Serializable  {
         return gatewayId == NET_GATEWAY;
     }
 
-    public Date getHistoryDate() {
+    public EnergyDataHistoryDate getHistoryDate() {
         return historyDate;
     }
 
-    public void setHistoryDate(Date historyDate) {
+    public void setHistoryDate(EnergyDataHistoryDate historyDate) {
         this.historyDate = historyDate;
     }
 
@@ -97,6 +97,7 @@ public class EnergyDataHistory implements Serializable  {
         b.append("}");
         return b.toString();
     }
+
 
 
 }
