@@ -18,25 +18,16 @@
 package com.ted.aggredata.client.panels.graph.month;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
-import com.google.gwt.visualization.client.AbstractDataTable;
-import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
-import com.google.gwt.visualization.client.DataTable;
-import com.google.gwt.visualization.client.visualizations.BarChart.Options;
 import com.ted.aggredata.client.panels.graph.BarGraphPanel;
-import com.ted.aggredata.model.*;
+import com.ted.aggredata.model.Enums;
 
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MonthPanel extends BarGraphPanel{
 
@@ -49,12 +40,10 @@ public class MonthPanel extends BarGraphPanel{
     @UiField
     VerticalPanel graphPanel;
 
-    @UiField
-    Label optionInfoLabel;
 
     public MonthPanel() {
         initWidget(uiBinder.createAndBindUi(this));
-        graphPanel.add(barGraphPanel);
+        setGraphingPanel(graphPanel);
     }
 
 

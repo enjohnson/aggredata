@@ -18,8 +18,10 @@
 package com.ted.aggredata.client.widgets;
 
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiConstructor;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.ted.aggredata.client.resources.DashboardImageResource;
@@ -34,6 +36,7 @@ public class ClearImage extends Composite {
     private final String width;
     private final String height;
 
+    AbsolutePanel absolutePanel = new AbsolutePanel();
 
     public
     @UiConstructor
@@ -46,7 +49,11 @@ public class ClearImage extends Composite {
         else this.height = height;
 
         spaceImage.setSize(width, height);
-        initWidget(spaceImage);
+        absolutePanel.setSize(width, height);
+        spaceImage.getElement().getStyle().setMargin(0, Style.Unit.PX);
+        spaceImage.getElement().getStyle().setBorderWidth(0, Style.Unit.PX);
+        absolutePanel.add(spaceImage, 0,0);
+        initWidget(absolutePanel);
     }
 
 

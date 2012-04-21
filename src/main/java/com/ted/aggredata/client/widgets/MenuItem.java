@@ -44,7 +44,7 @@ public class MenuItem extends Composite {
             mainPanel.setCellVerticalAlignment(divImage, HasVerticalAlignment.ALIGN_BOTTOM);
         }
         mainPanel.add(label);
-        mainPanel.setCellVerticalAlignment(label, HasVerticalAlignment.ALIGN_BOTTOM);
+        //mainPanel.setCellVerticalAlignment(label, HasVerticalAlignment.ALIGN_BOTTOM);
 
         initWidget(mainPanel);
     }

@@ -24,11 +24,11 @@
 
 
     <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
-        <my:widgets.ClearImage width="800" height="1px"/>
+        <my:widgets.ClearImage width="800" height="2px"/>
         <g:Label styleName='{style.panelTitleText}' text='{txtRes.gatewaysTitle}'/>
         <my:widgets.ClearImage width="800" height="3px"/>
         <g:Label styleName='{style.panelInstructionText}' text='{txtRes.gatewaysInstructions}'/>
-        <my:widgets.ClearImage width="800" height="5px"/>
+        <my:widgets.ClearImage width="800px" height="5px"/>
         <g:HorizontalPanel>
             <my:widgets.ClearImage width="20px" height="200px"/>
             <my:panels.profile.gateways.GatewaySelectionPanel ui:field="gatewaySelectionPanel"/>
