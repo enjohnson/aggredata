@@ -67,14 +67,18 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
 
     public void onGraphOptionChange(Group group, Date startDate, Date endDate, Enums.GraphType graphType) {
-        if (logger.isLoggable(Level.FINE)) logger.fine("Graph Option Change Called: " + group + " " + startDate + " " + endDate + " " + graphType);
+
         this.group = group;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = fixStartDate(startDate);
+        this.endDate = fixEndDate(endDate);
+
+        if (logger.isLoggable(Level.FINE)) logger.fine("Graph Option Change Called: " + group + " " + this.startDate + " " + this.endDate + " " + graphType);
+
+
         this.graphType = graphType;
 
 
-        groupService.getHistory(getHistoryType(), group, startDate.getTime(), endDate.getTime(), new TEDAsyncCallback<EnergyDataHistoryQueryResult>() {
+        groupService.getHistory(getHistoryType(), group, this.startDate.getTime()/1000, this.endDate.getTime()/1000, new TEDAsyncCallback<EnergyDataHistoryQueryResult>() {
             @Override
             public void onSuccess(EnergyDataHistoryQueryResult energyDataHistoryQueryResult) {
                 logger.fine("history data returned. Drawing");
@@ -151,9 +155,10 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
         for (int i=0; i < rowCount; i++)
         {
-            String title = getDateTimeFormat().format(historyResult.getNetHistoryList().get(i).getHistoryDate());
+            logger.fine("____"+historyResult.getNetHistoryList().get(i).getHistoryDate() + " " + historyResult.getNetHistoryList().get(i).getHistoryDate().getTime());
 
-            if (logger.isLoggable(Level.FINE)) logger.fine("Adding month:" + title);
+            String title = getDateTimeFormat().format(historyResult.getNetHistoryList().get(i).getHistoryDate().getTime());
+
             //Set the month
             int col = 0;
             data.setValue(i, col++, title);

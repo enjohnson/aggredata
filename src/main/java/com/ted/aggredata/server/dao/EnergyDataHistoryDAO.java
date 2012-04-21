@@ -17,11 +17,10 @@
 
 package com.ted.aggredata.server.dao;
 
-import com.ted.aggredata.model.EnergyData;
-import com.ted.aggredata.model.EnergyDataHistory;
-import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.MTU;
+import com.ted.aggredata.model.*;
 import org.apache.commons.lang.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -30,19 +29,21 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * DAO for accessing and storing energy data  History
  */
 public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
 
+    static Logger logger = LoggerFactory.getLogger(EnergyDataHistoryDAO.class);
 
     public static String MONTHLY_SUMMARY = "select gatewayId, mtuId, sum(minuteCost) as cost, sum(energyDifference) as energy, " +
             " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth, " +
             " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear, " +
-            " 0 as theDay, 0 as theHour" +
+            " 1 as theDay, 0 as theHour" +
             " from energydata " +
-            " where mtuId=? and timestamp>? and timestamp<?" +
+            " where gatewayId=? and mtuId=? and timestamp>=? and timestamp<?" +
             " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour";
 
     public static String DAILY_SUMMARY = "select gatewayId, mtuId, sum(minuteCost) as cost, sum(energyDifference) as energy, " +
@@ -51,7 +52,7 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
             " DAY(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theDay, " +
             " 0 as theHour" +
             " from energydata " +
-            " where mtuId=? and timestamp>? and timestamp<?" +
+            " where gatewayId=? and mtuId=? and timestamp>=? and timestamp<?" +
             " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour";
 
     public static String HOURLY_SUMMARY = "select gatewayId, mtuId, sum(minuteCost) as cost, sum(energyDifference) as energy, " +
@@ -60,7 +61,7 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
             " DAY(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theDay, " +
             " HOUR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theHour" +
             " from energydata " +
-            " where mtuId=? and timestamp>? and timestamp<?" +
+            " where gatewayId=? and mtuId=? and timestamp>=? and timestamp<?" +
             " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour" ;
 
 
@@ -74,15 +75,9 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
             energyDataHistory.setGatewayId(rs.getLong("gatewayId"));
             energyDataHistory.setMtuId(rs.getLong("mtuId"));
 
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.YEAR, rs.getInt("theYear"));
-            c.set(Calendar.MONTH, rs.getInt("theMonth")-1);
-            c.set(Calendar.DATE, rs.getInt("theDay"));
-            c.set(Calendar.HOUR, rs.getInt("theHour"));
-            c.set(Calendar.MINUTE, 0);
-            c.set(Calendar.SECOND, 0);
-            c.set(Calendar.MILLISECOND, 0);
-            energyDataHistory.setHistoryDate(c.getTime());
+
+            EnergyDataHistoryDate energyDataHistoryDate = new EnergyDataHistoryDate(rs.getInt("theYear"),rs.getInt("theMonth"),rs.getInt("theDay"),rs.getInt("theHour"));
+            energyDataHistory.setHistoryDate(energyDataHistoryDate);
 
             energyDataHistory.setCost(rs.getDouble("cost"));
             energyDataHistory.setEnergy(rs.getDouble("energy"));
@@ -103,6 +98,7 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
         try {
             return getJdbcTemplate().query(MONTHLY_SUMMARY, new Object[]{serverTimeZone, clientTimeZone, //Month
                     serverTimeZone, clientTimeZone, //Year
+                    gateway.getId(),
                     mtu.getId(),
                     timestampStart,
                     timestampEnd}, getRowMapper());
@@ -122,6 +118,7 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
                     serverTimeZone, clientTimeZone, //Month
                     serverTimeZone, clientTimeZone, //Year
                     serverTimeZone, clientTimeZone, //Day
+                    gateway.getId(),
                     mtu.getId(),
                     timestampStart,
                     timestampEnd}, getRowMapper());
@@ -142,6 +139,7 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
                     serverTimeZone, clientTimeZone, //Year
                     serverTimeZone, clientTimeZone, //Day
                     serverTimeZone, clientTimeZone, //Hour
+                    gateway.getId(),
                     mtu.getId(),
                     timestampStart,
                     timestampEnd}, getRowMapper());

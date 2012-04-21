@@ -43,7 +43,7 @@
         <property name="useHttps" value="${server.useHttps?false}"/>
         <property name="postDelay" value="${server.postDelay?1}"/>
         <property name="highPrecision" value="${server.useHighPrecision?true}"/>
-        <property name="timezone" value="${server.timezone?EST}"/>
+        <property name="timezone" value="${server.timezone?US/Eastern}"/>
     </bean>
 
 
