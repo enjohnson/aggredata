@@ -182,8 +182,13 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
             for (Gateway gateway: historyResult.getGatewayList()) {
                 List<EnergyDataHistory> gwList =historyResult.getGatewayHistoryList().get(gateway.getId());
-                if (graphType.equals(Enums.GraphType.ENERGY))  data.setValue(i, col++, gwList.get(i).getEnergy()/1000);
-                else  data.setValue(i, col++, gwList.get(i).getCost());
+                if (gwList == null || gwList.size()==0) {
+                    logger.fine("Skipping " + gateway + " since there is no history for it");
+                    data.setValue(i, col++, 0);
+                }   else {
+                    if (graphType.equals(Enums.GraphType.ENERGY))  data.setValue(i, col++, gwList.get(i).getEnergy()/1000);
+                    else  data.setValue(i, col++, gwList.get(i).getCost());
+                }
             }
 
         }
