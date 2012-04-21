@@ -18,25 +18,58 @@
 package com.ted.aggredata.client.panels.graph.hour;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
+import com.ted.aggredata.client.panels.graph.BarGraphPanel;
+import com.ted.aggredata.model.Enums;
 
-import java.util.logging.Logger;
+import java.util.Date;
 
-public class HourPanel extends Composite {
 
-    static Logger logger = Logger.getLogger(HourPanel.class.toString());
+public class HourPanel extends BarGraphPanel {
 
     interface MyUiBinder extends UiBinder<Widget, HourPanel> {
     }
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-
+    @UiField
+    VerticalPanel graphPanel;
 
     public HourPanel() {
         initWidget(uiBinder.createAndBindUi(this));
-
+        graphPanel.add(barGraphPanel);
     }
+
+
+    @Override
+    protected Date fixStartDate(Date startDate) {
+        Date theDate = new Date(startDate.getTime());
+        theDate.setMinutes(0);
+        return theDate;
+    }
+
+    @Override
+    protected Date fixEndDate(Date endDate) {
+        Date theDate = new Date(endDate.getTime() + (3600*1000));
+        theDate.setMinutes(0);
+        return theDate;
+    }
+
+
+    @Override
+    protected DateTimeFormat getDateTimeFormat() {
+        return DateTimeFormat.getFormat("MM/dd/yyyy h a");
+    }
+
+    @Override
+    protected Enums.HistoryType getHistoryType() {
+        return Enums.HistoryType.HOURLY;
+    }
+
+
 
 }

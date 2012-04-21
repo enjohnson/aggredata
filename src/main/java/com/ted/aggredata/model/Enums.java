@@ -20,6 +20,7 @@ package com.ted.aggredata.model;
 public class Enums {
     public enum GraphType { ENERGY, COST};
 
+    public enum HistoryType {MONTHLY, DAILY, HOURLY, MINUTE};
 
     public static String[] timezones = {
             "US/Alaska",

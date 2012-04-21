@@ -26,133 +26,64 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.visualization.client.AbstractDataTable;
 import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
 import com.google.gwt.visualization.client.DataTable;
-import com.google.gwt.visualization.client.Selection;
-import com.google.gwt.visualization.client.VisualizationUtils;
-import com.google.gwt.visualization.client.events.SelectHandler;
-import com.google.gwt.visualization.client.visualizations.PieChart;
-import com.google.gwt.visualization.client.visualizations.PieChart.Options;
-import com.ted.aggredata.client.panels.graph.GraphOptionChangeable;
-import com.ted.aggredata.model.Enums;
-import com.ted.aggredata.model.Group;
+import com.google.gwt.visualization.client.visualizations.BarChart.Options;
+import com.ted.aggredata.client.panels.graph.BarGraphPanel;
+import com.ted.aggredata.model.*;
 
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MonthPanel extends Composite implements GraphOptionChangeable{
-
-    static Logger logger = Logger.getLogger(MonthPanel.class.toString());
-
+public class MonthPanel extends BarGraphPanel{
 
 
     interface MyUiBinder extends UiBinder<Widget, MonthPanel> {
     }
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+
     @UiField
     VerticalPanel graphPanel;
+
     @UiField
     Label optionInfoLabel;
 
-
     public MonthPanel() {
         initWidget(uiBinder.createAndBindUi(this));
+        graphPanel.add(barGraphPanel);
+    }
 
 
-        Runnable onLoadCallback = new Runnable() {
-            public void run() {
-
-                // Create a pie chart visualization.
-                PieChart pie = new PieChart(createTable(), createOptions());
-                pie.addSelectHandler(createSelectHandler(pie));
-                graphPanel.add(pie);
-            }
-        };
-
-
-        VisualizationUtils.loadVisualizationApi(onLoadCallback, PieChart.PACKAGE);
-
-
+    @Override
+    protected Date fixStartDate(Date startDate) {
+        Date theDate = new Date(startDate.getTime());
+        theDate.setDate(1);
+        return theDate;
     }
 
     @Override
-    public void onGraphOptionChange(Group group, Date startDate, Date endDate, Enums.GraphType graphType) {
-        if (logger.isLoggable(Level.FINE)) logger.fine("Graph Option Change Called: " + group + " " + startDate + " " + endDate + " " + graphType);
-        DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("MM/dd/yyyy");
-        optionInfoLabel.setText("Graphing  " + graphType  +" for the group" + group.getDescription() +" and the date range " +dateTimeFormat.format(startDate) + " to " + dateTimeFormat.format(endDate));
+    protected Date fixEndDate(Date endDate) {
+        Date theDate = new Date(endDate.getTime());
+        theDate.setDate(1);
+        CalendarUtil.addMonthsToDate(theDate, 1);
+        return theDate;
+    }
+
+    @Override
+    protected DateTimeFormat getDateTimeFormat() {
+        return DateTimeFormat.getFormat("MMM yyyy");
     }
 
 
-    private SelectHandler createSelectHandler(final PieChart chart) {
-        return new SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent event) {
-                String message = "";
-
-                // May be multiple selections.
-                JsArray<Selection> selections = chart.getSelections();
-
-                for (int i = 0; i < selections.length(); i++) {
-                    // add a new line for each selection
-                    message += i == 0 ? "" : "\n";
-
-                    Selection selection = selections.get(i);
-
-                    if (selection.isCell()) {
-                        // isCell() returns true if a cell has been selected.
-
-                        // getRow() returns the row number of the selected cell.
-                        int row = selection.getRow();
-                        // getColumn() returns the column number of the selected cell.
-                        int column = selection.getColumn();
-                        message += "cell " + row + ":" + column + " selected";
-                    } else if (selection.isRow()) {
-                        // isRow() returns true if an entire row has been selected.
-
-                        // getRow() returns the row number of the selected row.
-                        int row = selection.getRow();
-                        message += "row " + row + " selected";
-                    } else {
-                        // unreachable
-                        message += "Pie chart selections should be either row selections or cell selections.";
-                        message += "  Other visualizations support column selections as well.";
-                    }
-                }
-
-                //Window.alert(message);
-            }
-        };
+    @Override
+    protected Enums.HistoryType getHistoryType() {
+        return Enums.HistoryType.MONTHLY;
     }
 
-
-    private Options createOptions() {
-        Options options = Options.create();
-        options.setWidth(400);
-        options.setHeight(240);
-        options.set3D(true);
-        options.setTitle("Current Month Cumulative Usage");
-        options.setBackgroundColor("transparent");
-        options.setTitleColor("#FFFFFF");
-        return options;
-    }
-
-    private AbstractDataTable createTable() {
-        DataTable data = DataTable.create();
-        data.addColumn(ColumnType.STRING, "Task");
-        data.addColumn(ColumnType.NUMBER, "Hours per Day");
-        data.addRows(3);
-        data.setValue(0, 0, "Work");
-        data.setValue(0, 1, 20);
-        data.setValue(1, 0, "Sleep");
-        data.setValue(1, 1, 2);
-        data.setValue(2, 0, "Party");
-        data.setValue(2, 1, 2);
-
-        return data;
-    }
 }
 
 

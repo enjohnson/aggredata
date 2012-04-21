@@ -51,7 +51,7 @@ public class GatewayServiceImpl implements GatewayService {
     @Autowired
     protected EnergyDataHistoryDAO energyDataHistoryDAO;
 
-    Logger logger = LoggerFactory.getLogger(getClass());
+    static Logger logger = LoggerFactory.getLogger(GatewayServiceImpl.class);
 
     public Gateway createGateway(Group group, User userAccount, String serialNumber, String description) {
         if (logger.isInfoEnabled()) logger.info("Adding a new gateway with the serial number " + serialNumber + " for " + userAccount + " at " + group);
@@ -172,19 +172,6 @@ public class GatewayServiceImpl implements GatewayService {
         mtuDAO.delete(gateway, mtu);
     }
 
-    @Override
-    public List<EnergyDataHistory> findMonthlyHistory(User user, Gateway gateway, MTU mtu, Long timestampStart, long timestampEnd) {
-        return energyDataHistoryDAO.findMonthHistory(gateway, mtu, timestampStart, timestampEnd, serverInfo.getTimezone(), user.getTimezone());
-    }
 
-    @Override
-    public List<EnergyDataHistory> findDailyHistory(User user, Gateway gateway, MTU mtu, Long timestampStart, long timestampEnd) {
-        return energyDataHistoryDAO.findDailyHistory(gateway, mtu, timestampStart, timestampEnd, serverInfo.getTimezone(), user.getTimezone());
-    }
-
-    @Override
-    public List<EnergyDataHistory> findHourlyHistory(User user, Gateway gateway, MTU mtu, Long timestampStart, long timestampEnd) {
-        return energyDataHistoryDAO.findDailyHistory(gateway, mtu, timestampStart, timestampEnd, serverInfo.getTimezone(), user.getTimezone());
-    }
 
 }

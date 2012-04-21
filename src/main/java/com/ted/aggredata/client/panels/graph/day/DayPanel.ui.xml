@@ -26,7 +26,8 @@
         <g:Label styleName='{style.panelTitleText}' text='{txtRes.dayTitle}'/>
         <my:widgets.ClearImage width="800" height="3px"/>
         <g:Label styleName='{style.panelInstructionText}' text='{txtRes.dayInstructions}'/>
-        <my:widgets.ClearImage width="800" height="5px"/>
+        <my:widgets.ClearImage width="800" height="20px"/>
+        <g:VerticalPanel ui:field="graphPanel"/>
     </g:VerticalPanel>
 
 </ui:UiBinder>

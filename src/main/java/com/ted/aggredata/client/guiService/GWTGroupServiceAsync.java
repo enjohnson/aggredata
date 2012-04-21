@@ -18,6 +18,9 @@
 package com.ted.aggredata.client.guiService;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.ted.aggredata.model.EnergyDataHistory;
+import com.ted.aggredata.model.EnergyDataHistoryQueryResult;
+import com.ted.aggredata.model.Enums;
 import com.ted.aggredata.model.Group;
 
 import java.util.List;
@@ -45,4 +48,15 @@ public interface GWTGroupServiceAsync {
     void deleteGroup(Group group, AsyncCallback<Void> async);
 
 
+    /**
+     * Returns the history for the given type
+     *
+     * @param historyType
+     * @param group
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    void getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, AsyncCallback<EnergyDataHistoryQueryResult> async);
 }
+

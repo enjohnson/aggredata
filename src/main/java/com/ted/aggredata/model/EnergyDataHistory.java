@@ -18,21 +18,40 @@
 package com.ted.aggredata.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /***
  * Object that holds the summarized energy data for a
  * timeframe query
  */
-public class EnergyDataHistory implements Serializable {
+public class EnergyDataHistory implements Serializable  {
+
+    private static final Long NET_GATEWAY = 0l;
+
     private Long gatewayId;
     private Long mtuId;
-    private Integer month;
-    private Integer day;
-    private Integer year;
-    private Integer hour;
+    private Date historyDate;
     private Double energy;
     private Double cost;
 
+    private String key = null;
+
+
+    /**
+     * Returns true if this is history for the net gateway
+     * @return
+     */
+    public Boolean isNet(){
+        return gatewayId == NET_GATEWAY;
+    }
+
+    public Date getHistoryDate() {
+        return historyDate;
+    }
+
+    public void setHistoryDate(Date historyDate) {
+        this.historyDate = historyDate;
+    }
 
     public Long getGatewayId() {
         return gatewayId;
@@ -48,38 +67,6 @@ public class EnergyDataHistory implements Serializable {
 
     public void setMtuId(Long mtuId) {
         this.mtuId = mtuId;
-    }
-
-    public Integer getMonth() {
-        return month;
-    }
-
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    public Integer getDay() {
-        return day;
-    }
-
-    public void setDay(Integer day) {
-        this.day = day;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public Integer getHour() {
-        return hour;
-    }
-
-    public void setHour(Integer hour) {
-        this.hour = hour;
     }
 
     public Double getEnergy() {
@@ -104,14 +91,12 @@ public class EnergyDataHistory implements Serializable {
         b.append("EnergyDataHistory{");
         b.append("gatewayId:" + gatewayId);
         b.append(", mtuId:" + mtuId);
-        b.append(",year:" + year);
-        b.append(",month:" + month);
-        b.append(",day:" + day);
-        b.append(",hour:" + hour);
+        b.append(",historyDate:" + historyDate);
         b.append(",energy:" + energy);
         b.append(",cost:" + cost);
         b.append("}");
         return b.toString();
     }
+
 
 }

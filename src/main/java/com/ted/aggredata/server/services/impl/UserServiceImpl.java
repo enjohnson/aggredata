@@ -33,13 +33,16 @@ import java.util.List;
 @Transactional
 public class UserServiceImpl implements UserService {
 
+
+    static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     protected UserDAO userDao;
 
     @Autowired
     protected GroupService groupService;
 
-    Logger logger = LoggerFactory.getLogger(getClass());
+
 
 
     public User createUser(User entity) {

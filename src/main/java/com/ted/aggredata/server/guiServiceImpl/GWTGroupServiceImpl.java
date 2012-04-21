@@ -18,13 +18,14 @@
 package com.ted.aggredata.server.guiServiceImpl;
 
 import com.ted.aggredata.client.guiService.GWTGroupService;
-import com.ted.aggredata.model.Group;
-import com.ted.aggredata.model.User;
+import com.ted.aggredata.model.*;
 import com.ted.aggredata.server.services.GroupService;
+import com.ted.aggredata.server.services.HistoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements GWTGroupService {
@@ -32,6 +33,8 @@ public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements G
     @Autowired
     GroupService groupService;
 
+    @Autowired
+    HistoryService historyService;
 
     Logger logger = LoggerFactory.getLogger(GWTGroupServiceImpl.class);
 
@@ -74,4 +77,19 @@ public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements G
             logger.warn("Security violation. " + user + " attempted to delete " + group);
         }
     }
+
+    @Override
+    public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime) {
+        User user = getCurrentUser();
+        if (user.getId().equals(group.getOwnerUserId())) {
+
+            if (logger.isInfoEnabled()) logger.info("retrieving " + historyType +" history for  " + group + " " + startTime+"-"+endTime);
+            return historyService.getHistory(historyType, user, group, startTime, endTime);
+        }
+        logger.warn("Security violation. " + user + " attempted to retrieve history for  " + group);
+        return new EnergyDataHistoryQueryResult();
+    }
+
+
+
 }
