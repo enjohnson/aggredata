@@ -86,6 +86,8 @@ public class MainPanel extends Composite {
     };
 
 
+
+
     public MainPanel() {
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -96,22 +98,6 @@ public class MainPanel extends Composite {
         graphSidePanel.addGraphOptionsChangedHandler(graphOptionsChangedHandler);
 
 
-
-        //Redirect the user to the gateway page if there are not gateways assigned to the system
-        if (Aggredata.GLOBAL.getShowActivation()) {
-            profileDashboardPanel.setSelectedTab(3);
-            tabNavigationPanel.add(profileDashboardPanel, 0, 0);
-            contentPanel.add(new ActivationPanel());
-
-
-        } else {
-            //Go to the month page by default
-            graphDashboardPanel.setSelectedTab(0);
-            tabNavigationPanel.add(graphDashboardPanel, 0, 0);
-            contentPanel.add(new MonthPanel());
-            sidePanel.add(graphSidePanel, 0, 0);
-            graphSidePanel.reset();
-        }
 
 
         //Add handlers
@@ -131,6 +117,7 @@ public class MainPanel extends Composite {
                     sidePanel.add(graphSidePanel, 0, 0);
                     graphSidePanel.reset();
                     graphDashboardPanel.setSelectedTab(0);
+
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.PROFILE) {
                     tabNavigationPanel.add(profileDashboardPanel, 0, 0);
                     profileDashboardPanel.setSelectedTab(0);
@@ -186,18 +173,22 @@ public class MainPanel extends Composite {
                 switch (event.getTabIndex()) {
                     case 0: {
                         contentPanel.add(new MonthPanel());
+                        graphSidePanel.fireEvent();
                         break;
                     }
                     case 1: {
                         contentPanel.add(new DayPanel());
+                        graphSidePanel.fireEvent();
                         break;
                     }
                     case 2: {
                         contentPanel.add(new HourPanel());
+                        graphSidePanel.fireEvent();
                         break;
                     }
                     case 3: {
                         contentPanel.add(new MinutePanel());
+                        graphSidePanel.fireEvent();
                         break;
                     }
 
@@ -224,6 +215,25 @@ public class MainPanel extends Composite {
 
             }
         });
+
+
+        //Redirect the user to the gateway page if there are not gateways assigned to the system
+        if (Aggredata.GLOBAL.getShowActivation()) {
+            profileDashboardPanel.setSelectedTab(3);
+            tabNavigationPanel.add(profileDashboardPanel, 0, 0);
+            contentPanel.add(new ActivationPanel());
+
+
+        } else {
+            //Go to the month page by default
+            graphDashboardPanel.setSelectedTab(0);
+            tabNavigationPanel.add(graphDashboardPanel, 0, 0);
+            contentPanel.add(new MonthPanel());
+            sidePanel.add(graphSidePanel, 0, 0);
+            graphSidePanel.reset();
+
+        }
+
 
     }
 

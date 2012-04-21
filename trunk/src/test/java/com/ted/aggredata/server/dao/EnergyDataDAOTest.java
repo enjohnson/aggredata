@@ -39,6 +39,10 @@ public class EnergyDataDAOTest {
     EnergyDataDAO energyDataDAO;
 
 
+
+    @Autowired
+    EnergyDataHistoryDAO energyDataHistoryDAO;
+
     User gatewayOwner1 = null;
 
 
@@ -99,7 +103,16 @@ public class EnergyDataDAOTest {
         energyDataDAO.deleteEnergyData(gateway, mtu);
         energyDataList = energyDataDAO.findByDateRange(gateway, mtu, 10001, 10005);
 
+        energyDataHistoryDAO.findMonthHistory(gateway, mtu, 10001, 10005, "EST", "EST");
+        energyDataHistoryDAO.findDailyHistory(gateway, mtu, 10001, 10005, "EST", "EST");
+        energyDataHistoryDAO.findHourlyHistory(gateway, mtu, 10001, 10005, "EST", "EST");
+
+
+
         Assert.assertEquals(0, energyDataList.size());
+
+
+
 
         mtuDAO.delete(gateway, mtu);
         gatewayDAO.delete(gateway);

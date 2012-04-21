@@ -19,6 +19,9 @@ package com.ted.aggredata.client.guiService;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.ted.aggredata.model.EnergyDataHistory;
+import com.ted.aggredata.model.EnergyDataHistoryQueryResult;
+import com.ted.aggredata.model.Enums;
 import com.ted.aggredata.model.Group;
 
 import java.util.List;
@@ -54,6 +57,17 @@ public interface GWTGroupService extends RemoteService {
      * Delete Group
      */
     public void deleteGroup(Group group);
+
+
+    /**
+     * Returns the history for the given type
+     * @param historyType
+     * @param group
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime);
 
 
 }

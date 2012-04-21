@@ -75,7 +75,7 @@ public class GraphSidePanel extends Composite {
             public void onGroupSelected(GroupSelectedEvent event) {
                 logger.fine("Group Changed to " + event.getGroup());
                 group = event.getGroup();
-                handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType));
+                fireEvent();
 
             }
         });
@@ -86,7 +86,7 @@ public class GraphSidePanel extends Composite {
                 logger.fine("Date range Changed to " + event.getStartDate() + " to " + event.getEndDate());
                 startDate = event.getStartDate();
                 endDate = event.getEndDate();
-                handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType));
+                fireEvent();
             }
         });
 
@@ -95,7 +95,7 @@ public class GraphSidePanel extends Composite {
             public void onGraphTypeSelected(GraphTypeSelectedEvent event) {
                 logger.fine("Type Changed to " + event.getSelectedGraphType());
                 graphType = event.getSelectedGraphType();
-                handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType));
+                fireEvent();
             }
         });
 
@@ -106,6 +106,11 @@ public class GraphSidePanel extends Composite {
 
     public HandlerRegistration addGraphOptionsChangedHandler(GraphOptionsChangedHandler handler) {
         return handlerManager.addHandler(GraphOptionsChangedEvent.TYPE, handler);
+    }
+
+    public void fireEvent()
+    {
+            handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType));
     }
 
     public void reset() {
@@ -126,6 +131,7 @@ public class GraphSidePanel extends Composite {
                 startDate.setHours(0);
                 startDate.setMinutes(0);
                 startDate.setSeconds(0);
+
                 endDate = new Date(startDate.getTime() + ((3600*24) * 1000));
 
                 dateSelectionWidget.setStartDate(startDate);
@@ -133,6 +139,7 @@ public class GraphSidePanel extends Composite {
 
                 graphType = Enums.GraphType.ENERGY;
                 typeSelectionWidget.setType(graphType);
+                fireEvent();
 
             }
         });

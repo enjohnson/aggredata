@@ -27,6 +27,8 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,30 +38,30 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
 
 
     public static String MONTHLY_SUMMARY = "select gatewayId, mtuId, sum(minuteCost) as cost, sum(energyDifference) as energy, " +
-            " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth" +
-            " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear" +
+            " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth, " +
+            " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear, " +
             " 0 as theDay, 0 as theHour" +
             " from energydata " +
             " where mtuId=? and timestamp>? and timestamp<?" +
             " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour";
 
     public static String DAILY_SUMMARY = "select gatewayId, mtuId, sum(minuteCost) as cost, sum(energyDifference) as energy, " +
-            " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth" +
-            " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear" +
-            " DAY(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theDay" +
+            " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth, " +
+            " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear, " +
+            " DAY(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theDay, " +
             " 0 as theHour" +
             " from energydata " +
             " where mtuId=? and timestamp>? and timestamp<?" +
             " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour";
 
     public static String HOURLY_SUMMARY = "select gatewayId, mtuId, sum(minuteCost) as cost, sum(energyDifference) as energy, " +
-            " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth" +
-            " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear" +
-            " DAY(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theDay" +
+            " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth, " +
+            " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear, " +
+            " DAY(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theDay, " +
             " HOUR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theHour" +
             " from energydata " +
             " where mtuId=? and timestamp>? and timestamp<?" +
-            " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour";
+            " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour" ;
 
 
     public EnergyDataHistoryDAO() {
@@ -71,10 +73,17 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
             EnergyDataHistory energyDataHistory = new EnergyDataHistory();
             energyDataHistory.setGatewayId(rs.getLong("gatewayId"));
             energyDataHistory.setMtuId(rs.getLong("mtuId"));
-            energyDataHistory.setYear(rs.getInt("theYear"));
-            energyDataHistory.setMonth(rs.getInt("theMonth"));
-            energyDataHistory.setDay(rs.getInt("theDay"));
-            energyDataHistory.setHour(rs.getInt("theHour"));
+
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, rs.getInt("theYear"));
+            c.set(Calendar.MONTH, rs.getInt("theMonth")-1);
+            c.set(Calendar.DATE, rs.getInt("theDay"));
+            c.set(Calendar.HOUR, rs.getInt("theHour"));
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            c.set(Calendar.MILLISECOND, 0);
+            energyDataHistory.setHistoryDate(c.getTime());
+
             energyDataHistory.setCost(rs.getDouble("cost"));
             energyDataHistory.setEnergy(rs.getDouble("energy"));
             return energyDataHistory;
@@ -128,7 +137,7 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
      */
     public List<EnergyDataHistory> findHourlyHistory(Gateway gateway, MTU mtu, long timestampStart, long timestampEnd, String serverTimeZone, String clientTimeZone) {
         try {
-            return getJdbcTemplate().query(DAILY_SUMMARY, new Object[]{
+            return getJdbcTemplate().query(HOURLY_SUMMARY, new Object[]{
                     serverTimeZone, clientTimeZone, //Month
                     serverTimeZone, clientTimeZone, //Year
                     serverTimeZone, clientTimeZone, //Day
