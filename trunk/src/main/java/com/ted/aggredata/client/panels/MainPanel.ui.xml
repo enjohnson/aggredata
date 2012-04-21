@@ -21,7 +21,7 @@
     <ui:style src="Global.css"/>
 
     <g:VerticalPanel styleName='{style.mainBody}' horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
-        <my:widgets.ClearImage width="1018px" height="1px"/>
+        <my:widgets.ClearImage width="1018px" height="22px"/>
 
         <!-- Top and nav bar -->
         <g:HorizontalPanel horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">

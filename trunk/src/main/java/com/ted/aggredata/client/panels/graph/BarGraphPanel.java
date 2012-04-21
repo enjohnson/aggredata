@@ -19,7 +19,9 @@ package com.ted.aggredata.client.panels.graph;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.visualization.client.AbstractDataTable;
 import com.google.gwt.visualization.client.DataTable;
@@ -48,7 +50,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
     protected Date endDate;
     protected Enums.GraphType graphType;
     protected EnergyDataHistoryQueryResult historyResult = null;
-    protected VerticalPanel barGraphPanel = new VerticalPanel();
+    protected VerticalPanel barGraphPanel;
 
     /**
      * Callback to handle the loading of history data.
@@ -57,16 +59,25 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         public void run() {
             if (historyResult != null)
             {
+                logger.fine("Callback received. Drawing.");
+                barGraphPanel.setSize("820px", "520px");
                 //Create the visualization
                 barGraphPanel.clear();
                 BarChart barChart = new BarChart(createTable(), createOptions());
                 barGraphPanel.add(barChart);
+            }   else {
+                logger.severe("historyResult is null!");
             }
         }
     };
 
+    protected void setGraphingPanel(VerticalPanel vp) {
+        this.barGraphPanel = vp;
+    }
 
     public void onGraphOptionChange(Group group, Date startDate, Date endDate, Enums.GraphType graphType) {
+
+
 
         this.group = group;
         this.startDate = fixStartDate(startDate);
@@ -155,8 +166,6 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
         for (int i=0; i < rowCount; i++)
         {
-            logger.fine("____"+historyResult.getNetHistoryList().get(i).getHistoryDate() + " " + historyResult.getNetHistoryList().get(i).getHistoryDate().getTime());
-
             String title = getDateTimeFormat().format(historyResult.getNetHistoryList().get(i).getHistoryDate().getTime());
 
             //Set the month

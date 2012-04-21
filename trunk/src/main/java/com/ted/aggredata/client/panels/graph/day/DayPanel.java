@@ -21,7 +21,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
@@ -29,7 +28,6 @@ import com.ted.aggredata.client.panels.graph.BarGraphPanel;
 import com.ted.aggredata.model.Enums;
 
 import java.util.Date;
-import java.util.logging.Logger;
 
 public class DayPanel extends BarGraphPanel {
 
@@ -43,7 +41,7 @@ public class DayPanel extends BarGraphPanel {
 
     public DayPanel() {
         initWidget(uiBinder.createAndBindUi(this));
-        graphPanel.add(barGraphPanel);
+        setGraphingPanel(graphPanel);
     }
 
 

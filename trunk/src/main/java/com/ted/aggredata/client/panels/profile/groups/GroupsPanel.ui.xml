@@ -23,6 +23,7 @@
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
     <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
+        <my:widgets.ClearImage width="800" height="2px"/>
         <my:widgets.ClearImage width="800" height="1px"/>
         <g:Label styleName='{style.panelTitleText}' text='{txtRes.groupsTitle}'/>
         <my:widgets.ClearImage width="800" height="3px"/>

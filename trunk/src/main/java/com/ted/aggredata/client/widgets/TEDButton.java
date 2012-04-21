@@ -42,19 +42,15 @@ public class TEDButton extends Composite {
     TEDButton(ImageResource imgResource, String text, String width, String height, String style, int textOffset) {
         clearImage = new ClearImage(width, height);
         buttonImage = new Image(imgResource);
-
-
+        buttonImage.setSize(width, height);
         mainPanel.setSize(width, height);
 
         TEDLabel label = new TEDLabel(text, width, style, HasHorizontalAlignment.ALIGN_CENTER);
-        GWT.log(label.getElement().getStyle().getHeight());
-
         mainPanel.add(buttonImage, 0, 0);
         mainPanel.add(label, 0, textOffset);
         mainPanel.add(clearImage, 0, 0);
         enabled = true;
         initWidget(mainPanel);
-
     }
 
     public void setEnabled(boolean enabled) {

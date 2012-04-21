@@ -31,7 +31,7 @@ public class AggredataPanel extends Composite {
 
     public AggredataPanel() {
         mainPanel.setSize("1018px", "720px");
-        mainPanel.add(new Image(DashboardImageResource.INSTANCE.contentBackground()), 0, 0);
+        mainPanel.add(new Image(DashboardImageResource.INSTANCE.contentBackground()), 0, 22);
         mainPanel.add(new MainPanel(), 0, 0);
         initWidget(mainPanel);
     }

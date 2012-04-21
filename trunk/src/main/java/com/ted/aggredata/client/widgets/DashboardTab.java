@@ -54,6 +54,7 @@ public class DashboardTab extends Composite {
         clickImage.setSize("95px", "36px");
         tabPanel.setSize("95px", "36px");
 
+
         tabPanel.add(selectedImage, 0, 0);
         tabPanel.add(dividerImage, 0, 0);
         tabPanel.add(label, 0, 3);

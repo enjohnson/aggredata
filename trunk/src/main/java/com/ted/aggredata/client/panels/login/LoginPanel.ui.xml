@@ -21,7 +21,7 @@
     <ui:style src="LoginPanel.css"/>
 
     <g:VerticalPanel styleName='{style.mainBody}' horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
-        <my:widgets.ClearImage width="1024px" height="1px"/>
+        <my:widgets.ClearImage width="1024px" height="80px"/>
         <g:HorizontalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
             <my:widgets.ClearImage width="1px" height="640px"/>
             <g:AbsolutePanel ui:field="contentPanel"/>

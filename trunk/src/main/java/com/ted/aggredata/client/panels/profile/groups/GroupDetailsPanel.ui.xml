@@ -22,7 +22,7 @@
 
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
-    <g:CaptionPanel ui:field="captionPanel" width="220px" styleName="{style.captionHeader}">
+    <g:CaptionPanel ui:field="captionPanel" width="370px" styleName="{style.captionHeader}">
         <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
             <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10" height="1px"/>
@@ -33,7 +33,7 @@
                 <g:Label ui:field="descriptionFieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
-            <my:widgets.ClearImage width="2" height="5"/>
+            <my:widgets.ClearImage width="2" height="5px"/>
 
             <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10" height="1px"/>
@@ -44,7 +44,7 @@
                 <g:Label ui:field="custom1FieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
-            <my:widgets.ClearImage width="2" height="5"/>
+            <my:widgets.ClearImage width="2" height="5px"/>
 
             <g:HorizontalPanel>
                 <my:widgets.ClearImage width="10" height="1px"/>
@@ -55,7 +55,7 @@
                 <g:Label ui:field="custom2FieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
-            <my:widgets.ClearImage width="2" height="5"/>
+            <my:widgets.ClearImage width="2" height="5px"/>
 
             <g:HorizontalPanel>
                 <my:widgets.ClearImage width="10" height="1px"/>
@@ -66,7 +66,7 @@
                 <g:Label ui:field="custom3FieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
-            <my:widgets.ClearImage width="2" height="5"/>
+            <my:widgets.ClearImage width="2" height="5px"/>
 
             <g:HorizontalPanel>
                 <my:widgets.ClearImage width="10" height="1px"/>
@@ -77,7 +77,7 @@
                 <g:Label ui:field="custom4FieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
-            <my:widgets.ClearImage width="2" height="5"/>
+            <my:widgets.ClearImage width="2" height="5px"/>
 
             <g:HorizontalPanel>
                 <my:widgets.ClearImage width="10" height="1px"/>
@@ -88,7 +88,7 @@
                 <g:Label ui:field="custom5FieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
-            <my:widgets.ClearImage width="2" height="5"/>
+            <my:widgets.ClearImage width="2" height="5px"/>
 
             <my:panels.profile.groups.GroupGatewaysPanel ui:field="groupGatewaysPanel"/>
 

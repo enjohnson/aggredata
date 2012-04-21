@@ -41,7 +41,7 @@ public class HourPanel extends BarGraphPanel {
 
     public HourPanel() {
         initWidget(uiBinder.createAndBindUi(this));
-        graphPanel.add(barGraphPanel);
+        setGraphingPanel(graphPanel);
     }
 
 
