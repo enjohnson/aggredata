@@ -26,7 +26,10 @@
         <my:widgets.ClearImage width="800" height="3px"/>
         <g:Label styleName='{style.panelInstructionText}' text='{txtRes.monthInstructions}'/>
         <my:widgets.ClearImage width="800px" height="20px"/>
-        <g:VerticalPanel ui:field="graphPanel"/>
+        <g:HorizontalPanel>
+            <my:widgets.ClearImage width="10px" height="20px"/>
+            <g:VerticalPanel ui:field="graphPanel"/>
+        </g:HorizontalPanel>
     </g:VerticalPanel>
 
 </ui:UiBinder>

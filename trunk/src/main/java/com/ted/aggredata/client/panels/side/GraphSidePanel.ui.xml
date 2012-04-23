@@ -27,7 +27,9 @@
         <my:widgets.ClearImage width="1px" height="7px"/>
         <g:Image resource="{imgRes.sideDivider}"/>
         <my:widgets.ClearImage width="1px" height="7px"/>
-        <my:panels.side.DateSelectionWidget ui:field="dateSelectionWidget"/>
+        <g:VerticalPanel ui:field="dateSelectionPanel" />
+
+
         <my:widgets.ClearImage width="1px" height="7px"/>
         <g:Image resource="{imgRes.sideDivider}"/>
         <my:widgets.ClearImage width="1px" height="7px"/>

@@ -67,7 +67,7 @@ public class DayPanel extends BarGraphPanel {
 
     @Override
     protected DateTimeFormat getDateTimeFormat() {
-        return DateTimeFormat.getFormat("MM/dd/yyyy");
+        return DateTimeFormat.getFormat("E MM/dd/yyyy");
     }
 
     @Override
