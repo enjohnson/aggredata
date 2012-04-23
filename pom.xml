@@ -28,6 +28,20 @@
     <url>http://www.theenergydetective.com</url>
     <packaging>war</packaging>
 
+    <repositories>
+
+        <repository>
+            <id>mavencentral</id>
+            <url>http://repo1.maven.org/maven2/</url>
+        </repository>
+
+        <repository>
+            <id>nuxeo</id>
+            <url>https://maven.nuxeo.org/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.1.1.RELEASE</spring.version>
@@ -207,7 +221,7 @@
         <dependency>
             <groupId>com.google.gwt.google-apis</groupId>
             <artifactId>gwt-visualization</artifactId>
-            <version>1.0.2</version>
+            <version>1.1.1</version>
         </dependency>
         
 

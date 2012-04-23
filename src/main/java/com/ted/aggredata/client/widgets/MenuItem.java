@@ -35,7 +35,7 @@ public class MenuItem extends Composite {
         HorizontalPanel mainPanel = new HorizontalPanel();
         this.isLeftMost = isLeftMost;
         label = new TEDLabel(text, width, "menuText", HasHorizontalAlignment.ALIGN_CENTER);
-        label.setHeight(height);
+     //   label.setHeight(height);
         selected = false;
 
         if (!isLeftMost) {
@@ -44,8 +44,6 @@ public class MenuItem extends Composite {
             mainPanel.setCellVerticalAlignment(divImage, HasVerticalAlignment.ALIGN_BOTTOM);
         }
         mainPanel.add(label);
-        //mainPanel.setCellVerticalAlignment(label, HasVerticalAlignment.ALIGN_BOTTOM);
-
         initWidget(mainPanel);
     }
 

@@ -226,4 +226,30 @@ public interface DashboardConstants extends Constants {
     String sideBarTypeHeader();
 
     String sideBarTypeDetails();
+
+    String graphMonthly();
+
+    String graphDaily();
+
+    String graphHourly();
+
+    String graphPerminute();
+
+    String graphCost();
+
+    String graphEnergy();
+
+    String graphCSVExport();
+
+    String graphTotalCost();
+
+    String graphTotalEnergy();
+
+    String graphDateRange();
+
+    String graphTo();
+
+    String graphTypeCost();
+
+    String graphTypeEnergy();
 }

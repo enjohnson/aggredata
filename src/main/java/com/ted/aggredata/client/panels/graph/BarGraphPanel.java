@@ -19,18 +19,23 @@ package com.ted.aggredata.client.panels.graph;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.visualization.client.AbstractDataTable;
-import com.google.gwt.visualization.client.DataTable;
-import com.google.gwt.visualization.client.VisualizationUtils;
-import com.google.gwt.visualization.client.visualizations.BarChart;
+import com.google.gwt.visualization.client.*;
+import com.google.gwt.visualization.client.visualizations.corechart.AxisOptions;
+import com.google.gwt.visualization.client.visualizations.corechart.ColumnChart;
+import com.google.gwt.visualization.client.visualizations.corechart.Options;
+import com.google.gwt.visualization.client.visualizations.corechart.TextStyle;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
+import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.model.*;
+
+
+
 
 import java.util.Date;
 import java.util.List;
@@ -44,13 +49,27 @@ import java.util.logging.Logger;
 public abstract class BarGraphPanel extends Composite implements GraphOptionChangeable {
 
     final GWTGroupServiceAsync groupService = (GWTGroupServiceAsync) GWT.create(GWTGroupService.class);
+    final DashboardConstants dashboardConstants = DashboardConstants.INSTANCE;
+    final NumberFormat currencyFormat = NumberFormat.getCurrencyFormat();
+
+    String BACKGROUND_COLOR = "transparent";
+
+    public static final int GRAPH_WIDTH = 860;
+    public static final int GRAPH_HEIGHT = 560;
+
+
+
     static Logger logger = Logger.getLogger(BarGraphPanel.class.toString());
     protected Group group;
     protected Date startDate;
     protected Date endDate;
     protected Enums.GraphType graphType;
     protected EnergyDataHistoryQueryResult historyResult = null;
+
     protected VerticalPanel barGraphPanel;
+    protected Label barGraphTitle;
+
+    ColumnChart barChart = null;
 
     /**
      * Callback to handle the loading of history data.
@@ -60,24 +79,28 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
             if (historyResult != null)
             {
                 logger.fine("Callback received. Drawing.");
-                barGraphPanel.setSize("820px", "520px");
+
                 //Create the visualization
-                barGraphPanel.clear();
-                BarChart barChart = new BarChart(createTable(), createOptions());
-                barGraphPanel.add(barChart);
+                if (barChart == null) {
+                    barChart = new ColumnChart(createTable(), createOptions());
+                    barGraphPanel.add(barChart);
+
+                    barGraphPanel.getElement().getStyle().setBackgroundColor(BACKGROUND_COLOR);
+                } else {
+                    barChart.draw(createTable(), createOptions());
+                }
             }   else {
                 logger.severe("historyResult is null!");
             }
         }
     };
 
-    protected void setGraphingPanel(VerticalPanel vp) {
+    protected void setGraphingPanel(VerticalPanel vp, Label graphTitle) {
         this.barGraphPanel = vp;
+        this.barGraphTitle = graphTitle;
     }
 
     public void onGraphOptionChange(Group group, Date startDate, Date endDate, Enums.GraphType graphType) {
-
-
 
         this.group = group;
         this.startDate = fixStartDate(startDate);
@@ -94,7 +117,8 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
             public void onSuccess(EnergyDataHistoryQueryResult energyDataHistoryQueryResult) {
                 logger.fine("history data returned. Drawing");
                 historyResult = energyDataHistoryQueryResult;
-                VisualizationUtils.loadVisualizationApi(onLoadCallback, BarChart.PACKAGE);
+                VisualizationUtils.loadVisualizationApi(onLoadCallback, ColumnChart.PACKAGE);
+
             }
         });
 
@@ -116,25 +140,113 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
     protected abstract Date fixEndDate(Date startDate);
 
 
+    public static String toTitleCase(String string){
+        String result = "";
+        for (int i = 0; i < string.length(); i++){
+            String next = string.substring(i, i + 1);
+            if (i == 0){
+                result += next.toUpperCase();
+            } else {
+                result += next.toLowerCase();
+            }
+        }
+        return result;
+    }
 
 
-    protected BarChart.Options createOptions() {
+    protected Options createOptions() {
+
         DateTimeFormat dateTimeFormat = getDateTimeFormat();
         StringBuffer title = new StringBuffer();
-        title.append(getHistoryType());
-        title.append(" ").append(graphType).append(" for the date range ");
-        title.append(dateTimeFormat.format(startDate)).append(" to ");
+
+        title.append(toTitleCase(getHistoryType().toString()));
+        title.append(" ");
+
+        if (graphType.equals(Enums.GraphType.COST)) title.append(dashboardConstants.graphCost());
+        else if (graphType.equals(Enums.GraphType.ENERGY)) title.append(dashboardConstants.graphEnergy());
+
+        title.append(" ").append(dashboardConstants.graphDateRange()).append(" ");
+        title.append(dateTimeFormat.format(startDate)).append(" ").append(dashboardConstants.graphTo()).append(" ");
         title.append(dateTimeFormat.format(endDate));
         logger.fine("TITLE:" + title);
 
-        BarChart.Options options = BarChart.Options.create();
-        options.setWidth(820);
-        options.setHeight(520);
-        options.set3D(true);
-        options.setTitle(title.toString());
-        options.setBackgroundColor("transparent");
-        options.setTitleColor("#FFFFFF");
-        options.setMin(0);
+
+        Options options = ColumnChart.createOptions();
+        options.setWidth(GRAPH_WIDTH);
+        options.setHeight(GRAPH_HEIGHT);
+
+
+        //options.set3D(true);
+        //options.setTitle(title.toString());
+        barGraphTitle.setText(title.toString());
+
+        options.setBackgroundColor(BACKGROUND_COLOR);
+        options.setLegend(LegendPosition.RIGHT);
+
+        TextStyle legendStyle = TextStyle.create();
+        legendStyle.setColor("#FFFFFF");
+        legendStyle.setFontName("Arial, Verdana, Trebuchet, sans-serif");
+        legendStyle.setFontSize(8);
+
+
+        options.setLegendTextStyle(legendStyle);
+        options.setFontName("Arial, Verdana, Trebuchet, sans-serif");
+        options.set("is3D", true);
+
+
+        TextStyle vAxisStyle = TextStyle.create();
+        vAxisStyle.setColor("#FFFFFF");
+        vAxisStyle.setFontName("Arial, Verdana, Trebuchet, sans-serif");
+        vAxisStyle.setFontSize(12);
+
+
+
+        AxisOptions vAxisOptions = AxisOptions.create();
+        vAxisOptions.setTextStyle(vAxisStyle);
+        vAxisOptions.setMinValue(0);
+
+        if (graphType.equals(Enums.GraphType.ENERGY)) vAxisOptions.setTitle(dashboardConstants.graphTypeEnergy());
+        else if (graphType.equals(Enums.GraphType.COST)) vAxisOptions.setTitle(dashboardConstants.graphTypeCost());
+        vAxisOptions.setTitleTextStyle(vAxisStyle);
+
+        options.setVAxisOptions(vAxisOptions);
+
+
+
+        TextStyle hAxisStyle = TextStyle.create();
+        hAxisStyle.setColor("#FFFFFF");
+        hAxisStyle.setFontName("Arial, Verdana, Trebuchet, sans-serif");
+
+        int autosize = historyResult.getNetHistoryList().size() / 14;
+        autosize = 12 - ((autosize>0?2:0)+(autosize*2));
+        if (autosize < 0) autosize=1;
+        hAxisStyle.setFontSize(autosize);
+
+
+        AxisOptions hAxisOptions = AxisOptions.create();
+        hAxisOptions.setTextStyle(hAxisStyle);
+        hAxisOptions.setTitleTextStyle(hAxisStyle);
+        options.setHAxisOptions(hAxisOptions);
+
+
+
+        TextStyle titleStyle = TextStyle.create();
+        titleStyle.setColor("#FFFFFF");
+        titleStyle.setFontSize(16);
+        titleStyle.setFontName("Arial, Verdana, Trebuchet, sans-serif");
+
+        options.setTitleTextStyle(titleStyle);
+
+
+        ChartArea ca = ChartArea.create();
+//        ca.setHeight(GRAPH_HEIGHT-185);
+//        ca.setWidth(GRAPH_WIDTH-350);
+        ca.setTop(5);
+
+        options.setChartArea(ca);
+
+        options.set("is3D", "true");
+
 
 
         return options;
@@ -149,13 +261,51 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         //Only show NET if we have more than one gateway in the group.
         if (historyResult.getGatewayList().size() > 1)
         {
-            data.addColumn(AbstractDataTable.ColumnType.NUMBER, "Total " + graphType);
+            StringBuffer descriptionBuffer = new StringBuffer();
+            descriptionBuffer.append("Total " + toTitleCase(graphType.toString()));
+
+            if (graphType.equals(Enums.GraphType.ENERGY)) {
+                Double v = historyResult.getNetEnergyTotal();
+                if (v == null) v = 0d;
+                v = round(v/1000, 3);
+                if (v != 0) {
+                    descriptionBuffer.append("(").append(v + " kWh").append(")");
+                }
+            } else {
+                Double v = historyResult.getNetCostTotal();
+                if (v == null) v = 0d;
+                v = round(v, 2);
+                if (v != 0) {
+                    descriptionBuffer.append("(").append(currencyFormat.format(v)).append(")");
+                }
+            }
+
+            data.addColumn(AbstractDataTable.ColumnType.NUMBER, descriptionBuffer.toString());
 
         }
 
 
         for (Gateway gateway: historyResult.getGatewayList()) {
-            data.addColumn(AbstractDataTable.ColumnType.NUMBER, gateway.getDescription());
+            StringBuffer descriptionBuffer = new StringBuffer();
+            descriptionBuffer.append(gateway.getDescription());
+
+            if (graphType.equals(Enums.GraphType.ENERGY)) {
+                Double v = historyResult.getGatewayEnergyTotalList().get(gateway.getId());
+                if (v == null) v = 0d;
+                v = round(v/1000, 3);
+                if (v != 0) {
+                    descriptionBuffer.append("(").append(v + " kWh").append(")");
+                }
+            } else {
+                Double v = historyResult.getGatewayCostTotalList().get(gateway.getId());
+                if (v == null) v = 0d;
+                v = round(v, 2);
+                if (v != 0) {
+                    descriptionBuffer.append("(").append(currencyFormat.format(v)).append(")");
+                }
+            }
+
+            data.addColumn(AbstractDataTable.ColumnType.NUMBER, descriptionBuffer.toString());
         }
 
 
@@ -175,8 +325,14 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
             //Only show NET if we have more than one gateway in the group.
             if (historyResult.getGatewayList().size() > 1)
             {
-                if (graphType.equals(Enums.GraphType.ENERGY)) data.setValue(i, col++, historyResult.getNetHistoryList().get(i).getEnergy()/1000);
-                else data.setValue(i, col++, historyResult.getNetHistoryList().get(i).getCost());
+                if (graphType.equals(Enums.GraphType.ENERGY)) {
+                    double energy = round(historyResult.getNetHistoryList().get(i).getEnergy() / 1000, 3);
+                    data.setCell(i, col++, energy, energy + " kWh", null);
+                }
+                else {
+                    double cost = round(historyResult.getNetHistoryList().get(i).getCost(), 2);
+                    data.setCell(i, col++, cost, currencyFormat.format(cost), null);
+                }
             }
 
 
@@ -186,8 +342,15 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
                     logger.fine("Skipping " + gateway + " since there is no history for it");
                     data.setValue(i, col++, 0);
                 }   else {
-                    if (graphType.equals(Enums.GraphType.ENERGY))  data.setValue(i, col++, gwList.get(i).getEnergy()/1000);
-                    else  data.setValue(i, col++, gwList.get(i).getCost());
+                    if (graphType.equals(Enums.GraphType.ENERGY)) {
+                        double energy = round(gwList.get(i).getEnergy()/1000, 3);
+                        data.setCell(i, col++, energy, energy + " kWh", null);
+                    }
+                    else {
+                        double cost = round(gwList.get(i).getCost(), 2);
+                        data.setCell(i, col++, cost, currencyFormat.format(cost), null);
+
+                    }
                 }
             }
 
@@ -196,6 +359,19 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         return data;
     }
 
+    private double round(double value, int decimalPlaces) {
+        double multiplier = 1;
+        for (int i=0; i < decimalPlaces; i++)
+        {
+            multiplier = multiplier * 10;
+        }
+
+        double roundedValue = value * multiplier;
+        roundedValue = Math.round(roundedValue);
+        roundedValue = roundedValue / multiplier;
+        return roundedValue;
+
+    }
 
     protected abstract DateTimeFormat getDateTimeFormat();
     protected abstract Enums.HistoryType getHistoryType();

@@ -29,7 +29,14 @@ public class EnergyDataHistoryQueryResult implements Serializable {
 
     List<Gateway> gatewayList = new ArrayList<Gateway>();
     List<EnergyDataHistory> netHistoryList = new ArrayList<EnergyDataHistory>();
+    Double netCostTotal = 0d;
+    Double netEnergyTotal = 0d;
+
     HashMap<Long, List<EnergyDataHistory>> gatewayHistoryList = new HashMap<Long, List<EnergyDataHistory>>();
+    HashMap<Long, Double> gatewayCostTotalList = new   HashMap<Long, Double>();
+    HashMap<Long, Double> gatewayEnergyTotalList = new   HashMap<Long, Double>();
+
+
     Group group;
 
     public EnergyDataHistoryQueryResult() {
@@ -57,6 +64,30 @@ public class EnergyDataHistoryQueryResult implements Serializable {
 
     public void setGatewayHistoryList(HashMap<Long, List<EnergyDataHistory>> gatewayHistoryList) {
         this.gatewayHistoryList = gatewayHistoryList;
+    }
+
+    public Double getNetCostTotal() {
+        return netCostTotal;
+    }
+
+    public Double getNetEnergyTotal() {
+        return netEnergyTotal;
+    }
+
+    public void setNetCostTotal(Double netCostTotal) {
+        this.netCostTotal = netCostTotal;
+    }
+
+    public void setNetEnergyTotal(Double netEnergyTotal) {
+        this.netEnergyTotal = netEnergyTotal;
+    }
+
+    public HashMap<Long, Double> getGatewayCostTotalList() {
+        return gatewayCostTotalList;
+    }
+
+    public HashMap<Long, Double> getGatewayEnergyTotalList() {
+        return gatewayEnergyTotalList;
     }
 
     public Group getGroup() {
