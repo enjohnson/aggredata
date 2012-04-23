@@ -26,6 +26,7 @@
             <my:widgets.ClearImage width="3px" height="1px"/>
             <g:Label styleName="{style.helloTextName}" ui:field="usernameLabel"/>
         </g:HorizontalPanel>
+        <my:widgets.ClearImage width="3px" height="3px"/>
         <g:HorizontalPanel ui:field="menuOptionsPanel"/>
     </g:VerticalPanel>
 

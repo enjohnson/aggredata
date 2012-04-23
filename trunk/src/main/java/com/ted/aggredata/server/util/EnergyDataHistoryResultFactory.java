@@ -144,10 +144,15 @@ public class EnergyDataHistoryResultFactory {
         result.setGroup(group);
         result.setGatewayList(gatewayList);
 
+        double netCostTotal = 0;
+        double netEnergyTotal = 0;
+
         //Iterate over each gateway to calculate its totals
         for (Long gwId: gatewayBucketHashMap.keySet()) {
             GatewayBucket bucket = getBucket(gwId);
             int index = 0;
+            double gwCostTotal = 0;
+            double gwEnergyTotal = 0;
             ArrayList<EnergyDataHistory> gatewayHistory = new ArrayList<EnergyDataHistory>();
             result.getGatewayHistoryList().put(gwId, gatewayHistory);
             for (EnergyDataHistoryDate key: sortedKeys){
@@ -170,6 +175,8 @@ public class EnergyDataHistoryResultFactory {
                 EnergyDataHistory energyDataHistory = getGatewayTotal(key,gwId, bucket);
                 groupEnergyDataHistory.setEnergy(groupEnergyDataHistory.getEnergy() + energyDataHistory.getEnergy());
                 groupEnergyDataHistory.setCost(groupEnergyDataHistory.getCost() + energyDataHistory.getCost());
+                gwCostTotal = energyDataHistory.getCost();
+                gwEnergyTotal = energyDataHistory.getEnergy();
 
                 //Add the gateway data
                 List<EnergyDataHistory> gatewayHistoryList = result.getGatewayHistoryList().get(gwId);
@@ -181,9 +188,14 @@ public class EnergyDataHistoryResultFactory {
 
                 index++;
             }
-
+            result.getGatewayCostTotalList().put(gwId, gwCostTotal);
+            result.getGatewayEnergyTotalList().put(gwId, gwEnergyTotal);
+            netCostTotal += gwCostTotal;
+            netEnergyTotal += gwEnergyTotal;
         }
 
+        result.setNetCostTotal(netCostTotal);
+        result.setNetEnergyTotal(netEnergyTotal);
         return result;
     }
 
@@ -227,6 +239,7 @@ public class EnergyDataHistoryResultFactory {
         energyDataHistory.setGatewayId(gwId);
         energyDataHistory.setMtuId(0l);
         energyDataHistory.setHistoryDate(key);
+
         energyDataHistory.setEnergy(totalEnergyNetMeter + totalEnergyGen + totalEnergyLoad);
         energyDataHistory.setCost(totalCostNetMeter + totalCostGen + totalCostLoad);
         return energyDataHistory;

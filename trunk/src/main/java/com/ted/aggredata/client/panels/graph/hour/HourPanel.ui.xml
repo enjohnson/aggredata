@@ -22,10 +22,9 @@
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
     <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
         <my:widgets.ClearImage width="800" height="1px"/>
-        <g:Label styleName='{style.panelTitleText}' text='{txtRes.hourTitle}'/>
+        <g:Label styleName='{style.graphTitle}' ui:field="graphTitle" />
         <my:widgets.ClearImage width="800" height="3px"/>
         <g:Label styleName='{style.panelInstructionText}' text='{txtRes.hourInstructions}'/>
-        <g:VerticalPanel ui:field="graphPanel"/>
-    </g:VerticalPanel>
-
+        <my:widgets.ClearImage width="800px" height="20px"/>
+        <g:VerticalPanel ui:field="graphPanel"/>    </g:VerticalPanel>
 </ui:UiBinder>

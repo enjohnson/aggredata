@@ -19,7 +19,6 @@
         text-align: center;
         font-size: 1em;
         font-family: Arial, Verdana, Trebuchet, sans-serif;
-        background-color: black;
         color: #FFF;
         background: #000000 url(images/background.jpg) center top no-repeat;
     }
@@ -166,5 +165,16 @@
         width:100px;
         vertical-align: middle;
     }
+
+    .graphTitle {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #fff;
+        text-align: center;
+        font-size: 16pt;
+        width:800px;
+        vertical-align: middle;
+    }
+
+
 
 

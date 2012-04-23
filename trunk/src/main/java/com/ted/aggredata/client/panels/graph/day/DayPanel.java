@@ -21,6 +21,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
@@ -37,11 +39,13 @@ public class DayPanel extends BarGraphPanel {
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     @UiField
     VerticalPanel graphPanel;
+    @UiField
+    Label graphTitle;
 
 
     public DayPanel() {
         initWidget(uiBinder.createAndBindUi(this));
-        setGraphingPanel(graphPanel);
+        setGraphingPanel(graphPanel, graphTitle);
     }
 
 
