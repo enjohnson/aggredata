@@ -43,6 +43,7 @@ import com.ted.aggredata.client.panels.profile.groups.GroupsPanel;
 import com.ted.aggredata.client.panels.profile.settings.SettingsPanel;
 import com.ted.aggredata.client.panels.side.GraphSidePanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.model.Enums;
 
 import java.util.logging.Logger;
 
@@ -72,6 +73,7 @@ public class MainPanel extends Composite {
     final DashboardTabPanel systemAdministrationDashboardPanel;
     final GraphSidePanel graphSidePanel;
 
+
     DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
 
     //Event handler if any of the left hand side graphing options have changed
@@ -94,11 +96,9 @@ public class MainPanel extends Composite {
         graphDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.month(), dashboardConstants.day(), dashboardConstants.hour(), dashboardConstants.minute()});
         profileDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.accountSettings(), dashboardConstants.accountGroups(), dashboardConstants.accountTEDS(), dashboardConstants.accountActivate()});
         systemAdministrationDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.systemUsers(), dashboardConstants.systemServer()});
+
         graphSidePanel = new GraphSidePanel();
         graphSidePanel.addGraphOptionsChangedHandler(graphOptionsChangedHandler);
-
-
-
 
         //Add handlers
         adminNavigationPanel.addMenuClickedHandler(new MenuClickedHandler() {
@@ -170,25 +170,28 @@ public class MainPanel extends Composite {
             public void onTabClicked(TabClickedEvent event) {
                 contentPanel.clear();
 
+
                 switch (event.getTabIndex()) {
                     case 0: {
                         contentPanel.add(new MonthPanel());
+                        graphSidePanel.setHistoryType(Enums.HistoryType.MONTHLY);
                         graphSidePanel.fireEvent();
                         break;
                     }
                     case 1: {
                         contentPanel.add(new DayPanel());
+                        graphSidePanel.setHistoryType(Enums.HistoryType.DAILY);
                         graphSidePanel.fireEvent();
                         break;
                     }
                     case 2: {
                         contentPanel.add(new HourPanel());
+                        graphSidePanel.setHistoryType(Enums.HistoryType.HOURLY);
                         graphSidePanel.fireEvent();
                         break;
                     }
                     case 3: {
                         contentPanel.add(new MinutePanel());
-                        graphSidePanel.fireEvent();
                         break;
                     }
 
@@ -230,6 +233,7 @@ public class MainPanel extends Composite {
             tabNavigationPanel.add(graphDashboardPanel, 0, 0);
             contentPanel.add(new MonthPanel());
             sidePanel.add(graphSidePanel, 0, 0);
+            graphSidePanel.setHistoryType(Enums.HistoryType.MONTHLY);
             graphSidePanel.reset();
 
         }

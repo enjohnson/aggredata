@@ -175,8 +175,8 @@ public class EnergyDataHistoryResultFactory {
                 EnergyDataHistory energyDataHistory = getGatewayTotal(key,gwId, bucket);
                 groupEnergyDataHistory.setEnergy(groupEnergyDataHistory.getEnergy() + energyDataHistory.getEnergy());
                 groupEnergyDataHistory.setCost(groupEnergyDataHistory.getCost() + energyDataHistory.getCost());
-                gwCostTotal = energyDataHistory.getCost();
-                gwEnergyTotal = energyDataHistory.getEnergy();
+                gwCostTotal += energyDataHistory.getCost();
+                gwEnergyTotal += energyDataHistory.getEnergy();
 
                 //Add the gateway data
                 List<EnergyDataHistory> gatewayHistoryList = result.getGatewayHistoryList().get(gwId);

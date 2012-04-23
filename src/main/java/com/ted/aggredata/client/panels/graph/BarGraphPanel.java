@@ -23,6 +23,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.visualization.client.*;
 import com.google.gwt.visualization.client.visualizations.corechart.AxisOptions;
 import com.google.gwt.visualization.client.visualizations.corechart.ColumnChart;
@@ -33,8 +34,6 @@ import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.model.*;
-
-
 
 
 import java.util.Date;
@@ -54,7 +53,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
     String BACKGROUND_COLOR = "transparent";
 
-    public static final int GRAPH_WIDTH = 860;
+    public static final int GRAPH_WIDTH = 880;
     public static final int GRAPH_HEIGHT = 560;
 
 
@@ -167,7 +166,10 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
         title.append(" ").append(dashboardConstants.graphDateRange()).append(" ");
         title.append(dateTimeFormat.format(startDate)).append(" ").append(dashboardConstants.graphTo()).append(" ");
-        title.append(dateTimeFormat.format(endDate));
+
+        Date titleEndDate = new Date(endDate.getTime());
+        CalendarUtil.addDaysToDate(titleEndDate, -1);
+        title.append(dateTimeFormat.format(titleEndDate));
         logger.fine("TITLE:" + title);
 
 
@@ -175,9 +177,6 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         options.setWidth(GRAPH_WIDTH);
         options.setHeight(GRAPH_HEIGHT);
 
-
-        //options.set3D(true);
-        //options.setTitle(title.toString());
         barGraphTitle.setText(title.toString());
 
         options.setBackgroundColor(BACKGROUND_COLOR);
@@ -217,10 +216,11 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         hAxisStyle.setColor("#FFFFFF");
         hAxisStyle.setFontName("Arial, Verdana, Trebuchet, sans-serif");
 
-        int autosize = historyResult.getNetHistoryList().size() / 14;
-        autosize = 12 - ((autosize>0?2:0)+(autosize*2));
-        if (autosize < 0) autosize=1;
-        hAxisStyle.setFontSize(autosize);
+//        int autosize = historyResult.getNetHistoryList().size() / 7;
+//        autosize = 12 - (autosize*2);
+//        if (autosize < 0) autosize=1;
+//        hAxisStyle.setFontSize(autosize);
+        hAxisStyle.setFontSize(10);
 
 
         AxisOptions hAxisOptions = AxisOptions.create();
@@ -240,7 +240,8 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
         ChartArea ca = ChartArea.create();
 //        ca.setHeight(GRAPH_HEIGHT-185);
-//        ca.setWidth(GRAPH_WIDTH-350);
+        ca.setWidth(GRAPH_WIDTH-250);
+        ca.setLeft(60);
         ca.setTop(5);
 
         options.setChartArea(ca);
@@ -267,16 +268,16 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
             if (graphType.equals(Enums.GraphType.ENERGY)) {
                 Double v = historyResult.getNetEnergyTotal();
                 if (v == null) v = 0d;
-                v = round(v/1000, 3);
+                v = round(v/1000, 1);
                 if (v != 0) {
-                    descriptionBuffer.append("(").append(v + " kWh").append(")");
+                    descriptionBuffer.append(" (").append(v + " kWh").append(")");
                 }
             } else {
                 Double v = historyResult.getNetCostTotal();
                 if (v == null) v = 0d;
                 v = round(v, 2);
                 if (v != 0) {
-                    descriptionBuffer.append("(").append(currencyFormat.format(v)).append(")");
+                    descriptionBuffer.append(" (").append(currencyFormat.format(v)).append(")");
                 }
             }
 
@@ -292,9 +293,9 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
             if (graphType.equals(Enums.GraphType.ENERGY)) {
                 Double v = historyResult.getGatewayEnergyTotalList().get(gateway.getId());
                 if (v == null) v = 0d;
-                v = round(v/1000, 3);
+                v = round(v/1000, 1);
                 if (v != 0) {
-                    descriptionBuffer.append("(").append(v + " kWh").append(")");
+                    descriptionBuffer.append(" (").append(v + " kWh").append(")");
                 }
             } else {
                 Double v = historyResult.getGatewayCostTotalList().get(gateway.getId());

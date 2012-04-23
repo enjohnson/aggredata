@@ -24,7 +24,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.ted.aggredata.client.events.*;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
@@ -49,9 +51,13 @@ public class GraphSidePanel extends Composite {
     @UiField
     GroupSelectionWidget groupSelectionWidget;
     @UiField
-    DateSelectionWidget dateSelectionWidget;
-    @UiField
     TypeSelectionWidget typeSelectionWidget;
+
+    MonthSelectionWidget monthSelectionWidget = new MonthSelectionWidget();
+    DateSelectionWidget dateSelectionWidget = new DateSelectionWidget();
+
+    @UiField
+    VerticalPanel dateSelectionPanel;
 
     final GWTGroupServiceAsync groupService = (GWTGroupServiceAsync) GWT.create(GWTGroupService.class);
     List<Group> groupList;
@@ -59,6 +65,7 @@ public class GraphSidePanel extends Composite {
     Date startDate;
     Date endDate;
     Enums.GraphType graphType;
+    Enums.HistoryType historyType;
 
 
 
@@ -80,6 +87,16 @@ public class GraphSidePanel extends Composite {
             }
         });
 
+        monthSelectionWidget.addDateRangeSelectedHandler(new DateRangeSelectedHandler() {
+            @Override
+            public void onDateRangeSelected(DateRangeSelectedEvent event) {
+                logger.fine("Date range Changed to " + event.getStartDate() + " to " + event.getEndDate());
+                startDate = event.getStartDate();
+                endDate = event.getEndDate();
+                fireEvent();
+            }
+        });
+
         dateSelectionWidget.addDateRangeSelectedHandler(new DateRangeSelectedHandler() {
             @Override
             public void onDateRangeSelected(DateRangeSelectedEvent event) {
@@ -89,6 +106,7 @@ public class GraphSidePanel extends Composite {
                 fireEvent();
             }
         });
+
 
         typeSelectionWidget.addGraphTypeSelectedHandler(new GraphTypeSelectedHandler() {
             @Override
@@ -110,6 +128,7 @@ public class GraphSidePanel extends Composite {
 
     public void fireEvent()
     {
+            logger.fine("Graph Side Panel Firing Event");
             handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType));
     }
 
@@ -127,22 +146,62 @@ public class GraphSidePanel extends Composite {
                     group = groupList.get(0);
                 }
 
-                startDate = new Date();
-                startDate.setHours(0);
-                startDate.setMinutes(0);
-                startDate.setSeconds(0);
-
-                endDate = new Date(startDate.getTime() + ((3600*24) * 1000));
-
-                dateSelectionWidget.setStartDate(startDate);
-                dateSelectionWidget.setEndDate(endDate);
-
+                setHistoryType(Enums.HistoryType.MONTHLY);
+                resetDate();
                 graphType = Enums.GraphType.ENERGY;
                 typeSelectionWidget.setType(graphType);
+
                 fireEvent();
 
             }
         });
     }
 
+    /**
+     * Resets the date (usually called on tab selection).
+     */
+    private void resetDate()
+    {
+        startDate = new Date();
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setSeconds(0);
+        endDate = new Date(startDate.getTime());
+
+        if (getHistoryType().equals(Enums.HistoryType.MONTHLY)) {
+            CalendarUtil.addMonthsToDate(startDate, -12);
+            monthSelectionWidget.setStartDate(startDate);
+            monthSelectionWidget.setEndDate(endDate);
+
+            //We do this to get the local date in case its out of the range for the widget start date
+            startDate= monthSelectionWidget.getStartDate();
+        }
+        else if (getHistoryType().equals(Enums.HistoryType.DAILY)) {
+            CalendarUtil.addDaysToDate(startDate, -7);
+            dateSelectionWidget.setStartDate(startDate);
+            dateSelectionWidget.setEndDate(endDate);
+        } else {
+            CalendarUtil.addDaysToDate(startDate, -1);
+            dateSelectionWidget.setStartDate(startDate);
+            dateSelectionWidget.setEndDate(endDate);
+        }
+
+    }
+
+    public Enums.HistoryType getHistoryType() {
+
+        return historyType;
+    }
+
+    public void setHistoryType(Enums.HistoryType historyType) {
+        this.historyType = historyType;
+        dateSelectionPanel.clear();
+        if (historyType.equals(Enums.HistoryType.MONTHLY)) {
+            dateSelectionPanel.add(monthSelectionWidget);
+        }
+        else dateSelectionPanel.add(dateSelectionWidget);
+        resetDate();
+
+
+    }
 }
