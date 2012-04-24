@@ -57,19 +57,20 @@ public class EnergyDataHistoryResultFactory {
     HashMap<Long , GatewayBucket> gatewayBucketHashMap;
 
 
-
-
-
     final List<Gateway> gatewayList;
     final Group group;
+    final Enums.HistoryType historyType;
+    final Integer interval;
 
 
-    public EnergyDataHistoryResultFactory(Group group, List<Gateway> gatewayList){
+    public EnergyDataHistoryResultFactory(Enums.HistoryType type, Integer interval, Group group, List<Gateway> gatewayList){
         //Initialize the factory holders
         dateKeyMap = new HashMap<EnergyDataHistoryDate, Long>();
         gatewayBucketHashMap = new HashMap<Long, GatewayBucket>();
         this.gatewayList = gatewayList;
         this.group = group;
+        this.interval = interval;
+        this.historyType = type;
     }
 
 
@@ -173,8 +174,10 @@ public class EnergyDataHistoryResultFactory {
 
                 groupEnergyDataHistory = result.getNetHistoryList().get(index);
                 EnergyDataHistory energyDataHistory = getGatewayTotal(key,gwId, bucket);
+
                 groupEnergyDataHistory.setEnergy(groupEnergyDataHistory.getEnergy() + energyDataHistory.getEnergy());
                 groupEnergyDataHistory.setCost(groupEnergyDataHistory.getCost() + energyDataHistory.getCost());
+
                 gwCostTotal += energyDataHistory.getCost();
                 gwEnergyTotal += energyDataHistory.getEnergy();
 

@@ -34,6 +34,7 @@ import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.client.util.NumberUtil;
 import com.ted.aggredata.client.util.StringUtil;
 import com.ted.aggredata.model.*;
 
@@ -53,8 +54,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
     final DashboardConstants dashboardConstants = DashboardConstants.INSTANCE;
     final NumberFormat currencyFormat = NumberFormat.getCurrencyFormat();
 
-    String BACKGROUND_COLOR = "transparent";
-
+    public static String BACKGROUND_COLOR = "transparent";
     public static final int GRAPH_WIDTH = 880;
     public static final int GRAPH_HEIGHT = 560;
 
@@ -112,7 +112,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
 
 
-        groupService.getHistory(getHistoryType(), group, this.startDate.getTime()/1000, this.endDate.getTime()/1000, new TEDAsyncCallback<EnergyDataHistoryQueryResult>() {
+        groupService.getHistory(getHistoryType(), group, this.startDate.getTime()/1000, this.endDate.getTime()/1000, 1, new TEDAsyncCallback<EnergyDataHistoryQueryResult>() {
             @Override
             public void onSuccess(EnergyDataHistoryQueryResult energyDataHistoryQueryResult) {
                 logger.fine("history data returned. Drawing");
@@ -257,14 +257,14 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
             if (graphType.equals(Enums.GraphType.ENERGY)) {
                 Double v = historyResult.getNetEnergyTotal();
                 if (v == null) v = 0d;
-                v = round(v/1000, 1);
+                v = NumberUtil.round(v/1000, 1);
                 if (v != 0) {
                     descriptionBuffer.append(" (").append(v + " kWh").append(")");
                 }
             } else {
                 Double v = historyResult.getNetCostTotal();
                 if (v == null) v = 0d;
-                v = round(v, 2);
+                v = NumberUtil.round(v, 2);
                 if (v != 0) {
                     descriptionBuffer.append(" (").append(currencyFormat.format(v)).append(")");
                 }
@@ -282,14 +282,14 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
             if (graphType.equals(Enums.GraphType.ENERGY)) {
                 Double v = historyResult.getGatewayEnergyTotalList().get(gateway.getId());
                 if (v == null) v = 0d;
-                v = round(v/1000, 1);
+                v = NumberUtil.round(v/1000, 1);
                 if (v != 0) {
                     descriptionBuffer.append(" (").append(v + " kWh").append(")");
                 }
             } else {
                 Double v = historyResult.getGatewayCostTotalList().get(gateway.getId());
                 if (v == null) v = 0d;
-                v = round(v, 2);
+                v = NumberUtil.round(v, 2);
                 if (v != 0) {
                     descriptionBuffer.append("(").append(currencyFormat.format(v)).append(")");
                 }
@@ -316,11 +316,11 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
             if (historyResult.getGatewayList().size() > 1)
             {
                 if (graphType.equals(Enums.GraphType.ENERGY)) {
-                    double energy = round(historyResult.getNetHistoryList().get(i).getEnergy() / 1000, 3);
+                    double energy = NumberUtil.round(historyResult.getNetHistoryList().get(i).getEnergy() / 1000, 3);
                     data.setCell(i, col++, energy, energy + " kWh", null);
                 }
                 else {
-                    double cost = round(historyResult.getNetHistoryList().get(i).getCost(), 2);
+                    double cost = NumberUtil.round(historyResult.getNetHistoryList().get(i).getCost(), 2);
                     data.setCell(i, col++, cost, currencyFormat.format(cost), null);
                 }
             }
@@ -333,11 +333,11 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
                     data.setValue(i, col++, 0);
                 }   else {
                     if (graphType.equals(Enums.GraphType.ENERGY)) {
-                        double energy = round(gwList.get(i).getEnergy()/1000, 3);
+                        double energy = NumberUtil.round(gwList.get(i).getEnergy() / 1000, 3);
                         data.setCell(i, col++, energy, energy + " kWh", null);
                     }
                     else {
-                        double cost = round(gwList.get(i).getCost(), 2);
+                        double cost = NumberUtil.round(gwList.get(i).getCost(), 2);
                         data.setCell(i, col++, cost, currencyFormat.format(cost), null);
 
                     }
@@ -349,19 +349,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         return data;
     }
 
-    private double round(double value, int decimalPlaces) {
-        double multiplier = 1;
-        for (int i=0; i < decimalPlaces; i++)
-        {
-            multiplier = multiplier * 10;
-        }
 
-        double roundedValue = value * multiplier;
-        roundedValue = Math.round(roundedValue);
-        roundedValue = roundedValue / multiplier;
-        return roundedValue;
-
-    }
 
     protected abstract DateTimeFormat getDateTimeFormat();
     protected abstract Enums.HistoryType getHistoryType();

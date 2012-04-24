@@ -73,9 +73,9 @@
     <bean name="energyDataHistoryDAO" class=" com.ted.aggredata.server.dao.EnergyDataHistoryDAO"/>
 
     <!-- Spring Services -->
-    <bean name="userService" class="com.ted.aggredata.server.services.impl.UserServiceImpl" scope="request"/>
-    <bean name="groupService" class="com.ted.aggredata.server.services.impl.GroupServiceImpl" scope="request"/>
-    <bean name="gatewayService" class="com.ted.aggredata.server.services.impl.GatewayServiceImpl" scope="request"/>
-    <bean name="historyService" class="com.ted.aggredata.server.services.impl.HistoryServiceImpl" scope="request"/>
+    <bean name="userService" class="com.ted.aggredata.server.services.impl.UserServiceImpl" scope="session"/>
+    <bean name="groupService" class="com.ted.aggredata.server.services.impl.GroupServiceImpl" scope="session"/>
+    <bean name="gatewayService" class="com.ted.aggredata.server.services.impl.GatewayServiceImpl" scope="session"/>
+    <bean name="historyService" class="com.ted.aggredata.server.services.impl.HistoryServiceImpl" scope="session"/>
 
 </beans>

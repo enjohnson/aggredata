@@ -15,26 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.server.services;
+package com.ted.aggredata.client.util;
 
-import com.ted.aggredata.model.*;
-
-import java.util.List;
-
-/***
- * Service used to grab all the history data (performs net calculations,etc).
+/**
+ * Miscellaneous numeric utilities
  */
-public interface HistoryService {
+public class NumberUtil {
 
-    /***
-     * Returns history for the specified type
-     * @param historyType
-     * @param user
-     * @param group
-     * @param startTime
-     * @param endTime
+    /**
+     * Rounds to the specified decimal place
+     * @param value
+     * @param decimalPlaces
      * @return
      */
-    public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType historyType, User user, Group group, long startTime, long endTime, int interval);
+    public static double round(double value, int decimalPlaces) {
+        double multiplier = 1;
+        for (int i=0; i < decimalPlaces; i++)
+        {
+            multiplier = multiplier * 10;
+        }
+
+        double roundedValue = value * multiplier;
+        roundedValue = Math.round(roundedValue);
+        roundedValue = roundedValue / multiplier;
+        return roundedValue;
+
+    }
 
 }

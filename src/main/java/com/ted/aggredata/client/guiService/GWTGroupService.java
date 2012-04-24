@@ -65,9 +65,10 @@ public interface GWTGroupService extends RemoteService {
      * @param group
      * @param startTime
      * @param endTime
+     * @param interval used for MINUTE history, this groups the results int 1, 5, or 15 minute intervals.
      * @return
      */
-    public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime);
+    public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, int interval);
 
 
 }
