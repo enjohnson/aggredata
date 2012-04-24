@@ -192,6 +192,8 @@ public class MainPanel extends Composite {
                     }
                     case 3: {
                         contentPanel.add(new MinutePanel());
+                        graphSidePanel.setHistoryType(Enums.HistoryType.MINUTE);
+                        graphSidePanel.fireEvent();
                         break;
                     }
 

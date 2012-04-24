@@ -252,4 +252,12 @@ public interface DashboardConstants extends Constants {
     String graphTypeCost();
 
     String graphTypeEnergy();
+
+    String minuteDate();
+
+    String minuteStartTime();
+
+    String minuteEndTime();
+
+    String minuteInterval();
 }
