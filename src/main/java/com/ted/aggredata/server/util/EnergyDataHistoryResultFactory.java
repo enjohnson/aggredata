@@ -124,7 +124,7 @@ public class EnergyDataHistoryResultFactory {
                 if (gwHistory == null) bucket.netMap.put(key, history);
             }
             if (gwHistory != null) {
-                gwHistory.setEnergy(gwHistory.getCost() + history.getCost());
+                gwHistory.setEnergy(gwHistory.getEnergy() + history.getEnergy());
                 gwHistory.setCost(gwHistory.getCost() + history.getCost());
             }
         }

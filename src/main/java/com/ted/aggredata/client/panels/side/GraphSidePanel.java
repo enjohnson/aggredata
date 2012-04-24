@@ -55,6 +55,7 @@ public class GraphSidePanel extends Composite {
 
     MonthSelectionWidget monthSelectionWidget = new MonthSelectionWidget();
     DateSelectionWidget dateSelectionWidget = new DateSelectionWidget();
+    MinuteSelectionWidget minuteSelectionWidget = new MinuteSelectionWidget();
 
     @UiField
     VerticalPanel dateSelectionPanel;
@@ -71,11 +72,26 @@ public class GraphSidePanel extends Composite {
 
     final private HandlerManager handlerManager;
 
+
+    //Handler for when a new date range is selected
+    private DateRangeSelectedHandler dateRangeSelectedHandler = new DateRangeSelectedHandler() {
+        @Override
+        public void onDateRangeSelected(DateRangeSelectedEvent event) {
+            logger.fine("Date range Changed to " + event.getStartDate() + " to " + event.getEndDate());
+            startDate = event.getStartDate();
+            endDate = event.getEndDate();
+            fireEvent();
+        }
+    };
+
     public GraphSidePanel() {
         initWidget(uiBinder.createAndBindUi(this));
         handlerManager = new HandlerManager(this);
 
-
+        //Set up the various handlers
+        monthSelectionWidget.addDateRangeSelectedHandler(dateRangeSelectedHandler);
+        dateSelectionWidget.addDateRangeSelectedHandler(dateRangeSelectedHandler);
+        minuteSelectionWidget.addDateRangeSelectedHandler(dateRangeSelectedHandler);
 
         groupSelectionWidget.addGroupSelectedHandler(new GroupSelectedHandler() {
             @Override
@@ -86,27 +102,6 @@ public class GraphSidePanel extends Composite {
 
             }
         });
-
-        monthSelectionWidget.addDateRangeSelectedHandler(new DateRangeSelectedHandler() {
-            @Override
-            public void onDateRangeSelected(DateRangeSelectedEvent event) {
-                logger.fine("Date range Changed to " + event.getStartDate() + " to " + event.getEndDate());
-                startDate = event.getStartDate();
-                endDate = event.getEndDate();
-                fireEvent();
-            }
-        });
-
-        dateSelectionWidget.addDateRangeSelectedHandler(new DateRangeSelectedHandler() {
-            @Override
-            public void onDateRangeSelected(DateRangeSelectedEvent event) {
-                logger.fine("Date range Changed to " + event.getStartDate() + " to " + event.getEndDate());
-                startDate = event.getStartDate();
-                endDate = event.getEndDate();
-                fireEvent();
-            }
-        });
-
 
         typeSelectionWidget.addGraphTypeSelectedHandler(new GraphTypeSelectedHandler() {
             @Override
@@ -132,6 +127,9 @@ public class GraphSidePanel extends Composite {
             handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType));
     }
 
+    /**
+     * Resets all the data on the selection widget (groups, dates, etc);
+     */
     public void reset() {
         //Load the list of groups and set the default values for graphing.
         groupService.findGroups(new TEDAsyncCallback<List<Group>>() {
@@ -180,7 +178,16 @@ public class GraphSidePanel extends Composite {
             CalendarUtil.addDaysToDate(startDate, -7);
             dateSelectionWidget.setStartDate(startDate);
             dateSelectionWidget.setEndDate(endDate);
-        } else {
+        } else  if (getHistoryType().equals(Enums.HistoryType.MINUTE)){
+            //For minute we just focus ont he last hour
+            startDate = new Date();
+            startDate = new Date((1000*(startDate.getTime()/1000)));
+            startDate.setSeconds(0);
+            endDate = new Date(startDate.getTime());
+            startDate = new Date(startDate.getTime() - 3600000);
+            minuteSelectionWidget.setStartDate(startDate);
+            minuteSelectionWidget.setEndDate(endDate);
+        } else  {
             CalendarUtil.addDaysToDate(startDate, -1);
             dateSelectionWidget.setStartDate(startDate);
             dateSelectionWidget.setEndDate(endDate);
@@ -193,15 +200,19 @@ public class GraphSidePanel extends Composite {
         return historyType;
     }
 
+    /**
+     * Changes which date range selection widget is shown.
+     * @param historyType
+     */
     public void setHistoryType(Enums.HistoryType historyType) {
         this.historyType = historyType;
         dateSelectionPanel.clear();
         if (historyType.equals(Enums.HistoryType.MONTHLY)) {
             dateSelectionPanel.add(monthSelectionWidget);
+        } else if (historyType.equals(Enums.HistoryType.MINUTE)) {
+            dateSelectionPanel.add(minuteSelectionWidget);
         }
         else dateSelectionPanel.add(dateSelectionWidget);
         resetDate();
-
-
     }
 }
