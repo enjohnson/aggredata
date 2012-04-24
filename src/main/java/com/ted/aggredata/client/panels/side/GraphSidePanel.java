@@ -162,7 +162,7 @@ public class GraphSidePanel extends Composite {
     }
 
     /**
-     * Resets the date (usually called on tab selection).
+     * Resets the date (usually called on tab selection).  This is also where the default drawing ranges are set.
      */
     private void resetDate()
     {
@@ -198,21 +198,23 @@ public class GraphSidePanel extends Composite {
 
             startDate = new Date(currentTime);
             startDate.setSeconds(0);
-            interval = 15;
+
 
             if (startDate.getHours() == 0)
             {
                 startDate.setMinutes(0);
                 //Special case for dealing with midnight.
                 endDate = new Date(startDate.getTime() +  3600000);
+                interval = 5;
             } else {
                 endDate = new Date(startDate.getTime());
                 startDate = new Date(startDate.getTime() - 3600000);
+                interval = 5;
             }
 
             minuteSelectionWidget.setStartDate(startDate);
             minuteSelectionWidget.setEndDate(endDate);
-            minuteSelectionWidget.setInterval(15);
+            minuteSelectionWidget.setInterval(interval);
         } else  {
             CalendarUtil.addDaysToDate(startDate, -1);
             dateSelectionWidget.setStartDate(startDate);

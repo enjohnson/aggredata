@@ -198,10 +198,6 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
         hAxisStyle.setColor("#FFFFFF");
         hAxisStyle.setFontName("Arial, Verdana, Trebuchet, sans-serif");
 
-//        int autosize = historyResult.getNetHistoryList().size() / 7;
-//        autosize = 12 - (autosize*2);
-//        if (autosize < 0) autosize=1;
-//        hAxisStyle.setFontSize(autosize);
         hAxisStyle.setFontSize(10);
 
 
