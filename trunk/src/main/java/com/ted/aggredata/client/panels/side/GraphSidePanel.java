@@ -65,6 +65,7 @@ public class GraphSidePanel extends Composite {
     Group group;
     Date startDate;
     Date endDate;
+    Integer interval;
     Enums.GraphType graphType;
     Enums.HistoryType historyType;
 
@@ -80,6 +81,7 @@ public class GraphSidePanel extends Composite {
             logger.fine("Date range Changed to " + event.getStartDate() + " to " + event.getEndDate());
             startDate = event.getStartDate();
             endDate = event.getEndDate();
+            interval = event.getInterval();
             fireEvent();
         }
     };
@@ -124,7 +126,11 @@ public class GraphSidePanel extends Composite {
     public void fireEvent()
     {
             logger.fine("Graph Side Panel Firing Event");
-            handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType));
+            if (getHistoryType().equals(Enums.HistoryType.MINUTE)) {
+                handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType, interval));
+            } else {
+                handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType));
+            }
     }
 
     /**
@@ -180,13 +186,33 @@ public class GraphSidePanel extends Composite {
             dateSelectionWidget.setEndDate(endDate);
         } else  if (getHistoryType().equals(Enums.HistoryType.MINUTE)){
             //For minute we just focus ont he last hour
-            startDate = new Date();
-            startDate = new Date((1000*(startDate.getTime()/1000)));
+
+            long currentTime = (new Date()).getTime();
+            //Get rid of ms
+            currentTime = (currentTime / 1000) * 1000;
+            //Round up to the next 15 minute mark.
+            currentTime += (900000-1);
+            currentTime = (currentTime/900000) * 900000;
+
+
+
+            startDate = new Date(currentTime);
             startDate.setSeconds(0);
-            endDate = new Date(startDate.getTime());
-            startDate = new Date(startDate.getTime() - 3600000);
+            interval = 15;
+
+            if (startDate.getHours() == 0)
+            {
+                startDate.setMinutes(0);
+                //Special case for dealing with midnight.
+                endDate = new Date(startDate.getTime() +  3600000);
+            } else {
+                endDate = new Date(startDate.getTime());
+                startDate = new Date(startDate.getTime() - 3600000);
+            }
+
             minuteSelectionWidget.setStartDate(startDate);
             minuteSelectionWidget.setEndDate(endDate);
+            minuteSelectionWidget.setInterval(15);
         } else  {
             CalendarUtil.addDaysToDate(startDate, -1);
             dateSelectionWidget.setStartDate(startDate);

@@ -36,19 +36,19 @@
         <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
             <g:Label text="{txtRes.minuteStartTime}" styleName="{style.sideBarLabel}"/>
             <my:widgets.ClearImage width="2px" height="2px"/>
-            <my:widgets.TimePicker ui:field="startTimePicker" width="110px" interval="15"/>
+            <my:widgets.TimePicker ui:field="startTimePicker" width="110px" interval="15" styleName="{style.sideBarFormField}"/>
         </g:HorizontalPanel>
         <my:widgets.ClearImage width="1px" height="2px"/>
         <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
             <g:Label text="{txtRes.minuteEndTime}" styleName="{style.sideBarLabel}"/>
             <my:widgets.ClearImage width="2px" height="2px"/>
-            <my:widgets.TimePicker ui:field="endTimePicker" width="110px" interval="15"/>
+            <my:widgets.TimePicker ui:field="endTimePicker" width="110px" interval="15" styleName="{style.sideBarFormField}"/>
         </g:HorizontalPanel>
         <my:widgets.ClearImage width="1px" height="2px"/>
         <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
             <g:Label text="{txtRes.minuteInterval}" styleName="{style.sideBarLabel}"/>
             <my:widgets.ClearImage width="2px" height="2px"/>
-            <g:ListBox ui:field="durationListBox" width="110px" />
+            <g:ListBox ui:field="durationListBox" width="110px" styleName="{style.sideBarFormField}" />
         </g:HorizontalPanel>
     </g:VerticalPanel>
 

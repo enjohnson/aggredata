@@ -82,7 +82,7 @@ public class MainPanel extends Composite {
         public void onGraphingOptionsChanged(GraphOptionsChangedEvent event) {
                if (contentPanel.getWidget(0) instanceof GraphOptionChangeable) {
                    GraphOptionChangeable graphOptionChangeable = (GraphOptionChangeable) contentPanel.getWidget(0);
-                   graphOptionChangeable.onGraphOptionChange(event.getGroup(), event.getStartDate(), event.getEndDate(), event.getGraphType());
+                   graphOptionChangeable.onGraphOptionChange(event);
                }
         }
     };

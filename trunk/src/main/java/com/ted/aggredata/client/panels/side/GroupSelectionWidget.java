@@ -66,7 +66,7 @@ public class GroupSelectionWidget extends Composite {
         groupPanel.clear();
         for (final Group group : groups) {
 
-            if (groups.size() > 1) scrollPanel.setHeight("200px");
+            scrollPanel.setHeight("175px");
 
             RadioButton radioButton = new RadioButton("radioGroup", group.getDescription());
             groupPanel.add(radioButton);
