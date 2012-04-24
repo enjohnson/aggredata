@@ -55,8 +55,9 @@ public interface GWTGroupServiceAsync {
      * @param group
      * @param startTime
      * @param endTime
+     * @param interval    used for MINUTE history, this groups the results int 1, 5, or 15 minute intervals.
      * @return
      */
-    void getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, AsyncCallback<EnergyDataHistoryQueryResult> async);
+    void getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, int interval, AsyncCallback<EnergyDataHistoryQueryResult> async);
 }
 

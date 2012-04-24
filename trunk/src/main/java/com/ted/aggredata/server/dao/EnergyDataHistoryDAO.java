@@ -18,7 +18,6 @@
 package com.ted.aggredata.server.dao;
 
 import com.ted.aggredata.model.*;
-import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,10 +25,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * DAO for accessing and storing energy data  History
@@ -41,28 +37,39 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
     public static String MONTHLY_SUMMARY = "select gatewayId, mtuId, sum(minuteCost) as cost, sum(energyDifference) as energy, " +
             " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth, " +
             " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear, " +
-            " 1 as theDay, 0 as theHour" +
+            " 1 as theDay, 0 as theHour, 0 as theMinute " +
             " from energydata " +
             " where gatewayId=? and mtuId=? and timestamp>=? and timestamp<?" +
-            " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour";
+            " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour, theMinute" ;
 
     public static String DAILY_SUMMARY = "select gatewayId, mtuId, sum(minuteCost) as cost, sum(energyDifference) as energy, " +
             " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth, " +
             " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear, " +
             " DAY(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theDay, " +
-            " 0 as theHour" +
+            " 0 as theHour, 0 as theMinute " +
             " from energydata " +
             " where gatewayId=? and mtuId=? and timestamp>=? and timestamp<?" +
-            " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour";
+            " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour, theMinute" ;
 
     public static String HOURLY_SUMMARY = "select gatewayId, mtuId, sum(minuteCost) as cost, sum(energyDifference) as energy, " +
             " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth, " +
             " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear, " +
             " DAY(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theDay, " +
-            " HOUR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theHour" +
+            " HOUR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theHour," +
+            " 0 as theMinute " +
             " from energydata " +
             " where gatewayId=? and mtuId=? and timestamp>=? and timestamp<?" +
-            " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour" ;
+            " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour, theMinute" ;
+
+    public static String MINUTE_SUMMARY = "select gatewayId, mtuId, sum(minuteCost)*? as cost, sum(energyDifference)*? as energy, " +
+            " FLOOR(MINUTE(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?))/?)*? as theMinute," +
+            " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth, " +
+            " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear, " +
+            " DAY(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theDay, " +
+            " HOUR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theHour " +
+            " from energydata " +
+            " where gatewayId=? and mtuId=? and timestamp>=? and timestamp<?" +
+            " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour, theMinute";
 
 
     public EnergyDataHistoryDAO() {
@@ -74,11 +81,9 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
             EnergyDataHistory energyDataHistory = new EnergyDataHistory();
             energyDataHistory.setGatewayId(rs.getLong("gatewayId"));
             energyDataHistory.setMtuId(rs.getLong("mtuId"));
-
-
-            EnergyDataHistoryDate energyDataHistoryDate = new EnergyDataHistoryDate(rs.getInt("theYear"),rs.getInt("theMonth"),rs.getInt("theDay"),rs.getInt("theHour"));
+            EnergyDataHistoryDate energyDataHistoryDate = new EnergyDataHistoryDate(rs.getInt("theYear"),rs.getInt("theMonth"),rs.getInt("theDay"),rs.getInt("theHour"), rs.getInt("theMinute"));
+            logger.debug("query returned: " + rs.getInt("theMinute") + " " + energyDataHistoryDate);
             energyDataHistory.setHistoryDate(energyDataHistoryDate);
-
             energyDataHistory.setCost(rs.getDouble("cost"));
             energyDataHistory.setEnergy(rs.getDouble("energy"));
             return energyDataHistory;
@@ -148,5 +153,32 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
             return null;
         }
     }
+
+    /**
+     * Returns a list of minute energy history for the given timestamp range
+     */
+    public List<EnergyDataHistory> findMinuteHistory(Gateway gateway, MTU mtu, long timestampStart, long timestampEnd, String serverTimeZone, String clientTimeZone, Integer interval) {
+        try {
+            int multiplier = 60/interval;
+
+            return getJdbcTemplate().query(MINUTE_SUMMARY, new Object[]{
+                    multiplier, multiplier,
+                    serverTimeZone, clientTimeZone, //Minute
+                    interval, //Interval of minutes to group (15, 5, 1)
+                    interval, //Interval of minutes to group (15, 5, 1)
+                    serverTimeZone, clientTimeZone, //Month
+                    serverTimeZone, clientTimeZone, //Year
+                    serverTimeZone, clientTimeZone, //Day
+                    serverTimeZone, clientTimeZone, //Hour
+                    gateway.getId(),
+                    mtu.getId(),
+                    timestampStart,
+                    timestampEnd}, getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return null;
+        }
+    }
+
 
 }

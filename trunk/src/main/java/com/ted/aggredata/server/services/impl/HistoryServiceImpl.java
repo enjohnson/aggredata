@@ -55,14 +55,14 @@ public class HistoryServiceImpl implements HistoryService {
      * Common method for combining and returning history. No matter the type, the algorithm used to total the mtu's and gateway values
      * are the same (just slightly different queries.
      */
-    public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType type, User user, Group group, long startTime, long endTime) {
+    public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType type, User user, Group group, long startTime, long endTime, int interval) {
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Looking up " + type + " history for " + user + " and " + group + " for the range " + new Date(startTime) + " to " + new Date(endTime));
+            logger.debug("Looking up " + type + " history for " + user + " and " + group + " for the range " + new Date(startTime*1000) + " to " + new Date(endTime*1000));
         }
 
         List<Gateway> groupGateways = gatewayService.findByGroup(group);
-        EnergyDataHistoryResultFactory energyDataHistoryFactory = new EnergyDataHistoryResultFactory(group, groupGateways);
+        EnergyDataHistoryResultFactory energyDataHistoryFactory = new EnergyDataHistoryResultFactory(type, interval, group, groupGateways);
 
         for (Gateway gateway : groupGateways) {
             if (logger.isDebugEnabled()) logger.debug("Loading History for gateway " + gateway);
@@ -71,7 +71,7 @@ public class HistoryServiceImpl implements HistoryService {
             List<MTU> mtuList = gatewayService.findMTUByGateway(gateway);
             for (MTU mtu : mtuList) {
                 if (logger.isDebugEnabled()) logger.debug("Loading History for mtu " + mtu);
-                List<EnergyDataHistory> historyList = getHistory(type, user, gateway, mtu, startTime, endTime);
+                List<EnergyDataHistory> historyList = getHistory(type, user, gateway, mtu, startTime, endTime, interval);
                 if (logger.isDebugEnabled()) logger.debug("Adding History for mtu " + mtu);
                 energyDataHistoryFactory.addHistory(gateway, mtu, historyList);
             }
@@ -82,18 +82,15 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
 
-    private List<EnergyDataHistory> getHistory(Enums.HistoryType type, User user, Gateway gateway, MTU mtu, long startTime, long endTime) {
-
+    private List<EnergyDataHistory> getHistory(Enums.HistoryType type, User user, Gateway gateway, MTU mtu, long startTime, long endTime, int interval) {
         if(logger.isDebugEnabled()) logger.debug("Looking up history for " + serverInfo.getTimezone() + " " + user.getTimezone());
         if (type.equals(Enums.HistoryType.MONTHLY)) return energyDataHistoryDAO.findMonthHistory(gateway, mtu, startTime, endTime, serverInfo.getTimezone(), user.getTimezone());
         if (type.equals(Enums.HistoryType.DAILY)) return energyDataHistoryDAO.findDailyHistory(gateway, mtu, startTime, endTime, serverInfo.getTimezone(), user.getTimezone());
         if (type.equals(Enums.HistoryType.HOURLY)) return energyDataHistoryDAO.findHourlyHistory(gateway, mtu, startTime, endTime, serverInfo.getTimezone(), user.getTimezone());
-
+        if (type.equals(Enums.HistoryType.MINUTE)) return energyDataHistoryDAO.findMinuteHistory(gateway, mtu, startTime, endTime, serverInfo.getTimezone(), user.getTimezone(), interval);
         return new ArrayList<EnergyDataHistory>();
 
-
     }
-
 
 
 

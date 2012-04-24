@@ -79,12 +79,12 @@ public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements G
     }
 
     @Override
-    public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime) {
+    public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, int interval) {
         User user = getCurrentUser();
         if (user.getId().equals(group.getOwnerUserId())) {
 
             if (logger.isInfoEnabled()) logger.info("retrieving " + historyType +" history for  " + group + " " + startTime+"-"+endTime);
-            return historyService.getHistory(historyType, user, group, startTime, endTime);
+            return historyService.getHistory(historyType, user, group, startTime, endTime, interval);
         }
         logger.warn("Security violation. " + user + " attempted to retrieve history for  " + group);
         return new EnergyDataHistoryQueryResult();

@@ -21,8 +21,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Date object that represents the energy history in the client's timezone. This is required becuase of the timezone shifted "group by" performed
- * on the database.
+ * Date object that represents the energy history in the client's timezone. This is required because of the timezone shifted "group by" performed
+ * on the database. If we return a Date object to different timezones the time will be shifted automatically. Epoch can't be returned because the max
+ * epoch returned may be of different hour/min/secs depending on the interval being returned.
  */
 public class EnergyDataHistoryDate implements Serializable, Comparable<EnergyDataHistoryDate> {
 
@@ -30,15 +31,17 @@ public class EnergyDataHistoryDate implements Serializable, Comparable<EnergyDat
     public Integer month;
     public Integer date;
     public Integer hour;
+    public Integer minute;
 
     public EnergyDataHistoryDate() {
     }
 
-    public EnergyDataHistoryDate(int year, int month, int date, int hour) {
+    public EnergyDataHistoryDate(int year, int month, int date, int hour, int minute) {
         this.year = year;
         this.month = month;
         this.date = date;
         this.hour = hour;
+        this.minute = minute;
     }
 
     public int getYear() {
@@ -73,6 +76,14 @@ public class EnergyDataHistoryDate implements Serializable, Comparable<EnergyDat
         this.hour = hour;
     }
 
+    public Integer getMinute() {
+        return minute;
+    }
+
+    public void setMinute(Integer minute) {
+        this.minute = minute;
+    }
+
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
@@ -81,6 +92,7 @@ public class EnergyDataHistoryDate implements Serializable, Comparable<EnergyDat
         sb.append(",month=").append(month);
         sb.append(",date=").append(date);
         sb.append(",hour=").append(hour);
+        sb.append(",minute=").append(minute);
         sb.append("]");
         return sb.toString();
     }
@@ -94,6 +106,7 @@ public class EnergyDataHistoryDate implements Serializable, Comparable<EnergyDat
 
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
         if (hour != null ? !hour.equals(that.hour) : that.hour != null) return false;
+        if (minute != null ? !minute.equals(that.minute) : that.minute != null) return false;
         if (month != null ? !month.equals(that.month) : that.month != null) return false;
         if (year != null ? !year.equals(that.year) : that.year != null) return false;
 
@@ -106,6 +119,7 @@ public class EnergyDataHistoryDate implements Serializable, Comparable<EnergyDat
         result = 31 * result + (month != null ? month.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (hour != null ? hour.hashCode() : 0);
+        result = 31 * result + (minute != null ? minute.hashCode() : 0);
         return result;
     }
 
@@ -120,7 +134,7 @@ public class EnergyDataHistoryDate implements Serializable, Comparable<EnergyDat
         theDate.setMonth(month-1);
         theDate.setDate(date);
         theDate.setHours(hour);
-        theDate.setMinutes(0);
+        theDate.setMinutes(minute);
         theDate.setSeconds(0);
 
         //Get rid of any extra milliseconds on this object.
@@ -142,6 +156,8 @@ public class EnergyDataHistoryDate implements Serializable, Comparable<EnergyDat
         int dc = date.compareTo(o.date);
         if (dc != 0) return dc;
         int hc = hour.compareTo(o.hour);
-        return hc;
+        if (hc != 0) return hc;
+        int minc = minute.compareTo(o.minute);
+        return minc;
     }
 }
