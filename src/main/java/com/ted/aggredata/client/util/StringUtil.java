@@ -15,22 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.client.panels.graph;
-
-import com.ted.aggredata.client.events.GraphOptionsChangedEvent;
-import com.ted.aggredata.model.Enums;
-import com.ted.aggredata.model.Group;
-
-import java.util.Date;
+package com.ted.aggredata.client.util;
 
 /**
- * Interface to panels that support the changes in Graphing options
+ * Miscellaneous String utilities
  */
-public interface GraphOptionChangeable {
+public class StringUtil {
 
-    /***
-     * triggered if the graphing options have changed
-     */
-    public void onGraphOptionChange(GraphOptionsChangedEvent event);
+    public static String toTitleCase(String string){
+        String result = "";
+        for (int i = 0; i < string.length(); i++){
+            String next = string.substring(i, i + 1);
+            if (i == 0){
+                result += next.toUpperCase();
+            } else {
+                result += next.toLowerCase();
+            }
+        }
+        return result;
+    }
 
 }

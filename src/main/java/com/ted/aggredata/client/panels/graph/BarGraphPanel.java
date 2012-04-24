@@ -29,10 +29,12 @@ import com.google.gwt.visualization.client.visualizations.corechart.AxisOptions;
 import com.google.gwt.visualization.client.visualizations.corechart.ColumnChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
 import com.google.gwt.visualization.client.visualizations.corechart.TextStyle;
+import com.ted.aggredata.client.events.GraphOptionsChangedEvent;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.client.util.StringUtil;
 import com.ted.aggredata.model.*;
 
 
@@ -99,16 +101,15 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         this.barGraphTitle = graphTitle;
     }
 
-    public void onGraphOptionChange(Group group, Date startDate, Date endDate, Enums.GraphType graphType) {
+    public void onGraphOptionChange(GraphOptionsChangedEvent event) {
 
-        this.group = group;
-        this.startDate = fixStartDate(startDate);
-        this.endDate = fixEndDate(endDate);
+        this.group = event.getGroup();
+        this.startDate = fixStartDate(event.getStartDate());
+        this.endDate = fixEndDate(event.getEndDate());
+        this.graphType = event.getGraphType();
 
         if (logger.isLoggable(Level.FINE)) logger.fine("Graph Option Change Called: " + group + " " + this.startDate + " " + this.endDate + " " + graphType);
 
-
-        this.graphType = graphType;
 
 
         groupService.getHistory(getHistoryType(), group, this.startDate.getTime()/1000, this.endDate.getTime()/1000, new TEDAsyncCallback<EnergyDataHistoryQueryResult>() {
@@ -139,18 +140,6 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
     protected abstract Date fixEndDate(Date startDate);
 
 
-    public static String toTitleCase(String string){
-        String result = "";
-        for (int i = 0; i < string.length(); i++){
-            String next = string.substring(i, i + 1);
-            if (i == 0){
-                result += next.toUpperCase();
-            } else {
-                result += next.toLowerCase();
-            }
-        }
-        return result;
-    }
 
 
     protected Options createOptions() {
@@ -158,7 +147,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         DateTimeFormat dateTimeFormat = getDateTimeFormat();
         StringBuffer title = new StringBuffer();
 
-        title.append(toTitleCase(getHistoryType().toString()));
+        title.append(StringUtil.toTitleCase(getHistoryType().toString()));
         title.append(" ");
 
         if (graphType.equals(Enums.GraphType.COST)) title.append(dashboardConstants.graphCost());
@@ -263,7 +252,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         if (historyResult.getGatewayList().size() > 1)
         {
             StringBuffer descriptionBuffer = new StringBuffer();
-            descriptionBuffer.append("Total " + toTitleCase(graphType.toString()));
+            descriptionBuffer.append("Total " + StringUtil.toTitleCase(graphType.toString()));
 
             if (graphType.equals(Enums.GraphType.ENERGY)) {
                 Double v = historyResult.getNetEnergyTotal();

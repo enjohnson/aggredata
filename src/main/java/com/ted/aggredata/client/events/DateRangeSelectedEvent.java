@@ -18,7 +18,6 @@
 package com.ted.aggredata.client.events;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.ted.aggredata.model.Gateway;
 
 import java.util.Date;
 
@@ -31,11 +30,30 @@ public class DateRangeSelectedEvent extends GwtEvent<DateRangeSelectedHandler> {
 
     final Date startDate;
     final Date endDate;
+    final Integer interval;
 
 
+    /**
+     * Constructor for the DateRange Selected Invent
+     * @param startDate
+     * @param endDate
+     */
     public DateRangeSelectedEvent(Date startDate, Date endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
+        this.interval = 0;
+    }
+
+    /***
+     * Constructor for the DateRange Selected Invent
+     * @param startDate
+     * @param endDate
+     * @param interval used by minute graphing only. the interval grouping for the returned resuls (e.g. 15 minutes)
+     */
+    public DateRangeSelectedEvent(Date startDate, Date endDate, Integer interval) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.interval = interval;
     }
 
     @Override
@@ -54,5 +72,9 @@ public class DateRangeSelectedEvent extends GwtEvent<DateRangeSelectedHandler> {
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public Integer getInterval() {
+        return interval;
     }
 }

@@ -33,6 +33,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.ted.aggredata.client.events.DateRangeSelectedEvent;
 import com.ted.aggredata.client.events.DateRangeSelectedHandler;
+import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.client.util.StringUtil;
 import com.ted.aggredata.client.widgets.TimePicker;
 
 import java.util.Date;
@@ -43,6 +45,9 @@ import java.util.logging.Logger;
  * Side Panel Widget that allows a group to be selected.
  */
 public class MinuteSelectionWidget extends Composite {
+
+
+    final DashboardConstants dashboardConstants = DashboardConstants.INSTANCE;
 
     interface MyUiBinder extends UiBinder<Widget, MinuteSelectionWidget> {
     }
@@ -65,7 +70,7 @@ public class MinuteSelectionWidget extends Composite {
 
     Date lastStartDate;
     Date lastEndDate;
-    int interval;
+    int lastInterval = 0;
 
 
 
@@ -79,18 +84,18 @@ public class MinuteSelectionWidget extends Composite {
 
 
 
-
-
     public MinuteSelectionWidget() {
         initWidget(uiBinder.createAndBindUi(this));
         handlerManager = new HandlerManager(this);
         startDateBox.setFormat(dateBoxFormat);
 
-        durationListBox.addItem("15 minutes");
-        durationListBox.addItem("5 minutes");
-        durationListBox.addItem("1 minute");
+        //Build the duration drop down
+        String minutes = StringUtil.toTitleCase(dashboardConstants.minutes());
+        durationListBox.addItem("15 " +  minutes, "15");
+        durationListBox.addItem("5 " + minutes , "5");
+        durationListBox.addItem("1 " + minutes , "1");
 
-        //Register the hanlders
+        //Register the handlers
         durationListBox.addChangeHandler(dateChangeHandler);
         startTimePicker.addChangeHandler(dateChangeHandler);
         endTimePicker.addChangeHandler(dateChangeHandler);
@@ -106,24 +111,16 @@ public class MinuteSelectionWidget extends Composite {
     private void handleChangedDate() {
         Date startDate = getStartDate();
         Date endDate = getEndDate();
+        int interval = getInterval();
 
-        if (logger.isLoggable(Level.FINE)) logger.fine("MONTH Date Range Selected:" + startDate + " to " + endDate);
+        if (logger.isLoggable(Level.FINE)) logger.fine("Minute Date Range Selected:" + startDate + " to " + endDate + " interval:" + interval);
 
-
-        if (startDate.after(endDate)) {
-            startDate = endDate;
-            setStartDate(startDate);
-            setEndDate(endDate);
-            if (logger.isLoggable(Level.FINE)) logger.fine("Firing Date Range Selector for " + lastStartDate + " to " + lastEndDate);
-            handlerManager.fireEvent(new DateRangeSelectedEvent(lastStartDate, lastEndDate));
-
-        }
-
-        if (!startDate.equals(lastStartDate) || !endDate.equals(lastEndDate)){
+        if (!startDate.equals(lastStartDate) || !endDate.equals(lastEndDate) || lastInterval != interval){
             lastStartDate = startDate;
             lastEndDate = endDate;
-            if (logger.isLoggable(Level.FINE)) logger.fine("Firing Date Range Selector for " + lastStartDate + " to " + lastEndDate);
-            handlerManager.fireEvent(new DateRangeSelectedEvent(lastStartDate, lastEndDate));
+            lastInterval = interval;
+            if (logger.isLoggable(Level.FINE)) logger.fine("Firing Date Range Selector for " + lastStartDate + " to " + lastEndDate + " interval:" + interval);
+            handlerManager.fireEvent(new DateRangeSelectedEvent(lastStartDate, lastEndDate, interval));
         }
     }
 
@@ -159,6 +156,24 @@ public class MinuteSelectionWidget extends Composite {
         return new Date(t*1000);
     }
 
+    public void setInterval(int i) {
+        lastInterval = i;
+        String intervalString = Integer.toString(i);
+        for (int x=0; x < durationListBox.getItemCount(); x++) {
+            if (intervalString.equals(durationListBox.getValue(x))){
+                durationListBox.setSelectedIndex(x);
+                break;
+            }
+        }
+        if (durationListBox.getSelectedIndex() == -1) durationListBox.setSelectedIndex(0);
+    }
+
+    public int getInterval() {
+        int index = durationListBox.getSelectedIndex();
+        String valueString = durationListBox.getValue(index);
+        int interval = Integer.parseInt(valueString);
+        return interval;
+    }
 
     public HandlerRegistration addDateRangeSelectedHandler(DateRangeSelectedHandler handler) {
         return handlerManager.addHandler(DateRangeSelectedEvent.TYPE, handler);

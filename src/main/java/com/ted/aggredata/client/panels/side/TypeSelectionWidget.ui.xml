@@ -28,10 +28,9 @@
         <my:widgets.ClearImage width="2px" height="5px"/>
         <g:HorizontalPanel>
             <my:widgets.ClearImage width="20px" height="4px"/>
-            <g:VerticalPanel>
-                <g:RadioButton name="type"  text="Energy" ui:field="energyRadioButton"/>
-                <g:RadioButton name="type"  text="Cost" ui:field="costRadioButton"/>
-            </g:VerticalPanel>
+            <g:RadioButton name="type"  text="Energy" ui:field="energyRadioButton"/>
+            <my:widgets.ClearImage width="20px" height="4px"/>
+            <g:RadioButton name="type"  text="Cost" ui:field="costRadioButton"/>
         </g:HorizontalPanel>
 
     </g:VerticalPanel>

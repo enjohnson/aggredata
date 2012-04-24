@@ -36,13 +36,39 @@ public class GraphOptionsChangedEvent extends GwtEvent<GraphOptionsChangedHandle
     final Date endDate;
     final Group group;
     final Enums.GraphType graphType;
+    final Integer interval;
 
+    /**
+     *
+     * @param group
+     * @param startDate
+     * @param endDate
+     * @param graphType
+     */
     public GraphOptionsChangedEvent(Group group, Date startDate, Date endDate, Enums.GraphType graphType) {
         this.group = group;
         this.startDate = startDate;
         this.endDate = endDate;
         this.graphType = graphType;
+        this.interval = 0;
     }
+
+    /***
+     *
+     * @param group
+     * @param startDate
+     * @param endDate
+     * @param graphType
+     * @param interval used by minute graphing only. the interval grouping for the returned resuls (e.g. 15 minutes)
+     */
+    public GraphOptionsChangedEvent(Group group, Date startDate, Date endDate, Enums.GraphType graphType, Integer interval) {
+        this.group = group;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.graphType = graphType;
+        this.interval = interval;
+    }
+
 
     @Override
     public Type<GraphOptionsChangedHandler> getAssociatedType() {
@@ -68,6 +94,10 @@ public class GraphOptionsChangedEvent extends GwtEvent<GraphOptionsChangedHandle
 
     public Enums.GraphType getGraphType() {
         return graphType;
+    }
+
+    public Integer getInterval() {
+        return interval;
     }
 }
 

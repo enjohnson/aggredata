@@ -26,14 +26,16 @@
         <my:panels.side.GroupSelectionWidget ui:field="groupSelectionWidget"/>
         <my:widgets.ClearImage width="1px" height="7px"/>
         <g:Image resource="{imgRes.sideDivider}"/>
-        <my:widgets.ClearImage width="1px" height="7px"/>
-        <g:VerticalPanel ui:field="dateSelectionPanel" />
 
+        <my:widgets.ClearImage width="1px" height="7px"/>
+        <my:panels.side.TypeSelectionWidget ui:field="typeSelectionWidget"/>
 
         <my:widgets.ClearImage width="1px" height="7px"/>
         <g:Image resource="{imgRes.sideDivider}"/>
         <my:widgets.ClearImage width="1px" height="7px"/>
-        <my:panels.side.TypeSelectionWidget ui:field="typeSelectionWidget"/>
+        <g:VerticalPanel ui:field="dateSelectionPanel" />
+
+
     </g:VerticalPanel>
 
 
