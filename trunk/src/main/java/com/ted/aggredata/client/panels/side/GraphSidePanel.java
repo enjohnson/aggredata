@@ -19,6 +19,8 @@ package com.ted.aggredata.client.panels.side;
 
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -31,6 +33,7 @@ import com.ted.aggredata.client.events.*;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
+import com.ted.aggredata.client.widgets.SmallButton;
 import com.ted.aggredata.model.Enums;
 import com.ted.aggredata.model.Group;
 
@@ -59,6 +62,8 @@ public class GraphSidePanel extends Composite {
 
     @UiField
     VerticalPanel dateSelectionPanel;
+    @UiField
+    SmallButton exportButton;
 
     final GWTGroupServiceAsync groupService = (GWTGroupServiceAsync) GWT.create(GWTGroupService.class);
     List<Group> groupList;
@@ -115,6 +120,13 @@ public class GraphSidePanel extends Composite {
         });
 
 
+        exportButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                logger.fine("Export Button Clicked");
+
+            }
+        });
 
 
     }

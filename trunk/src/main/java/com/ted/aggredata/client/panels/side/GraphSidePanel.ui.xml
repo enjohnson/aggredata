@@ -21,6 +21,8 @@
     <ui:style src="../Global.css"/>
     <ui:with field='imgRes' type='com.ted.aggredata.client.resources.DashboardImageResource'/>
 
+    <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
+
     <g:VerticalPanel>
         <my:widgets.ClearImage width="1px" height="7px"/>
         <my:panels.side.GroupSelectionWidget ui:field="groupSelectionWidget"/>
@@ -34,6 +36,11 @@
         <g:Image resource="{imgRes.sideDivider}"/>
         <my:widgets.ClearImage width="1px" height="7px"/>
         <g:VerticalPanel ui:field="dateSelectionPanel" />
+        <my:widgets.ClearImage width="1px" height="5px"/>
+        <g:HorizontalPanel>
+            <my:widgets.ClearImage width="65px" height="1px"/>
+            <my:widgets.SmallButton ui:field="exportButton" buttonString="{txtRes.export}"/>
+        </g:HorizontalPanel>
 
 
     </g:VerticalPanel>

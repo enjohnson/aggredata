@@ -29,6 +29,7 @@ import com.google.gwt.visualization.client.visualizations.corechart.AxisOptions;
 import com.google.gwt.visualization.client.visualizations.corechart.ColumnChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
 import com.google.gwt.visualization.client.visualizations.corechart.TextStyle;
+import com.ted.aggredata.client.dialogs.LoadingPopup;
 import com.ted.aggredata.client.events.GraphOptionsChangedEvent;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
@@ -72,6 +73,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
     ColumnChart barChart = null;
 
+    LoadingPopup loadingPopup = new LoadingPopup();
     /**
      * Callback to handle the loading of history data.
      */
@@ -90,6 +92,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
                 } else {
                     barChart.draw(createTable(), createOptions());
                 }
+                loadingPopup.hide();
             }   else {
                 logger.severe("historyResult is null!");
             }
@@ -111,6 +114,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         if (logger.isLoggable(Level.FINE)) logger.fine("Graph Option Change Called: " + group + " " + this.startDate + " " + this.endDate + " " + graphType);
 
 
+        loadingPopup.show();
 
         groupService.getHistory(getHistoryType(), group, this.startDate.getTime()/1000, this.endDate.getTime()/1000, 1, new TEDAsyncCallback<EnergyDataHistoryQueryResult>() {
             @Override
