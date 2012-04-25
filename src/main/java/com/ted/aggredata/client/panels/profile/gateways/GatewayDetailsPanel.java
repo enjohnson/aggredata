@@ -25,6 +25,7 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import com.ted.aggredata.client.Aggredata;
 import com.ted.aggredata.client.guiService.GWTGatewayService;
 import com.ted.aggredata.client.guiService.GWTGatewayServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
@@ -80,6 +81,19 @@ public class GatewayDetailsPanel extends Composite {
     @UiField
     CaptionPanel captionPanel;
 
+    @UiField HorizontalPanel custom1Panel;
+    @UiField HorizontalPanel custom2Panel;
+    @UiField HorizontalPanel custom3Panel;
+    @UiField HorizontalPanel custom4Panel;
+    @UiField HorizontalPanel custom5Panel;
+
+    @UiField Label custom1Label;
+    @UiField Label custom2Label;
+    @UiField Label custom3Label;
+    @UiField Label custom4Label;
+    @UiField Label custom5Label;
+
+
     Gateway gateway;
     Integer gatewayHashCode = 0;
     List<Gateway> gatewayList = new ArrayList<Gateway>();
@@ -94,6 +108,19 @@ public class GatewayDetailsPanel extends Composite {
 
     public GatewayDetailsPanel() {
         initWidget(uiBinder.createAndBindUi(this));
+
+        //Hide the panels that are not being used for custom fields
+        custom1Panel.setVisible(Aggredata.GLOBAL.getGroupCustomFields().getCustom1().trim().length() > 0);
+        custom2Panel.setVisible(Aggredata.GLOBAL.getGroupCustomFields().getCustom2().trim().length() > 0);
+        custom3Panel.setVisible(Aggredata.GLOBAL.getGroupCustomFields().getCustom3().trim().length() > 0);
+        custom4Panel.setVisible(Aggredata.GLOBAL.getGroupCustomFields().getCustom4().trim().length() > 0);
+        custom5Panel.setVisible(Aggredata.GLOBAL.getGroupCustomFields().getCustom5().trim().length() > 0);
+        custom1Label.setText(Aggredata.GLOBAL.getGroupCustomFields().getCustom1());
+        custom2Label.setText(Aggredata.GLOBAL.getGroupCustomFields().getCustom2());
+        custom3Label.setText(Aggredata.GLOBAL.getGroupCustomFields().getCustom3());
+        custom4Label.setText(Aggredata.GLOBAL.getGroupCustomFields().getCustom4());
+        custom5Label.setText(Aggredata.GLOBAL.getGroupCustomFields().getCustom5());
+
 
         captionPanel.setCaptionHTML("<span style='color:white'>" + DashboardConstants.INSTANCE.gatewayDetails() + "</span>");
 

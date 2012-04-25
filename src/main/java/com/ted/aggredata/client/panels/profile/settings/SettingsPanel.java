@@ -33,6 +33,7 @@ import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.HugeButton;
 import com.ted.aggredata.model.Enums;
 import com.ted.aggredata.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.css.sac.ElementSelector;
 
 import java.util.logging.Logger;
@@ -101,6 +102,26 @@ public class SettingsPanel extends Composite {
     VerticalPanel mainPanel;
     @UiField
     ListBox timeZoneField;
+    @UiField
+    HorizontalPanel custom1Panel;
+    @UiField
+    Label custom1Label;
+    @UiField
+    HorizontalPanel custom2Panel;
+    @UiField
+    Label custom2Label;
+    @UiField
+    HorizontalPanel custom3Panel;
+    @UiField
+    Label custom3Label;
+    @UiField
+    HorizontalPanel custom4Panel;
+    @UiField
+    Label custom4Label;
+    @UiField
+    HorizontalPanel custom5Panel;
+    @UiField
+    Label custom5Label;
 
     int userHashCode = 0;
 
@@ -117,6 +138,18 @@ public class SettingsPanel extends Composite {
 
         titleLabel.setText(dashboardConstants.settingsTitle());
         instructionLabel.setText(dashboardConstants.settingsInstructions());
+
+        //Hide the panels that are not being used for custom fields
+        custom1Panel.setVisible(Aggredata.GLOBAL.getUserCustomFields().getCustom1().trim().length() > 0);
+        custom2Panel.setVisible(Aggredata.GLOBAL.getUserCustomFields().getCustom2().trim().length() > 0);
+        custom3Panel.setVisible(Aggredata.GLOBAL.getUserCustomFields().getCustom3().trim().length() > 0);
+        custom4Panel.setVisible(Aggredata.GLOBAL.getUserCustomFields().getCustom4().trim().length() > 0);
+        custom5Panel.setVisible(Aggredata.GLOBAL.getUserCustomFields().getCustom5().trim().length() > 0);
+        custom1Label.setText(Aggredata.GLOBAL.getUserCustomFields().getCustom1());
+        custom2Label.setText(Aggredata.GLOBAL.getUserCustomFields().getCustom2());
+        custom3Label.setText(Aggredata.GLOBAL.getUserCustomFields().getCustom3());
+        custom4Label.setText(Aggredata.GLOBAL.getUserCustomFields().getCustom4());
+        custom5Label.setText(Aggredata.GLOBAL.getUserCustomFields().getCustom5());
 
 
         userHashCode = user.hashCode();

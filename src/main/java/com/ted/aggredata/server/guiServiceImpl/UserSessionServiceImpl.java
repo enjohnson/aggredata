@@ -18,6 +18,7 @@
 package com.ted.aggredata.server.guiServiceImpl;
 
 import com.ted.aggredata.client.guiService.UserSessionService;
+import com.ted.aggredata.model.CustomFieldInfo;
 import com.ted.aggredata.model.GlobalPlaceholder;
 import com.ted.aggredata.model.ServerInfo;
 import com.ted.aggredata.model.User;
@@ -43,6 +44,17 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
     @Autowired
     ServerInfo serverInfo;
+
+    @Autowired
+    CustomFieldInfo usersCustomFields;
+
+    @Autowired
+    CustomFieldInfo gatewaysCustomFields;
+
+    @Autowired
+    CustomFieldInfo groupsCustomFields;
+
+
 
     @Autowired
     GatewayService gatewayService;
@@ -122,6 +134,9 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
         GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
         globalPlaceholder.setSessionUser(user);
         globalPlaceholder.setServerInfo(serverInfo);
+        globalPlaceholder.setUserCustomFields(usersCustomFields);
+        globalPlaceholder.setGatewayCustomFields(gatewaysCustomFields);
+        globalPlaceholder.setGroupCustomFields(groupsCustomFields);
         globalPlaceholder.setShowActivation(gatewayService.countByUser(user) == 0);
         return globalPlaceholder;
     }
