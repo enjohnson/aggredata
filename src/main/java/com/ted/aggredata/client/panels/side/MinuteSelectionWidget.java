@@ -178,4 +178,11 @@ public class MinuteSelectionWidget extends Composite {
     public HandlerRegistration addDateRangeSelectedHandler(DateRangeSelectedHandler handler) {
         return handlerManager.addHandler(DateRangeSelectedEvent.TYPE, handler);
     }
+
+    public void setEnabled(boolean enabled) {
+        durationListBox.setEnabled(enabled);
+        startDateBox.setEnabled(enabled);
+        endTimePicker.setEnabled(enabled);
+        startTimePicker.setEnabled(enabled);
+    }
 }

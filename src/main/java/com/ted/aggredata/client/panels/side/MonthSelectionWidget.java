@@ -177,4 +177,11 @@ public class MonthSelectionWidget extends Composite {
     public HandlerRegistration addDateRangeSelectedHandler(DateRangeSelectedHandler handler) {
         return handlerManager.addHandler(DateRangeSelectedEvent.TYPE, handler);
     }
+
+    public void setEnabled(boolean enabled) {
+        endMonthListBox.setEnabled(enabled);
+        startMonthListBox.setEnabled(enabled);
+        endYearListBox.setEnabled(enabled);
+        startYearListBox.setEnabled(enabled);
+    }
 }

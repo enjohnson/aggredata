@@ -18,6 +18,8 @@
 package com.ted.aggredata.client.panels.graph.minute;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -29,6 +31,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.visualization.client.*;
 import com.google.gwt.visualization.client.visualizations.corechart.*;
 import com.ted.aggredata.client.dialogs.LoadingPopup;
+import com.ted.aggredata.client.events.GraphLoadedEvent;
+import com.ted.aggredata.client.events.GraphLoadedHandler;
 import com.ted.aggredata.client.events.GraphOptionsChangedEvent;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
@@ -61,8 +65,9 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
     final DashboardConstants dashboardConstants = DashboardConstants.INSTANCE;
     final NumberFormat currencyFormat = NumberFormat.getCurrencyFormat();
     final DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("MM/dd/yyyy hh:mm a");
+    final private HandlerManager handlerManager = new HandlerManager(this);
 
-    LoadingPopup loadingPopup = new LoadingPopup();
+
 
     interface MyUiBinder extends UiBinder<Widget, MinutePanel> {
     }
@@ -97,7 +102,7 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
                 } else {
                     theChart.draw(createTable(), createOptions());
                 }
-                loadingPopup.hide();
+                handlerManager.fireEvent(new GraphLoadedEvent(event.getGroup(), event.getStartDate(), event.getEndDate(), event.getGraphType(), event.getInterval()));
             }   else {
                 logger.severe("historyResult is null!");
             }
@@ -109,7 +114,7 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
         this.event = event;
         updateTitle();
 
-        loadingPopup.show();
+
         groupService.getHistory(Enums.HistoryType.MINUTE,
                                 event.getGroup(),
                                 event.getStartDate().getTime()/1000,
@@ -345,5 +350,8 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
     }
 
 
+    public HandlerRegistration addGraphLoadedHandler(GraphLoadedHandler handler) {
+        return handlerManager.addHandler(GraphLoadedEvent.TYPE, handler);
+    }
 
 }

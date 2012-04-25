@@ -35,6 +35,8 @@ public class TEDButton extends Composite {
     final ClearImage clearImage;
     final Image buttonImage;
     final AbsolutePanel mainPanel = new AbsolutePanel();
+    final TEDLabel label;
+
     boolean enabled = true;
 
     public
@@ -45,7 +47,7 @@ public class TEDButton extends Composite {
         buttonImage.setSize(width, height);
         mainPanel.setSize(width, height);
 
-        TEDLabel label = new TEDLabel(text, width, style, HasHorizontalAlignment.ALIGN_CENTER);
+        label = new TEDLabel(text, width, style, HasHorizontalAlignment.ALIGN_CENTER);
         mainPanel.add(buttonImage, 0, 0);
         mainPanel.add(label, 0, textOffset);
         mainPanel.add(clearImage, 0, 0);
@@ -72,6 +74,7 @@ public class TEDButton extends Composite {
     public void setVisible(boolean visible) {
         buttonImage.setVisible(visible);
         clearImage.setVisible(visible);
+        label.setVisible(visible);
     }
 
 

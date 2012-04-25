@@ -119,4 +119,9 @@ public class DateSelectionWidget extends Composite {
     public HandlerRegistration addDateRangeSelectedHandler(DateRangeSelectedHandler handler) {
         return handlerManager.addHandler(DateRangeSelectedEvent.TYPE, handler);
     }
+
+   public void setEnabled(boolean enabled) {
+       startDateBox.setEnabled(enabled);
+       endDateBox.setEnabled(enabled);
+   }
 }

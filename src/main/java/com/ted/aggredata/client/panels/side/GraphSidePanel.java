@@ -145,6 +145,14 @@ public class GraphSidePanel extends Composite {
             }
     }
 
+    public void setEnabled(boolean enabled)
+    {
+        exportButton.setVisible(enabled);
+        monthSelectionWidget.setEnabled(enabled);
+        dateSelectionWidget.setEnabled(enabled);
+        minuteSelectionWidget.setEnabled(enabled);
+    }
+
     /**
      * Resets all the data on the selection widget (groups, dates, etc);
      */

@@ -18,6 +18,8 @@
 package com.ted.aggredata.client.panels.graph;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Composite;
@@ -30,6 +32,8 @@ import com.google.gwt.visualization.client.visualizations.corechart.ColumnChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
 import com.google.gwt.visualization.client.visualizations.corechart.TextStyle;
 import com.ted.aggredata.client.dialogs.LoadingPopup;
+import com.ted.aggredata.client.events.GraphLoadedEvent;
+import com.ted.aggredata.client.events.GraphLoadedHandler;
 import com.ted.aggredata.client.events.GraphOptionsChangedEvent;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
@@ -62,6 +66,8 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
 
     static Logger logger = Logger.getLogger(BarGraphPanel.class.toString());
+    final private HandlerManager handlerManager = new HandlerManager(this);
+
     protected Group group;
     protected Date startDate;
     protected Date endDate;
@@ -73,7 +79,9 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
     ColumnChart barChart = null;
 
-    LoadingPopup loadingPopup = new LoadingPopup();
+
+
+
     /**
      * Callback to handle the loading of history data.
      */
@@ -92,7 +100,8 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
                 } else {
                     barChart.draw(createTable(), createOptions());
                 }
-                loadingPopup.hide();
+
+                handlerManager.fireEvent(new GraphLoadedEvent(group, startDate, endDate, graphType, 1));
             }   else {
                 logger.severe("historyResult is null!");
             }
@@ -104,6 +113,11 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         this.barGraphTitle = graphTitle;
     }
 
+
+    public HandlerRegistration addGraphLoadedHandler(GraphLoadedHandler handler) {
+        return handlerManager.addHandler(GraphLoadedEvent.TYPE, handler);
+    }
+
     public void onGraphOptionChange(GraphOptionsChangedEvent event) {
 
         this.group = event.getGroup();
@@ -113,8 +127,6 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
         if (logger.isLoggable(Level.FINE)) logger.fine("Graph Option Change Called: " + group + " " + this.startDate + " " + this.endDate + " " + graphType);
 
-
-        loadingPopup.show();
 
         groupService.getHistory(getHistoryType(), group, this.startDate.getTime()/1000, this.endDate.getTime()/1000, 1, new TEDAsyncCallback<EnergyDataHistoryQueryResult>() {
             @Override
@@ -191,8 +203,6 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         vAxisStyle.setFontName("Arial, Verdana, Trebuchet, sans-serif");
         vAxisStyle.setFontSize(12);
 
-
-
         AxisOptions vAxisOptions = AxisOptions.create();
         vAxisOptions.setTextStyle(vAxisStyle);
         vAxisOptions.setMinValue(0);
@@ -200,28 +210,17 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         if (graphType.equals(Enums.GraphType.ENERGY)) vAxisOptions.setTitle(dashboardConstants.graphTypeEnergy());
         else if (graphType.equals(Enums.GraphType.COST)) vAxisOptions.setTitle(dashboardConstants.graphTypeCost());
         vAxisOptions.setTitleTextStyle(vAxisStyle);
-
         options.setVAxisOptions(vAxisOptions);
-
-
 
         TextStyle hAxisStyle = TextStyle.create();
         hAxisStyle.setColor("#FFFFFF");
         hAxisStyle.setFontName("Arial, Verdana, Trebuchet, sans-serif");
-
-//        int autosize = historyResult.getNetHistoryList().size() / 7;
-//        autosize = 12 - (autosize*2);
-//        if (autosize < 0) autosize=1;
-//        hAxisStyle.setFontSize(autosize);
         hAxisStyle.setFontSize(10);
-
 
         AxisOptions hAxisOptions = AxisOptions.create();
         hAxisOptions.setTextStyle(hAxisStyle);
         hAxisOptions.setTitleTextStyle(hAxisStyle);
         options.setHAxisOptions(hAxisOptions);
-
-
 
         TextStyle titleStyle = TextStyle.create();
         titleStyle.setColor("#FFFFFF");
@@ -230,19 +229,12 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
         options.setTitleTextStyle(titleStyle);
 
-
         ChartArea ca = ChartArea.create();
-//        ca.setHeight(GRAPH_HEIGHT-185);
         ca.setWidth(GRAPH_WIDTH-250);
         ca.setLeft(60);
         ca.setTop(5);
 
         options.setChartArea(ca);
-
-        options.set("is3D", "true");
-
-
-
         return options;
     }
 
