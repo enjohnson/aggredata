@@ -28,6 +28,11 @@ public class GlobalPlaceholder implements Serializable {
     User sessionUser;
     ServerInfo serverInfo;
     Boolean showActivation = false;
+    CustomFieldInfo userCustomFields;
+    CustomFieldInfo groupCustomFields;
+    CustomFieldInfo gatewayCustomFields;
+
+
 
     public User getSessionUser() {
         return sessionUser;
@@ -51,6 +56,30 @@ public class GlobalPlaceholder implements Serializable {
 
     public void setShowActivation(Boolean showActivation) {
         this.showActivation = showActivation;
+    }
+
+    public CustomFieldInfo getUserCustomFields() {
+        return userCustomFields;
+    }
+
+    public void setUserCustomFields(CustomFieldInfo userCustomFields) {
+        this.userCustomFields = userCustomFields;
+    }
+
+    public CustomFieldInfo getGroupCustomFields() {
+        return groupCustomFields;
+    }
+
+    public void setGroupCustomFields(CustomFieldInfo groupCustomFields) {
+        this.groupCustomFields = groupCustomFields;
+    }
+
+    public CustomFieldInfo getGatewayCustomFields() {
+        return gatewayCustomFields;
+    }
+
+    public void setGatewayCustomFields(CustomFieldInfo gatewayCustomFields) {
+        this.gatewayCustomFields = gatewayCustomFields;
     }
 
     @Override

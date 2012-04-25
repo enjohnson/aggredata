@@ -30,7 +30,6 @@ import com.ted.aggredata.client.events.*;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.guiService.UserSessionService;
 import com.ted.aggredata.client.guiService.UserSessionServiceAsync;
-import com.ted.aggredata.client.panels.admin.system.ServerPanel;
 import com.ted.aggredata.client.panels.admin.user.UserPanel;
 import com.ted.aggredata.client.panels.graph.GraphOptionChangeable;
 import com.ted.aggredata.client.panels.graph.day.DayPanel;
@@ -111,7 +110,7 @@ public class MainPanel extends Composite {
 
         graphDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.month(), dashboardConstants.day(), dashboardConstants.hour(), dashboardConstants.minute()});
         profileDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.accountSettings(), dashboardConstants.accountGroups(), dashboardConstants.accountTEDS(), dashboardConstants.accountActivate()});
-        systemAdministrationDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.systemUsers(), dashboardConstants.systemServer()});
+        systemAdministrationDashboardPanel = new DashboardTabPanel(new String[]{dashboardConstants.systemUsers()});
 
         graphSidePanel = new GraphSidePanel();
         graphSidePanel.addGraphOptionsChangedHandler(graphOptionsChangedHandler);
@@ -229,10 +228,6 @@ public class MainPanel extends Composite {
                 switch (event.getTabIndex()) {
                     case 0: {
                         contentPanel.add(new UserPanel());
-                        break;
-                    }
-                    case 1: {
-                        contentPanel.add(new ServerPanel());
                         break;
                     }
                 }

@@ -46,6 +46,32 @@
         <property name="timezone" value="${server.timezone?US/Eastern}"/>
     </bean>
 
+    <bean id="usersCustomFields" class="com.ted.aggredata.model.CustomFieldInfo">
+        <property name="custom1" value="${users.custom1?Custom 1:}"/>
+        <property name="custom2" value="${users.custom2?Custom 2:}"/>
+        <property name="custom3" value="${users.custom3?Custom 3:}"/>
+        <property name="custom4" value="${users.custom4?Custom 4:}"/>
+        <property name="custom5" value="${users.custom5?Custom 5:}"/>
+    </bean>
+
+    <bean id="gatewaysCustomFields" class="com.ted.aggredata.model.CustomFieldInfo">
+        <property name="custom1" value="${gateways.custom1?Custom 1:}"/>
+        <property name="custom2" value="${gateways.custom2?Custom 2:}"/>
+        <property name="custom3" value="${gateways.custom3?Custom 3:}"/>
+        <property name="custom4" value="${gateways.custom4?Custom 4:}"/>
+        <property name="custom5" value="${gateways.custom5?Custom 5:}"/>
+    </bean>
+
+    <bean id="groupsCustomFields" class="com.ted.aggredata.model.CustomFieldInfo">
+        <property name="custom1" value="${groups.custom1?Custom 1:}"/>
+        <property name="custom2" value="${groups.custom2?Custom 2:}"/>
+        <property name="custom3" value="${groups.custom3?Custom 3:}"/>
+        <property name="custom4" value="${groups.custom4?Custom 4:}"/>
+        <property name="custom5" value="${groups.custom5?Custom 5:}"/>
+    </bean>
+
+
+
 
     <!-- BoneCP configuration -->
     <bean id="aggredataDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
