@@ -35,6 +35,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * User Service Unit test
  */

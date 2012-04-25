@@ -25,6 +25,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -33,6 +34,7 @@ import com.ted.aggredata.client.events.*;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
+import com.ted.aggredata.client.util.DateUtil;
 import com.ted.aggredata.client.widgets.SmallButton;
 import com.ted.aggredata.model.Enums;
 import com.ted.aggredata.model.Group;
@@ -124,7 +126,22 @@ public class GraphSidePanel extends Composite {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 logger.fine("Export Button Clicked");
+                //Go ahead and disable the panel while loading to prevent double clicking
+                setEnabled(false);
 
+                startDate = DateUtil.adjustToSearchStart(historyType, startDate);
+                endDate = DateUtil.adjustToSearchEnd(historyType, endDate);
+
+                groupService.exportHistory(historyType,group, startDate.getTime()/1000, endDate.getTime()/1000, interval, new TEDAsyncCallback<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                         logger.fine("Redirecting to servlet using key " + s);
+                         String url = "historyexport?key=" + s;
+                         logger.fine("OPENING URL" + url);
+                         setEnabled(true);
+                         Window.open(url, "_BLANK", "");
+                    }
+                });
             }
         });
 
@@ -190,6 +207,7 @@ public class GraphSidePanel extends Composite {
         startDate.setHours(0);
         startDate.setMinutes(0);
         startDate.setSeconds(0);
+        interval = 1;
         endDate = new Date(startDate.getTime());
 
         if (getHistoryType().equals(Enums.HistoryType.MONTHLY)) {

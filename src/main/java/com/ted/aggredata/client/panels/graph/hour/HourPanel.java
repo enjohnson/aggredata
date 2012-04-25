@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.ted.aggredata.client.events.GraphLoadedHandler;
 import com.ted.aggredata.client.panels.graph.BarGraphPanel;
+import com.ted.aggredata.client.util.DateUtil;
 import com.ted.aggredata.model.Enums;
 
 import java.util.Date;
@@ -51,22 +52,18 @@ public class HourPanel extends BarGraphPanel {
     }
 
 
+
     @Override
     protected Date fixStartDate(Date startDate) {
-        Date theDate = new Date(startDate.getTime());
-        theDate.setHours(0);
-        theDate.setMinutes(0);
-        return theDate;
+        return DateUtil.adjustToSearchStart(Enums.HistoryType.HOURLY, startDate);
     }
 
     @Override
     protected Date fixEndDate(Date endDate) {
-        Date theDate = new Date(endDate.getTime());
-        theDate.setHours(0);
-        theDate.setMinutes(0);
-        CalendarUtil.addDaysToDate(theDate, 1);
-        return theDate;
+        return DateUtil.adjustToSearchEnd(Enums.HistoryType.HOURLY, endDate);
     }
+
+
 
 
     @Override

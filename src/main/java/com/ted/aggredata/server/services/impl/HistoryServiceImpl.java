@@ -62,7 +62,7 @@ public class HistoryServiceImpl implements HistoryService {
         }
 
         List<Gateway> groupGateways = gatewayService.findByGroup(group);
-        EnergyDataHistoryResultFactory energyDataHistoryFactory = new EnergyDataHistoryResultFactory(type, interval, group, groupGateways);
+        EnergyDataHistoryResultFactory energyDataHistoryFactory = new EnergyDataHistoryResultFactory(type, interval, group, groupGateways, startTime, endTime);
 
         for (Gateway gateway : groupGateways) {
             if (logger.isDebugEnabled()) logger.debug("Loading History for gateway " + gateway);

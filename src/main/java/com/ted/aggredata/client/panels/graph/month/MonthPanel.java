@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.ted.aggredata.client.events.GraphLoadedHandler;
 import com.ted.aggredata.client.panels.graph.BarGraphPanel;
+import com.ted.aggredata.client.util.DateUtil;
 import com.ted.aggredata.model.Enums;
 
 import java.util.Date;
@@ -56,17 +57,12 @@ public class MonthPanel extends BarGraphPanel{
 
     @Override
     protected Date fixStartDate(Date startDate) {
-        Date theDate = new Date(startDate.getTime());
-        theDate.setDate(1);
-        return theDate;
+        return DateUtil.adjustToSearchStart(Enums.HistoryType.MONTHLY, startDate);
     }
 
     @Override
     protected Date fixEndDate(Date endDate) {
-        Date theDate = new Date(endDate.getTime());
-        theDate.setDate(1);
-        CalendarUtil.addMonthsToDate(theDate, 1);
-        return theDate;
+        return DateUtil.adjustToSearchEnd(Enums.HistoryType.MONTHLY, endDate);
     }
 
     @Override

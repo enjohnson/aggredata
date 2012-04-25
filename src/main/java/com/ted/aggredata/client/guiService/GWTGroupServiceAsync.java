@@ -59,5 +59,18 @@ public interface GWTGroupServiceAsync {
      * @return
      */
     void getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, int interval, AsyncCallback<EnergyDataHistoryQueryResult> async);
+
+
+    /**
+     * Generates a key allowing the history to be exported.
+     *
+     * @param historyType
+     * @param group
+     * @param startTime
+     * @param endTime
+     * @param interval
+     * @return
+     */
+    void exportHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, int interval, AsyncCallback<String> async);
 }
 

@@ -31,6 +31,10 @@ public class EnergyDataHistoryQueryResult implements Serializable {
     List<EnergyDataHistory> netHistoryList = new ArrayList<EnergyDataHistory>();
     Double netCostTotal = 0d;
     Double netEnergyTotal = 0d;
+    Enums.HistoryType historyType;
+    long startTime;
+    long endTime;
+    int interval;
 
     HashMap<Long, List<EnergyDataHistory>> gatewayHistoryList = new HashMap<Long, List<EnergyDataHistory>>();
     HashMap<Long, Double> gatewayCostTotalList = new   HashMap<Long, Double>();
@@ -96,5 +100,37 @@ public class EnergyDataHistoryQueryResult implements Serializable {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public Enums.HistoryType getHistoryType() {
+        return historyType;
+    }
+
+    public void setHistoryType(Enums.HistoryType historyType) {
+        this.historyType = historyType;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public void setInterval(int interval) {
+        this.interval = interval;
     }
 }
