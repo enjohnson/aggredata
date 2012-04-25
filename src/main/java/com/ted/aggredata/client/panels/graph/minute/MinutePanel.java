@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.visualization.client.*;
 import com.google.gwt.visualization.client.visualizations.corechart.*;
+import com.ted.aggredata.client.dialogs.LoadingPopup;
 import com.ted.aggredata.client.events.GraphOptionsChangedEvent;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
@@ -60,6 +61,8 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
     final DashboardConstants dashboardConstants = DashboardConstants.INSTANCE;
     final NumberFormat currencyFormat = NumberFormat.getCurrencyFormat();
     final DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("MM/dd/yyyy hh:mm a");
+
+    LoadingPopup loadingPopup = new LoadingPopup();
 
     interface MyUiBinder extends UiBinder<Widget, MinutePanel> {
     }
@@ -94,6 +97,7 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
                 } else {
                     theChart.draw(createTable(), createOptions());
                 }
+                loadingPopup.hide();
             }   else {
                 logger.severe("historyResult is null!");
             }
@@ -105,7 +109,7 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
         this.event = event;
         updateTitle();
 
-
+        loadingPopup.show();
         groupService.getHistory(Enums.HistoryType.MINUTE,
                                 event.getGroup(),
                                 event.getStartDate().getTime()/1000,

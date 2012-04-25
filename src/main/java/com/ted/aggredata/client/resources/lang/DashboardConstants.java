@@ -260,4 +260,8 @@ public interface DashboardConstants extends Constants {
     String minuteEndTime();
 
     String minuteInterval();
+
+    String export();
+
+    String loading();
 }
