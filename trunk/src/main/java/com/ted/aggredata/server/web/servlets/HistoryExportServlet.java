@@ -39,6 +39,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -69,12 +73,115 @@ public class HistoryExportServlet extends HttpServlet {
 
     }
 
+    private static String cleanFileName(String groupName) {
+        StringBuilder scrubbedFile = new StringBuilder();
+        for (char c: groupName.toCharArray()) {
+            if (Character.isLetterOrDigit(c)) scrubbedFile.append(c);
+            else if (c=='-') scrubbedFile.append(c);
+            else if (c=='.') scrubbedFile.append(c);
+        }
+        return scrubbedFile.toString();
+    }
+
+    private static SimpleDateFormat getDateFormat(Enums.HistoryType type) {
+        if (type.equals(Enums.HistoryType.MINUTE)) return new SimpleDateFormat("MM/dd/yyyy hh:mm");
+        if (type.equals(Enums.HistoryType.HOURLY)) return new SimpleDateFormat("MM/dd/yyyy hh:mm");
+        if (type.equals(Enums.HistoryType.DAILY)) return new SimpleDateFormat("MM/dd/yyyy");
+        if (type.equals(Enums.HistoryType.MONTHLY)) return new SimpleDateFormat("MM/yyyy");
+        return new SimpleDateFormat("MM/dd/yyyy");
+    }
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             logger.debug("History Export Servlet called");
-            logger.debug("Getting parameters for file export");
+
+            String key = request.getParameter("key");
+            logger.debug("Checking session for object with key " + key);
+
+            EnergyDataHistoryQueryResult result = (EnergyDataHistoryQueryResult) request.getSession().getAttribute(key);
+
+            //Cehck to see if the object exists
+            if (result == null) {
+                if (logger.isWarnEnabled()) logger.warn("Results not found for key " + key);
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                PrintWriter out = response.getWriter();
+                out.write("Gateway Not Found.");
+                out.close();
+                return;
+            }
 
 
+            StringBuilder fileNameBuilder = new StringBuilder();
+            fileNameBuilder.append("export-").append(result.getGroup().getDescription()).append("-").append(result.getHistoryType()).append("-").append(result.getStartTime()).append(".csv");
+
+            String fileName = cleanFileName(fileNameBuilder.toString().toLowerCase());
+            if (logger.isDebugEnabled()) logger.debug("Using filename " + fileName);
+
+            response.setHeader("Content-Type", "text/csv");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            PrintWriter writer = response.getWriter();
+
+
+            //Create the header
+
+            writer.append("Date");
+            writer.append(",");
+            writer.append("Total Energy");
+            writer.append(",");
+            writer.append("Total Cost");
+            for (Gateway g: result.getGatewayList())
+            {
+                writer.append(",");
+                writer.append(g.getDescription()).append(" (").append(Long.toHexString(g.getId()).toUpperCase()).append(") Power");
+                writer.append(",");
+                writer.append(g.getDescription()).append(" (").append(Long.toHexString(g.getId()).toUpperCase()).append(") Cost");
+            }
+            writer.append("\n");
+
+            SimpleDateFormat dateFormat = getDateFormat(result.getHistoryType());
+            DecimalFormat pwrFormat = new DecimalFormat("0.000");
+            DecimalFormat cstFormat = new DecimalFormat("0.00");
+
+
+
+
+            int index = 0;
+
+            //Write each line of data.
+            for (EnergyDataHistory history: result.getNetHistoryList())
+            {
+
+                writer.append(dateFormat.format(history.getHistoryDate().getTime()));
+                writer.append(",");
+                writer.append(pwrFormat.format(history.getEnergy()/1000.0));
+                writer.append(",");
+                writer.append(cstFormat.format(history.getCost()));
+
+
+                for (Gateway g: result.getGatewayList())
+                {
+                    EnergyDataHistory gh = result.getGatewayHistoryList().get(g.getId()).get(index);
+
+                    writer.append(",");
+                    writer.append(pwrFormat.format(gh.getEnergy()/1000.0));
+                    writer.append(",");
+                    writer.append(cstFormat.format(gh.getCost()));
+
+                }
+
+                writer.append("\n");
+
+                index++;
+            }
+
+
+
+
+            writer.flush();
+            writer.close();
+
+            logger.debug("Clearing out session object");
+            request.getSession().removeAttribute(key);
 
         } catch (Exception ex) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

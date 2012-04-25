@@ -25,6 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,12 +86,33 @@ public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements G
         if (user.getId().equals(group.getOwnerUserId())) {
 
             if (logger.isInfoEnabled()) logger.info("retrieving " + historyType +" history for  " + group + " " + startTime+"-"+endTime);
-            return historyService.getHistory(historyType, user, group, startTime, endTime, interval);
+            EnergyDataHistoryQueryResult result = historyService.getHistory(historyType, user, group, startTime, endTime, interval);
+            return result;
         }
         logger.warn("Security violation. " + user + " attempted to retrieve history for  " + group);
         return new EnergyDataHistoryQueryResult();
     }
 
+    @Override
+    public String exportHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, int interval) {
+
+        //Rerun the history (in case anything has changed since last request)
+        EnergyDataHistoryQueryResult result = getHistory(historyType, group, startTime, endTime, interval);
+
+        //Generate a random key for this history (to prevent XSS access to last history being run)
+        SecureRandom random = new SecureRandom();
+        String key = new BigInteger(130, random).toString(32);
+
+
+
+        //Place the results in session (temporary, CSV servlet will clear this and the key out).
+        this.getThreadLocalRequest().getSession().setAttribute(key, result);
+
+        //Return the key
+        return key;
+
+
+    }
 
 
 }

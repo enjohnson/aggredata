@@ -71,4 +71,14 @@ public interface GWTGroupService extends RemoteService {
     public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, int interval);
 
 
+    /**
+     * Prepares the history for export and returns a key that can be used to access history
+     * @param historyType
+     * @param group
+     * @param startTime
+     * @param endTime
+     * @param interval
+     * @return
+     */
+    public String exportHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, int interval);
 }
