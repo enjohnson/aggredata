@@ -157,8 +157,9 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
 
 
 
-    public MinutePanel() {
+    public MinutePanel(GraphLoadedHandler handler) {
         initWidget(uiBinder.createAndBindUi(this));
+        addGraphLoadedHandler(handler);
 
     }
 
