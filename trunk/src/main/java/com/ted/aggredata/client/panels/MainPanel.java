@@ -75,10 +75,6 @@ public class MainPanel extends Composite {
     final GraphSidePanel graphSidePanel;
 
 
-    final MonthPanel monthPanel = new MonthPanel();
-    final DayPanel dayPanel = new DayPanel();
-    final HourPanel hourPanel = new HourPanel();
-    final MinutePanel minutePanel = new MinutePanel();
 
     final LoadingPopup loadingPopup = new LoadingPopup();
 
@@ -121,10 +117,6 @@ public class MainPanel extends Composite {
         graphSidePanel.addGraphOptionsChangedHandler(graphOptionsChangedHandler);
 
 
-        monthPanel.addGraphLoadedHandler(graphLoadedHandler);
-        dayPanel.addGraphLoadedHandler(graphLoadedHandler);
-        hourPanel.addGraphLoadedHandler(graphLoadedHandler);
-        minutePanel.addGraphLoadedHandler(graphLoadedHandler);
 
 
         //Add handlers
@@ -140,7 +132,7 @@ public class MainPanel extends Composite {
                     systemAdministrationDashboardPanel.setSelectedTab(0);
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ENERGY) {
                     tabNavigationPanel.add(graphDashboardPanel, 0, 0);
-                    contentPanel.add(monthPanel);
+                    contentPanel.add(new MonthPanel(graphLoadedHandler));
                     sidePanel.add(graphSidePanel, 0, 0);
                     graphSidePanel.reset();
                     graphDashboardPanel.setSelectedTab(0);
@@ -200,25 +192,25 @@ public class MainPanel extends Composite {
 
                 switch (event.getTabIndex()) {
                     case 0: {
-                        contentPanel.add(monthPanel);
+                        contentPanel.add(new MonthPanel(graphLoadedHandler));
                         graphSidePanel.setHistoryType(Enums.HistoryType.MONTHLY);
                         graphSidePanel.fireEvent();
                         break;
                     }
                     case 1: {
-                        contentPanel.add(dayPanel);
+                        contentPanel.add(new DayPanel(graphLoadedHandler));
                         graphSidePanel.setHistoryType(Enums.HistoryType.DAILY);
                         graphSidePanel.fireEvent();
                         break;
                     }
                     case 2: {
-                        contentPanel.add(hourPanel);
+                        contentPanel.add(new HourPanel(graphLoadedHandler));
                         graphSidePanel.setHistoryType(Enums.HistoryType.HOURLY);
                         graphSidePanel.fireEvent();
                         break;
                     }
                     case 3: {
-                        contentPanel.add(minutePanel);
+                        contentPanel.add(new MinutePanel(graphLoadedHandler));
                         graphSidePanel.setHistoryType(Enums.HistoryType.MINUTE);
                         graphSidePanel.fireEvent();
                         break;
@@ -260,7 +252,7 @@ public class MainPanel extends Composite {
             //Go to the month page by default
             graphDashboardPanel.setSelectedTab(0);
             tabNavigationPanel.add(graphDashboardPanel, 0, 0);
-            contentPanel.add(monthPanel);
+            contentPanel.add(new MonthPanel(graphLoadedHandler));
             sidePanel.add(graphSidePanel, 0, 0);
             graphSidePanel.setHistoryType(Enums.HistoryType.MONTHLY);
             graphSidePanel.reset();

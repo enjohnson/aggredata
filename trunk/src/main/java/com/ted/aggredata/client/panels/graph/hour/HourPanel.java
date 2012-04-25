@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
+import com.ted.aggredata.client.events.GraphLoadedHandler;
 import com.ted.aggredata.client.panels.graph.BarGraphPanel;
 import com.ted.aggredata.model.Enums;
 
@@ -43,9 +44,10 @@ public class HourPanel extends BarGraphPanel {
     @UiField
     Label graphTitle;
 
-    public HourPanel() {
+    public HourPanel(GraphLoadedHandler graphLoadedHandler) {
         initWidget(uiBinder.createAndBindUi(this));
         setGraphingPanel(graphPanel, graphTitle);
+        addGraphLoadedHandler(graphLoadedHandler);
     }
 
 

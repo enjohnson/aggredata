@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
+import com.ted.aggredata.client.events.GraphLoadedHandler;
 import com.ted.aggredata.client.panels.graph.BarGraphPanel;
 import com.ted.aggredata.model.Enums;
 
@@ -46,9 +47,10 @@ public class MonthPanel extends BarGraphPanel{
     Label graphTitle = new Label();
 
 
-    public MonthPanel() {
+    public MonthPanel(GraphLoadedHandler handler) {
         initWidget(uiBinder.createAndBindUi(this));
         setGraphingPanel(graphPanel, graphTitle);
+        addGraphLoadedHandler(handler);
     }
 
 
