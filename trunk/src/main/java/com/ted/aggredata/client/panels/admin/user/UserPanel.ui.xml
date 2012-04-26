@@ -17,16 +17,25 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-        >
+             xmlns:my='urn:import:com.ted.aggredata.client'>
     <ui:style src="../../Global.css"/>
 
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
     <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP">
-
-
-        <g:FlexTable ui:field="table"/>
-
-
+        <my:widgets.ClearImage width="800" height="1px"/>
+        <g:Label styleName='{style.panelTitleText}' text='{txtRes.adminTitle}'/>
+        <my:widgets.ClearImage width="800" height="3px"/>
+        <g:Label styleName='{style.panelInstructionText}' text='{txtRes.adminInstructions}'/>
+        <my:widgets.ClearImage width="800" height="5px"/>
+        <g:HorizontalPanel>
+            <my:widgets.ClearImage width="20px" height="200px"/>
+            <my:panels.admin.user.UserSelectionPanel ui:field="UserSelectionPanel"/>
+            <my:widgets.ClearImage width="25px" height="200px"/>
+            <my:panels.admin.user.UserDetailsPanel ui:field="UserDetailsPanel"/>
+            <my:widgets.ClearImage width="100px" height="200px"/>
+        </g:HorizontalPanel>
     </g:VerticalPanel>
+
+
 </ui:UiBinder>

@@ -264,4 +264,10 @@ public interface DashboardConstants extends Constants {
     String export();
 
     String loading();
+    
+    String adminTitle();
+    
+    String adminInstructions();
+
+    String yourUsers();
 }
