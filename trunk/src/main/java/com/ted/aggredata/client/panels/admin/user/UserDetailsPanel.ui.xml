@@ -1,0 +1,113 @@
+<!--
+  ~ Copyright (c) 2012. The Energy Detective. All Rights Reserved
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:my='urn:import:com.ted.aggredata.client'>
+    <ui:style src="../../Global.css"/>
+
+    <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
+
+    <g:CaptionPanel ui:field="captionPanel" width="370px" styleName="{style.captionHeader}">
+        <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px" spacing="0" >
+            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
+                <my:widgets.ClearImage width="10px" height="1px"/>
+                <g:Label styleName='{style.formLabel}' text='{txtRes.gatewaySerialNumber}' width="120px"/>
+                <my:widgets.ClearImage width="2" height="1px"/>
+                <g:TextBox ui:field="serialNumberField" width="150px" styleName="{style.formField}"/>
+                <my:widgets.ClearImage width="2" height="1px"/>
+                <g:Label ui:field="serialNumberFieldError" styleName="{style.formError}" width="80px"/>
+            </g:HorizontalPanel>
+
+            <my:widgets.ClearImage width="2px" height="5px" />
+
+            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
+                <my:widgets.ClearImage width="10px" height="1px"/>
+                <g:Label styleName='{style.formLabel}' text='{txtRes.gatewaySettingsDescription}' width="120px"/>
+                <my:widgets.ClearImage width="2" height="1px"/>
+                <g:TextBox ui:field="descriptionField" width="150px" styleName="{style.formField}"/>
+                <my:widgets.ClearImage width="2" height="1px"/>
+                <g:Label ui:field="descriptionFieldError" styleName="{style.formError}" width="80px"/>
+            </g:HorizontalPanel>
+
+            <my:widgets.ClearImage width="2px" height="5px" />
+
+
+            <g:HorizontalPanel ui:field="custom1Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
+                <my:widgets.ClearImage width="10px" height="1px"/>
+                <g:Label styleName='{style.formLabel}' ui:field="custom1Label" width="120px"/>
+                <my:widgets.ClearImage width="2px" height="1px"/>
+                <g:TextBox ui:field="custom1Field" width="150px" styleName="{style.formField}"/>
+                <my:widgets.ClearImage width="2px" height="1px"/>
+                <g:Label ui:field="custom1FieldError" styleName="{style.formError}"  width="80px"/>
+            </g:HorizontalPanel>
+
+            <my:widgets.ClearImage width="2px" height="5px"/>
+
+            <g:HorizontalPanel ui:field="custom2Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
+                <my:widgets.ClearImage width="10px" height="1px"/>
+                <g:Label styleName='{style.formLabel}' ui:field="custom2Label" width="120px"/>
+                <my:widgets.ClearImage width="2px" height="1px"/>
+                <g:TextBox ui:field="custom2Field" width="150px" styleName="{style.formField}"/>
+                <my:widgets.ClearImage width="2px" height="1px"/>
+                <g:Label ui:field="custom2FieldError" styleName="{style.formError}"   width="80px"/>
+            </g:HorizontalPanel>
+
+            <my:widgets.ClearImage width="2px" height="5px"/>
+
+            <g:HorizontalPanel ui:field="custom3Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
+                <my:widgets.ClearImage width="10px" height="1px"/>
+                <g:Label styleName='{style.formLabel}' ui:field="custom3Label" width="120px"/>
+                <my:widgets.ClearImage width="2px" height="1px"/>
+                <g:TextBox ui:field="custom3Field" width="150px" styleName="{style.formField}"/>
+                <my:widgets.ClearImage width="2px" height="1px"/>
+                <g:Label ui:field="custom3FieldError" styleName="{style.formError}"   width="80px"/>
+            </g:HorizontalPanel>
+
+            <my:widgets.ClearImage width="2px" height="5px"/>
+
+            <g:HorizontalPanel ui:field="custom4Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
+                <my:widgets.ClearImage width="10px" height="1px"/>
+                <g:Label styleName='{style.formLabel}' ui:field="custom4Label" width="120px"/>
+                <my:widgets.ClearImage width="2px" height="1px"/>
+                <g:TextBox ui:field="custom4Field" width="150px" styleName="{style.formField}"/>
+                <my:widgets.ClearImage width="2px" height="1px"/>
+                <g:Label ui:field="custom4FieldError" styleName="{style.formError}"  width="80px"/>
+            </g:HorizontalPanel>
+
+            <my:widgets.ClearImage width="2px" height="5px"/>
+
+            <g:HorizontalPanel ui:field="custom5Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
+                <my:widgets.ClearImage width="10px" height="1px"/>
+                <g:Label styleName='{style.formLabel}' ui:field="custom5Label" width="120px"/>
+                <my:widgets.ClearImage width="2px" height="1px"/>
+                <g:TextBox ui:field="custom5Field" width="150px" styleName="{style.formField}"/>
+                <my:widgets.ClearImage width="2px" height="1px"/>
+                <g:Label ui:field="custom5FieldError" styleName="{style.formError}" width="80px"/>
+            </g:HorizontalPanel>
+
+
+            <my:widgets.ClearImage width="2px" height="5px" />
+
+
+            <my:panels.profile.gateways.GatewaysMTUPanel ui:field="gatewayMTUPanel"/>
+
+            <my:widgets.ClearImage width="2px" height="2px"/>
+        </g:VerticalPanel>
+    </g:CaptionPanel>
+
+</ui:UiBinder>
