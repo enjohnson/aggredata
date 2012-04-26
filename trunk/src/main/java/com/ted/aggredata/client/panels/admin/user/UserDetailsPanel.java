@@ -20,20 +20,16 @@ package com.ted.aggredata.client.panels.admin.user;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
-import com.ted.aggredata.client.Aggredata;
-import com.ted.aggredata.client.guiService.GWTGatewayService;
-import com.ted.aggredata.client.guiService.GWTGatewayServiceAsync;
-import com.ted.aggredata.client.guiService.TEDAsyncCallback;
-import com.ted.aggredata.client.panels.profile.gateways.GatewaysMTUPanel;
+import com.ted.aggredata.client.guiService.*;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
-import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.MTU;
-
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Widget;
+import com.ted.aggredata.client.guiService.GWTUserService;
+import com.ted.aggredata.client.guiService.GWTUserServiceAsync;
+import com.ted.aggredata.model.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -41,7 +37,7 @@ import java.util.logging.Logger;
 
 public class UserDetailsPanel extends Composite {
 
-    final GWTGatewayServiceAsync gatewayService = (GWTGatewayServiceAsync) GWT.create(GWTGatewayService.class);
+    final GWTUserServiceAsync userService = (GWTUserServiceAsync) GWT.create(GWTUserService.class);
 
     static Logger logger = Logger.getLogger(UserDetailsPanel.class.toString());
 
@@ -50,101 +46,56 @@ public class UserDetailsPanel extends Composite {
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     @UiField
-    TextBox descriptionField;
+    TextBox firstNameField;
     @UiField
-    Label descriptionFieldError;
+    Label firstNameFieldError;
     @UiField
-    TextBox custom1Field;
+    TextBox lastNameField;
     @UiField
-    Label custom1FieldError;
+    Label lastNameFieldError;
     @UiField
-    TextBox custom2Field;
+    TextBox middleNameField;
     @UiField
-    Label custom2FieldError;
+    Label middleNameFieldError;
     @UiField
     TextBox custom3Field;
     @UiField
     Label custom3FieldError;
     @UiField
-    TextBox custom4Field;
+    TextBox usernameField;
     @UiField
-    Label custom4FieldError;
+    Label usernameFieldError;
     @UiField
-    TextBox custom5Field;
-    @UiField
-    Label custom5FieldError;
-    @UiField
-    Label serialNumberFieldError;
-    @UiField
-    TextBox serialNumberField;
-    @UiField
-    GatewaysMTUPanel gatewayMTUPanel;
+    UserButtonPanel UserButtonPanel;
     @UiField
     CaptionPanel captionPanel;
 
-    @UiField HorizontalPanel custom1Panel;
-    @UiField HorizontalPanel custom2Panel;
-    @UiField HorizontalPanel custom3Panel;
-    @UiField HorizontalPanel custom4Panel;
-    @UiField HorizontalPanel custom5Panel;
-
-    @UiField Label custom1Label;
-    @UiField Label custom2Label;
-    @UiField Label custom3Label;
-    @UiField Label custom4Label;
-    @UiField Label custom5Label;
-
-
-    Gateway gateway;
-    Integer gatewayHashCode = 0;
-    List<Gateway> gatewayList = new ArrayList<Gateway>();
+    User user;
+    Integer userHashCode = 0;
+    List<User> userList = new ArrayList<User>();
 
 
     ChangeHandler saveChangeHanlder = new ChangeHandler() {
         @Override
         public void onChange(ChangeEvent changeEvent) {
-            if (gateway != null) doSave();
+            if (user != null) doSave();
         }
     };
 
     public UserDetailsPanel() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        //Hide the panels that are not being used for custom fields
-        custom1Panel.setVisible(Aggredata.GLOBAL.getGatewayCustomFields().getCustom1().trim().length() > 0);
-        custom2Panel.setVisible(Aggredata.GLOBAL.getGatewayCustomFields().getCustom2().trim().length() > 0);
-        custom3Panel.setVisible(Aggredata.GLOBAL.getGatewayCustomFields().getCustom3().trim().length() > 0);
-        custom4Panel.setVisible(Aggredata.GLOBAL.getGatewayCustomFields().getCustom4().trim().length() > 0);
-        custom5Panel.setVisible(Aggredata.GLOBAL.getGatewayCustomFields().getCustom5().trim().length() > 0);
-        custom1Label.setText(Aggredata.GLOBAL.getGatewayCustomFields().getCustom1());
-        custom2Label.setText(Aggredata.GLOBAL.getGatewayCustomFields().getCustom2());
-        custom3Label.setText(Aggredata.GLOBAL.getGatewayCustomFields().getCustom3());
-        custom4Label.setText(Aggredata.GLOBAL.getGatewayCustomFields().getCustom4());
-        custom5Label.setText(Aggredata.GLOBAL.getGatewayCustomFields().getCustom5());
+        captionPanel.setCaptionHTML("<span style='color:white'>" + DashboardConstants.INSTANCE.userDetails() + "</span>");
 
-
-        captionPanel.setCaptionHTML("<span style='color:white'>" + DashboardConstants.INSTANCE.gatewayDetails() + "</span>");
-
-        descriptionField.addKeyUpHandler(new KeyUpHandler() {
-            @Override
-            public void onKeyUp(KeyUpEvent keyUpEvent) {
-                validate();
-            }
-        });
-
-        serialNumberField.setReadOnly(true);
-        serialNumberField.setEnabled(false);
-        descriptionField.addChangeHandler(saveChangeHanlder);
-        custom1Field.addChangeHandler(saveChangeHanlder);
-        custom2Field.addChangeHandler(saveChangeHanlder);
+        usernameField.addChangeHandler(saveChangeHanlder);
+        firstNameField.addChangeHandler(saveChangeHanlder);
+        middleNameField.addChangeHandler(saveChangeHanlder);
         custom3Field.addChangeHandler(saveChangeHanlder);
-        custom4Field.addChangeHandler(saveChangeHanlder);
-        custom5Field.addChangeHandler(saveChangeHanlder);
-
+        lastNameField.addChangeHandler(saveChangeHanlder);
     }
 
-    public void setGatewayList(List<Gateway> userGatewayList) {
-        this.gatewayList = userGatewayList;
+    public void setUserList(List<User> userList1) {
+        this.userList = userList1;
     }
 
 
@@ -155,31 +106,35 @@ public class UserDetailsPanel extends Composite {
      */
     public void setEnabled(boolean enabled) {
 
-        descriptionField.setEnabled(enabled);
-        custom1Field.setEnabled(enabled);
-        custom2Field.setEnabled(enabled);
+        firstNameField.setEnabled(enabled);
+        middleNameField.setEnabled(enabled);
+        lastNameField.setEnabled(enabled);
         custom3Field.setEnabled(enabled);
-        custom4Field.setEnabled(enabled);
-        custom5Field.setEnabled(enabled);
-
-
+        usernameField.setEnabled(enabled);
     }
 
 
     public boolean validate() {
         boolean valid = true;
-        descriptionFieldError.setText("");
+        firstNameFieldError.setText("");
+        lastNameFieldError.setText("");
 
-        if (gateway == null) return true;
-        if (descriptionField.getText().trim().length() == 0) {
+        if (user == null) return true;
+        if (firstNameField.getText().trim().length() == 0) {
             valid = false;
-            descriptionFieldError.setText("Required");
+            firstNameFieldError.setText("Required");
         }
 
-        for (Gateway g : gatewayList) {
-            if (!g.getId().equals(gateway.getId()) && g.getDescription().toLowerCase().equals(descriptionField.getText().trim().toLowerCase())) {
+        if (lastNameField.getText().trim().length() == 0) {
+            valid = false;
+            lastNameFieldError.setText("Required");
+        }
+
+        for (User u : userList) {
+            if (!u.getId().equals(user.getId()) && u.getFirstName().toLowerCase().equals(firstNameField.getText().trim().toLowerCase())  && u.getLastName().toLowerCase().equals(lastNameField.getText().trim().toLowerCase())) {
                 valid = false;
-                descriptionFieldError.setText("Already Used");
+                firstNameField.setText("Already Used");
+                lastNameField.setText("Already Used");
             }
         }
 
@@ -188,44 +143,33 @@ public class UserDetailsPanel extends Composite {
 
     private void doSave() {
         if (validate()) {
-            gateway.setDescription(descriptionField.getText().trim());
-            gateway.setCustom1(custom1Field.getText().trim());
-            gateway.setCustom2(custom2Field.getText().trim());
-            gateway.setCustom3(custom3Field.getText().trim());
-            gateway.setCustom4(custom4Field.getText().trim());
-            gateway.setCustom5(custom5Field.getText().trim());
-            if (gateway.hashCode() != gatewayHashCode) {
-                logger.info("gateway is dirty. Saving " + gateway);
-                gatewayService.saveGateway(gateway, new TEDAsyncCallback<Gateway>() {
+            user.setFirstName(firstNameField.getText().trim());
+            user.setLastName(lastNameField.getText().trim());
+            user.setUsername(usernameField.getText().trim());
+            user.setCustom3(custom3Field.getText().trim());
+            user.setMiddleName(middleNameField.getText().trim());
+            if (user.hashCode() != userHashCode) {
+                logger.info("user is dirty. Saving " + user);
+                userService.saveUser(user, new TEDAsyncCallback<User>() {
                     @Override
-                    public void onSuccess(Gateway gateway) {
-                        gatewayHashCode = gateway.hashCode();
+                    public void onSuccess(User user) {
+                        userHashCode = user.hashCode();
                     }
                 });
             }
         }
     }
 
-    public void setGateway(final Gateway gateway) {
-        if (logger.isLoggable(Level.FINE)) logger.fine("Setting gateway " + gateway);
-        setEnabled(gateway != null);
-        serialNumberField.setValue(Long.toHexString(gateway.getId()).toUpperCase());
-        descriptionField.setValue(gateway.getDescription());
-        custom1Field.setValue(gateway.getCustom1());
-        custom2Field.setValue(gateway.getCustom2());
-        custom3Field.setValue(gateway.getCustom3());
-        custom4Field.setValue(gateway.getCustom4());
-        custom5Field.setValue(gateway.getCustom5());
-        this.gateway = gateway;
-        gatewayHashCode = gateway.hashCode();
-
-        gatewayService.findMTU(gateway, new TEDAsyncCallback<List<MTU>>() {
-            @Override
-            public void onSuccess(List<MTU> mtus) {
-                gatewayMTUPanel.setMTUList(gateway, mtus);
-            }
-        });
-
+    public void setUser(final User user) {
+        if (logger.isLoggable(Level.FINE)) logger.fine("Setting user " + user);
+        setEnabled(user != null);
+        firstNameField.setValue(user.getFirstName());
+        lastNameField.setValue(user.getLastName());
+        middleNameField.setValue(user.getMiddleName());
+        usernameField.setValue(user.getUsername());
+        custom3Field.setValue(user.getCustom3());
+        this.user = user;
+        userHashCode = user.hashCode();
         validate();
     }
 

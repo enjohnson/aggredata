@@ -26,50 +26,50 @@
         <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px" spacing="0" >
             <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10px" height="1px"/>
-                <g:Label styleName='{style.formLabel}' text='{txtRes.gatewaySerialNumber}' width="120px"/>
+                <g:Label styleName='{style.formLabel}' text='{txtRes.firstNameField}' width="120px"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:TextBox ui:field="serialNumberField" width="150px" styleName="{style.formField}"/>
+                <g:TextBox ui:field="firstNameField" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:Label ui:field="serialNumberFieldError" styleName="{style.formError}" width="80px"/>
+                <g:Label ui:field="firstNameFieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
             <my:widgets.ClearImage width="2px" height="5px" />
 
             <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10px" height="1px"/>
-                <g:Label styleName='{style.formLabel}' text='{txtRes.gatewaySettingsDescription}' width="120px"/>
+                <g:Label styleName='{style.formLabel}' text='{txtRes.lastNameField}' width="120px"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:TextBox ui:field="descriptionField" width="150px" styleName="{style.formField}"/>
+                <g:TextBox ui:field="lastNameField" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2" height="1px"/>
-                <g:Label ui:field="descriptionFieldError" styleName="{style.formError}" width="80px"/>
+                <g:Label ui:field="lastNameFieldError" styleName="{style.formError}" width="80px"/>
             </g:HorizontalPanel>
 
             <my:widgets.ClearImage width="2px" height="5px" />
 
 
-            <g:HorizontalPanel ui:field="custom1Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
+            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10px" height="1px"/>
-                <g:Label styleName='{style.formLabel}' ui:field="custom1Label" width="120px"/>
+                <g:Label styleName='{style.formLabel}' text='{txtRes.middleNameField}' width="120px"/>
                 <my:widgets.ClearImage width="2px" height="1px"/>
-                <g:TextBox ui:field="custom1Field" width="150px" styleName="{style.formField}"/>
+                <g:TextBox ui:field="middleNameField" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="1px"/>
-                <g:Label ui:field="custom1FieldError" styleName="{style.formError}"  width="80px"/>
+                <g:Label ui:field="middleNameFieldError" styleName="{style.formError}"  width="80px"/>
             </g:HorizontalPanel>
 
             <my:widgets.ClearImage width="2px" height="5px"/>
 
-            <g:HorizontalPanel ui:field="custom2Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
+            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10px" height="1px"/>
-                <g:Label styleName='{style.formLabel}' ui:field="custom2Label" width="120px"/>
+                <g:Label styleName='{style.formLabel}' text='{txtRes.usernameField}' width="120px"/>
                 <my:widgets.ClearImage width="2px" height="1px"/>
-                <g:TextBox ui:field="custom2Field" width="150px" styleName="{style.formField}"/>
+                <g:TextBox ui:field="usernameField" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="1px"/>
-                <g:Label ui:field="custom2FieldError" styleName="{style.formError}"   width="80px"/>
+                <g:Label ui:field="usernameFieldError" styleName="{style.formError}"   width="80px"/>
             </g:HorizontalPanel>
 
             <my:widgets.ClearImage width="2px" height="5px"/>
 
-            <g:HorizontalPanel ui:field="custom3Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
+            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10px" height="1px"/>
                 <g:Label styleName='{style.formLabel}' ui:field="custom3Label" width="120px"/>
                 <my:widgets.ClearImage width="2px" height="1px"/>
@@ -80,31 +80,31 @@
 
             <my:widgets.ClearImage width="2px" height="5px"/>
 
-            <g:HorizontalPanel ui:field="custom4Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
-                <my:widgets.ClearImage width="10px" height="1px"/>
-                <g:Label styleName='{style.formLabel}' ui:field="custom4Label" width="120px"/>
-                <my:widgets.ClearImage width="2px" height="1px"/>
-                <g:TextBox ui:field="custom4Field" width="150px" styleName="{style.formField}"/>
-                <my:widgets.ClearImage width="2px" height="1px"/>
-                <g:Label ui:field="custom4FieldError" styleName="{style.formError}"  width="80px"/>
-            </g:HorizontalPanel>
+            <!--<g:HorizontalPanel ui:field="custom4Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">-->
+                <!--<my:widgets.ClearImage width="10px" height="1px"/>-->
+                <!--<g:Label styleName='{style.formLabel}' ui:field="custom4Label" width="120px"/>-->
+                <!--<my:widgets.ClearImage width="2px" height="1px"/>-->
+                <!--<g:TextBox ui:field="custom4Field" width="150px" styleName="{style.formField}"/>-->
+                <!--<my:widgets.ClearImage width="2px" height="1px"/>-->
+                <!--<g:Label ui:field="custom4FieldError" styleName="{style.formError}"  width="80px"/>-->
+            <!--</g:HorizontalPanel>-->
 
-            <my:widgets.ClearImage width="2px" height="5px"/>
+            <!--<my:widgets.ClearImage width="2px" height="5px"/>-->
 
-            <g:HorizontalPanel ui:field="custom5Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
-                <my:widgets.ClearImage width="10px" height="1px"/>
-                <g:Label styleName='{style.formLabel}' ui:field="custom5Label" width="120px"/>
-                <my:widgets.ClearImage width="2px" height="1px"/>
-                <g:TextBox ui:field="custom5Field" width="150px" styleName="{style.formField}"/>
-                <my:widgets.ClearImage width="2px" height="1px"/>
-                <g:Label ui:field="custom5FieldError" styleName="{style.formError}" width="80px"/>
-            </g:HorizontalPanel>
-
-
-            <my:widgets.ClearImage width="2px" height="5px" />
+            <!--<g:HorizontalPanel ui:field="custom5Panel" verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">-->
+                <!--<my:widgets.ClearImage width="10px" height="1px"/>-->
+                <!--<g:Label styleName='{style.formLabel}' ui:field="custom5Label" width="120px"/>-->
+                <!--<my:widgets.ClearImage width="2px" height="1px"/>-->
+                <!--<g:TextBox ui:field="custom5Field" width="150px" styleName="{style.formField}"/>-->
+                <!--<my:widgets.ClearImage width="2px" height="1px"/>-->
+                <!--<g:Label ui:field="custom5FieldError" styleName="{style.formError}" width="80px"/>-->
+            <!--</g:HorizontalPanel>-->
 
 
-            <my:panels.profile.gateways.GatewaysMTUPanel ui:field="gatewayMTUPanel"/>
+            <!--<my:widgets.ClearImage width="2px" height="5px" />-->
+
+
+            <my:panels.admin.user.UserButtonPanel ui:field="UserButtonPanel"/>
 
             <my:widgets.ClearImage width="2px" height="2px"/>
         </g:VerticalPanel>
