@@ -14,37 +14,55 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.ted.aggredata.client.panels.admin.user;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
+import com.ted.aggredata.client.events.UserSelectedEvent;
+import com.ted.aggredata.client.events.UserSelectedHandler;
+import com.ted.aggredata.client.guiService.GWTUserService;
+import com.ted.aggredata.client.guiService.GWTUserServiceAsync;
+import com.ted.aggredata.client.panels.admin.user.UserSelectionPanel;
+import com.ted.aggredata.client.panels.admin.user.UserDetailsPanel;
+import com.ted.aggredata.model.User;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 public class UserPanel extends Composite {
-    @UiField
-    FlexTable table;
+
     static Logger logger = Logger.getLogger(UserPanel.class.toString());
 
+    final GWTUserServiceAsync userService = (GWTUserServiceAsync) GWT.create(GWTUserService.class);
     interface MyUiBinder extends UiBinder<Widget, UserPanel> {
     }
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
+    @UiField
+    UserDetailsPanel UserDetailsPanel;
+    @UiField
+    UserSelectionPanel UserSelectionPanel;
+    List<User> userList;
+
     public UserPanel() {
-        setupTable();
         initWidget(uiBinder.createAndBindUi(this));
+
+//        UserDetailsPanel.setEnabled(false);
+//
+//        //Add a handler to update the details section when a gateway is selected
+//        UserSelectionPanel.addUserSelectedHandler(new UserSelectedHandler() {
+//            @Override
+//            public void onGatewaySelected(UserSelectedEvent event) {
+//                logger.fine("User Selected: " + event.getUser());
+//                final User selectedUser = event.getUser();
+//                UserDetailsPanel.setUser(selectedUser);
+//            }
+//        });
+
     }
 
-    private void setupTable() {
-        table = new FlexTable();
-        table.setText(0, 0, "Header 1");
-        table.setText(0, 1, "Header 2");
-        table.insertRow(1);
-    }
 }
