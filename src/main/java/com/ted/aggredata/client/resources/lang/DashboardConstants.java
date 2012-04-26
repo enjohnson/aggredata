@@ -270,4 +270,15 @@ public interface DashboardConstants extends Constants {
     String adminInstructions();
 
     String yourUsers();
+    
+    String userDetails();
+    
+    String firstNameField();
+    
+    String lastNameField();
+    
+    String middleNameField();
+    
+    String usernameField();
+
 }
