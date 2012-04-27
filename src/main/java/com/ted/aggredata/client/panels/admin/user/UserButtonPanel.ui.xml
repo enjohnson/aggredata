@@ -17,14 +17,51 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-        >
+             xmlns:my='urn:import:com.ted.aggredata.client'>
     <ui:style src="../../Global.css"/>
 
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
     <g:CaptionPanel ui:field="captionPanel" width="320px" styleName="{style.captionHeader}">
         <g:ScrollPanel width="320px" height="175px">
-            <g:VerticalPanel ui:field="userButtonPanel" horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP"/>
+            <g:HorizontalPanel ui:field="userButtonPanel" horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
+
+                <g:VerticalPanel horizontalAlignment="ALIGN_LEFT">
+                    <g:HorizontalPanel ui:field="deleteUserPanel" horizontalAlignment="ALIGN_LEFT">
+                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.LargeButton ui:field="deleteUser" buttonString="Delete User"/>
+                        <my:widgets.ClearImage width="15px" height="30"/>
+                    </g:HorizontalPanel>
+
+                    <my:widgets.ClearImage width="2px" height="5"/>
+
+                    <g:HorizontalPanel ui:field="createUserPanel" horizontalAlignment="ALIGN_LEFT">
+                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.LargeButton ui:field="createUser" buttonString="Create User"/>
+                        <my:widgets.ClearImage width="15px" height="30"/>
+                    </g:HorizontalPanel>
+
+                </g:VerticalPanel>
+
+                <my:widgets.ClearImage width="20px" height="3"/>
+
+                <g:VerticalPanel horizontalAlignment="ALIGN_LEFT">
+                    <g:HorizontalPanel ui:field="changeUsernamePanel" horizontalAlignment="ALIGN_LEFT">
+                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.LargeButton ui:field="changeUsername" buttonString="Edit Username"/>
+                        <my:widgets.ClearImage width="15px" height="30"/>
+                    </g:HorizontalPanel>
+
+                    <my:widgets.ClearImage width="2px" height="5"/>
+
+                    <g:HorizontalPanel ui:field="changePasswordPanel" horizontalAlignment="ALIGN_LEFT">
+                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.LargeButton ui:field="changePassword" buttonString="Edit Password"/>
+                        <my:widgets.ClearImage width="15px" height="30"/>
+                    </g:HorizontalPanel>
+
+                </g:VerticalPanel>
+            </g:HorizontalPanel>
         </g:ScrollPanel>
     </g:CaptionPanel>
 
