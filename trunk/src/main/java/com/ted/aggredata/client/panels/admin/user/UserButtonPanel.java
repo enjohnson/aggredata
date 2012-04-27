@@ -18,38 +18,138 @@
 package com.ted.aggredata.client.panels.admin.user;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.*;
+import com.ted.aggredata.client.Aggredata;
+import com.ted.aggredata.client.guiService.GWTUserService;
+import com.ted.aggredata.client.guiService.GWTUserServiceAsync;
+import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.panels.profile.gateways.MTUListRow;
 import com.ted.aggredata.client.panels.profile.gateways.MTUListRowHeader;
+import com.ted.aggredata.client.widgets.HugeButton;
+import com.ted.aggredata.client.widgets.LargeButton;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.MTU;
+import com.ted.aggredata.model.User;
 
 import java.util.List;
 import java.util.logging.Logger;
 
 public class UserButtonPanel extends Composite {
-
+    final User user;
     static Logger logger = Logger.getLogger(UserButtonPanel.class.toString());
 
     interface MyUiBinder extends UiBinder<Widget, UserButtonPanel> {
     }
 
+    private String uname = "";
+    private int unameLength = 5;
+    private String password = "";
+    private int passLength = 5;
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-
+    final GWTUserServiceAsync gwtUserService = (GWTUserServiceAsync) GWT.create(GWTUserService.class);
     @UiField
-    VerticalPanel userButtonPanel;
+    HorizontalPanel userButtonPanel;
     @UiField
     CaptionPanel captionPanel;
+    @UiField
+    LargeButton deleteUser;
+    @UiField
+    LargeButton createUser;
+    @UiField
+    LargeButton changePassword;
+    @UiField
+    LargeButton changeUsername;
 
     public UserButtonPanel() {
         initWidget(uiBinder.createAndBindUi(this));
         captionPanel.setCaptionHTML("<span style='color:white'>Options</span>");
+        user = Aggredata.GLOBAL.getSessionUser();
+        changePassword.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                changePword();
+                //Window.alert("Reset clicked!");
+            }
+        });
 
+        changeUsername.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                changeUname();
+                //Window.alert("Reset clicked!");
+            }
+        });
+
+        createUser.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                //addUser();
+                //Window.alert("Reset clicked!");
+            }
+        });
+
+        deleteUser.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                //removeUser();
+                //Window.alert("Reset clicked!");
+            }
+        });
     }
+
+    private void changeUname() {
+        boolean confirm;
+        uname = Window.prompt("Please enter in a new username", "");
+        if (uname.length() >= unameLength){
+            confirm = Window.confirm("Are you sure?");
+            if (confirm) {
+                gwtUserService.changeUsername(user, uname, new TEDAsyncCallback<User>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        Window.alert("Username Changed.");
+                    }
+                });
+            }
+        }
+        else if (uname.length() < unameLength & uname.length() > 0 )
+        {
+            Window.alert("Username must be " + unameLength + " characters or greater.");
+        }
+        else {
+            Window.alert("No Username was entered.");
+        }
+    }
+
+    //TODO: Make the username/password a dialog. Also use resource strings.
+
+    private void changePword() {
+        boolean confirm;
+        password = Window.prompt("Please enter in a new password", "");
+        if (password.length() >= passLength){
+            confirm = Window.confirm("Are you sure?");
+            if (confirm) {
+                gwtUserService.changePassword(user, password, new TEDAsyncCallback<User>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        Window.alert("Password Changed.");
+                    }
+                });
+            }
+        }
+        else if (password.length() < passLength & password.length() > 0 )
+        {
+            Window.alert("Password must be " + passLength + " characters or greater.");
+        }
+        else
+        {
+            Window.alert("No Password was entered.");
+        }
+    }
+
 
 }
