@@ -86,7 +86,7 @@ public class EnergyDataHistoryDate implements Serializable, Comparable<EnergyDat
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("EnergyDataHistoryDate[");
         sb.append("year=").append(year);
         sb.append(",month=").append(month);

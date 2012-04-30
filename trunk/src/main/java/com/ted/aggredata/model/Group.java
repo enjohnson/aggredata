@@ -104,7 +104,7 @@ public class Group extends AggredataModel implements Serializable {
 
     @Override
     public String toString() {
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         b.append("Group{");
         b.append("id:" + getId());
         b.append(", description:" + description);

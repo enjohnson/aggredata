@@ -161,7 +161,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
     protected Options createOptions() {
 
         DateTimeFormat dateTimeFormat = getDateTimeFormat();
-        StringBuffer title = new StringBuffer();
+        StringBuilder title = new StringBuilder();
 
         title.append(StringUtil.toTitleCase(getHistoryType().toString()));
         title.append(" ");
@@ -247,7 +247,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         //Only show NET if we have more than one gateway in the group.
         if (historyResult.getGatewayList().size() > 1)
         {
-            StringBuffer descriptionBuffer = new StringBuffer();
+            StringBuilder descriptionBuffer = new StringBuilder();
             descriptionBuffer.append("Total " + StringUtil.toTitleCase(graphType.toString()));
 
             if (graphType.equals(Enums.GraphType.ENERGY)) {
@@ -272,7 +272,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
 
         for (Gateway gateway: historyResult.getGatewayList()) {
-            StringBuffer descriptionBuffer = new StringBuffer();
+            StringBuilder descriptionBuffer = new StringBuilder();
             descriptionBuffer.append(gateway.getDescription());
 
             if (graphType.equals(Enums.GraphType.ENERGY)) {

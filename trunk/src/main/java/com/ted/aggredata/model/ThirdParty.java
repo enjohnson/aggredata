@@ -54,7 +54,7 @@ public class ThirdParty extends AggredataModel implements Serializable {
 
     @Override
     public String toString() {
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         b.append("ThirdParty{");
         b.append("id:" + getId());
         b.append(", description:" + description);

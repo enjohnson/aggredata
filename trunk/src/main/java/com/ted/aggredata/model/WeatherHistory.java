@@ -87,7 +87,7 @@ public class WeatherHistory extends AggredataModel implements Serializable {
 
     @Override
     public String toString() {
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         b.append("WeatherHistory{");
         b.append("id:" + getId());
         b.append(", weatherLocationId: " + weatherLocationId);

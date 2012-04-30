@@ -64,7 +64,7 @@ public class ThirdPartyAccess extends AggredataModel implements Serializable {
 
     @Override
     public String toString() {
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         b.append("ThirdPartyAccess{");
         b.append("id:" + getId());
         b.append(", userId:" + userId);

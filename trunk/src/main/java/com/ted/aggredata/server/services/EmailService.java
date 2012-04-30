@@ -15,27 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.client.guiService;
+package com.ted.aggredata.server.services;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.ted.aggredata.model.GlobalPlaceholder;
+import com.ted.aggredata.model.User;
 
-public interface UserSessionServiceAsync {
-    void logon(String username, String password, AsyncCallback<GlobalPlaceholder> async);
-
-    void logoff(AsyncCallback<Void> async);
-
-    /**
-     * Checks to see if the user is currently in a valid/logged in session.
-     *
-     * @return
-     */
-    void getUserFromSession(AsyncCallback<GlobalPlaceholder> async);
+/**
+ * Interface for the Email subsystem
+ */
+public interface EmailService {
 
     /**
-     * Resets the password for the given user
-     *
-     * @param username
+     * Requests that the reset password email be sent to the specified user
+     * @param user
      */
-    void resetPassword(String username, AsyncCallback<Void> async);
+    public void sendResetPassword(User user);
+
 }

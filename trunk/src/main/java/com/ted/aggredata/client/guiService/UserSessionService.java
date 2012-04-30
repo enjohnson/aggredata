@@ -49,4 +49,10 @@ public interface UserSessionService extends RemoteService {
      */
     public GlobalPlaceholder getUserFromSession();
 
+    /**
+     * Resets the password for the given user
+     * @param username
+     */
+    public void resetPassword(String username);
+
 }
