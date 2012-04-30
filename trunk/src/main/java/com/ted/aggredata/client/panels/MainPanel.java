@@ -125,6 +125,7 @@ public class MainPanel extends Composite {
                 tabNavigationPanel.clear();
                 contentPanel.clear();
                 sidePanel.clear();
+                loadingPopup.hide();
                 if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.ADMIN) {
                     tabNavigationPanel.add(systemAdministrationDashboardPanel);
                     contentPanel.add(new UserPanel());
@@ -161,6 +162,7 @@ public class MainPanel extends Composite {
             @Override
             public void onTabClicked(TabClickedEvent event) {
                 contentPanel.clear();
+                loadingPopup.hide();
 
                 switch (event.getTabIndex()) {
                     case 0: {
@@ -224,7 +226,7 @@ public class MainPanel extends Composite {
             @Override
             public void onTabClicked(TabClickedEvent event) {
                 contentPanel.clear();
-
+                loadingPopup.hide();
                 switch (event.getTabIndex()) {
                     case 0: {
                         contentPanel.add(new UserPanel());
