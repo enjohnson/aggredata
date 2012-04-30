@@ -53,3 +53,15 @@
     }
 
 
+    .clickableLink {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        text-decoration: underline;
+        color: red;
+        text-align: left;
+        font-size: 8pt;
+        vertical-align: middle;
+        cursor: pointer;
+        cursor: hand;
+    }
+
+

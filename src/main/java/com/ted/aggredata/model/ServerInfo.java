@@ -31,6 +31,12 @@ public class ServerInfo implements Serializable {
     private int postDelay;
     private boolean highPrecision;
     private String timezone;
+    private boolean allowRegistration;
+    private boolean allowPasswordReset;
+    private String fromAddress;
+    private String adminEmailAddress;
+
+
 
     public ServerInfo() {
     }
@@ -84,9 +90,42 @@ public class ServerInfo implements Serializable {
         this.timezone = timezone;
     }
 
+
+    public boolean isAllowRegistration() {
+        return allowRegistration;
+    }
+
+    public void setAllowRegistration(boolean allowRegistration) {
+        this.allowRegistration = allowRegistration;
+    }
+
+    public boolean isAllowPasswordReset() {
+        return allowPasswordReset;
+    }
+
+    public void setAllowPasswordReset(boolean allowPasswordReset) {
+        this.allowPasswordReset = allowPasswordReset;
+    }
+
+    public String getFromAddress() {
+        return fromAddress;
+    }
+
+    public void setFromAddress(String fromAddress) {
+        this.fromAddress = fromAddress;
+    }
+
+    public String getAdminEmailAddress() {
+        return adminEmailAddress;
+    }
+
+    public void setAdminEmailAddress(String adminEmailAddress) {
+        this.adminEmailAddress = adminEmailAddress;
+    }
+
     @Override
     public String toString() {
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         b.append("ServerInfo{");
         b.append("ServerName:" + getServerName());
         b.append(", ServerPort:" + getServerPort());

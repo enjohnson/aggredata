@@ -42,7 +42,9 @@ public class TEDButton extends Composite {
     public
     @UiConstructor
     TEDButton(ImageResource imgResource, String text, String width, String height, String style, int textOffset) {
+
         clearImage = new ClearImage(width, height);
+
         buttonImage = new Image(imgResource);
         buttonImage.setSize(width, height);
         mainPanel.setSize(width, height);
@@ -53,6 +55,11 @@ public class TEDButton extends Composite {
         mainPanel.add(clearImage, 0, 0);
         enabled = true;
         initWidget(mainPanel);
+
+        clearImage.setStylePrimaryName(style);
+        buttonImage.setStylePrimaryName(style);
+        label.setStyleName(style);
+
     }
 
     public void setEnabled(boolean enabled) {

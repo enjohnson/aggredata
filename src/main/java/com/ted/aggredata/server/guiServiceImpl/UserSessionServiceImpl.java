@@ -22,6 +22,7 @@ import com.ted.aggredata.model.CustomFieldInfo;
 import com.ted.aggredata.model.GlobalPlaceholder;
 import com.ted.aggredata.model.ServerInfo;
 import com.ted.aggredata.model.User;
+import com.ted.aggredata.server.services.EmailService;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.services.GroupService;
 import com.ted.aggredata.server.services.UserService;
@@ -54,6 +55,8 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
     @Autowired
     CustomFieldInfo groupsCustomFields;
 
+    @Autowired
+    EmailService emailService;
 
 
     @Autowired
@@ -85,6 +88,7 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
         logger.info("Authentication success: " + SecurityContextHolder.getContext().getAuthentication());
         User user = userService.getUserByUserName(username);
         getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
+
         return loadGlobal(user);
     }
 
@@ -110,9 +114,10 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
         //Check to make sure the user has a valid spring securtity session
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             logger.info("User not authenticated");
-            return null;
+            GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
+            globalPlaceholder.setServerInfo(serverInfo);
+            return globalPlaceholder;
         }
-
 
         //Grab the user object from the session
         if (logger.isInfoEnabled()) logger.info("Looking up user session");
@@ -120,7 +125,10 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
         if (user == null) {
             logger.info("No user found in session");
-            return null;
+            GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
+            globalPlaceholder.setServerInfo(serverInfo);
+            return globalPlaceholder;
+
         }
 
         if (logger.isDebugEnabled()) logger.info("Found user object for: " + user);
@@ -128,6 +136,21 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
         return loadGlobal(user);
     }
+
+    @Override
+    public void resetPassword(String username) {
+        logger.info("Resetting password request set for " + username);
+        User user = userService.getUserByUserName(username);
+        if (user == null) {
+            logger.warn("User" + username + " not registered in system");
+            return;
+        }
+        emailService.sendResetPassword(user);
+
+
+    }
+
+
 
     private GlobalPlaceholder loadGlobal(User user) {
         if (logger.isDebugEnabled()) logger.debug("Loading Globals for " + user);

@@ -84,7 +84,7 @@ public class GlobalPlaceholder implements Serializable {
 
     @Override
     public String toString() {
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         b.append("GlobalPlaceholder{");
         b.append("User:" + sessionUser.toString());
         b.append(", Server:" + serverInfo.toString());

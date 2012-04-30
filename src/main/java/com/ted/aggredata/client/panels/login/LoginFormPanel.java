@@ -51,14 +51,10 @@ public class LoginFormPanel extends Composite {
     LargeButton submitButton;
     @UiField
     Label formErrorLabel;
-    @UiField
-    Label usernameLabel;
-    @UiField
-    Label passwordLabel;
 
     static Logger logger = Logger.getLogger(LoginFormPanel.class.toString());
     final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
-    DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
+
 
     interface MyUiBinder extends UiBinder<Widget, LoginFormPanel> {
     }
@@ -69,8 +65,6 @@ public class LoginFormPanel extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
 
         formErrorLabel.setText(" ");
-        usernameLabel.setText(dashboardConstants.userNameLabel());
-        passwordLabel.setText(dashboardConstants.passwordLabel());
 
         mainPanel.addKeyPressHandler(new KeyPressHandler() {
             @Override

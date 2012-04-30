@@ -135,7 +135,7 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
      * Updates the title on the page
      */
     private void updateTitle(){
-        StringBuffer title = new StringBuffer();
+        StringBuilder title = new StringBuilder();
         String interval =  Enums.HistoryType.MINUTE.toString();
         if (event.getInterval() > 1)  interval = event.getInterval() + " " + StringUtil.toTitleCase(interval);
         else interval = StringUtil.toTitleCase(interval);
@@ -251,7 +251,7 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
         //Only show NET if we have more than one gateway in the group.
         if (historyResult.getGatewayList().size() > 1)
         {
-            StringBuffer descriptionBuffer = new StringBuffer();
+            StringBuilder descriptionBuffer = new StringBuilder();
             descriptionBuffer.append("Total " + StringUtil.toTitleCase(event.getGraphType().toString()));
 
             if (event.getGraphType().equals(Enums.GraphType.ENERGY)) {
@@ -277,7 +277,7 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
 
 
         for (Gateway gateway: historyResult.getGatewayList()) {
-            StringBuffer descriptionBuffer = new StringBuffer();
+            StringBuilder descriptionBuffer = new StringBuilder();
             descriptionBuffer.append(gateway.getDescription());
 
             if (event.getGraphType().equals(Enums.GraphType.ENERGY)) {

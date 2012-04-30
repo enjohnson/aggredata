@@ -44,7 +44,21 @@
         <property name="postDelay" value="${server.postDelay?1}"/>
         <property name="highPrecision" value="${server.useHighPrecision?true}"/>
         <property name="timezone" value="${server.timezone?US/Eastern}"/>
+        <property name="allowRegistration" value="${server.allowRegistration?true}"/>
+        <property name="allowPasswordReset" value="${server.allowPasswordReset?true}"/>
+        <property name="fromAddress" value="${server.timezone?donotreply@theenergydetective.com}"/>
+        <property name="adminEmailAddress" value="${server.timezone?donotreply@theenergydetective.com}"/>
+
     </bean>
+
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${smtp.host?localhost}"/>
+        <property name="port" value="${smtp.port?25}"/>
+        <property name="username" value="${smtp.username}"/>
+        <property name="password" value="${smtp.username}"/>
+    </bean>
+
 
     <bean id="usersCustomFields" class="com.ted.aggredata.model.CustomFieldInfo">
         <property name="custom1" value="${users.custom1?Custom 1:}"/>
@@ -90,6 +104,16 @@
     </bean>
 
 
+    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+            <value>
+                resource.loader=class
+                class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+            </value>
+        </property>
+    </bean>
+
+
     <!-- Application Beans -->
     <bean name="userDAO" class=" com.ted.aggredata.server.dao.UserDAO"/>
     <bean name="groupDAO" class=" com.ted.aggredata.server.dao.GroupDAO"/>
@@ -103,5 +127,6 @@
     <bean name="groupService" class="com.ted.aggredata.server.services.impl.GroupServiceImpl" scope="session"/>
     <bean name="gatewayService" class="com.ted.aggredata.server.services.impl.GatewayServiceImpl" scope="session"/>
     <bean name="historyService" class="com.ted.aggredata.server.services.impl.HistoryServiceImpl" scope="session"/>
+    <bean name="emailService" class="com.ted.aggredata.server.services.impl.EmailServiceImpl" scope="session"/>
 
 </beans>

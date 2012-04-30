@@ -113,7 +113,7 @@ public class EnergyData implements Serializable {
 
     @Override
     public String toString() {
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         b.append("EnergyData{");
         b.append("gatewayId:" + gatewayId);
         b.append(", mtuId:" + mtuId);

@@ -15,27 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ted.aggredata.client.guiService;
+package com.ted.aggredata.client.resources.lang;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.ted.aggredata.model.GlobalPlaceholder;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.Constants;
 
-public interface UserSessionServiceAsync {
-    void logon(String username, String password, AsyncCallback<GlobalPlaceholder> async);
+public interface LogonConstants extends Constants {
 
-    void logoff(AsyncCallback<Void> async);
+    public static final LogonConstants INSTANCE = GWT.create(LogonConstants.class);
 
-    /**
-     * Checks to see if the user is currently in a valid/logged in session.
-     *
-     * @return
-     */
-    void getUserFromSession(AsyncCallback<GlobalPlaceholder> async);
 
-    /**
-     * Resets the password for the given user
-     *
-     * @param username
-     */
-    void resetPassword(String username, AsyncCallback<Void> async);
+    String passwordLabel();
+
+    String userNameLabel();
+
+    String passwordMessage();
+
+    String passwordPrompt();
 }

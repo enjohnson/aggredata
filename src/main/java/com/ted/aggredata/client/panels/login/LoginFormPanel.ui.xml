@@ -20,12 +20,14 @@
              xmlns:my='urn:import:com.ted.aggredata.client'>
     <ui:style src="LoginPanel.css"/>
     <ui:with field='res' type='com.ted.aggredata.client.resources.DashboardImageResource'/>
+    <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.LogonConstants'/>
+
     <g:FocusPanel ui:field="mainPanel">
         <g:VerticalPanel styleName='{style.mainBody}' horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
             <g:Label ui:field="formErrorLabel" styleName="{style.errorTextTitle}" height="12px"/>
             <my:widgets.ClearImage width="1px" height="10px"/>
             <g:HorizontalPanel>
-                <g:Label width="200px" styleName="{style.loginPanelText}" ui:field="usernameLabel"/>
+                <g:Label width="200px" styleName="{style.loginPanelText}" text="{txtRes.userNameLabel}"/>
                 <my:widgets.ClearImage width="3px" height="1px"/>
                 <g:TextBox ui:field="loginBox" width="200px"/>
                 <my:widgets.ClearImage width="3px" height="1px"/>
@@ -33,17 +35,24 @@
             </g:HorizontalPanel>
             <my:widgets.ClearImage width="1px" height="5px"/>
             <g:HorizontalPanel>
-                <g:Label width="200px" styleName="{style.loginPanelText}" ui:field="passwordLabel"/>
+                <g:Label width="200px" styleName="{style.loginPanelText}" text="{txtRes.passwordLabel}"/>
                 <my:widgets.ClearImage width="3px" height="1px"/>
                 <g:PasswordTextBox ui:field="passwordTextBox" width="200px"/>
                 <my:widgets.ClearImage width="3px" height="1px"/>
                 <g:Label ui:field="completionLabel2" styleName="{style.errorText}"/>
             </g:HorizontalPanel>
+            <my:widgets.ClearImage width="1px" height="1px"/>
+            <g:HorizontalPanel>
+                <my:widgets.ClearImage width="223px" height="1px"/>
+                <my:panels.login.ResetPasswordPanel/>
+            </g:HorizontalPanel>
+
             <my:widgets.ClearImage width="1px" height="20px"/>
             <g:HorizontalPanel>
-                <my:widgets.ClearImage width="350px" height="1px"/>
+                <my:widgets.ClearImage width="400px" height="1px"/>
                 <my:widgets.LargeButton ui:field="submitButton" buttonString="Submit"/>
             </g:HorizontalPanel>
+
         </g:VerticalPanel>
     </g:FocusPanel>
 </ui:UiBinder>
