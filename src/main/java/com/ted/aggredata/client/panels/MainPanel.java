@@ -243,8 +243,7 @@ public class MainPanel extends Composite {
             profileDashboardPanel.setSelectedTab(3);
             tabNavigationPanel.add(profileDashboardPanel, 0, 0);
             contentPanel.add(new ActivationPanel());
-
-
+            loadingPopup.hide();
         } else {
             //Go to the month page by default
             graphDashboardPanel.setSelectedTab(0);
