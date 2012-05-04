@@ -52,6 +52,10 @@ public interface DashboardImageResource extends ClientBundle {
     @Source("images/smallPanel.png")
     ImageResource smallPanel();
 
+    @Source("images/medPanel.png")
+    ImageResource medPanel();
+
+
     @Source("images/aggreDataMedium.png")
     ImageResource aggreDataMedium();
 
@@ -71,4 +75,9 @@ public interface DashboardImageResource extends ClientBundle {
     @Source("images/sideDivider.png")
     ImageResource sideDivider();
 
+    @Source("images/joinPanel.png")
+    ImageResource joinPanel();
+
+    @Source("images/aggreDataNewUser.png")
+    ImageResource newUserTitle();
 }

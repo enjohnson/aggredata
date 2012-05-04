@@ -110,12 +110,13 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
     @Override
     public GlobalPlaceholder getUserFromSession() {
+        GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
+        globalPlaceholder.setServerInfo(serverInfo);
+        globalPlaceholder.setUserCustomFields(usersCustomFields);
 
         //Check to make sure the user has a valid spring securtity session
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             logger.info("User not authenticated");
-            GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
-            globalPlaceholder.setServerInfo(serverInfo);
             return globalPlaceholder;
         }
 
@@ -125,8 +126,6 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
         if (user == null) {
             logger.info("No user found in session");
-            GlobalPlaceholder globalPlaceholder = new GlobalPlaceholder();
-            globalPlaceholder.setServerInfo(serverInfo);
             return globalPlaceholder;
 
         }
