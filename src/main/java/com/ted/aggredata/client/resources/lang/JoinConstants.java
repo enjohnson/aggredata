@@ -20,21 +20,33 @@ package com.ted.aggredata.client.resources.lang;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Constants;
 
-public interface LogonConstants extends Constants {
+public interface JoinConstants extends Constants {
 
-    public static final LogonConstants INSTANCE = GWT.create(LogonConstants.class);
-
+    public static final JoinConstants INSTANCE = GWT.create(JoinConstants.class);
 
     String passwordLabel();
 
     String userNameLabel();
 
-    String passwordMessage();
+    String confirmPasswordLabel();
 
-    String passwordPrompt();
+    String confirmUserNameLabel();
 
-    String joinRequestPrompt();
+    String joinHeader();
 
+    String pendingApprovalError();
 
-    String joinButtonText();
+    String notEmailError();
+
+    String alreadyExists();
+
+    String confirmUsernameError();
+
+    String confirmPasswordError();
+
+    String invalid();
+
+    String noMatch();
+
+    String required();
 }

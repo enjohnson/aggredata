@@ -177,4 +177,12 @@
 
 
 
+    .joinHeaderText {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #d1d1d1;
+        text-align: center;
+        font-size: 8pt;
+        vertical-align: middle;
+    }
+
 

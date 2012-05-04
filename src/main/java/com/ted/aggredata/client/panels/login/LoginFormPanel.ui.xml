@@ -49,10 +49,18 @@
 
             <my:widgets.ClearImage width="1px" height="20px"/>
             <g:HorizontalPanel>
-                <my:widgets.ClearImage width="400px" height="1px"/>
+
+                <g:VerticalPanel>
+                    <my:widgets.ClearImage width="200px" height="10px"/>
+                    <my:panels.login.RequestJoinPanel/>
+                </g:VerticalPanel>
+                <my:widgets.ClearImage width="200px" height="1px"/>
                 <my:widgets.LargeButton ui:field="submitButton" buttonString="Submit"/>
             </g:HorizontalPanel>
 
+
+
         </g:VerticalPanel>
+
     </g:FocusPanel>
 </ui:UiBinder>
