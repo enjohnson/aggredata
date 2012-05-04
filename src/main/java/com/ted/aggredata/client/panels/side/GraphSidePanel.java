@@ -136,7 +136,7 @@ public class GraphSidePanel extends Composite {
                     @Override
                     public void onSuccess(String s) {
                          logger.fine("Redirecting to servlet using key " + s);
-                         String url = "historyexport?key=" + s;
+                         String url = "/aggredata/historyexport?key=" + s;
                          logger.fine("OPENING URL" + url);
                          setEnabled(true);
                          Window.open(url, "_BLANK", "");
