@@ -70,6 +70,7 @@ public class ActivationServlet extends HttpServlet {
                 config.getServletContext());
     }
 
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("ActivationServlet POST received");
 

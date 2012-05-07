@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
      *
      * @param user
      */
-    private void checkUserConfig(User user) {
+    public void checkUserConfig(User user) {
         if (logger.isDebugEnabled()) logger.debug("Checking user configuration for " + user);
 
         //Check to make sure an activation key is generated. This should be done on
@@ -151,5 +151,11 @@ public class UserServiceImpl implements UserService {
         }
 
 
+    }
+
+    @Override
+    public String getPassword(User user) {
+        if (logger.isDebugEnabled()) logger.info("Looking up password for " + user);
+        return userDao.getPassword(user);
     }
 }

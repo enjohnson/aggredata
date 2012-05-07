@@ -100,6 +100,11 @@
         <servlet-class>com.ted.aggredata.server.web.servlets.ActivationServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>AccountActivationServlet</servlet-name>
+        <servlet-class>com.ted.aggredata.server.web.servlets.AccountActivationServlet</servlet-class>
+    </servlet>
+
 
     <servlet>
         <servlet-name>HistoryExportServlet</servlet-name>
@@ -148,6 +153,11 @@
     <servlet-mapping>
         <servlet-name>ActivationServlet</servlet-name>
         <url-pattern>/activate</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AccountActivationServlet</servlet-name>
+        <url-pattern>/accountActivate</url-pattern>
     </servlet-mapping>
 
 
