@@ -98,4 +98,7 @@ public interface UserService {
     public User getUserByActivationKey(String key);
 
 
+    public void checkUserConfig(User user);
+
+    public String getPassword(User user);
 }

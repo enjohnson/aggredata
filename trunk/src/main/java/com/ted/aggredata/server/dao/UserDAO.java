@@ -23,6 +23,7 @@ import com.ted.aggredata.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.util.LinkedCaseInsensitiveMap;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,6 +49,7 @@ public class UserDAO extends AbstractDAO<User> {
     public static final String UPDATE_PASSWORD = "update aggredata.user set password=? where id = ?";
     public static final String UNIQUE_KEY_CHECK = "select count(*) from  aggredata.user where activationKey=?";
     public static final String SAVE_USER_QUERY_SESSION = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?, state=?, firstName=?, lastName=?, middleName=?, address=?, city=?, addrState=?, zip=?, custom1=?, custom2=?, custom3=?, custom4=?, custom5=?, companyName=?, PhoneNumber=?, timezone=? where id=?";
+    public static final String LOOKUP_PASSWORD = "select password from  aggredata.user where id=?";
 
     //Delete queries if a user is deleted
 
@@ -171,5 +173,19 @@ public class UserDAO extends AbstractDAO<User> {
      */
     public Boolean isUniqueKey(String key) {
         return (getJdbcTemplate().queryForInt(UNIQUE_KEY_CHECK, key) == 0);
+    }
+
+    /**
+     * Used server side to lookup the password (for activation authentication
+     * @param user
+     * @return
+     */
+    public String getPassword(User user){
+        List result =  getJdbcTemplate().queryForList(LOOKUP_PASSWORD, user.getId());
+        if (result != null && result.size() > 0){
+            LinkedCaseInsensitiveMap map = (LinkedCaseInsensitiveMap)result.get(0);
+            return (String)map.get("password");
+        }
+        return null;
     }
 }
