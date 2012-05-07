@@ -236,6 +236,12 @@
             <version>1.6.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.gatein.captcha</groupId>
+            <artifactId>simplecaptcha</artifactId>
+            <version>1.1.1-GA-Patch01</version>
+        </dependency>
+
     </dependencies>
 
 

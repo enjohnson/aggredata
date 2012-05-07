@@ -26,6 +26,7 @@ import com.ted.aggredata.server.services.EmailService;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.services.GroupService;
 import com.ted.aggredata.server.services.UserService;
+import nl.captcha.Captcha;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import javax.servlet.http.HttpSession;
 
 public class UserSessionServiceImpl extends SpringRemoteServiceServlet implements UserSessionService {
 
@@ -85,10 +88,15 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
             return null;
         }
 
-        logger.info("Authentication success: " + SecurityContextHolder.getContext().getAuthentication());
+        if (logger.isInfoEnabled()) logger.info("Authentication success: " + SecurityContextHolder.getContext().getAuthentication());
         User user = userService.getUserByUserName(username);
-        getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
+        if (user.getAccountState() != User.STATE_ENABLED) {
+            if (logger.isWarnEnabled()) logger.info("User account disabled: " + user);
+            logoff();
+            return null;
+        }
 
+        getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
         return loadGlobal(user);
     }
 
@@ -149,6 +157,30 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
     }
 
+    @Override
+    public int validateCaptcha(String captchaString, String username, String password, User user) {
+        if (!serverInfo.isAllowRegistration()) return  UserSessionService.RESULT_REGISTRATION_DISABLED;
+
+        //Check the captcha
+        HttpSession session = getThreadLocalRequest().getSession();
+        if (serverInfo.isUseCaptcha()) {
+            Captcha captcha = (Captcha) session.getAttribute(Captcha.NAME);
+            if (!captcha.isCorrect(captchaString)) return UserSessionService.RESULT_FAIL_CAPTCHA;
+        }
+
+        //Check dupe email
+        User dupeUser = userService.getUserByUserName(user.getUsername());
+        //Check to make sure the user doesn't exist and hasn't already been activated.
+        if (dupeUser != null && dupeUser.getAccountState() != User.STATE_WAITING_ACTIVATION) return UserSessionService.RESULT_DUPE_USERNAME;
+
+        logger.info("Creating new user " + user);
+        User savedUser = userService.createUser(user);
+        userService.changePassword(savedUser, password);
+
+        //Send the activation
+        emailService.sendActivationEmail(savedUser);
+        return UserSessionService.RESULT_SUCCESS;
+    }
 
 
     private GlobalPlaceholder loadGlobal(User user) {

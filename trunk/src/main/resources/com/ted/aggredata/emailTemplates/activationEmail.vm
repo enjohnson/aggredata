@@ -1,0 +1,14 @@
+<html>
+<body>
+<h3>Dear ${user.username}, </h3>
+<div>
+    Thank you for registering with AggreData. To activate your account, please click on the following link or cut and paste it into our browser.:
+</div>
+<h3><a href="http://${serverInfo.serverName}/aggredata/activate?key=${key}">http://${serverInfo.serverName}/aggredata/activate?key=${key}</a></h3>
+
+Thanks,  <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://${serverInfo.serverName}">AggreData</a>
+
+</body>
+
+</html>

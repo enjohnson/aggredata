@@ -49,4 +49,18 @@ public interface JoinConstants extends Constants {
     String noMatch();
 
     String required();
+
+    String captcha();
+
+    String reloadCaptcha();
+
+    String formErrors();
+
+    String captchaError();
+
+    String captchaRequired();
+
+    String activationTitle();
+
+    String activationDescription();
 }

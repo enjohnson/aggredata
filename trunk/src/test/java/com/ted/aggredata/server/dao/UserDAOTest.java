@@ -30,7 +30,7 @@ public class UserDAOTest {
         user.setActivationKey(activationKey);
         user.setDefaultGroupId(1);
         user.setRole("ROLE_USER");
-        user.setState(true);
+        user.setAccountState(User.STATE_ENABLED);
         
         //Test create
         User createdUser = userDAO.create(user);
@@ -38,14 +38,14 @@ public class UserDAOTest {
         Assert.assertEquals(createdUser.getUsername(), username);
         Assert.assertEquals(createdUser.getActivationKey(), activationKey);
         Assert.assertEquals(createdUser.getRole(), "ROLE_USER");
-        Assert.assertEquals(createdUser.isState(), true);
+        Assert.assertEquals(createdUser.getAccountState(), User.STATE_ENABLED);
         
         //Test Save
         String password2 = TestUtil.getUniqueKey();
         String activationKey2 = TestUtil.getUniqueKey();
 
         createdUser.setActivationKey(activationKey2);
-        createdUser.setState(false);
+        createdUser.setAccountState(User.STATE_DISABLED);
         createdUser.setRole("ROLE_NONE");
         userDAO.save(createdUser);
 
@@ -55,7 +55,7 @@ public class UserDAOTest {
         Assert.assertEquals(savedUser.getUsername(), username);
         Assert.assertEquals(savedUser.getActivationKey(), activationKey2);
         Assert.assertEquals(savedUser.getRole(), "ROLE_NONE");
-        Assert.assertEquals(savedUser.isState(), false);
+        Assert.assertEquals(savedUser.getAccountState(), User.STATE_DISABLED);
 
         savedUser = userDAO.getUserByKey("nokey");
         Assert.assertNull(savedUser);
@@ -65,7 +65,7 @@ public class UserDAOTest {
         Assert.assertEquals(savedUser.getUsername(), username);
         Assert.assertEquals(savedUser.getActivationKey(), activationKey2);
         Assert.assertEquals(savedUser.getRole(), "ROLE_NONE");
-        Assert.assertEquals(savedUser.isState(), false);
+        Assert.assertEquals(savedUser.getAccountState(), User.STATE_DISABLED);
 
 
         userDAO.delete(savedUser);

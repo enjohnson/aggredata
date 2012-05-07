@@ -98,6 +98,23 @@
         vertical-align: middle;
     }
 
+    .formFieldError {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: red;
+        text-align: left;
+        font-size: 9pt;
+        vertical-align: middle;
+    }
+
+
+    .formErrorCentered {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: red;
+        text-align: center;
+        font-size: 9pt;
+        vertical-align: middle;
+    }
+
     .formLabelLeft {
         font-family: Arial, Verdana, Trebuchet, sans-serif;
         color: #FFF;
@@ -185,4 +202,32 @@
         vertical-align: middle;
     }
 
+
+    .clickableRedLink {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        text-decoration: underline;
+        color: red;
+        text-align: left;
+        font-size: 8pt;
+        vertical-align: middle;
+        cursor: pointer;
+        cursor: hand;
+    }
+
+    .activateTitleText {
+
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #d1d1d1;
+        text-align: center;
+        font-size: 16pt;
+        vertical-align: middle;
+    }
+
+    .activateInfoText {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #d1d1d1;
+        text-align: center;
+        font-size: 12pt;
+        vertical-align: middle;
+    }
 

@@ -107,6 +107,22 @@
     </servlet>
 
 
+    <servlet>
+        <servlet-name>CaptchaServlet</servlet-name>
+        <servlet-class>com.ted.aggredata.server.web.servlets.CaptchaServlet
+        </servlet-class>
+        <init-param>
+            <param-name>width</param-name>
+            <param-value>130</param-value>
+        </init-param>
+        <init-param>
+            <param-name>height</param-name>
+            <param-value>50</param-value>
+        </init-param>
+    </servlet>
+
+
+
     <servlet-mapping>
         <servlet-name>UserSessionService</servlet-name>
         <url-pattern>/Aggredata/UserSessionService</url-pattern>
@@ -144,6 +160,12 @@
     <servlet-mapping>
         <servlet-name>EnergyPostServlet</servlet-name>
         <url-pattern>/postData</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>CaptchaServlet</servlet-name>
+        <url-pattern>/captcha.jpg</url-pattern>
     </servlet-mapping>
 
 </web-app>

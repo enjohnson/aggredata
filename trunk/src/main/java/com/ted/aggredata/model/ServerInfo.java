@@ -33,6 +33,7 @@ public class ServerInfo implements Serializable {
     private String timezone;
     private boolean allowRegistration;
     private boolean allowPasswordReset;
+    private boolean useCaptcha;
     private String fromAddress;
     private String adminEmailAddress;
 
@@ -121,6 +122,14 @@ public class ServerInfo implements Serializable {
 
     public void setAdminEmailAddress(String adminEmailAddress) {
         this.adminEmailAddress = adminEmailAddress;
+    }
+
+    public boolean isUseCaptcha() {
+        return useCaptcha;
+    }
+
+    public void setUseCaptcha(boolean useCaptcha) {
+        this.useCaptcha = useCaptcha;
     }
 
     @Override

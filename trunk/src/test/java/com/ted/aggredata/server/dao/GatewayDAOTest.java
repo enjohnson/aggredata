@@ -48,7 +48,7 @@ public class GatewayDAOTest {
         gatewayOwner1.setUsername(TestUtil.getUniqueKey());
         gatewayOwner1.setActivationKey(TestUtil.getUniqueKey());
         gatewayOwner1.setRole("ROLE_USER");
-        gatewayOwner1.setState(true);
+        gatewayOwner1.setAccountState(User.STATE_ENABLED);
 
         gatewayOwner1  = userDAO.create(gatewayOwner1);
         Assert.assertNotNull(gatewayOwner1);
