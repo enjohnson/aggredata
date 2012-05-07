@@ -29,10 +29,15 @@ public class User extends AggredataModel implements Serializable {
     public static String ROLE_USER = "ROLE_USER";
     public static String ROLE_ADMIN = "ROLE_ADMIN";
 
+    public static int STATE_WAITING_ACTIVATION = 0;
+    public static int STATE_ENABLED = 1;
+    public static int STATE_DISABLED = 99;
+
+
 
     private String username;
     private String role;
-    private boolean state;
+    private int accountState;
     private String activationKey;
     private int defaultGroupId;
     private String firstName;
@@ -77,13 +82,7 @@ public class User extends AggredataModel implements Serializable {
         this.role = role;
     }
 
-    public boolean isState() {
-        return state;
-    }
 
-    public void setState(boolean state) {
-        this.state = state;
-    }
 
     public boolean checActivationKey(String activationKey) {
         return activationKey.trim().equals(activationKey);
@@ -225,6 +224,14 @@ public class User extends AggredataModel implements Serializable {
         this.timezone = timezone;
     }
 
+    public int getAccountState() {
+        return accountState;
+    }
+
+    public void setAccountState(int accountState) {
+        this.accountState = accountState;
+    }
+
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
@@ -242,7 +249,7 @@ public class User extends AggredataModel implements Serializable {
     public int hashCode() {
         int result = username != null ? username.hashCode() : 0;
         result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (state ? 1 : 0);
+        result = 31 * result + accountState;
         result = 31 * result + (activationKey != null ? activationKey.hashCode() : 0);
         result = 31 * result + defaultGroupId;
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);

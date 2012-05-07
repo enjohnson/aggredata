@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
     public User createUser(User entity) {
         logger.debug("creating user " + entity);
         User user = userDao.create(entity);
+        user.setAccountState(User.STATE_WAITING_ACTIVATION);
         checkUserConfig(user);
         return user;
     }
@@ -59,7 +60,8 @@ public class UserServiceImpl implements UserService {
 
     public User changeUserStatus(User entity, boolean enabled) {
         logger.debug("Changing enabled state to " + enabled);
-        entity.setState(enabled);
+        if (enabled) entity.setAccountState(User.STATE_ENABLED);
+        else  entity.setAccountState(User.STATE_DISABLED);
         userDao.save(entity);
         return entity;
     }

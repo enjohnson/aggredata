@@ -30,4 +30,10 @@ public interface EmailService {
      */
     public void sendResetPassword(User user);
 
+
+    /***
+     * Sends an activation email to the user.
+     * @param user
+     */
+    public void sendActivationEmail(User user);
 }

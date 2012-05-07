@@ -19,6 +19,7 @@ package com.ted.aggredata.client.guiService;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.ted.aggredata.model.GlobalPlaceholder;
+import com.ted.aggredata.model.User;
 
 public interface UserSessionServiceAsync {
     void logon(String username, String password, AsyncCallback<GlobalPlaceholder> async);
@@ -38,4 +39,14 @@ public interface UserSessionServiceAsync {
      * @param username
      */
     void resetPassword(String username, AsyncCallback<Void> async);
+
+
+    /**
+     * Adds a user to the system. The result code is any errors in registration that have occured.
+     *
+     * @param captchaString
+     * @param user
+     * @return
+     */
+    void validateCaptcha(String captchaString, String username, String password, User user, AsyncCallback<Integer> async);
 }

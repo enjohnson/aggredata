@@ -56,14 +56,14 @@ public class GroupServiceTest {
         testUser.setUsername("grouptestuser@theenergydetective.com");
         testUser.setDefaultGroupId(0);
         testUser.setRole(User.ROLE_USER);
-        testUser.setState(true);
+        testUser.setAccountState(User.STATE_ENABLED);
         userService.createUser(testUser);
         testUser = userService.getUserByUserName("grouptestuser@theenergydetective.com");
 
         testUserMember = new User();
         testUserMember.setUsername("grouptestmember@theenergydetective.com");
         testUserMember.setRole(User.ROLE_USER);
-        testUserMember.setState(true);
+        testUserMember.setAccountState(User.STATE_ENABLED);
         testUserMember  = userService.createUser(testUserMember);
 
 

@@ -33,13 +33,13 @@ public class GroupDAOTest {
         groupOwner1.setUsername(TestUtil.getUniqueKey());
         groupOwner1.setActivationKey(TestUtil.getUniqueKey());
         groupOwner1.setRole("ROLE_USER");
-        groupOwner1.setState(true);
+        groupOwner1.setAccountState(User.STATE_ENABLED);
 
         groupOwner2 = new User();
         groupOwner2.setUsername(TestUtil.getUniqueKey());
         groupOwner2.setActivationKey(TestUtil.getUniqueKey());
         groupOwner2.setRole("ROLE_USER");
-        groupOwner2.setState(true);
+        groupOwner2.setAccountState(User.STATE_ENABLED);
 
         groupOwner1 = userDAO.create(groupOwner1);
         groupOwner2 = userDAO.create(groupOwner2);
@@ -52,11 +52,11 @@ public class GroupDAOTest {
     @After
     public void disableUser()
     {
-        groupOwner1.setState(false);
+        groupOwner1.setAccountState(User.STATE_ENABLED);
         groupOwner1.setRole("ROLE_NONE");
         userDAO.save(groupOwner1);
 
-        groupOwner2.setState(false);
+        groupOwner2.setAccountState(User.STATE_ENABLED);
         groupOwner2.setRole("ROLE_NONE");
         userDAO.save(groupOwner2);
 

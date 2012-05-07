@@ -30,6 +30,7 @@ import com.ted.aggredata.client.dialogs.PasswordResetPopup;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.guiService.UserSessionService;
 import com.ted.aggredata.client.guiService.UserSessionServiceAsync;
+import com.ted.aggredata.client.panels.join.ActivateLinkPanel;
 import com.ted.aggredata.client.panels.join.JoinPanel;
 import com.ted.aggredata.client.widgets.SmallButton;
 

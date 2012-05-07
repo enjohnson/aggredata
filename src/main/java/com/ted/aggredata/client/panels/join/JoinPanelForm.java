@@ -18,16 +18,30 @@
 package com.ted.aggredata.client.panels.join;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.Aggredata;
-import com.ted.aggredata.client.resources.DashboardImageResource;
+import com.ted.aggredata.client.guiService.TEDAsyncCallback;
+import com.ted.aggredata.client.guiService.UserSessionService;
+import com.ted.aggredata.client.guiService.UserSessionServiceAsync;
+import com.ted.aggredata.client.resources.lang.JoinConstants;
 import com.ted.aggredata.client.widgets.ClearImage;
+import com.ted.aggredata.client.widgets.LargeButton;
+import com.ted.aggredata.model.Enums;
+import com.ted.aggredata.model.User;
+
+import java.util.logging.Logger;
 
 
 public class JoinPanelForm extends Composite {
 
+    static Logger logger = Logger.getLogger(JoinPanelForm.class.toString());
+    final JoinConstants joinConstants = JoinConstants.INSTANCE;
+
+    final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
 
     interface MyUiBinder extends UiBinder<Widget, JoinPanelForm> {
     }
@@ -121,17 +135,25 @@ public class JoinPanelForm extends Composite {
     Label custom5Label;
     @UiField
     ClearImage centeringImage;
+    @UiField
+    LargeButton submitButton;
+    @UiField
+    Label formErrorLabel;
+    @UiField
+    ListBox timeZoneField;
+    @UiField
+    CaptchaPanel captchaWidget;
 
 
     public JoinPanelForm() {
         initWidget(uiBinder.createAndBindUi(this));
 
         boolean useCenteringImage = true;
-        if (Aggredata.GLOBAL.getUserCustomFields().getCustom1().trim().length() > 0) useCenteringImage=false;
-        if (Aggredata.GLOBAL.getUserCustomFields().getCustom2().trim().length() > 0) useCenteringImage=false;
-        if (Aggredata.GLOBAL.getUserCustomFields().getCustom3().trim().length() > 0) useCenteringImage=false;
-        if (Aggredata.GLOBAL.getUserCustomFields().getCustom4().trim().length() > 0) useCenteringImage=false;
-        if (Aggredata.GLOBAL.getUserCustomFields().getCustom5().trim().length() > 0) useCenteringImage=false;
+        if (Aggredata.GLOBAL.getUserCustomFields().getCustom1().trim().length() > 0) useCenteringImage = false;
+        if (Aggredata.GLOBAL.getUserCustomFields().getCustom2().trim().length() > 0) useCenteringImage = false;
+        if (Aggredata.GLOBAL.getUserCustomFields().getCustom3().trim().length() > 0) useCenteringImage = false;
+        if (Aggredata.GLOBAL.getUserCustomFields().getCustom4().trim().length() > 0) useCenteringImage = false;
+        if (Aggredata.GLOBAL.getUserCustomFields().getCustom5().trim().length() > 0) useCenteringImage = false;
 
         //Hide the panels that are not being used for custom fields
         custom1Panel.setVisible(Aggredata.GLOBAL.getUserCustomFields().getCustom1().trim().length() > 0);
@@ -146,6 +168,123 @@ public class JoinPanelForm extends Composite {
         custom5Label.setText(Aggredata.GLOBAL.getUserCustomFields().getCustom5());
 
         if (useCenteringImage) centeringImage.setSize("100px", "1px");
+
+        for (String tz : Enums.timezones) {
+            timeZoneField.addItem(tz);
+        }
+        timeZoneField.setSelectedIndex(5);
+
+
+        submitButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                logger.fine("New user submit button hit. Doing validation");
+
+                if (doValidation()) {
+                    logger.fine("Submitting form data");
+                    User user = new User();
+                    user.setUsername(usernameField.getValue());
+                    user.setFirstName(firstNameField.getValue());
+                    user.setMiddleName(middleNameField.getValue());
+                    user.setLastName(lastNameField.getValue());
+                    user.setCompanyName(companyNameField.getValue());
+                    user.setAddress(addressField.getValue());
+                    user.setCity(cityField.getValue());
+                    user.setAddrState(stateField.getValue());
+                    user.setPhoneNumber(phoneNumberField.getValue());
+                    user.setTimezone(timeZoneField.getValue(timeZoneField.getSelectedIndex()));
+                    user.setCustom1(custom1Field.getValue());
+                    user.setCustom2(custom2Field.getValue());
+                    user.setCustom3(custom3Field.getValue());
+                    user.setCustom4(custom4Field.getValue());
+                    user.setCustom5(custom5Field.getValue());
+
+                    userSessionService.validateCaptcha(captchaWidget.getValue(), usernameField.getValue(), passwordField.getValue(), user, new TEDAsyncCallback<Integer>() {
+                        @Override
+                        public void onSuccess(Integer integer) {
+                            if (integer.equals(UserSessionService.RESULT_FAIL_CAPTCHA)) {
+                                formErrorLabel.setText(joinConstants.captchaError());
+                                return;
+                            } else if (integer.equals(UserSessionService.RESULT_DUPE_USERNAME)) {
+                                formErrorLabel.setText(joinConstants.alreadyExists());
+                                usernameFieldError.setText(joinConstants.required());
+                                return;
+                            } else if (integer.equals(UserSessionService.RESULT_SUCCESS)) {
+                                logger.info("User creation successful. Redirecting to success link");
+                                RootPanel.get(Aggredata.ROOT_PANEL).clear();
+                                RootPanel.get(Aggredata.ROOT_PANEL).add(new ActivateLinkPanel());
+                            } else {
+                                logger.severe("Unexpected result code of " + integer);
+                            }
+                        }
+                    });
+
+
+                }
+            }
+        });
+    }
+
+    private boolean doValidation() {
+        boolean passValidation = true;
+        formErrorLabel.setText("");
+        usernameFieldError.setText("");
+        passwordFieldError.setText("");
+        confirmUsernameFieldError.setText("");
+        confirmPasswordFieldError.setText("");
+        lastNameFieldError.setText("");
+        firstNameFieldError.setText("");
+
+        //Do the validation checks
+        passValidation = checkRequired(usernameField, usernameFieldError) && passValidation;
+        passValidation = checkRequired(passwordField, passwordFieldError) && passValidation;
+        passValidation = checkRequired(confirmUsernameField, confirmUsernameFieldError) && passValidation;
+        passValidation = checkRequired(confirmPasswordField, confirmPasswordFieldError) && passValidation;
+        passValidation = checkRequired(lastNameField, lastNameFieldError) && passValidation;
+        passValidation = checkRequired(firstNameField, firstNameFieldError) && passValidation;
+        passValidation = checkMatch(usernameField, confirmUsernameField, usernameFieldError, confirmUsernameFieldError) && passValidation;
+        passValidation = checkMatch(passwordField, confirmPasswordField, passwordFieldError, confirmPasswordFieldError) && passValidation;
+
+        passValidation = checkEmail(usernameField, usernameFieldError)  && passValidation;
+
+
+        if (!passValidation) logger.severe("Validation failed");
+        return passValidation;
+    }
+
+
+    private boolean checkMatch(TextBox textBox1, TextBox textBox2, Label errorLabel, Label errorLabel2) {
+        boolean isValid = true;
+        if (!textBox1.getValue().equals(textBox2.getValue())) {
+            errorLabel.setText(joinConstants.noMatch());
+            errorLabel2.setText(joinConstants.noMatch());
+            formErrorLabel.setText(joinConstants.formErrors());
+            isValid = false;
+        }
+        return isValid;
+    }
+
+
+    private boolean checkRequired(TextBox textBox, Label errorLabel) {
+        boolean isValid = true;
+        if (textBox.getValue().trim().length() == 0) {
+            errorLabel.setText(joinConstants.required());
+            formErrorLabel.setText(joinConstants.formErrors());
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    private boolean checkEmail(TextBox textBox, Label errorLabel) {
+        String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.(?:[a-zA-Z]{2,6})$";
+        boolean isValid = true;
+        String value = textBox.getValue();
+        if (!value.matches(emailPattern)) {
+            isValid = false;
+            errorLabel.setText(joinConstants.notEmailError());
+            formErrorLabel.setText(joinConstants.formErrors());
+        }
+        return isValid;
     }
 
 }

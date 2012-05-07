@@ -82,7 +82,7 @@ public class UserServiceTest {
         testUser.setUsername(testUserName);
         testUser.setDefaultGroupId(0);
         testUser.setRole(User.ROLE_USER);
-        testUser.setState(true);
+        testUser.setAccountState(User.STATE_ENABLED);
         testUser.setActivationKey(TestUtil.getUniqueKey());
 
         //Save the user

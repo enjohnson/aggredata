@@ -46,6 +46,7 @@
         <property name="timezone" value="${server.timezone?US/Eastern}"/>
         <property name="allowRegistration" value="${server.allowRegistration?true}"/>
         <property name="allowPasswordReset" value="${server.allowPasswordReset?true}"/>
+        <property name="useCaptcha" value="${server.useCaptcha?true}"/>
         <property name="fromAddress" value="${server.timezone?donotreply@theenergydetective.com}"/>
         <property name="adminEmailAddress" value="${server.timezone?donotreply@theenergydetective.com}"/>
 

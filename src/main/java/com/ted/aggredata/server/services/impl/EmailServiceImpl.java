@@ -93,4 +93,34 @@ public class EmailServiceImpl implements EmailService {
 
 
     }
+
+    @Override
+    public void sendActivationEmail(final User user) {
+        if (logger.isInfoEnabled()) logger.info("Send Activation email requested for " + user);
+        //Generate a new actviation key
+        String activationKey = KeyGenerator.generateSecurityKey(18);
+        user.setActivationKey(activationKey);
+        //Save the password on the account
+        userService.saveUser(user);
+
+        //Load up the template
+        final Map model = new HashMap();
+        model.put("user", user);
+        model.put("serverInfo", serverInfo);
+        model.put("key", activationKey);
+        final String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "com/ted/aggredata/emailTemplates/activationEmail.vm", model);
+
+        //Create the mime message
+        MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
+            public void prepare(MimeMessage mimeMessage) throws Exception {
+                MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+                message.setTo(user.getUsername());
+                message.setFrom(serverInfo.getFromAddress());
+                message.setSubject("[AggreData] Account Activation");
+                message.setText(text, true);
+            }
+        };
+
+        this.mailSender.send(mimeMessagePreparator);
+    }
 }
