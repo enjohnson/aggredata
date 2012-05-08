@@ -54,9 +54,21 @@ public class UserDetailsPanel extends Composite {
     @UiField
     Label lastNameFieldError;
     @UiField
-    TextBox middleNameField;
+    TextBox custom1Field;
     @UiField
-    Label middleNameFieldError;
+    Label custom1FieldError;
+    @UiField
+    TextBox custom2Field;
+    @UiField
+    Label custom2FieldError;
+    @UiField
+    TextBox custom4Field;
+    @UiField
+    Label custom4FieldError;
+    @UiField
+    TextBox custom5Field;
+    @UiField
+    Label custom5FieldError;
     @UiField
     TextBox custom3Field;
     @UiField
@@ -89,9 +101,13 @@ public class UserDetailsPanel extends Composite {
 
         usernameField.addChangeHandler(saveChangeHanlder);
         firstNameField.addChangeHandler(saveChangeHanlder);
-        middleNameField.addChangeHandler(saveChangeHanlder);
+        custom1Field.addChangeHandler(saveChangeHanlder);
         custom3Field.addChangeHandler(saveChangeHanlder);
         lastNameField.addChangeHandler(saveChangeHanlder);
+        custom4Field.addChangeHandler(saveChangeHanlder);
+        custom2Field.addChangeHandler(saveChangeHanlder);
+        custom5Field.addChangeHandler(saveChangeHanlder);
+
     }
 
     public void setUserList(List<User> userList1) {
@@ -107,10 +123,13 @@ public class UserDetailsPanel extends Composite {
     public void setEnabled(boolean enabled) {
 
         firstNameField.setEnabled(enabled);
-        middleNameField.setEnabled(enabled);
+        custom1Field.setEnabled(enabled);
         lastNameField.setEnabled(enabled);
         custom3Field.setEnabled(enabled);
         usernameField.setEnabled(enabled);
+        custom2Field.setEnabled(enabled);
+        custom4Field.setEnabled(enabled);
+        custom5Field.setEnabled(enabled);
     }
 
 
@@ -147,7 +166,10 @@ public class UserDetailsPanel extends Composite {
             user.setLastName(lastNameField.getText().trim());
             user.setUsername(usernameField.getText().trim());
             user.setCustom3(custom3Field.getText().trim());
-            user.setMiddleName(middleNameField.getText().trim());
+            user.setCustom1(custom1Field.getText().trim());
+            user.setCustom2(custom2Field.getText().trim());
+            user.setCustom4(custom4Field.getText().trim());
+            user.setCustom5(custom5Field.getText().trim());
             if (user.hashCode() != userHashCode) {
                 logger.info("user is dirty. Saving " + user);
                 userService.saveUser(user, new TEDAsyncCallback<User>() {
@@ -165,7 +187,10 @@ public class UserDetailsPanel extends Composite {
         setEnabled(user != null);
         firstNameField.setValue(user.getFirstName());
         lastNameField.setValue(user.getLastName());
-        middleNameField.setValue(user.getMiddleName());
+        custom1Field.setValue(user.getCustom1());
+        custom2Field.setValue(user.getCustom2());
+        custom4Field.setValue(user.getCustom4());
+        custom5Field.setValue(user.getCustom5());
         usernameField.setValue(user.getUsername());
         custom3Field.setValue(user.getCustom3());
         this.user = user;

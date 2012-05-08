@@ -24,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GWTUserService {
 
     @Autowired
@@ -57,5 +59,24 @@ public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GW
         userService.changeUserName(user, username);
         getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
         return user;
+    }
+
+    @Override
+    public List<User> findUsers() {
+        if (logger.isInfoEnabled()) logger.info("Looking up all users");
+        return userService.findUsers();
+
+    }
+
+    @Override
+    public User createUser(User user){
+        if (logger.isInfoEnabled()) logger.info("Creating a new user"); 
+        return userService.createUser(user);
+    }
+
+    @Override
+    public void deleteUser(User user){
+        if (logger.isInfoEnabled()) logger.info("Deleting user");
+        userService.deleteUser(user);
     }
 }

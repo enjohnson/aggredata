@@ -20,6 +20,8 @@ package com.ted.aggredata.client.guiService;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.ted.aggredata.model.User;
 
+import java.util.List;
+
 public interface GWTUserServiceAsync {
     void saveUser(User user, AsyncCallback<User> async);
 
@@ -27,5 +29,9 @@ public interface GWTUserServiceAsync {
 
     void changeUsername(User user, String username, AsyncCallback<User> async);
 
-
+    void findUsers(AsyncCallback<List<User>> async);
+    
+    void deleteUser(User user, AsyncCallback<Void> async );
+    
+    void createUser(User user, AsyncCallback<User> async);
 }

@@ -23,7 +23,7 @@
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
     <g:CaptionPanel ui:field="captionPanel" width="320px" styleName="{style.captionHeader}">
-        <g:ScrollPanel width="320px" height="175px">
+        <g:ScrollPanel width="320px" height="75px">
             <g:HorizontalPanel ui:field="userButtonPanel" horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
 
                 <g:VerticalPanel horizontalAlignment="ALIGN_LEFT">

@@ -49,7 +49,7 @@ public class UserSelectionPanel extends Composite {
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     
     @UiField
-    ListBox userListBox;
+    static ListBox userListBox;
     @UiField
     CaptionPanel captionPanel;
 
@@ -70,7 +70,7 @@ public class UserSelectionPanel extends Composite {
         });
     }
 
-    public void setGatewayList(List<User> userList) {
+    public void setUserList(List<User> userList) {
         this.userList = userList;
         redrawUserList();
         if (userListBox.getItemCount() > 0) {

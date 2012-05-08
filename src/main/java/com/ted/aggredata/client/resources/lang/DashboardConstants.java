@@ -272,7 +272,15 @@ public interface DashboardConstants extends Constants {
     
     String lastNameField();
     
-    String middleNameField();
+    String custom1Field();
+    
+    String custom3Field();
+    
+    String custom2Field();
+    
+    String custom4Field();
+    
+    String custom5Field();
     
     String usernameField();
 
