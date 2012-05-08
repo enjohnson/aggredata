@@ -50,7 +50,7 @@ public class UserDAO extends AbstractDAO<User> {
     public static final String UNIQUE_KEY_CHECK = "select count(*) from  aggredata.user where activationKey=?";
     public static final String SAVE_USER_QUERY_SESSION = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?, state=?, firstName=?, lastName=?, middleName=?, address=?, city=?, addrState=?, zip=?, custom1=?, custom2=?, custom3=?, custom4=?, custom5=?, companyName=?, PhoneNumber=?, timezone=? where id=?";
     public static final String LOOKUP_PASSWORD = "select password from  aggredata.user where id=?";
-
+    public static final String SELECT_USERS_QUERY = "select * from aggredata.user";
     //Delete queries if a user is deleted
 
 
@@ -87,7 +87,14 @@ public class UserDAO extends AbstractDAO<User> {
         }
     };
 
-
+    public List<User> findUsers() {
+        try {
+            return getJdbcTemplate().query(SELECT_USERS_QUERY, getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return null;
+        }
+    }
     public User getUserByUserName(String username) {
 
         try {

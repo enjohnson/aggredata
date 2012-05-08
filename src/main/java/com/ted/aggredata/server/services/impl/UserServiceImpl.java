@@ -154,6 +154,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findUsers() {
+        return userDao.findUsers();
+    }
+
+    @Override
     public String getPassword(User user) {
         if (logger.isDebugEnabled()) logger.info("Looking up password for " + user);
         return userDao.getPassword(user);
