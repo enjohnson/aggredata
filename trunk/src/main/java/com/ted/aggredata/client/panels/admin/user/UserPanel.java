@@ -25,6 +25,7 @@ import com.ted.aggredata.client.events.UserSelectedEvent;
 import com.ted.aggredata.client.events.UserSelectedHandler;
 import com.ted.aggredata.client.guiService.GWTUserService;
 import com.ted.aggredata.client.guiService.GWTUserServiceAsync;
+import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.panels.admin.user.UserSelectionPanel;
 import com.ted.aggredata.client.panels.admin.user.UserDetailsPanel;
 import com.ted.aggredata.model.User;
@@ -46,23 +47,36 @@ public class UserPanel extends Composite {
     UserDetailsPanel UserDetailsPanel;
     @UiField
     UserSelectionPanel UserSelectionPanel;
-    List<User> userList;
+    static List<User> userList;
+
+    public static List<User> getUserList()
+    {
+        return userList;
+    }
 
     public UserPanel() {
         initWidget(uiBinder.createAndBindUi(this));
 
-//        UserDetailsPanel.setEnabled(false);
-//
-//        //Add a handler to update the details section when a gateway is selected
-//        UserSelectionPanel.addUserSelectedHandler(new UserSelectedHandler() {
-//            @Override
-//            public void onGatewaySelected(UserSelectedEvent event) {
-//                logger.fine("User Selected: " + event.getUser());
-//                final User selectedUser = event.getUser();
-//                UserDetailsPanel.setUser(selectedUser);
-//            }
-//        });
+        UserDetailsPanel.setEnabled(false);
 
+        //Add a handler to update the details section when a gateway is selected
+        UserSelectionPanel.addUserSelectedHandler(new UserSelectedHandler() {
+            @Override
+            public void onUserSelected(UserSelectedEvent event) {
+                logger.fine("User Selected: " + event.getUser());
+                final User selectedUser = event.getUser();
+                UserDetailsPanel.setUser(selectedUser);
+            }
+        });
+
+        logger.fine("Looking up users");
+        userService.findUsers(new TEDAsyncCallback<List<User>>() {
+            @Override
+            public void onSuccess(List<User> users) {
+                userList = users;
+                UserDetailsPanel.setUserList(users);
+                UserSelectionPanel.setUserList(users);
+            }
+        });
     }
-
 }

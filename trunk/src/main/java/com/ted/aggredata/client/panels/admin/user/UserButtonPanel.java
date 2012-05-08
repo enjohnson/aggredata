@@ -45,7 +45,7 @@ public class UserButtonPanel extends Composite {
 
     interface MyUiBinder extends UiBinder<Widget, UserButtonPanel> {
     }
-
+    List<User> userList = UserPanel.getUserList();
     private String uname = "";
     private int unameLength = 5;
     private String password = "";
@@ -88,7 +88,7 @@ public class UserButtonPanel extends Composite {
         createUser.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                //addUser();
+                addUser();
                 //Window.alert("Reset clicked!");
             }
         });
@@ -96,12 +96,34 @@ public class UserButtonPanel extends Composite {
         deleteUser.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                //removeUser();
+                deleteUser();
                 //Window.alert("Reset clicked!");
             }
         });
     }
 
+    private  void addUser()
+    {
+        gwtUserService.createUser(user, new TEDAsyncCallback<User>() {
+            @Override
+            public void onSuccess(User result) {
+                Window.alert("User added.");
+            }
+        });
+    }
+
+    private  void deleteUser()
+    {
+        gwtUserService.deleteUser(user, new TEDAsyncCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                UserPanel.userList.remove(user);
+                if (userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
+                else UserSelectionPanel.userListBox.setSelectedIndex(0);
+            }
+        });
+    }
+    
     private void changeUname() {
         boolean confirm;
         uname = Window.prompt("Please enter in a new username", "");
@@ -124,8 +146,6 @@ public class UserButtonPanel extends Composite {
             Window.alert("No Username was entered.");
         }
     }
-
-    //TODO: Make the username/password a dialog. Also use resource strings.
 
     private void changePword() {
         boolean confirm;

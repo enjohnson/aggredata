@@ -21,6 +21,8 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.ted.aggredata.model.User;
 
+import java.util.List;
+
 /**
  * Client Side Interface for the service to check user sessions.
  */
@@ -33,5 +35,9 @@ public interface GWTUserService extends RemoteService {
 
     public User changeUsername(User user, String username);
 
-
+    public List<User> findUsers();
+    
+    public User createUser(User user);
+    
+    public void deleteUser(User user);
 }

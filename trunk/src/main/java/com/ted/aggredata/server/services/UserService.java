@@ -19,6 +19,8 @@ package com.ted.aggredata.server.services;
 
 import com.ted.aggredata.model.User;
 
+import java.util.List;
+
 /**
  * Public interface to the user management service
  */
@@ -97,7 +99,7 @@ public interface UserService {
      */
     public User getUserByActivationKey(String key);
 
-
+    public List<User> findUsers();
     public void checkUserConfig(User user);
 
     public String getPassword(User user);
