@@ -137,6 +137,7 @@ public class UserDetailsPanel extends Composite {
         boolean valid = true;
         firstNameFieldError.setText("");
         lastNameFieldError.setText("");
+        usernameFieldError.setText("");
 
         if (user == null) return true;
         if (firstNameField.getText().trim().length() == 0) {
@@ -149,12 +150,9 @@ public class UserDetailsPanel extends Composite {
             lastNameFieldError.setText("Required");
         }
 
-        for (User u : userList) {
-            if (!u.getId().equals(user.getId()) && u.getFirstName().toLowerCase().equals(firstNameField.getText().trim().toLowerCase())  && u.getLastName().toLowerCase().equals(lastNameField.getText().trim().toLowerCase())) {
-                valid = false;
-                firstNameField.setText("Already Used");
-                lastNameField.setText("Already Used");
-            }
+        if (usernameField.getText().trim().length() == 0) {
+            valid = false;
+            lastNameFieldError.setText("Required");
         }
 
         return valid;
