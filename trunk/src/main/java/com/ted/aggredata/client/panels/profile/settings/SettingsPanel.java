@@ -22,11 +22,17 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.Aggredata;
+import com.ted.aggredata.client.dialogs.ChangePasswordPopup;
+import com.ted.aggredata.client.dialogs.YesNoPopup;
+import com.ted.aggredata.client.dialogs.OKPopup;
+import com.ted.aggredata.client.dialogs.ChangeEmailPopup;
 import com.ted.aggredata.client.guiService.*;
 import com.ted.aggredata.client.panels.login.LoginPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
@@ -50,7 +56,6 @@ public class SettingsPanel extends Composite {
 
     private String uname = "";
     private int unameLength = 5;
-    private String password = "";
     private int passLength = 5;
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     DashboardConstants dashboardConstants = GWT.create(DashboardConstants.class);
@@ -95,7 +100,7 @@ public class SettingsPanel extends Composite {
     @UiField
     TextBox custom5Field;
     @UiField
-    HugeButton changeUname;
+    HugeButton changeEmail;
     @UiField
     HugeButton changePassword;
     @UiField
@@ -227,7 +232,7 @@ public class SettingsPanel extends Composite {
             }
         });
 
-        changeUname.addClickHandler(new ClickHandler() {
+        changeEmail.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 changeUname();
@@ -242,54 +247,89 @@ public class SettingsPanel extends Composite {
     //TODO: Make the username/password a dialog. Also use resource strings.
 
     private void changeUname() {
-        boolean confirm;
-        uname = Window.prompt("Please enter in a new username", "");
-        if (uname.length() >= unameLength){
-            confirm = Window.confirm("Are you sure?");
-            if (confirm) {
-                    gwtUserService.changeUsername(user, uname, new TEDAsyncCallback<User>() {
-                    @Override
-                    public void onSuccess(User result) {
-                        Window.alert("Username Changed. You will have to log back into Aggredata.");
-                        logout();
+        logger.fine("Change Email Clicked");
+        final ChangeEmailPopup changeEmailPopup = new ChangeEmailPopup();
+        final DashboardConstants dc = DashboardConstants.INSTANCE;
+        changeEmailPopup.center();
+        changeEmailPopup.setPopupPosition(changeEmailPopup.getAbsoluteLeft(), 100);
+        changeEmailPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
+            @Override
+            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                if (changeEmailPopup.getValue() == changeEmailPopup.OK){
+                    logger.fine("Changing Email to  " + changeEmailPopup.getEmail());
+                    if (changeEmailPopup.getEmail().length() >= passLength){
+                        final YesNoPopup popup = new YesNoPopup(dc.changeEmail(), dc.changeEmailVerification());
+                        popup.addCloseHandler(new CloseHandler<PopupPanel>() {
+                            @Override
+                            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                                if (popup.getValue() == YesNoPopup.YES) {
+                                    gwtUserService.changeUsername(user, changeEmailPopup.getEmail(), new TEDAsyncCallback<User>() {
+                                        @Override
+                                        public void onSuccess(User result) {
+                                            final OKPopup okPopup = new OKPopup(dc.changeEmail(), "Email has been changed, you will have to log back into Aggredata.");
+                                            logout();
+                                        }
+                                    });
+                                }
+                            }
+                        });
                     }
-                });
-             }
-        }
-        else if (uname.length() < unameLength & uname.length() > 0 )
-        {
-            Window.alert("Username must be " + unameLength + " characters or greater.");
-        }
-        else {
-            Window.alert("No Username was entered.");
-        }
+                    else if (changeEmailPopup.getEmail().length() < unameLength & changeEmailPopup.getEmail().length() > 0 )
+                    {
+                        final OKPopup okPopup = new OKPopup(dc.changeEmail(), "Email must be " + unameLength + " characters long.");
+                    }
+                    else
+                    {
+                        final OKPopup okPopup = new OKPopup(dc.changeEmail(), "No email was entered.");
+                    }
+                }
+            }
+        });
+        changeEmailPopup.show();
     }
 
     //TODO: Make the username/password a dialog. Also use resource strings.
 
     private void changePword() {
-        boolean confirm;
-        password = Window.prompt("Please enter in a new password", "");
-        if (password.length() >= passLength){
-            confirm = Window.confirm("Are you sure?");
-            if (confirm) {
-                 gwtUserService.changePassword(user, password, new TEDAsyncCallback<User>() {
-                    @Override
-                    public void onSuccess(User result) {
-                        Window.alert("Password Changed. You will have to log back into Aggredata.");
-                        logout();
+        logger.fine("Change Password Clicked");
+        final ChangePasswordPopup changePasswordPopup = new ChangePasswordPopup();
+        changePasswordPopup.center();
+        changePasswordPopup.setPopupPosition(changePasswordPopup.getAbsoluteLeft(), 100);
+        changePasswordPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
+            @Override
+            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                if (changePasswordPopup.getValue() == changePasswordPopup.OK){
+                    logger.fine("Changing Password to  " + changePasswordPopup.getPassword());
+                    if (changePasswordPopup.getPassword().length() >= passLength){
+                        final DashboardConstants dc = DashboardConstants.INSTANCE;
+                        final YesNoPopup popup = new YesNoPopup(dc.changePassword(), dc.changePassVerification());
+                        popup.addCloseHandler(new CloseHandler<PopupPanel>() {
+                            @Override
+                            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                                if (popup.getValue() == YesNoPopup.YES) {
+                                    gwtUserService.changePassword(user, changePasswordPopup.getPassword(), new TEDAsyncCallback<User>() {
+                                        @Override
+                                        public void onSuccess(User result) {
+                                            final OKPopup okPopup = new OKPopup("Change Password", "Password has been changed, you will have to log back into Aggredata.");
+                                            logout();
+                                        }
+                                    });
+                                }
+                            }
+                        });
                     }
-                });
+                    else if (changePasswordPopup.getPassword().length() < passLength & changePasswordPopup.getPassword().length() > 0 )
+                    {
+                        final OKPopup okPopup = new OKPopup("Change Password", "Password must be " + passLength + " characters long.");
+                    }
+                    else
+                    {
+                        final OKPopup okPopup = new OKPopup("Change Password", "No password was entered.");
+                    }
+                }
             }
-        }
-        else if (password.length() < passLength & password.length() > 0 )
-        {
-            Window.alert("Password must be " + passLength + " characters or greater.");
-        }
-        else
-        {
-            Window.alert("No Password was entered.");
-        }
+        });
+        changePasswordPopup.show();
     }
 
     private void logout() {

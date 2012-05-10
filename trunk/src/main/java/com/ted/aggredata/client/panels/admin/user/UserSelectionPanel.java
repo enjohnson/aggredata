@@ -16,7 +16,8 @@ import com.ted.aggredata.client.events.UserSelectedHandler;
 import com.ted.aggredata.client.events.UserSelectedEvent;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.model.User;
-
+import org.springframework.context.support.StaticApplicationContext;
+import com.google.gwt.user.client.Window;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,8 +55,12 @@ public class UserSelectionPanel extends Composite {
     CaptionPanel captionPanel;
 
     List<User> userList = new ArrayList<User>();
-    User selectedUser;
+    static User selectedUser;
 
+    public static User getSelectedUser(){
+        return selectedUser;
+    }
+    
     public UserSelectionPanel() {
         initWidget(uiBinder.createAndBindUi(this));
         captionPanel.setCaptionHTML("<span style='color:white'>" + DashboardConstants.INSTANCE.yourUsers() + "</span>");
@@ -96,13 +101,13 @@ public class UserSelectionPanel extends Composite {
 
         for (User user : userList) {
             if (user.getId().equals(userID)) {
-                this.selectedUser = user;
+                selectedUser = user;
                 break;
             }
         }
 
         if (selectedUser != null) {
-            if (logger.isLoggable(Level.FINE)) logger.fine("Gateway selected: " + selectedUser);
+            if (logger.isLoggable(Level.FINE)) logger.fine("User selected: " + selectedUser);
             handlerManager.fireEvent(new UserSelectedEvent(selectedUser));
         }
     }

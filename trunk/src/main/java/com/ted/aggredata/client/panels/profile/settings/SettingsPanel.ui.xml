@@ -197,14 +197,14 @@
 
                 <g:HorizontalPanel ui:field="changePasswordPanel" horizontalAlignment="ALIGN_CENTER">
                     <my:widgets.ClearImage width="100px" height="2"/>
-                    <my:widgets.HugeButton ui:field="changePassword" buttonString="Change Password"/>
+                    <my:widgets.HugeButton ui:field="changePassword" buttonString='{txtRes.profileSettingsChangePass}'/>
                 </g:HorizontalPanel>
 
                 <my:widgets.ClearImage width="2px" height="10px"/>
 
-                <g:HorizontalPanel ui:field="changeUsernamePanel" horizontalAlignment="ALIGN_CENTER">
+                <g:HorizontalPanel ui:field="changeEmailPanel" horizontalAlignment="ALIGN_CENTER">
                     <my:widgets.ClearImage width="100px" height="2"/>
-                    <my:widgets.HugeButton ui:field="changeUname" buttonString="Change Username"/>
+                    <my:widgets.HugeButton ui:field="changeEmail" buttonString='{txtRes.profileSettingsChangeEmail}'/>
                 </g:HorizontalPanel>
 
             </g:VerticalPanel>
