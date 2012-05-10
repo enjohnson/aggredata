@@ -46,11 +46,16 @@ public class GWTGatewayServiceImpl extends SpringRemoteServiceServlet implements
     }
 
     @Override
-    public List<Gateway> findGateways() {
-        User user = getCurrentUser();
-        if (logger.isInfoEnabled()) logger.info("Looking up all gateways for " + user);
-        return gatewayService.findByUser(user);
+    public List<Gateway> findGateways(User user) {
+        User currentUser = getCurrentUser();
 
+        if (currentUser.getRole().equals(User.ROLE_ADMIN)) {
+            if (logger.isInfoEnabled()) logger.info("Looking up all gateways for " + user);
+            return gatewayService.findByUser(user);
+        } else {
+            if (logger.isInfoEnabled()) logger.info("Looking up all gateways for " + user);
+            return gatewayService.findByUser(currentUser);
+        }
     }
 
     @Override

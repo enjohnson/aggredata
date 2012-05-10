@@ -22,6 +22,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.ted.aggredata.client.Aggredata;
 import com.ted.aggredata.client.events.GatewaySelectedEvent;
 import com.ted.aggredata.client.events.GatewaySelectedHandler;
 import com.ted.aggredata.client.guiService.GWTGatewayService;
@@ -65,7 +66,7 @@ public class GatewaysPanel extends Composite {
         });
 
         logger.fine("Looking up gateways");
-        gatewayService.findGateways(new TEDAsyncCallback<List<Gateway>>() {
+        gatewayService.findGateways(Aggredata.GLOBAL.getSessionUser(), new TEDAsyncCallback<List<Gateway>>() {
             @Override
             public void onSuccess(List<Gateway> gateways) {
                 gatewayList = gateways;
