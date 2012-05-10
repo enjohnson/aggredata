@@ -28,36 +28,36 @@
 
                 <g:VerticalPanel horizontalAlignment="ALIGN_LEFT">
                     <g:HorizontalPanel ui:field="deleteUserPanel" horizontalAlignment="ALIGN_LEFT">
-                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.ClearImage width="15px" height="30px"/>
                         <my:widgets.LargeButton ui:field="deleteUser" buttonString="Delete User"/>
-                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.ClearImage width="15px" height="30px"/>
                     </g:HorizontalPanel>
 
-                    <my:widgets.ClearImage width="2px" height="5"/>
+                    <my:widgets.ClearImage width="2px" height="5px"/>
 
                     <g:HorizontalPanel ui:field="createUserPanel" horizontalAlignment="ALIGN_LEFT">
-                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.ClearImage width="15px" height="30px"/>
                         <my:widgets.LargeButton ui:field="createUser" buttonString="Create User"/>
-                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.ClearImage width="15px" height="30px"/>
                     </g:HorizontalPanel>
 
                 </g:VerticalPanel>
 
-                <my:widgets.ClearImage width="20px" height="3"/>
+                <my:widgets.ClearImage width="20px" height="3px"/>
 
                 <g:VerticalPanel horizontalAlignment="ALIGN_LEFT">
                     <g:HorizontalPanel ui:field="changeUsernamePanel" horizontalAlignment="ALIGN_LEFT">
-                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.ClearImage width="15px" height="30px"/>
                         <my:widgets.LargeButton ui:field="changeUsername" buttonString="Edit Username"/>
-                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.ClearImage width="15px" height="30px"/>
                     </g:HorizontalPanel>
 
-                    <my:widgets.ClearImage width="2px" height="5"/>
+                    <my:widgets.ClearImage width="2px" height="5px"/>
 
                     <g:HorizontalPanel ui:field="changePasswordPanel" horizontalAlignment="ALIGN_LEFT">
-                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.ClearImage width="15px" height="30px"/>
                         <my:widgets.LargeButton ui:field="changePassword" buttonString="Edit Password"/>
-                        <my:widgets.ClearImage width="15px" height="30"/>
+                        <my:widgets.ClearImage width="15px" height="30px"/>
                     </g:HorizontalPanel>
 
                 </g:VerticalPanel>
