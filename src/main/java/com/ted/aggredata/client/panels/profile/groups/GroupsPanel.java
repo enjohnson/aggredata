@@ -137,7 +137,6 @@ public class GroupsPanel extends Composite {
             public void onSuccess(List<Gateway> gateways) {
                 gatewayList = gateways;
                 groupDetailsPanel.setGroupList(groupList, gatewayList);
-                groupDetailsPanel.setGroup(user, groupSelectionPanel.getSelectedGroup(), gateways);
                 groupSelectionPanel.fireSelectedGroup();
             }
         });
