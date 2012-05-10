@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class UserButtonPanel extends Composite {
-    final User user;
+    User user;
     static Logger logger = Logger.getLogger(UserButtonPanel.class.toString());
 
     interface MyUiBinder extends UiBinder<Widget, UserButtonPanel> {
@@ -68,7 +68,6 @@ public class UserButtonPanel extends Composite {
     public UserButtonPanel() {
         initWidget(uiBinder.createAndBindUi(this));
         captionPanel.setCaptionHTML("<span style='color:white'>Options</span>");
-        user = Aggredata.GLOBAL.getSessionUser();
         changePassword.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
@@ -80,6 +79,7 @@ public class UserButtonPanel extends Composite {
         changeUsername.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
+                user = UserSelectionPanel.getSelectedUser();
                 changeUname();
                 //Window.alert("Reset clicked!");
             }
@@ -96,7 +96,9 @@ public class UserButtonPanel extends Composite {
         deleteUser.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                deleteUser();
+                user = UserSelectionPanel.getSelectedUser();
+                Window.alert(user.getId().toString());
+                //deleteUser();
                 //Window.alert("Reset clicked!");
             }
         });
@@ -104,6 +106,7 @@ public class UserButtonPanel extends Composite {
 
     private  void addUser()
     {
+        user = UserSelectionPanel.getSelectedUser();
         gwtUserService.createUser(user, new TEDAsyncCallback<User>() {
             @Override
             public void onSuccess(User result) {
@@ -126,6 +129,7 @@ public class UserButtonPanel extends Composite {
     
     private void changeUname() {
         boolean confirm;
+        user = UserSelectionPanel.getSelectedUser();
         uname = Window.prompt("Please enter in a new username", "");
         if (uname.length() >= unameLength){
             confirm = Window.confirm("Are you sure?");
@@ -149,6 +153,7 @@ public class UserButtonPanel extends Composite {
 
     private void changePword() {
         boolean confirm;
+        user = UserSelectionPanel.getSelectedUser();
         password = Window.prompt("Please enter in a new password", "");
         if (password.length() >= passLength){
             confirm = Window.confirm("Are you sure?");

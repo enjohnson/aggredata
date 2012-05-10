@@ -99,6 +99,10 @@ public interface DashboardConstants extends Constants {
     String profileSettingsMiddleName();
 
     String profileSettingsAddress();
+    
+    String profileSettingsChangePass();
+    
+    String profileSettingsChangeEmail();
 
     String profileSettingsCity();
 
@@ -283,5 +287,18 @@ public interface DashboardConstants extends Constants {
     String custom5Field();
     
     String usernameField();
+
+    //Change Email and Password Popups
+    String changeEmail();
+
+    String changePassword();
+
+    String changePasswordMessage();
+
+    String changeEmailMessage();
+    
+    String changeEmailVerification();
+    
+    String changePassVerification();
 
 }
