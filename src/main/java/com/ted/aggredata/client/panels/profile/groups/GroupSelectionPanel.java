@@ -51,6 +51,7 @@ public class GroupSelectionPanel extends Composite {
     static Logger logger = Logger.getLogger(GroupSelectionPanel.class.toString());
 
 
+
     interface MyUiBinder extends UiBinder<Widget, GroupSelectionPanel> {
     }
 
@@ -181,10 +182,11 @@ public class GroupSelectionPanel extends Composite {
         groupListBox.setSelectedIndex(selectedIndex);
     }
 
+
     /**
      * Method to fire an event w/ the selected group
      */
-    private void fireSelectedGroup() {
+    public  void fireSelectedGroup() {
         int index = groupListBox.getSelectedIndex();
         if (logger.isLoggable(Level.FINE)) logger.fine("Row " + index + " selected");
         Long groupId = new Long(groupListBox.getValue(index));
@@ -202,6 +204,13 @@ public class GroupSelectionPanel extends Composite {
             handlerManager.fireEvent(new GroupSelectedEvent(selectedGroup));
         }
     }
+
+
+    public Group getSelectedGroup() {
+        return this.selectedGroup;
+    }
+
+
 
     public HandlerRegistration addGroupSelectedHandler(GroupSelectedHandler handler) {
         return handlerManager.addHandler(GroupSelectedEvent.TYPE, handler);

@@ -32,6 +32,7 @@ import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
+import com.ted.aggredata.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,8 @@ public class GroupDetailsPanel extends Composite {
     final GWTGroupServiceAsync groupService = (GWTGroupServiceAsync) GWT.create(GWTGroupService.class);
 
     static Logger logger = Logger.getLogger(GroupDetailsPanel.class.toString());
+
+
 
     interface MyUiBinder extends UiBinder<Widget, GroupDetailsPanel> {
     }
@@ -200,7 +203,7 @@ public class GroupDetailsPanel extends Composite {
         }
     }
 
-    public void setGroup(Group group, List<Gateway> groupGatewayList) {
+    public void setGroup(User user, Group group, List<Gateway> groupGatewayList) {
         if (logger.isLoggable(Level.FINE)) logger.fine("Setting group " + group);
         setEnabled(group != null);
         descriptionField.setValue(group.getDescription());
@@ -212,8 +215,22 @@ public class GroupDetailsPanel extends Composite {
         this.group = group;
         groupHashCode = group.hashCode();
         this.groupGatewayList = groupGatewayList;
-        groupGatewaysPanel.setMap(group, userGatewayList, groupGatewayList);
+        groupGatewaysPanel.setMap(user, group, userGatewayList, groupGatewayList);
+
         validate();
+    }
+
+
+    public void setUsers(List<User> users) {
+        groupGatewaysPanel.setUsers(users);
+    }
+
+    public void addUserChangeHandler(ChangeHandler changeHandler){
+        groupGatewaysPanel.addUserChangeHandler(changeHandler);
+    }
+
+    public User getSelectedUser() {
+        return groupGatewaysPanel.getSelectedUser();
     }
 
 

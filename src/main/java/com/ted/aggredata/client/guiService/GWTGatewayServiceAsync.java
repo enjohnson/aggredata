@@ -21,16 +21,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
+import com.ted.aggredata.model.User;
 
 import java.util.List;
 
 public interface GWTGatewayServiceAsync {
-    /**
-     * Finds gateways for the  user
-     *
-     * @return
-     */
-    void findGateways(AsyncCallback<List<Gateway>> async);
 
     /**
      * Finds gateways for the  group
@@ -52,4 +47,11 @@ public interface GWTGatewayServiceAsync {
     void findMTU(Gateway gateway, AsyncCallback<List<MTU>> async);
 
     void deleteMTU(Gateway gateway, MTU mtu, AsyncCallback<Void> async);
+
+    /**
+     * Finds gateways for the  user
+     *
+     * @return
+     */
+    void findGateways(User user, AsyncCallback<List<Gateway>> async);
 }

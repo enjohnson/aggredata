@@ -22,6 +22,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.MTU;
+import com.ted.aggredata.model.User;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public interface GWTGatewayService extends RemoteService {
      *
      * @return
      */
-    public List<Gateway> findGateways();
+    public List<Gateway> findGateways(User user);
 
     /**
      * Finds gateways for the  group
