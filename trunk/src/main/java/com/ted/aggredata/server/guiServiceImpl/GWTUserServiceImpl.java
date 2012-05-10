@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GWTUserService {
@@ -63,20 +64,37 @@ public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GW
 
     @Override
     public List<User> findUsers() {
-        if (logger.isInfoEnabled()) logger.info("Looking up all users");
-        return userService.findUsers();
+        User requestingUser = (User)getThreadLocalRequest().getSession().getAttribute(USER_SESSION_KEY);
+        if (logger.isInfoEnabled()) logger.info(requestingUser + " is requesting a list of all users");
+        if (requestingUser != null && requestingUser.getRole().equals(User.ROLE_ADMIN)){
+            if (logger.isInfoEnabled()) logger.info("Looking up all users");
+            return userService.findUsers();
+        } else {
+            logger.warn(requestingUser + " is attempting to get a list of users but is not an admin!");
+            return new ArrayList<User>();
+        }
 
     }
 
     @Override
     public User createUser(User user){
-        if (logger.isInfoEnabled()) logger.info("Creating a new user"); 
-        return userService.createUser(user);
+        User requestingUser = (User)getThreadLocalRequest().getSession().getAttribute(USER_SESSION_KEY);
+        if (user.getRole() == null) user.setRole(User.ROLE_USER);
+        if (logger.isInfoEnabled()) logger.info(requestingUser + " is creating a new user");
+        if (requestingUser != null && requestingUser.getRole().equals(User.ROLE_ADMIN)) {
+            return userService.createUser(user);
+        } else {
+            logger.warn(requestingUser + " is attempting to create a user but is not an admin!");
+            return null;
+        }
     }
 
     @Override
     public void deleteUser(User user){
-        if (logger.isInfoEnabled()) logger.info("Deleting user");
-        userService.deleteUser(user);
+        User requestingUser = (User)getThreadLocalRequest().getSession().getAttribute(USER_SESSION_KEY);
+        if (logger.isInfoEnabled()) logger.info(requestingUser + " is deleting user " + user);
+        if (requestingUser != null && requestingUser.getRole().equals(User.ROLE_ADMIN)) {
+            userService.deleteUser(user);
+        }
     }
 }

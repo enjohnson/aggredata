@@ -35,6 +35,9 @@ import com.ted.aggredata.client.events.MenuClickedEvent;
 import com.ted.aggredata.client.events.MenuClickedHandler;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.MenuItem;
+import com.ted.aggredata.model.User;
+
+import java.util.logging.Logger;
 
 public class AdminNavigationPanel extends Composite implements HasHandlers {
 
@@ -42,6 +45,7 @@ public class AdminNavigationPanel extends Composite implements HasHandlers {
     }
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+    static Logger logger = Logger.getLogger(MainPanel.class.toString());
 
     @UiField
     Label usernameLabel;
@@ -59,13 +63,15 @@ public class AdminNavigationPanel extends Composite implements HasHandlers {
     DashboardConstants myConstants = GWT.create(DashboardConstants.class);
 
     public AdminNavigationPanel() {
+
+
         initWidget(uiBinder.createAndBindUi(this));
         handlerManager = new HandlerManager(this);
 
         helloLabel.setText(myConstants.hello());
-        usernameLabel.setText(Aggredata.GLOBAL.getSessionUser().getUsername());
+        usernameLabel.setText(Aggredata.GLOBAL.getSessionUser().getFirstName());
 
-        //TODO: DISABLE OWNER BUTTON IF USER IS NOT AN OWNER
+
         String width = "65px";
 
         accountMenuItem = new MenuItem(myConstants.profile(), true, width, "12px");
@@ -75,7 +81,12 @@ public class AdminNavigationPanel extends Composite implements HasHandlers {
 
         menuOptionsPanel.add(accountMenuItem);
         menuOptionsPanel.add(energyMenuItem);
-        menuOptionsPanel.add(adminMenuItem);
+
+        if (Aggredata.GLOBAL != null && Aggredata.GLOBAL.getSessionUser() != null && Aggredata.GLOBAL.getSessionUser().getRole().equals(User.ROLE_ADMIN)){
+            logger.fine("User is an admin");
+            menuOptionsPanel.add(adminMenuItem);
+        }
+
         menuOptionsPanel.add(logoutMenuItem);
 
 
