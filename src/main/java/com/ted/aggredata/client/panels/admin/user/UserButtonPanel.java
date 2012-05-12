@@ -72,7 +72,6 @@ public class UserButtonPanel extends Composite {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 changePword();
-                //Window.alert("Reset clicked!");
             }
         });
 
@@ -81,7 +80,6 @@ public class UserButtonPanel extends Composite {
             public void onClick(ClickEvent clickEvent) {
                 user = UserSelectionPanel.getSelectedUser();
                 changeUname();
-                //Window.alert("Reset clicked!");
             }
         });
 
@@ -89,17 +87,13 @@ public class UserButtonPanel extends Composite {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 addUser();
-                //Window.alert("Reset clicked!");
             }
         });
 
         deleteUser.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                user = UserSelectionPanel.getSelectedUser();
-                Window.alert(user.getId().toString());
                 //deleteUser();
-                //Window.alert("Reset clicked!");
             }
         });
     }
@@ -117,6 +111,7 @@ public class UserButtonPanel extends Composite {
 
     private  void deleteUser()
     {
+        user = UserSelectionPanel.getSelectedUser();
         gwtUserService.deleteUser(user, new TEDAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
