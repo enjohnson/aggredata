@@ -1,13 +1,7 @@
-#summary One-sentence summary of this page.
+#summary About AggreData
 
 = Introduction =
 
-Add your content here.
-
+The Energy Detective's AggreData is an open-source data platform that will allow a user(s) to aggregate energy-data from a single/multiple/group/mass of TEDs on their own server. 
 
 = Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
