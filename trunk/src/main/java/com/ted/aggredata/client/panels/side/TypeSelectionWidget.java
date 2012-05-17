@@ -20,11 +20,14 @@ package com.ted.aggredata.client.panels.side;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
@@ -41,6 +44,7 @@ import java.util.logging.Logger;
  */
 public class TypeSelectionWidget extends Composite {
 
+
     interface MyUiBinder extends UiBinder<Widget, TypeSelectionWidget> {
     }
 
@@ -54,17 +58,20 @@ public class TypeSelectionWidget extends Composite {
     RadioButton energyRadioButton;
     @UiField
     RadioButton costRadioButton;
+    @UiField
+    CheckBox showTotalCheckbox;
 
     public TypeSelectionWidget() {
         initWidget(uiBinder.createAndBindUi(this));
         handlerManager = new HandlerManager(this);
         energyRadioButton.setValue(true);
+        showTotalCheckbox.setValue(true);
 
         energyRadioButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 if (logger.isLoggable(Level.FINE)) logger.fine("Energy Radio Box Clicked");
-                handlerManager.fireEvent(new GraphTypeSelectedEvent(Enums.GraphType.ENERGY));
+                handlerManager.fireEvent(new GraphTypeSelectedEvent(Enums.GraphType.ENERGY, showTotalCheckbox.getValue()));
             }
         });
 
@@ -73,10 +80,21 @@ public class TypeSelectionWidget extends Composite {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 if (logger.isLoggable(Level.FINE)) logger.fine("Cost Radio Box Clicked");
-                handlerManager.fireEvent(new GraphTypeSelectedEvent(Enums.GraphType.COST));
+                handlerManager.fireEvent(new GraphTypeSelectedEvent(Enums.GraphType.COST,  showTotalCheckbox.getValue()));
             }
         });
 
+        showTotalCheckbox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Boolean> booleanValueChangeEvent) {
+                if (logger.isLoggable(Level.FINE)) logger.fine("Show Total Box Clicked");
+                if (energyRadioButton.getValue()) {
+                    handlerManager.fireEvent(new GraphTypeSelectedEvent(Enums.GraphType.ENERGY,  showTotalCheckbox.getValue()));
+                } else {
+                    handlerManager.fireEvent(new GraphTypeSelectedEvent(Enums.GraphType.COST,  showTotalCheckbox.getValue()));
+                }
+            }
+        });
 
     }
 
@@ -90,6 +108,14 @@ public class TypeSelectionWidget extends Composite {
         return Enums.GraphType.COST;
     }
 
+    public void setShowTotals(Boolean b) {
+        showTotalCheckbox.setValue(b);
+    }
+
+    public Boolean getShowTotals(){
+        return showTotalCheckbox.getValue();
+
+    }
 
     public HandlerRegistration addGraphTypeSelectedHandler(GraphTypeSelectedHandler handler) {
         return handlerManager.addHandler(GraphTypeSelectedEvent.TYPE, handler);

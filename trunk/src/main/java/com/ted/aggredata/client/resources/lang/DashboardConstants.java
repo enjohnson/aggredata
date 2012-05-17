@@ -301,4 +301,6 @@ public interface DashboardConstants extends Constants {
     
     String changePassVerification();
 
+    String graphShowTotal();
+
 }

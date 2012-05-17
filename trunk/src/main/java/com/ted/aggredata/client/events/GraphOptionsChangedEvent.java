@@ -37,6 +37,7 @@ public class GraphOptionsChangedEvent extends GwtEvent<GraphOptionsChangedHandle
     final Group group;
     final Enums.GraphType graphType;
     final Integer interval;
+    final Boolean showTotals;
 
     /**
      *
@@ -45,12 +46,13 @@ public class GraphOptionsChangedEvent extends GwtEvent<GraphOptionsChangedHandle
      * @param endDate
      * @param graphType
      */
-    public GraphOptionsChangedEvent(Group group, Date startDate, Date endDate, Enums.GraphType graphType) {
+    public GraphOptionsChangedEvent(Group group, Date startDate, Date endDate, Enums.GraphType graphType, Boolean showTotals) {
         this.group = group;
         this.startDate = startDate;
         this.endDate = endDate;
         this.graphType = graphType;
         this.interval = 0;
+        this.showTotals = showTotals;
     }
 
     /***
@@ -61,12 +63,13 @@ public class GraphOptionsChangedEvent extends GwtEvent<GraphOptionsChangedHandle
      * @param graphType
      * @param interval used by minute graphing only. the interval grouping for the returned resuls (e.g. 15 minutes)
      */
-    public GraphOptionsChangedEvent(Group group, Date startDate, Date endDate, Enums.GraphType graphType, Integer interval) {
+    public GraphOptionsChangedEvent(Group group, Date startDate, Date endDate, Enums.GraphType graphType, Integer interval, Boolean showTotals) {
         this.group = group;
         this.startDate = startDate;
         this.endDate = endDate;
         this.graphType = graphType;
         this.interval = interval;
+        this.showTotals = showTotals;
     }
 
 
@@ -98,6 +101,10 @@ public class GraphOptionsChangedEvent extends GwtEvent<GraphOptionsChangedHandle
 
     public Integer getInterval() {
         return interval;
+    }
+
+    public Boolean getShowTotals() {
+        return showTotals;
     }
 }
 
