@@ -75,6 +75,7 @@ public class GraphSidePanel extends Composite {
     Integer interval;
     Enums.GraphType graphType;
     Enums.HistoryType historyType;
+    Boolean showTotals;
 
 
 
@@ -117,6 +118,7 @@ public class GraphSidePanel extends Composite {
             public void onGraphTypeSelected(GraphTypeSelectedEvent event) {
                 logger.fine("Type Changed to " + event.getSelectedGraphType());
                 graphType = event.getSelectedGraphType();
+                showTotals = event.getShowTotals();
                 fireEvent();
             }
         });
@@ -156,9 +158,9 @@ public class GraphSidePanel extends Composite {
     {
             logger.fine("Graph Side Panel Firing Event");
             if (getHistoryType().equals(Enums.HistoryType.MINUTE)) {
-                handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType, interval));
+                handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType, interval, showTotals));
             } else {
-                handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType));
+                handlerManager.fireEvent(new GraphOptionsChangedEvent(group, startDate, endDate, graphType, showTotals));
             }
     }
 
@@ -190,7 +192,9 @@ public class GraphSidePanel extends Composite {
                 setHistoryType(Enums.HistoryType.MONTHLY);
                 resetDate();
                 graphType = Enums.GraphType.ENERGY;
+                showTotals = true;
                 typeSelectionWidget.setType(graphType);
+                typeSelectionWidget.setShowTotals(true);
 
                 fireEvent();
 

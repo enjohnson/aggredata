@@ -28,13 +28,14 @@
         <my:widgets.ClearImage width="2px" height="5px"/>
         <g:HorizontalPanel>
             <my:widgets.ClearImage width="20px" height="4px"/>
-            <g:RadioButton name="type"  text="Energy" ui:field="energyRadioButton"/>
+            <g:RadioButton name="type"  text="Energy" ui:field="energyRadioButton"  styleName="{style.sideBarLabel}"/>
             <my:widgets.ClearImage width="20px" height="4px"/>
-            <g:RadioButton name="type"  text="Cost" ui:field="costRadioButton"/>
+            <g:RadioButton name="type"  text="Cost" ui:field="costRadioButton" styleName="{style.sideBarLabel}"/>
         </g:HorizontalPanel>
-
+        <my:widgets.ClearImage width="40px" height="4px"/>
+        <g:HorizontalPanel>
+            <my:widgets.ClearImage width="40px" height="4px"/>
+            <g:CheckBox ui:field="showTotalCheckbox" text="{txtRes.graphShowTotal}"  styleName="{style.sideBarLabel}"/>
+        </g:HorizontalPanel>
     </g:VerticalPanel>
-
-
-
 </ui:UiBinder>

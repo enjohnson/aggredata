@@ -32,7 +32,7 @@
         <my:widgets.ClearImage width="1px" height="7px"/>
         <my:panels.side.TypeSelectionWidget ui:field="typeSelectionWidget"/>
 
-        <my:widgets.ClearImage width="1px" height="7px"/>
+        <my:widgets.ClearImage width="1px" height="3px"/>
         <g:Image resource="{imgRes.sideDivider}"/>
         <my:widgets.ClearImage width="1px" height="7px"/>
         <g:VerticalPanel ui:field="dateSelectionPanel" />

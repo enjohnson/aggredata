@@ -51,7 +51,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MinutePanel extends Composite implements GraphOptionChangeable{
+public class MinutePanel extends Composite implements GraphOptionChangeable {
 
     public static String BACKGROUND_COLOR = "transparent";
     public static final int GRAPH_WIDTH = 880;
@@ -66,7 +66,6 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
     final NumberFormat currencyFormat = NumberFormat.getCurrencyFormat();
     final DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat("MM/dd/yyyy hh:mm a");
     final private HandlerManager handlerManager = new HandlerManager(this);
-
 
 
     interface MyUiBinder extends UiBinder<Widget, MinutePanel> {
@@ -89,8 +88,7 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
      */
     Runnable onLoadCallback = new Runnable() {
         public void run() {
-            if (historyResult != null)
-            {
+            if (historyResult != null) {
                 logger.fine("Callback received. Drawing.");
 
                 //Create the visualization
@@ -103,7 +101,7 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
                     theChart.draw(createTable(), createOptions());
                 }
                 handlerManager.fireEvent(new GraphLoadedEvent(event.getGroup(), event.getStartDate(), event.getEndDate(), event.getGraphType(), event.getInterval()));
-            }   else {
+            } else {
                 logger.severe("historyResult is null!");
             }
         }
@@ -116,10 +114,10 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
 
 
         groupService.getHistory(Enums.HistoryType.MINUTE,
-                                event.getGroup(),
-                                event.getStartDate().getTime()/1000,
-                                event.getEndDate().getTime()/1000,
-                                event.getInterval(), new TEDAsyncCallback<EnergyDataHistoryQueryResult>() {
+                event.getGroup(),
+                event.getStartDate().getTime() / 1000,
+                event.getEndDate().getTime() / 1000,
+                event.getInterval(), new TEDAsyncCallback<EnergyDataHistoryQueryResult>() {
             @Override
             public void onSuccess(EnergyDataHistoryQueryResult energyDataHistoryQueryResult) {
                 logger.fine("history data returned. Drawing");
@@ -134,10 +132,10 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
     /**
      * Updates the title on the page
      */
-    private void updateTitle(){
+    private void updateTitle() {
         StringBuilder title = new StringBuilder();
-        String interval =  Enums.HistoryType.MINUTE.toString();
-        if (event.getInterval() > 1)  interval = event.getInterval() + " " + StringUtil.toTitleCase(interval);
+        String interval = Enums.HistoryType.MINUTE.toString();
+        if (event.getInterval() > 1) interval = event.getInterval() + " " + StringUtil.toTitleCase(interval);
         else interval = StringUtil.toTitleCase(interval);
 
         title.append(interval);
@@ -156,13 +154,11 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
     }
 
 
-
     public MinutePanel(GraphLoadedHandler handler) {
         initWidget(uiBinder.createAndBindUi(this));
         addGraphLoadedHandler(handler);
 
     }
-
 
 
     protected Options createOptions() {
@@ -191,7 +187,6 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
         vAxisStyle.setFontSize(12);
 
 
-
         AxisOptions vAxisOptions = AxisOptions.create();
         vAxisOptions.setTextStyle(vAxisStyle);
         vAxisOptions.setMinValue(0);
@@ -201,7 +196,6 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
         vAxisOptions.setTitleTextStyle(vAxisStyle);
 
         options.setVAxisOptions(vAxisOptions);
-
 
 
         TextStyle hAxisStyle = TextStyle.create();
@@ -217,7 +211,6 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
         options.setHAxisOptions(hAxisOptions);
 
 
-
         TextStyle titleStyle = TextStyle.create();
         titleStyle.setColor("#FFFFFF");
         titleStyle.setFontSize(16);
@@ -228,14 +221,13 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
 
         ChartArea ca = ChartArea.create();
 //        ca.setHeight(GRAPH_HEIGHT-185);
-        ca.setWidth(GRAPH_WIDTH-250);
+        ca.setWidth(GRAPH_WIDTH - 250);
         ca.setLeft(60);
         ca.setTop(5);
 
         options.setChartArea(ca);
 
         options.set("is3D", "true");
-
 
 
         return options;
@@ -246,51 +238,51 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
         DataTable data = DataTable.create();
         data.addColumn(AbstractDataTable.ColumnType.STRING, "Task");
 
-        double multiplier = 60.0/(double)(event.getInterval());
+        double multiplier = 60.0 / (double) (event.getInterval());
 
         //Only show NET if we have more than one gateway in the group.
-        if (historyResult.getGatewayList().size() > 1)
-        {
-            StringBuilder descriptionBuffer = new StringBuilder();
-            descriptionBuffer.append("Total " + StringUtil.toTitleCase(event.getGraphType().toString()));
+        if (event.getShowTotals()) {
+            if (historyResult.getGatewayList().size() > 1) {
+                StringBuilder descriptionBuffer = new StringBuilder();
+                descriptionBuffer.append("Total " + StringUtil.toTitleCase(event.getGraphType().toString()));
 
-            if (event.getGraphType().equals(Enums.GraphType.ENERGY)) {
-                Double v = historyResult.getNetEnergyTotal();
-                if (v == null) v = 0d;
+                if (event.getGraphType().equals(Enums.GraphType.ENERGY)) {
+                    Double v = historyResult.getNetEnergyTotal();
+                    if (v == null) v = 0d;
 
-                v = NumberUtil.round((v/multiplier) / 1000, 1);
-                if (v != 0) {
-                    descriptionBuffer.append(" (").append(v + " kWh").append(")");
+                    v = NumberUtil.round((v / multiplier) / 1000, 1);
+                    if (v != 0) {
+                        descriptionBuffer.append(" (").append(v + " kWh").append(")");
+                    }
+                } else {
+                    Double v = historyResult.getNetCostTotal();
+                    if (v == null) v = 0d;
+                    v = NumberUtil.round((v / multiplier), 2);
+                    if (v != 0) {
+                        descriptionBuffer.append(" (").append(currencyFormat.format(v)).append(")");
+                    }
                 }
-            } else {
-                Double v = historyResult.getNetCostTotal();
-                if (v == null) v = 0d;
-                v = NumberUtil.round((v/multiplier), 2);
-                if (v != 0) {
-                    descriptionBuffer.append(" (").append(currencyFormat.format(v)).append(")");
-                }
+
+                data.addColumn(AbstractDataTable.ColumnType.NUMBER, descriptionBuffer.toString());
+
             }
-
-            data.addColumn(AbstractDataTable.ColumnType.NUMBER, descriptionBuffer.toString());
-
         }
 
-
-        for (Gateway gateway: historyResult.getGatewayList()) {
+        for (Gateway gateway : historyResult.getGatewayList()) {
             StringBuilder descriptionBuffer = new StringBuilder();
             descriptionBuffer.append(gateway.getDescription());
 
             if (event.getGraphType().equals(Enums.GraphType.ENERGY)) {
                 Double v = historyResult.getGatewayEnergyTotalList().get(gateway.getId());
                 if (v == null) v = 0d;
-                v = NumberUtil.round((v/multiplier) / 1000, 1);
+                v = NumberUtil.round((v / multiplier) / 1000, 1);
                 if (v != 0) {
                     descriptionBuffer.append(" (").append(v + " kWh").append(")");
                 }
             } else {
                 Double v = historyResult.getGatewayCostTotalList().get(gateway.getId());
                 if (v == null) v = 0d;
-                v = NumberUtil.round((v/multiplier), 2);
+                v = NumberUtil.round((v / multiplier), 2);
                 if (v != 0) {
                     descriptionBuffer.append("(").append(currencyFormat.format(v)).append(")");
                 }
@@ -300,44 +292,41 @@ public class MinutePanel extends Composite implements GraphOptionChangeable{
         }
 
 
-
         int rowCount = historyResult.getNetHistoryList().size();
         if (logger.isLoggable(Level.FINE)) logger.fine("Total Results:" + rowCount);
         data.addRows(rowCount);
 
-        for (int i=0; i < rowCount; i++)
-        {
+        for (int i = 0; i < rowCount; i++) {
             String title = dateTimeFormat.format(historyResult.getNetHistoryList().get(i).getHistoryDate().getTime());
 
             //Set the month
             int col = 0;
             data.setValue(i, col++, title);
 
-            //Only show NET if we have more than one gateway in the group.
-            if (historyResult.getGatewayList().size() > 1)
-            {
-                if (event.getGraphType().equals(Enums.GraphType.ENERGY)) {
-                    double energy = NumberUtil.round(historyResult.getNetHistoryList().get(i).getEnergy() / 1000, 3);
-                    data.setCell(i, col++, energy, energy + " kWh", null);
+            if (event.getShowTotals()) {
+                //Only show NET if we have more than one gateway in the group.
+                if (historyResult.getGatewayList().size() > 1) {
+                    if (event.getGraphType().equals(Enums.GraphType.ENERGY)) {
+                        double energy = NumberUtil.round(historyResult.getNetHistoryList().get(i).getEnergy() / 1000, 3);
+                        data.setCell(i, col++, energy, energy + " kWh", null);
+                    } else {
+                        double cost = NumberUtil.round(historyResult.getNetHistoryList().get(i).getCost(), 2);
+                        data.setCell(i, col++, cost, currencyFormat.format(cost), null);
+                    }
                 }
-                else {
-                    double cost = NumberUtil.round(historyResult.getNetHistoryList().get(i).getCost(), 2);
-                    data.setCell(i, col++, cost, currencyFormat.format(cost), null);
-                }
+
             }
 
-
-            for (Gateway gateway: historyResult.getGatewayList()) {
-                List<EnergyDataHistory> gwList =historyResult.getGatewayHistoryList().get(gateway.getId());
-                if (gwList == null || gwList.size()==0) {
+            for (Gateway gateway : historyResult.getGatewayList()) {
+                List<EnergyDataHistory> gwList = historyResult.getGatewayHistoryList().get(gateway.getId());
+                if (gwList == null || gwList.size() == 0) {
                     logger.fine("Skipping " + gateway + " since there is no history for it");
                     data.setValue(i, col++, 0);
-                }   else {
+                } else {
                     if (event.getGraphType().equals(Enums.GraphType.ENERGY)) {
                         double energy = NumberUtil.round(gwList.get(i).getEnergy() / 1000, 3);
                         data.setCell(i, col++, energy, energy + " kWh", null);
-                    }
-                    else {
+                    } else {
                         double cost = NumberUtil.round(gwList.get(i).getCost(), 2);
                         data.setCell(i, col++, cost, currencyFormat.format(cost), null);
 

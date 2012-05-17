@@ -33,10 +33,12 @@ public class GraphTypeSelectedEvent extends GwtEvent<GraphTypeSelectedHandler> {
 
 
     final Enums.GraphType selectedGraphType;
+    final Boolean showTotals;
 
 
-    public GraphTypeSelectedEvent(Enums.GraphType selectedGraphType) {
+    public GraphTypeSelectedEvent(Enums.GraphType selectedGraphType, Boolean showTotals) {
         this.selectedGraphType = selectedGraphType;
+        this.showTotals = showTotals;
     }
 
     @Override
@@ -51,5 +53,9 @@ public class GraphTypeSelectedEvent extends GwtEvent<GraphTypeSelectedHandler> {
 
     public Enums.GraphType getSelectedGraphType() {
         return selectedGraphType;
+    }
+
+    public Boolean getShowTotals() {
+        return showTotals;
     }
 }
