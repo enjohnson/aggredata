@@ -57,9 +57,9 @@
 
             <my:widgets.ClearImage width="2px" height="10px"/>
 
-            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
+            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP" ui:field="custom1Panel">
                 <my:widgets.ClearImage width="10px" height="5px"/>
-                <g:Label styleName='{style.formLabel}'  width="120px"/>
+                <g:Label styleName='{style.formLabel}' ui:field="custom1Label" width="120px"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
                 <g:TextBox ui:field="custom1Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
@@ -68,9 +68,9 @@
 
             <my:widgets.ClearImage width="2px" height="10px"/>
 
-            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
+            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP" ui:field="custom2Panel">
                 <my:widgets.ClearImage width="10px" height="5px"/>
-                <g:Label styleName='{style.formLabel}' width="120px"/>
+                <g:Label styleName='{style.formLabel}' ui:field="custom2Label" width="120px"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
                 <g:TextBox ui:field="custom2Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
@@ -79,9 +79,9 @@
 
             <my:widgets.ClearImage width="2px" height="10px"/>
 
-            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
+            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP" ui:field="custom3Panel">
                 <my:widgets.ClearImage width="10px" height="5px"/>
-                <g:Label styleName='{style.formLabel}'  width="120px"/>
+                <g:Label styleName='{style.formLabel}' ui:field="custom3Label" width="120px"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
                 <g:TextBox ui:field="custom3Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
@@ -90,9 +90,9 @@
 
             <my:widgets.ClearImage width="2px" height="10px"/>
 
-            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
+            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP" ui:field="custom4Panel">
                 <my:widgets.ClearImage width="10px" height="5px"/>
-                <g:Label styleName='{style.formLabel}' width="120px"/>
+                <g:Label styleName='{style.formLabel}' ui:field="custom4Label" width="120px"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
                 <g:TextBox ui:field="custom4Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
@@ -101,9 +101,9 @@
 
             <my:widgets.ClearImage width="2px" height="10px"/>
 
-            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
+            <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP" ui:field="custom5Panel">
                 <my:widgets.ClearImage width="10px" height="5px"/>
-                <g:Label styleName='{style.formLabel}'  width="120px"/>
+                <g:Label styleName='{style.formLabel}'  ui:field="custom5Label" width="120px"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
                 <g:TextBox ui:field="custom5Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>

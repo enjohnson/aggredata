@@ -23,6 +23,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import com.ted.aggredata.client.Aggredata;
 import com.ted.aggredata.client.guiService.*;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.google.gwt.user.client.ui.Composite;
@@ -81,6 +82,26 @@ public class UserDetailsPanel extends Composite {
     UserButtonPanel UserButtonPanel;
     @UiField
     CaptionPanel captionPanel;
+    @UiField
+    Label custom5Label;
+    @UiField
+    Label custom4Label;
+    @UiField
+    Label custom2Label;
+    @UiField
+    HorizontalPanel custom1Panel;
+    @UiField
+    HorizontalPanel custom2Panel;
+    @UiField
+    HorizontalPanel custom5Panel;
+    @UiField
+    HorizontalPanel custom4Panel;
+    @UiField
+    HorizontalPanel custom3Panel;
+    @UiField
+    Label custom1Label;
+    @UiField
+    Label custom3Label;
 
     User user;
     Integer userHashCode = 0;
@@ -107,6 +128,18 @@ public class UserDetailsPanel extends Composite {
         custom4Field.addChangeHandler(saveChangeHanlder);
         custom2Field.addChangeHandler(saveChangeHanlder);
         custom5Field.addChangeHandler(saveChangeHanlder);
+
+        //Hide the panels that are not being used for custom fields
+        custom1Panel.setVisible(Aggredata.GLOBAL.getUserCustomFields().getCustom1().trim().length() > 0);
+        custom2Panel.setVisible(Aggredata.GLOBAL.getUserCustomFields().getCustom2().trim().length() > 0);
+        custom3Panel.setVisible(Aggredata.GLOBAL.getUserCustomFields().getCustom3().trim().length() > 0);
+        custom4Panel.setVisible(Aggredata.GLOBAL.getUserCustomFields().getCustom4().trim().length() > 0);
+        custom5Panel.setVisible(Aggredata.GLOBAL.getUserCustomFields().getCustom5().trim().length() > 0);
+        custom1Label.setText(Aggredata.GLOBAL.getUserCustomFields().getCustom1());
+        custom2Label.setText(Aggredata.GLOBAL.getUserCustomFields().getCustom2());
+        custom3Label.setText(Aggredata.GLOBAL.getUserCustomFields().getCustom3());
+        custom4Label.setText(Aggredata.GLOBAL.getUserCustomFields().getCustom4());
+        custom5Label.setText(Aggredata.GLOBAL.getUserCustomFields().getCustom5());
 
     }
 
