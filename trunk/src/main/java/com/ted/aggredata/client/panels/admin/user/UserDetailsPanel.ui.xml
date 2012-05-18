@@ -59,7 +59,7 @@
 
             <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10px" height="5px"/>
-                <g:Label styleName='{style.formLabel}' text='{txtRes.custom1Field}' width="120px"/>
+                <g:Label styleName='{style.formLabel}'  width="120px"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
                 <g:TextBox ui:field="custom1Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
@@ -70,7 +70,7 @@
 
             <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10px" height="5px"/>
-                <g:Label styleName='{style.formLabel}' text='{txtRes.custom2Field}' width="120px"/>
+                <g:Label styleName='{style.formLabel}' width="120px"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
                 <g:TextBox ui:field="custom2Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
@@ -81,7 +81,7 @@
 
             <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10px" height="5px"/>
-                <g:Label styleName='{style.formLabel}'  text='{txtRes.custom3Field}' width="120px"/>
+                <g:Label styleName='{style.formLabel}'  width="120px"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
                 <g:TextBox ui:field="custom3Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
@@ -92,7 +92,7 @@
 
             <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10px" height="5px"/>
-                <g:Label styleName='{style.formLabel}' text='{txtRes.custom4Field}' width="120px"/>
+                <g:Label styleName='{style.formLabel}' width="120px"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
                 <g:TextBox ui:field="custom4Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
@@ -103,7 +103,7 @@
 
             <g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
                 <my:widgets.ClearImage width="10px" height="5px"/>
-                <g:Label styleName='{style.formLabel}' text='{txtRes.custom5Field}' width="120px"/>
+                <g:Label styleName='{style.formLabel}'  width="120px"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>
                 <g:TextBox ui:field="custom5Field" width="150px" styleName="{style.formField}"/>
                 <my:widgets.ClearImage width="2px" height="5px"/>

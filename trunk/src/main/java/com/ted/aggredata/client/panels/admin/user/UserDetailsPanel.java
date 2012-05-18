@@ -101,9 +101,9 @@ public class UserDetailsPanel extends Composite {
 
         usernameField.addChangeHandler(saveChangeHanlder);
         firstNameField.addChangeHandler(saveChangeHanlder);
+        lastNameField.addChangeHandler(saveChangeHanlder);
         custom1Field.addChangeHandler(saveChangeHanlder);
         custom3Field.addChangeHandler(saveChangeHanlder);
-        lastNameField.addChangeHandler(saveChangeHanlder);
         custom4Field.addChangeHandler(saveChangeHanlder);
         custom2Field.addChangeHandler(saveChangeHanlder);
         custom5Field.addChangeHandler(saveChangeHanlder);
