@@ -271,4 +271,20 @@ public interface DashboardConstants extends Constants {
     String groupShareAddLabel();
 
     String groupShareAddButton();
+
+    String close();
+
+    String groupShareInstructions();
+
+    String groupMembers();
+
+    String remove();
+
+    String graphShareMemberRemoveTitle();
+
+    String graphShareMemberRemoveText();
+
+    String graphShareAlreadyExists();
+
+    String graphShareAlreadyExistsTitle();
 }

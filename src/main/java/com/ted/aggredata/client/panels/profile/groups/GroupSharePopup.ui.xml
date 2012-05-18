@@ -22,16 +22,24 @@
 
     <ui:with field='logRes' type='com.ted.aggredata.client.resources.lang.LogonConstants'/>
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
-    <g:CaptionPanel ui:field="captionPanel" width="600px" styleName="{style.captionHeader}" captionText="{txtRes.groupShareHeader}">
-        <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
-            <my:widgets.ClearImage width="600px" height="5px"/>
+    <g:CaptionPanel ui:field="captionPanel"  styleName="{style.captionHeader}" captionText="{txtRes.groupShareHeader}">
+        <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" >
+            <my:widgets.ClearImage width="1px" height="5px"/>
+            <g:Label text="{txtRes.groupShareInstructions}" styleName="{style.panelInstructionText}" width="575px"/>
+            <my:widgets.ClearImage width="1px" height="10px"/>
             <g:HorizontalPanel>
-                <g:HorizontalPanel>
-                    <g:Label text="{txtRes.groupShareAddLabel}" styleName="{style.formLabel}"/>
-                    <g:SuggestBox styleName="{style.formField}" ui:field="userSuggestBox" />
-                </g:HorizontalPanel>
+                <g:Label text="{txtRes.groupShareAddLabel}" styleName="{style.formLabel}" width="100px"/>
+                <g:SuggestBox styleName="{style.formField}" ui:field="userSuggestBox" width="300px" />
+                <my:widgets.SmallButton ui:field="addButton"  buttonString="{txtRes.add}" />
             </g:HorizontalPanel>
-            <my:widgets.ClearImage width="600px" height="5px"/>
+            <my:widgets.ClearImage width="1px" height="10px"/>
+            <g:Label text="{txtRes.groupMembers}" styleName="{style.panelInstructionText}" width="575px"/>
+            <my:widgets.ClearImage width="1px" height="10px"/>
+            <g:ScrollPanel width="575px">
+                <g:VerticalPanel ui:field="groupMembersPanel"/>
+            </g:ScrollPanel>
+            <my:widgets.ClearImage width="1px" height="20px"/>
+            <my:widgets.LongButton ui:field="closeButton"  buttonString="{txtRes.close}" />
         </g:VerticalPanel>
     </g:CaptionPanel>
 

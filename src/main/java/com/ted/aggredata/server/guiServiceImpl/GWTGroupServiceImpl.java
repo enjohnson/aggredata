@@ -21,6 +21,7 @@ import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.model.*;
 import com.ted.aggredata.server.services.GroupService;
 import com.ted.aggredata.server.services.HistoryService;
+import com.ted.aggredata.server.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements G
 
     @Autowired
     GroupService groupService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     HistoryService historyService;
@@ -112,6 +116,41 @@ public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements G
         return key;
 
 
+    }
+
+    @Override
+    public void addUserToGroup(Group group, User user) {
+        User sessionUser = getCurrentUser();
+        if (group.getOwnerUserId().equals(sessionUser.getId())){
+            if (logger.isInfoEnabled()) logger.info(sessionUser + " is adding " + user + "  to  " + group);
+            groupService.addUserToGroup(user, group, Group.Role.READONLY);
+        } else {
+            logger.warn("Security violation. " + sessionUser + " attempted to add " + user + "  to  " + group);
+        }
+
+    }
+
+    @Override
+    public void removeUserFromGroup(Group group, User user) {
+        User sessionUser = getCurrentUser();
+        if (group.getOwnerUserId().equals(sessionUser.getId())){
+            if (logger.isInfoEnabled()) logger.info(sessionUser + " is removing " + user + "  from  " + group);
+            groupService.removeUserFromGroup(user, group);
+        } else {
+            logger.warn("Security violation. " + sessionUser + " attempted to remove " + user + "  from  " + group);
+        }
+    }
+
+    @Override
+    public List<User> getGroupMembers(Group group) {
+        User sessionUser = getCurrentUser();
+        if (group.getOwnerUserId().equals(sessionUser.getId())){
+            if (logger.isInfoEnabled()) logger.info(sessionUser + " is retrieving a list of users for group " + group);
+            return userService.findUsers(group);
+        } else {
+            logger.warn("Security violation. " + sessionUser + " attempted to retrieve a list of users for group " + group);
+            return null;
+        }
     }
 
 

@@ -17,6 +17,7 @@
 
 package com.ted.aggredata.server.services;
 
+import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
 
 import java.util.List;
@@ -124,4 +125,12 @@ public interface UserService {
      * @return
      */
     public List<User> findUsers(String substring);
+
+
+    /***
+     * Finds users for the specified group
+     * @param group
+     * @return
+     */
+    public List<User>findUsers(Group group);
 }
