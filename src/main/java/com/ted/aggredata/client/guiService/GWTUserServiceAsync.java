@@ -34,4 +34,13 @@ public interface GWTUserServiceAsync {
     void deleteUser(User user, AsyncCallback<Void> async );
     
     void createUser(User user, AsyncCallback<User> async);
+
+
+    /**
+     * Used to find a list of users based on a substring. We match on name and email address.
+     *
+     * @param substring
+     * @return
+     */
+    void findUsers(String substring, AsyncCallback<List<User>> async);
 }

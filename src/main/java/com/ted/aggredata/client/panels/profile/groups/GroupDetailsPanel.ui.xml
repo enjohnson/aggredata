@@ -93,6 +93,10 @@
 
             <my:panels.profile.groups.GroupGatewaysPanel ui:field="groupGatewaysPanel"/>
 
+            <my:widgets.ClearImage width="2" height="4px"/>
+            <my:widgets.LongButton ui:field="shareGroupButton"  buttonString="{txtRes.shareGroup}" />
+
+
 
         </g:VerticalPanel>
     </g:CaptionPanel>

@@ -97,4 +97,10 @@ public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GW
             userService.deleteUser(user);
         }
     }
+
+    @Override
+    public List<User> findUsers(String substring) {
+        if (logger.isInfoEnabled()) logger.info("Looking up users with substring " + substring);
+        return userService.findUsers(substring);
+    }
 }

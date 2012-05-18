@@ -163,4 +163,9 @@ public class UserServiceImpl implements UserService {
         if (logger.isDebugEnabled()) logger.info("Looking up password for " + user);
         return userDao.getPassword(user);
     }
+
+    @Override
+    public List<User> findUsers(String substring) {
+        return userDao.findUsers(substring);
+    }
 }

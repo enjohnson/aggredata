@@ -112,16 +112,6 @@ public interface DashboardConstants extends Constants {
 
     String profileSettingsPhoneNumber();
 
-    String profileSettingsCustom1();
-
-    String profileSettingsCustom2();
-
-    String profileSettingsCustom3();
-
-    String profileSettingsCustom4();
-
-    String profileSettingsCustom5();
-
     String profileSettingsTimezone();
 
     String minutes();
@@ -144,16 +134,6 @@ public interface DashboardConstants extends Constants {
     String activationInstructions4();
 
     String groupSettingsDescription();
-
-    String groupSettingsCustom1();
-
-    String groupSettingsCustom2();
-
-    String groupSettingsCustom3();
-
-    String groupSettingsCustom4();
-
-    String groupSettingsCustom5();
 
     String yes();
 
@@ -188,16 +168,6 @@ public interface DashboardConstants extends Constants {
     String gatewaySerialNumber();
 
     String gatewaySettingsDescription();
-
-    String gatewaySettingsCustom1();
-
-    String gatewaySettingsCustom2();
-
-    String gatewaySettingsCustom3();
-
-    String gatewaySettingsCustom4();
-
-    String gatewaySettingsCustom5();
 
     String mtuSerialNumber();
 
@@ -275,17 +245,7 @@ public interface DashboardConstants extends Constants {
     String firstNameField();
     
     String lastNameField();
-    
-    String custom1Field();
-    
-    String custom3Field();
-    
-    String custom2Field();
-    
-    String custom4Field();
-    
-    String custom5Field();
-    
+
     String usernameField();
 
     //Change Email and Password Popups
@@ -303,4 +263,12 @@ public interface DashboardConstants extends Constants {
 
     String graphShowTotal();
 
+    String shareGroup();
+
+    String groupShareHeader();
+
+
+    String groupShareAddLabel();
+
+    String groupShareAddButton();
 }

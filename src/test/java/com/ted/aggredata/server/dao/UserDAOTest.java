@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+import java.util.zip.CheckedInputStream;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml",
         "classpath:applicationContext-Test.xml"
@@ -74,6 +77,52 @@ public class UserDAOTest {
 
 
     }
+
+    @Test
+    public void testFindUsers(){
+
+        ArrayList <User> userList = new ArrayList<User>();
+
+        //Create sample users
+        for (int i=0; i < 10; i++) {
+            User user = new User();
+            user.setUsername(TestUtil.getUniqueKey() + "@theenergydetective.com");
+            user.setActivationKey("12345");
+            user.setDefaultGroupId(1);
+            user.setRole("ROLE_USER");
+            user.setFirstName("USER" + i);
+
+
+            if (i < 5) {
+                user.setLastName("LNAME" + i);
+                user.setCompanyName("Company A");
+            }  else {
+                user.setLastName("LAST" + i);
+                user.setCompanyName("Company B");
+            }
+            user.setAccountState(User.STATE_ENABLED);
+            userList.add(userDAO.create(user));
+        }
+
+
+        //Check the various queries
+        if (userDAO.findUsers().size() < 10) Assert.fail("Not enough users returned");
+
+        if (userDAO.findUsers("@theenergydetective").size() < 10) Assert.fail("Not enough users returned");
+        if (userDAO.findUsers("Company A").size() == 5) Assert.fail("Not enough users returned");
+        if (userDAO.findUsers("Company B").size() == 5) Assert.fail("Not enough users returned");
+
+
+
+
+
+        //Clean up
+        for (User user: userList) {
+            userDAO.delete(user);
+        }
+
+    }
+
 
 
 }

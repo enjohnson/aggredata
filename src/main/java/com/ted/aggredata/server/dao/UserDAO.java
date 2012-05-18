@@ -27,6 +27,7 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +53,8 @@ public class UserDAO extends AbstractDAO<User> {
     public static final String LOOKUP_PASSWORD = "select password from  aggredata.user where id=?";
     public static final String SELECT_USERS_QUERY = "select * from aggredata.user";
     //Delete queries if a user is deleted
+
+    public static final String GET_BY_USERNAME_SUBSTRING_QUERY = "select * from aggredata.user where username like ? or lastName like ? or firstName like ? or companyName like ? order by lastName, firstName, companyName";
 
 
     public UserDAO() {
@@ -93,6 +96,23 @@ public class UserDAO extends AbstractDAO<User> {
         } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");
             return null;
+        }
+    }
+
+    /**
+     * Find users by matching the substring
+     * @param subString
+     * @return
+     */
+    public List<User> findUsers(String subString) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("%").append(subString).append("%");
+
+        try {
+            return getJdbcTemplate().query(GET_BY_USERNAME_SUBSTRING_QUERY, new Object[]{stringBuilder.toString(),stringBuilder.toString(),stringBuilder.toString(),stringBuilder.toString()},  getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return new ArrayList<User>();
         }
     }
     public User getUserByUserName(String username) {

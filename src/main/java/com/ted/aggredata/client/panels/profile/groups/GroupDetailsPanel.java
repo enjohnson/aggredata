@@ -18,10 +18,9 @@
 package com.ted.aggredata.client.panels.profile.groups;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
@@ -30,6 +29,7 @@ import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.client.widgets.LongButton;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
@@ -91,6 +91,8 @@ public class GroupDetailsPanel extends Composite {
     @UiField Label custom3Label;
     @UiField Label custom4Label;
     @UiField Label custom5Label;
+    @UiField
+    LongButton shareGroupButton;
 
     Group group;
     Integer groupHashCode = 0;
@@ -136,6 +138,23 @@ public class GroupDetailsPanel extends Composite {
         custom3Field.addChangeHandler(saveChangeHanlder);
         custom4Field.addChangeHandler(saveChangeHanlder);
         custom5Field.addChangeHandler(saveChangeHanlder);
+
+        shareGroupButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                //Show the popup that allows users to add/remove shared users from the group.
+                GroupSharePopup groupSharePopup = new GroupSharePopup(group);
+                groupSharePopup.addCloseHandler(new CloseHandler<PopupPanel>() {
+                    @Override
+                    public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                        logger.fine("Group Share Popup Closed.");
+                    }
+                });
+                groupSharePopup.center();
+                groupSharePopup.setPopupPosition(groupSharePopup.getAbsoluteLeft(), 100);
+                groupSharePopup.show();
+            }
+        });
 
     }
 
