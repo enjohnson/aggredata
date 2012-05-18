@@ -99,8 +99,29 @@ public interface UserService {
      */
     public User getUserByActivationKey(String key);
 
+    /**
+     * Returns all users in the system
+     * @return
+     */
     public List<User> findUsers();
+
+    /**
+     * Ensures the user config is valid. If not, corrects it with defaults
+     * @param user
+     */
     public void checkUserConfig(User user);
 
+    /**
+     * Returns the password for the given user
+     * @param user
+     * @return
+     */
     public String getPassword(User user);
+
+
+    /***
+     * Find users for the given substring
+     * @return
+     */
+    public List<User> findUsers(String substring);
 }

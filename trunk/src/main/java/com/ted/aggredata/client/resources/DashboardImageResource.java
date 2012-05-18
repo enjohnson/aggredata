@@ -80,4 +80,8 @@ public interface DashboardImageResource extends ClientBundle {
 
     @Source("images/aggreDataNewUser.png")
     ImageResource newUserTitle();
+
+    @Source("images/longButton.png")
+    ImageResource longButton();
+
 }
