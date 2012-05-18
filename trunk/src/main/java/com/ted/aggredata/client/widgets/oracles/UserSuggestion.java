@@ -35,32 +35,33 @@ public class UserSuggestion implements SuggestOracle.Suggestion, Serializable {
         displayBuilder.append(user.getFirstName());
         displayBuilder.append(" ");
         displayBuilder.append(user.getLastName());
-        displayBuilder.append(" <");
+        displayBuilder.append(" (");
         displayBuilder.append(user.getUsername());
-        displayBuilder.append(" >");
+        displayBuilder.append(" )");
 
-        this.replacement = display.toString();
+        this.replacement = displayBuilder.toString();
 
-        if (user.getCompanyName().length() > 0)
+
+        if (user.getCompanyName() != null && user.getCompanyName().length() > 0)
         {
             displayBuilder.append(" ");
             displayBuilder.append(user.getCompanyName());
         }
 
-        if (user.getCity().length() > 0)
+        if (user.getCity() != null && user.getCity().length() > 0)
         {
             displayBuilder.append(" ");
             displayBuilder.append(user.getCity());
 
-            if (user.getAddrState().length() > 0) displayBuilder.append(",");
+            if (user.getAddrState() != null && user.getAddrState().length() > 0) displayBuilder.append(",");
         }
-        if (user.getAddrState().length() > 0)
+        if (user.getAddrState() != null && user.getAddrState().length() > 0)
         {
             displayBuilder.append(" ");
             displayBuilder.append(user.getAddrState());
         }
 
-        this.display = display.toString();
+        this.display = displayBuilder.toString();
 
     }
 

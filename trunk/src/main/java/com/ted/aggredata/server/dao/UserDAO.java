@@ -52,6 +52,7 @@ public class UserDAO extends AbstractDAO<User> {
     public static final String SAVE_USER_QUERY_SESSION = "update aggredata.user set username=?, activationKey=?, defaultGroupId=?, role=?, state=?, firstName=?, lastName=?, middleName=?, address=?, city=?, addrState=?, zip=?, custom1=?, custom2=?, custom3=?, custom4=?, custom5=?, companyName=?, PhoneNumber=?, timezone=? where id=?";
     public static final String LOOKUP_PASSWORD = "select password from  aggredata.user where id=?";
     public static final String SELECT_USERS_QUERY = "select * from aggredata.user";
+    public static final String GET_BY_GROUP_QUERY = " select u.* from aggredata.user u, aggredata.usergroup ug where u.id=ug.userId and ug.groupId=? and ug.role = 0";
     //Delete queries if a user is deleted
 
     public static final String GET_BY_USERNAME_SUBSTRING_QUERY = "select * from aggredata.user where username like ? or lastName like ? or firstName like ? or companyName like ? order by lastName, firstName, companyName";
@@ -115,6 +116,22 @@ public class UserDAO extends AbstractDAO<User> {
             return new ArrayList<User>();
         }
     }
+
+
+    /**
+     * Finds users for the specific group
+     * @param group
+     * @return
+     */
+    public List<User> findUsers(Group group) {
+        try {
+            return getJdbcTemplate().query(GET_BY_GROUP_QUERY,new Object[]{group.getId()}, getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return new ArrayList<User>();
+        }
+    }
+
     public User getUserByUserName(String username) {
 
         try {

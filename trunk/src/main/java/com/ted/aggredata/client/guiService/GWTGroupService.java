@@ -19,10 +19,7 @@ package com.ted.aggredata.client.guiService;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.ted.aggredata.model.EnergyDataHistory;
-import com.ted.aggredata.model.EnergyDataHistoryQueryResult;
-import com.ted.aggredata.model.Enums;
-import com.ted.aggredata.model.Group;
+import com.ted.aggredata.model.*;
 
 import java.util.List;
 
@@ -81,4 +78,26 @@ public interface GWTGroupService extends RemoteService {
      * @return
      */
     public String exportHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, int interval);
+
+    /**
+     * Adds a user to the specified group w/ READ_ONLY privileges
+     * @param group
+     * @param user
+     */
+    public void addUserToGroup(Group group, User user);
+
+    /**
+     * Removes the user from the specified group (only if READ_ONLY privileges exist)
+     * @param group
+     * @param user
+     */
+    public void removeUserFromGroup(Group group, User user);
+
+    /**
+     * Returns a list of users for the given group
+     * @param group
+     * @return
+     */
+    public List<User> getGroupMembers(Group group);
+
 }

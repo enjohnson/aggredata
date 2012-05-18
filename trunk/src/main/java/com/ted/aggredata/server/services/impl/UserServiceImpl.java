@@ -168,4 +168,9 @@ public class UserServiceImpl implements UserService {
     public List<User> findUsers(String substring) {
         return userDao.findUsers(substring);
     }
+
+    @Override
+    public List<User> findUsers(Group group) {
+        return userDao.findUsers(group);
+    }
 }
