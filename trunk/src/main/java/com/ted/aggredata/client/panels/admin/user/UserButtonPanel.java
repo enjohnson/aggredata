@@ -38,9 +38,6 @@ import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.LargeButton;
 import com.ted.aggredata.model.User;
-
-
-import java.util.List;
 import java.util.logging.Logger;
 
 public class UserButtonPanel extends Composite {
@@ -115,26 +112,44 @@ public class UserButtonPanel extends Composite {
                     user.setLastName(createUserPopup.getLastName());
                     user.setUsername(createUserPopup.getEmail());
                     user.setId(UserSelectionPanel.userList.get(UserSelectionPanel.userList.size() - 1).getId() + 1);
-                    gwtUserService.createUser(user, new TEDAsyncCallback<User>() {
-                        @Override
-                        public void onSuccess(User result) {
-                            UserSelectionPanel.userList.add(user);
-                            if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
-                            else UserSelectionPanel.userListBox.setSelectedIndex(0);
-                            UserSelectionPanel.redrawUserList();
-                            UserSelectionPanel.fireSelectedGroup();
-                        }
-                    });
+                    boolean confirm = validate(user, createUserPopup.getPassword());
+                    if (confirm == true){
+                        gwtUserService.createUser(user, new TEDAsyncCallback<User>() {
+                            @Override
+                            public void onSuccess(User result) {
+                                UserSelectionPanel.userList.add(user);
+                                if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
+                                else UserSelectionPanel.userListBox.setSelectedIndex(0);
+                                UserSelectionPanel.redrawUserList();
+                                UserSelectionPanel.fireSelectedGroup();
+                            }
+                        });
+                    }
                 }
             }
         });
         return createUserPopup.getPassword();
     }
     
-    private void newUserPass(String password)
+    private boolean validate(User user, String pass){
+        boolean confirm = true;
+        if (user.getUsername().length() < 5)
+        {
+            final OKPopup okPopup = new OKPopup("Error", "Email must be 5 characters or greater.");
+            confirm = false;
+        }
+        if (pass.length() < 5)
+        {
+            final OKPopup okPopup = new OKPopup("Error", "Password must be 5 characters or greater.");
+            confirm = false;
+        }        
+        return confirm;
+    }
+
+    private void newUserPass(String password2)
     {
-        if (password.length() > 0){
-            gwtUserService.changePassword(user, password, new TEDAsyncCallback<User>() {
+        if (password2.length() > 0){
+            gwtUserService.changePassword(user, password2, new TEDAsyncCallback<User>() {
                 @Override
                 public void onSuccess(User result) {
                     final OKPopup okPopup = new OKPopup("Change Password", "Password has been changed.");
@@ -158,7 +173,7 @@ public class UserButtonPanel extends Composite {
                         public void onSuccess(Void aVoid) {
                             Window.alert(user.toString());
                             Window.alert(UserSelectionPanel.userList.toString());
-                            UserSelectionPanel.userList.remove(user);
+                            UserSelectionPanel.userList.remove(UserSelectionPanel.userList.indexOf(user));
                             Window.alert(UserSelectionPanel.userList.toString());
                             if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
                             else UserSelectionPanel.userListBox.setSelectedIndex(0);
