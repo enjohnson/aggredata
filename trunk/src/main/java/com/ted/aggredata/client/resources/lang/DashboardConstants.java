@@ -260,6 +260,12 @@ public interface DashboardConstants extends Constants {
     String changeEmailVerification();
     
     String changePassVerification();
+    
+    //Delete User Popup
+    
+    String deleteUser();
+    
+    String deleteUserVerification();
 
     String graphShowTotal();
 
@@ -287,4 +293,18 @@ public interface DashboardConstants extends Constants {
     String graphShareAlreadyExists();
 
     String graphShareAlreadyExistsTitle();
+    
+    //Create user popup
+    
+    String cancel();
+    
+    String firstNameMessage();
+    
+    String lastNameMessage();
+    
+    String passwordMessage();
+    
+    String emailMessage();
+    
+    String createUser();
 }

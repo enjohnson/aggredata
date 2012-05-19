@@ -3,18 +3,24 @@ package com.ted.aggredata.client.panels.admin.user;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
+import com.ted.aggredata.client.dialogs.CreateUserPopup;
 import com.ted.aggredata.client.events.UserSelectedEvent;
 import com.ted.aggredata.client.events.UserSelectedHandler;
 import com.ted.aggredata.client.events.UserSelectedEvent;
+import com.ted.aggredata.client.guiService.GWTUserService;
+import com.ted.aggredata.client.guiService.GWTUserServiceAsync;
+import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.client.widgets.SmallButton;
 import com.ted.aggredata.model.User;
 import org.springframework.context.support.StaticApplicationContext;
 import com.google.gwt.user.client.Window;
@@ -45,22 +51,22 @@ public class UserSelectionPanel extends Composite {
 
     interface MyUiBinder extends UiBinder<Widget, UserSelectionPanel> {
     }
-    
-    final private HandlerManager handlerManager;
+
+    private static HandlerManager handlerManager;
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    
+    final GWTUserServiceAsync gwtUserService = (GWTUserServiceAsync) GWT.create(GWTUserService.class);
     @UiField
     static ListBox userListBox;
     @UiField
     CaptionPanel captionPanel;
 
-    List<User> userList = new ArrayList<User>();
+    static List<User> userList = new ArrayList<User>();
     static User selectedUser;
 
     public static User getSelectedUser(){
         return selectedUser;
     }
-    
+
     public UserSelectionPanel() {
         initWidget(uiBinder.createAndBindUi(this));
         captionPanel.setCaptionHTML("<span style='color:white'>" + DashboardConstants.INSTANCE.yourUsers() + "</span>");
@@ -84,17 +90,17 @@ public class UserSelectionPanel extends Composite {
         }
     }
 
-    public void redrawUserList() {
+    public static void redrawUserList() {
         int selectedIndex = userListBox.getSelectedIndex();
         userListBox.clear();
         for (User user : userList) {
-            if (logger.isLoggable(Level.FINE)) logger.fine("Adding gateway " + user + " to list box");
+            if (logger.isLoggable(Level.FINE)) logger.fine("Adding user " + user + " to list box");
             userListBox.addItem(user.getUsername(), user.getId().toString());
         }
         userListBox.setSelectedIndex(selectedIndex);
     }
     
-    private void fireSelectedGroup() {
+    public static void fireSelectedGroup() {
         int index = userListBox.getSelectedIndex();
         if (logger.isLoggable(Level.FINE)) logger.fine("Row " + index + " selected");
         Long userID = new Long(userListBox.getValue(index));

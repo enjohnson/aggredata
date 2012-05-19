@@ -20,21 +20,25 @@ package com.ted.aggredata.client.panels.admin.user;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.Aggredata;
+import com.ted.aggredata.client.dialogs.ChangeEmailPopup;
+import com.ted.aggredata.client.dialogs.ChangePasswordPopup;
+import com.ted.aggredata.client.dialogs.OKPopup;
+import com.ted.aggredata.client.dialogs.YesNoPopup;
+import com.ted.aggredata.client.dialogs.CreateUserPopup;
 import com.ted.aggredata.client.guiService.GWTUserService;
 import com.ted.aggredata.client.guiService.GWTUserServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
-import com.ted.aggredata.client.panels.profile.gateways.MTUListRow;
-import com.ted.aggredata.client.panels.profile.gateways.MTUListRowHeader;
-import com.ted.aggredata.client.widgets.HugeButton;
+import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.LargeButton;
-import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.MTU;
 import com.ted.aggredata.model.User;
+
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -45,7 +49,7 @@ public class UserButtonPanel extends Composite {
 
     interface MyUiBinder extends UiBinder<Widget, UserButtonPanel> {
     }
-    List<User> userList = UserPanel.getUserList();
+    //List<User> userList = UserPanel.getUserList();
     private String uname = "";
     private int unameLength = 5;
     private String password = "";
@@ -63,7 +67,7 @@ public class UserButtonPanel extends Composite {
     @UiField
     LargeButton changePassword;
     @UiField
-    LargeButton changeUsername;
+    LargeButton changeEmail;
 
     public UserButtonPanel() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -75,100 +79,182 @@ public class UserButtonPanel extends Composite {
             }
         });
 
-        changeUsername.addClickHandler(new ClickHandler() {
+        changeEmail.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                user = UserSelectionPanel.getSelectedUser();
-                changeUname();
+                changeEmail();
             }
         });
 
         createUser.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                addUser();
+                String pass = addUser();
+               // newUserPass(pass);
             }
         });
 
         deleteUser.addClickHandler(new ClickHandler() {
+            final DashboardConstants dc = DashboardConstants.INSTANCE;
             @Override
             public void onClick(ClickEvent clickEvent) {
-                //deleteUser();
-            }
+                deleteUser();
+            };
         });
     }
 
-    private  void addUser()
+    private String addUser()
     {
-        user = UserSelectionPanel.getSelectedUser();
-        gwtUserService.createUser(user, new TEDAsyncCallback<User>() {
+        user = new User();
+        final CreateUserPopup createUserPopup = new CreateUserPopup();
+        createUserPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
             @Override
-            public void onSuccess(User result) {
-                Window.alert("User added.");
+            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                if (createUserPopup.getValue() == CreateUserPopup.OK){
+                    user.setFirstName(createUserPopup.getFirstName());
+                    user.setLastName(createUserPopup.getLastName());
+                    user.setUsername(createUserPopup.getEmail());
+                    user.setId(UserSelectionPanel.userList.get(UserSelectionPanel.userList.size() - 1).getId() + 1);
+                    gwtUserService.createUser(user, new TEDAsyncCallback<User>() {
+                        @Override
+                        public void onSuccess(User result) {
+                            UserSelectionPanel.userList.add(user);
+                            if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
+                            else UserSelectionPanel.userListBox.setSelectedIndex(0);
+                            UserSelectionPanel.redrawUserList();
+                            UserSelectionPanel.fireSelectedGroup();
+                        }
+                    });
+                }
             }
         });
+        return createUserPopup.getPassword();
+    }
+    
+    private void newUserPass(String password)
+    {
+        if (password.length() > 0){
+            gwtUserService.changePassword(user, password, new TEDAsyncCallback<User>() {
+                @Override
+                public void onSuccess(User result) {
+                    final OKPopup okPopup = new OKPopup("Change Password", "Password has been changed.");
+                }
+            });
+        }
     }
 
     private  void deleteUser()
     {
+        final DashboardConstants dc = DashboardConstants.INSTANCE;
         user = UserSelectionPanel.getSelectedUser();
-        gwtUserService.deleteUser(user, new TEDAsyncCallback<Void>() {
+        Window.alert(user.getUsername());
+        final YesNoPopup popup = new YesNoPopup(dc.deleteUser(), dc.deleteUserVerification());
+        popup.addCloseHandler(new CloseHandler<PopupPanel>() {
             @Override
-            public void onSuccess(Void aVoid) {
-                UserPanel.userList.remove(user);
-                if (userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
-                else UserSelectionPanel.userListBox.setSelectedIndex(0);
+            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                if (popup.getValue() == YesNoPopup.YES) {
+                    gwtUserService.deleteUser(user, new TEDAsyncCallback<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Window.alert(user.toString());
+                            Window.alert(UserSelectionPanel.userList.toString());
+                            UserSelectionPanel.userList.remove(user);
+                            Window.alert(UserSelectionPanel.userList.toString());
+                            if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
+                            else UserSelectionPanel.userListBox.setSelectedIndex(0);
+                            UserSelectionPanel.redrawUserList();
+                            UserSelectionPanel.fireSelectedGroup();
+                        }
+                    });
+                }
             }
         });
     }
     
-    private void changeUname() {
-        boolean confirm;
+    private void changeEmail() {
         user = UserSelectionPanel.getSelectedUser();
-        uname = Window.prompt("Please enter in a new username", "");
-        if (uname.length() >= unameLength){
-            confirm = Window.confirm("Are you sure?");
-            if (confirm) {
-                gwtUserService.changeUsername(user, uname, new TEDAsyncCallback<User>() {
-                    @Override
-                    public void onSuccess(User result) {
-                        Window.alert("Username Changed.");
+        logger.fine("Change Email Clicked");
+        final ChangeEmailPopup changeEmailPopup = new ChangeEmailPopup();
+        final DashboardConstants dc = DashboardConstants.INSTANCE;
+        changeEmailPopup.center();
+        changeEmailPopup.setPopupPosition(changeEmailPopup.getAbsoluteLeft(), 100);
+        changeEmailPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
+            @Override
+            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                if (changeEmailPopup.getValue() == changeEmailPopup.OK){
+                    logger.fine("Changing Email to  " + changeEmailPopup.getEmail());
+                    if (changeEmailPopup.getEmail().length() >= passLength){
+                        final YesNoPopup popup = new YesNoPopup(dc.changeEmail(), dc.changeEmailVerification());
+                        popup.addCloseHandler(new CloseHandler<PopupPanel>() {
+                            @Override
+                            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                                if (popup.getValue() == YesNoPopup.YES) {
+                                    gwtUserService.changeUsername(user, changeEmailPopup.getEmail(), new TEDAsyncCallback<User>() {
+                                        @Override
+                                        public void onSuccess(User result) {
+                                            final OKPopup okPopup = new OKPopup(dc.changeEmail(), "Email has been changed");
+                                            UserSelectionPanel.redrawUserList();
+                                            UserSelectionPanel.fireSelectedGroup();
+                                        }
+                                    });
+                                }
+                            }
+                        });
                     }
-                });
+                    else if (changeEmailPopup.getEmail().length() < unameLength & changeEmailPopup.getEmail().length() > 0 )
+                    {
+                        final OKPopup okPopup = new OKPopup(dc.changeEmail(), "Email must be " + unameLength + " characters long.");
+                    }
+                    else
+                    {
+                        final OKPopup okPopup = new OKPopup(dc.changeEmail(), "No email was entered.");
+                    }
+                }
             }
-        }
-        else if (uname.length() < unameLength & uname.length() > 0 )
-        {
-            Window.alert("Username must be " + unameLength + " characters or greater.");
-        }
-        else {
-            Window.alert("No Username was entered.");
-        }
+        });
+        changeEmailPopup.show();
     }
 
     private void changePword() {
-        boolean confirm;
         user = UserSelectionPanel.getSelectedUser();
-        password = Window.prompt("Please enter in a new password", "");
-        if (password.length() >= passLength){
-            confirm = Window.confirm("Are you sure?");
-            if (confirm) {
-                gwtUserService.changePassword(user, password, new TEDAsyncCallback<User>() {
-                    @Override
-                    public void onSuccess(User result) {
-                        Window.alert("Password Changed.");
+        logger.fine("Change Password Clicked");
+        final ChangePasswordPopup changePasswordPopup = new ChangePasswordPopup();
+        changePasswordPopup.center();
+        changePasswordPopup.setPopupPosition(changePasswordPopup.getAbsoluteLeft(), 100);
+        changePasswordPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
+            @Override
+            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                if (changePasswordPopup.getValue() == changePasswordPopup.OK){
+                    logger.fine("Changing Password to  " + changePasswordPopup.getPassword());
+                    if (changePasswordPopup.getPassword().length() >= passLength){
+                        final DashboardConstants dc = DashboardConstants.INSTANCE;
+                        final YesNoPopup popup = new YesNoPopup(dc.changePassword(), dc.changePassVerification());
+                        popup.addCloseHandler(new CloseHandler<PopupPanel>() {
+                            @Override
+                            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                                if (popup.getValue() == YesNoPopup.YES) {
+                                    gwtUserService.changePassword(user, changePasswordPopup.getPassword(), new TEDAsyncCallback<User>() {
+                                        @Override
+                                        public void onSuccess(User result) {
+                                            final OKPopup okPopup = new OKPopup("Change Password", "Password has been changed.");
+                                        }
+                                    });
+                                }
+                            }
+                        });
                     }
-                });
+                    else if (changePasswordPopup.getPassword().length() < passLength & changePasswordPopup.getPassword().length() > 0 )
+                    {
+                        final OKPopup okPopup = new OKPopup("Change Password", "Password must be " + passLength + " characters long.");
+                    }
+                    else
+                    {
+                        final OKPopup okPopup = new OKPopup("Change Password", "No password was entered.");
+                    }
+                }
             }
-        }
-        else if (password.length() < passLength & password.length() > 0 )
-        {
-            Window.alert("Password must be " + passLength + " characters or greater.");
-        }
-        else
-        {
-            Window.alert("No Password was entered.");
-        }
+        });
+        changePasswordPopup.show();
     }
 
 
