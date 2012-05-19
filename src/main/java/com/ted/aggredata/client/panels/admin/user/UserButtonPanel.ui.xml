@@ -46,9 +46,9 @@
                 <my:widgets.ClearImage width="20px" height="3px"/>
 
                 <g:VerticalPanel horizontalAlignment="ALIGN_LEFT">
-                    <g:HorizontalPanel ui:field="changeUsernamePanel" horizontalAlignment="ALIGN_LEFT">
+                    <g:HorizontalPanel ui:field="changeEmailPanel" horizontalAlignment="ALIGN_LEFT">
                         <my:widgets.ClearImage width="15px" height="30px"/>
-                        <my:widgets.LargeButton ui:field="changeUsername" buttonString="Edit Username"/>
+                        <my:widgets.LargeButton ui:field="changeEmail" buttonString="Edit Email"/>
                         <my:widgets.ClearImage width="15px" height="30px"/>
                     </g:HorizontalPanel>
 

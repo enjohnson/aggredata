@@ -1,0 +1,61 @@
+<!--
+  ~ Copyright (c) 2012. The Energy Detective. All Rights Reserved
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:my='urn:import:com.ted.aggredata.client'>
+    <ui:style src="../panels/Global.css"/>
+
+    <ui:with field='logRes' type='com.ted.aggredata.client.resources.lang.LogonConstants'/>
+    <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
+    <g:CaptionPanel ui:field="captionPanel" width="350px" styleName="{style.captionHeader}">
+        <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
+            <my:widgets.ClearImage width="350px" height="5px"/>
+            <g:Label text="{txtRes.firstNameMessage}"/>
+            <my:widgets.ClearImage width="350px" height="10px"/>
+            <g:TextBox ui:field="firstName" width="200px"/>
+            <my:widgets.ClearImage width="350px" height="10px"/>
+
+            <my:widgets.ClearImage width="350px" height="5px"/>
+            <g:Label text="{txtRes.lastNameMessage}"/>
+            <my:widgets.ClearImage width="350px" height="10px"/>
+            <g:TextBox ui:field="lastName" width="200px"/>
+            <my:widgets.ClearImage width="350px" height="10px"/>
+
+            <my:widgets.ClearImage width="350px" height="5px"/>
+            <g:Label text="{txtRes.emailMessage}"/>
+            <my:widgets.ClearImage width="350px" height="10px"/>
+            <g:TextBox ui:field="email" width="200px"/>
+            <my:widgets.ClearImage width="350px" height="10px"/>
+
+            <my:widgets.ClearImage width="350px" height="5px"/>
+            <g:Label text="{txtRes.passwordMessage}"/>
+            <my:widgets.ClearImage width="350px" height="10px"/>
+            <g:TextBox ui:field="password" width="200px"/>
+            <my:widgets.ClearImage width="350px" height="10px"/>
+
+            <g:HorizontalPanel>
+                <g:HorizontalPanel>
+                    <my:widgets.SmallButton ui:field="okButton" buttonString="{txtRes.ok}"/>
+                    <my:widgets.SmallButton ui:field="cancelButton" buttonString="{txtRes.cancel}"/>
+                </g:HorizontalPanel>
+            </g:HorizontalPanel>
+            <my:widgets.ClearImage width="350px" height="5px"/>
+        </g:VerticalPanel>
+    </g:CaptionPanel>
+
+</ui:UiBinder>
