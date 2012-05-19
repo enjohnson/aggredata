@@ -162,7 +162,6 @@ public class UserButtonPanel extends Composite {
     {
         final DashboardConstants dc = DashboardConstants.INSTANCE;
         user = UserSelectionPanel.getSelectedUser();
-        Window.alert(user.getUsername());
         final YesNoPopup popup = new YesNoPopup(dc.deleteUser(), dc.deleteUserVerification());
         popup.addCloseHandler(new CloseHandler<PopupPanel>() {
             @Override
@@ -171,10 +170,7 @@ public class UserButtonPanel extends Composite {
                     gwtUserService.deleteUser(user, new TEDAsyncCallback<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Window.alert(user.toString());
-                            Window.alert(UserSelectionPanel.userList.toString());
-                            UserSelectionPanel.userList.remove(UserSelectionPanel.userList.indexOf(user));
-                            Window.alert(UserSelectionPanel.userList.toString());
+                            UserSelectionPanel.userList.remove(user);
                             if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
                             else UserSelectionPanel.userListBox.setSelectedIndex(0);
                             UserSelectionPanel.redrawUserList();
