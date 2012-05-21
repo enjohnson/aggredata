@@ -241,18 +241,20 @@ public class MainPanel extends Composite {
         //Redirect the user to the gateway page if there are not gateways assigned to the system
         if (Aggredata.GLOBAL.getShowActivation()) {
             profileDashboardPanel.setSelectedTab(3);
+            adminNavigationPanel.setSelectedValue(0);
             tabNavigationPanel.add(profileDashboardPanel, 0, 0);
             contentPanel.add(new ActivationPanel());
+
             loadingPopup.hide();
         } else {
             //Go to the month page by default
             graphDashboardPanel.setSelectedTab(0);
+            adminNavigationPanel.setSelectedValue(1);
             tabNavigationPanel.add(graphDashboardPanel, 0, 0);
             contentPanel.add(new MonthPanel(graphLoadedHandler));
             sidePanel.add(graphSidePanel, 0, 0);
             graphSidePanel.setHistoryType(Enums.HistoryType.MONTHLY);
             graphSidePanel.reset();
-
         }
 
 

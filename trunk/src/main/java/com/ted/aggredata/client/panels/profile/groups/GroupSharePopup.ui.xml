@@ -29,7 +29,7 @@
             <my:widgets.ClearImage width="1px" height="10px"/>
             <g:HorizontalPanel>
                 <g:Label text="{txtRes.groupShareAddLabel}" styleName="{style.formLabel}" width="100px"/>
-                <g:SuggestBox styleName="{style.formField}" ui:field="userSuggestBox" width="300px" />
+                <g:SuggestBox styleName="{style.formField}"  ui:field="userSuggestBox" width="300px" />
                 <my:widgets.SmallButton ui:field="addButton"  buttonString="{txtRes.add}" />
             </g:HorizontalPanel>
             <my:widgets.ClearImage width="1px" height="10px"/>

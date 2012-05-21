@@ -152,6 +152,14 @@ public class AdminNavigationPanel extends Composite implements HasHandlers {
 
     }
 
+    public void setSelectedValue(int index){
+
+        accountMenuItem.setSelected(index==0);
+        energyMenuItem.setSelected(index==1);
+        adminMenuItem.setSelected(index==2);
+        logoutMenuItem.setSelected(false);
+    }
+
     public HandlerRegistration addMenuClickedHandler(MenuClickedHandler handler) {
         return handlerManager.addHandler(MenuClickedEvent.TYPE, handler);
     }

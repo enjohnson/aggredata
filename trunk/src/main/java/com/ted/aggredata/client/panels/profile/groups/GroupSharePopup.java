@@ -83,7 +83,12 @@ public class GroupSharePopup extends PopupPanel {
 
     public GroupSharePopup(final Group group) {
         userSuggestBox = new SuggestBox(new AggreDataUserSuggestOracle());
+
         setWidget(uiBinder.createAndBindUi(this));
+
+        //TODO: Figure out if this style can be moved to Global.css
+        ((SuggestBox.DefaultSuggestionDisplay)userSuggestBox.getSuggestionDisplay()).setPopupStyleName("userSelectionPopup");
+
 
         this.group = group;
 

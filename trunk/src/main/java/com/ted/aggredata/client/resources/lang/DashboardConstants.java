@@ -307,4 +307,8 @@ public interface DashboardConstants extends Constants {
     String emailMessage();
     
     String createUser();
+
+    String graphNoDataTitle();
+
+    String graphNoDataText();
 }

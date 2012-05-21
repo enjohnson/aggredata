@@ -71,6 +71,12 @@ public class GroupSelectionWidget extends Composite {
             RadioButton radioButton = new RadioButton("radioGroup", group.getDescription());
             groupPanel.add(radioButton);
 
+            if (group.getRole() == Group.Role.OWNER) {
+                //Set style for Owner
+            } else {
+                //Set Style for Shared
+            }
+
             //Set the default value
             if (selectedGroup.getId().equals(group.getId())) radioButton.setValue(true);
             this.selectedGroup = selectedGroup;
