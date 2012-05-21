@@ -87,7 +87,7 @@ public class UserButtonPanel extends Composite {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 String pass = addUser();
-               // newUserPass(pass);
+                newUserPass(pass);
             }
         });
 
@@ -117,7 +117,7 @@ public class UserButtonPanel extends Composite {
                         gwtUserService.createUser(user, new TEDAsyncCallback<User>() {
                             @Override
                             public void onSuccess(User result) {
-                                UserSelectionPanel.userList.add(user);
+                                UserSelectionPanel.userList.add(result);
                                 if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
                                 else UserSelectionPanel.userListBox.setSelectedIndex(0);
                                 UserSelectionPanel.redrawUserList();
@@ -162,6 +162,7 @@ public class UserButtonPanel extends Composite {
     {
         final DashboardConstants dc = DashboardConstants.INSTANCE;
         user = UserSelectionPanel.getSelectedUser();
+        Window.alert(user.toString());
         final YesNoPopup popup = new YesNoPopup(dc.deleteUser(), dc.deleteUserVerification());
         popup.addCloseHandler(new CloseHandler<PopupPanel>() {
             @Override
