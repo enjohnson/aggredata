@@ -32,6 +32,7 @@ import com.google.gwt.visualization.client.visualizations.corechart.ColumnChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
 import com.google.gwt.visualization.client.visualizations.corechart.TextStyle;
 import com.ted.aggredata.client.dialogs.LoadingPopup;
+import com.ted.aggredata.client.dialogs.OKPopup;
 import com.ted.aggredata.client.events.GraphLoadedEvent;
 import com.ted.aggredata.client.events.GraphLoadedHandler;
 import com.ted.aggredata.client.events.GraphOptionsChangedEvent;
@@ -83,6 +84,21 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
      */
     Runnable onLoadCallback = new Runnable() {
         public void run() {
+
+            //Check to see if any history is available
+            if (historyResult == null || historyResult.getGatewayList().isEmpty()) {
+                handlerManager.fireEvent(new GraphLoadedEvent(event.getGroup(), event.getStartDate(), event.getEndDate(), event.getGraphType(), 1));
+                if (barChart != null) {
+                    barChart.setVisible(false);
+
+                }
+                OKPopup okPopup = new OKPopup(DashboardConstants.INSTANCE.graphNoDataTitle(), DashboardConstants.INSTANCE.graphNoDataText());
+                okPopup.center();
+                okPopup.setPopupPosition(okPopup.getAbsoluteLeft(), 150);
+                okPopup.show();
+                return;
+            }
+
             if (historyResult != null) {
                 logger.fine("Callback received. Drawing.");
 
@@ -90,9 +106,12 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
                 if (barChart == null) {
                     barChart = new ColumnChart(createTable(), createOptions());
                     barGraphPanel.add(barChart);
-
                     barGraphPanel.getElement().getStyle().setBackgroundColor(BACKGROUND_COLOR);
+                    barChart.setVisible(true);
+
+
                 } else {
+                    barChart.setVisible(true);
                     barChart.draw(createTable(), createOptions());
                 }
 

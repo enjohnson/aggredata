@@ -1,3 +1,8 @@
+/**
+ * Other CSS definitions can be found in the UIBinder css definitions in the application workspace. The definitions in this file are either application global, or accessed by
+ code outside of the UIBinder context
+ */
+
 body {
     background-color: white;
     color: white;
@@ -70,4 +75,19 @@ body {
 }
 
 
+.userSelectionPopup
+{
+    cursor                       :    pointer;
+    cursor                       :    hand;
+    color:white;
+    font-family : Helvetica, Verdana, Arial,  sans-serif;
+    text-align:left;
+    font-size:10pt;
+    background: #3f3f3f;
 
+}
+
+.userSelectionPopup .item-selected
+{
+    background: red;
+}
