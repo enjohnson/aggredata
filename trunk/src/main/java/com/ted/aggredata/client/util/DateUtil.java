@@ -24,6 +24,7 @@ import java.util.Date;
 
 public class DateUtil {
 
+
     /**
      * Sets the date to the start date search range depending on type
      *
@@ -53,6 +54,11 @@ public class DateUtil {
             return theDate;
         }
 
+
+        if (type.equals(Enums.HistoryType.MINUTE)) {
+            Date theDate = new Date(startDate.getTime());
+            return theDate;
+        }
 
         return null;
     }
@@ -87,6 +93,11 @@ public class DateUtil {
             theDate.setHours(0);
             theDate.setMinutes(0);
             CalendarUtil.addDaysToDate(theDate, 1);
+            return theDate;
+        }
+
+        if (type.equals(Enums.HistoryType.MINUTE)) {
+            Date theDate = new Date(endDate.getTime());
             return theDate;
         }
 
