@@ -177,7 +177,7 @@ public class GraphSidePanel extends Composite {
      */
     public void reset() {
         //Load the list of groups and set the default values for graphing.
-        groupService.findGroups(new TEDAsyncCallback<List<Group>>() {
+        groupService.findGroupsWithGateways(new TEDAsyncCallback<List<Group>>() {
             @Override
             public void onSuccess(List<Group> groups) {
 

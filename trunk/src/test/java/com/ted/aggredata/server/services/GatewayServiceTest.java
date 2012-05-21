@@ -77,7 +77,7 @@ public class GatewayServiceTest {
         testUser = userService.getUserByUserName(userEmailAddress);
         Assert.assertNotNull(testUser);
         groupService.createGroup(testUser, groupName);
-        testGroup = groupService.getByUser(testUser).get(0);
+        testGroup = groupService.getOwnedByUser(testUser).get(0);
         Assert.assertNotNull(testGroup);
         gateway = gatewayService.createGateway(testGroup, testUser, "AAAAAA", "AAAAAA");
     }

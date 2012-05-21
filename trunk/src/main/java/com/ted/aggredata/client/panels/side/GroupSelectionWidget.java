@@ -18,15 +18,22 @@
 package com.ted.aggredata.client.panels.side;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.StyleElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.events.GroupSelectedEvent;
 import com.ted.aggredata.client.events.GroupSelectedHandler;
+import com.ted.aggredata.client.panels.Global;
+import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.client.widgets.ClearImage;
+import com.ted.aggredata.client.widgets.TEDLabel;
 import com.ted.aggredata.model.Group;
 
 import java.util.List;
@@ -40,6 +47,9 @@ public class GroupSelectionWidget extends Composite {
     interface MyUiBinder extends UiBinder<Widget, GroupSelectionWidget> {
     }
 
+
+
+
     static Logger logger = Logger.getLogger(GraphSidePanel.class.toString());
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
@@ -48,6 +58,9 @@ public class GroupSelectionWidget extends Composite {
     VerticalPanel groupPanel;
     @UiField
     ScrollPanel scrollPanel;
+
+    @UiField Global.Style style;
+
 
     Group selectedGroup;
 
@@ -64,17 +77,27 @@ public class GroupSelectionWidget extends Composite {
 
     public void setGroups(List<Group> groups, Group selectedGroup) {
         groupPanel.clear();
+        boolean yourGroups = true;
         for (final Group group : groups) {
 
             scrollPanel.setHeight("175px");
+
+            if (yourGroups && group.getRole() == Group.Role.READONLY) {
+                yourGroups = false;
+                TEDLabel otherGroupLabel = new TEDLabel(DashboardConstants.INSTANCE.otherGroups(), "140px", style.sideBarInstructions(), HasHorizontalAlignment.ALIGN_CENTER );
+                groupPanel.add(new ClearImage("1px", "10px"));
+                groupPanel.add(otherGroupLabel);
+                groupPanel.add(new ClearImage("1px", "5px"));
+            }
 
             RadioButton radioButton = new RadioButton("radioGroup", group.getDescription());
             groupPanel.add(radioButton);
 
             if (group.getRole() == Group.Role.OWNER) {
+                radioButton.getElement().getStyle().setColor("#FFFFFF");
                 //Set style for Owner
             } else {
-                //Set Style for Shared
+                radioButton.getElement().getStyle().setColor("#fefba9");
             }
 
             //Set the default value

@@ -23,7 +23,6 @@ import com.ted.aggredata.model.*;
 import java.util.List;
 
 public interface GWTGroupServiceAsync {
-    void findGroups(AsyncCallback<List<Group>> async);
 
     /**
      * Creates a new group
@@ -93,5 +92,19 @@ public interface GWTGroupServiceAsync {
      * @return
      */
     void getGroupMembers(Group group, AsyncCallback<List<User>> async);
+
+    /**
+     * Finds groups with gateways the specific user
+     *
+     * @return
+     */
+    void findGroupsWithGateways(AsyncCallback<List<Group>> async);
+
+    /**
+     * Finds owned groups for the specific user
+     *
+     * @return
+     */
+    void findOwnedGroups(AsyncCallback<List<Group>> async);
 }
 

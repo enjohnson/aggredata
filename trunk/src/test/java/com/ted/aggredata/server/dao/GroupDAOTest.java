@@ -78,7 +78,7 @@ public class GroupDAOTest {
         Group createdGroup1 = groupDAO.getOwnedGroup(groupOwner1, groupName1);
         Group createdGroup2 = groupDAO.getOwnedGroup(groupOwner1, groupName2);
 
-        groupDAO.addGroupMembership(groupOwner2, createdGroup1, Group.Role.MEMBER);
+        groupDAO.addGroupMembership(groupOwner2, createdGroup1, Group.Role.READONLY);
 
         Assert.assertNotNull(createdGroup1);
         Assert.assertEquals(createdGroup1.getDescription(), groupName1);
@@ -94,11 +94,11 @@ public class GroupDAOTest {
         Assert.assertNull(group3);
 
         //check group memberships
-        Assert.assertEquals(groupDAO.findGroupsByUser(groupOwner1).size(), 2);
-        Assert.assertEquals(groupDAO.findGroupsByUser(groupOwner2).size(), 1);
+        Assert.assertEquals(groupDAO.findGroupsByUser(groupOwner1, Group.Role.OWNER).size(), 2);
+        Assert.assertEquals(groupDAO.findGroupsByUser(groupOwner2, Group.Role.READONLY).size(), 1);
 
         groupDAO.removeGroupMembership(groupOwner2, createdGroup1);
-        Assert.assertEquals(groupDAO.findGroupsByUser(groupOwner2).size(), 0);
+        Assert.assertEquals(groupDAO.findGroupsWithGatewaysByUser(groupOwner2).size(), 0);
 
 
         //Delete the groups
@@ -107,7 +107,7 @@ public class GroupDAOTest {
 
         Assert.assertNull(groupDAO.getOwnedGroup(groupOwner1, groupName1));
         Assert.assertNull(groupDAO.getOwnedGroup(groupOwner1, groupName2));
-        Assert.assertEquals(groupDAO.findGroupsByUser(groupOwner1).size(), 0);
+        Assert.assertEquals(groupDAO.findGroupsWithGatewaysByUser(groupOwner1).size(), 0);
 
         userDAO.delete(groupOwner1);
         userDAO.delete(groupOwner2);
