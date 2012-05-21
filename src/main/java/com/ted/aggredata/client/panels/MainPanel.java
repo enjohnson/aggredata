@@ -42,6 +42,7 @@ import com.ted.aggredata.client.panels.profile.gateways.GatewaysPanel;
 import com.ted.aggredata.client.panels.profile.groups.GroupsPanel;
 import com.ted.aggredata.client.panels.profile.settings.SettingsPanel;
 import com.ted.aggredata.client.panels.side.GraphSidePanel;
+import com.ted.aggredata.client.panels.side.ProfileSidePanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.model.Enums;
 
@@ -72,6 +73,7 @@ public class MainPanel extends Composite {
     final DashboardTabPanel profileDashboardPanel;
     final DashboardTabPanel systemAdministrationDashboardPanel;
     final GraphSidePanel graphSidePanel;
+    final ProfileSidePanel profileSidePanel;
 
 
 
@@ -114,6 +116,7 @@ public class MainPanel extends Composite {
 
         graphSidePanel = new GraphSidePanel();
         graphSidePanel.addGraphOptionsChangedHandler(graphOptionsChangedHandler);
+        profileSidePanel = new ProfileSidePanel();
 
 
 
@@ -140,7 +143,9 @@ public class MainPanel extends Composite {
                 } else if (event.getMenuSelection() == MenuClickedEvent.MenuOptions.PROFILE) {
                     tabNavigationPanel.add(profileDashboardPanel, 0, 0);
                     profileDashboardPanel.setSelectedTab(0);
+                    profileSidePanel.setTabInstructions(0);
                     contentPanel.add(new SettingsPanel());
+                    sidePanel.add(profileSidePanel);
                 } else {
                     logger.info("User has slected to logout");
                     userSessionService.logoff(new TEDAsyncCallback<Void>() {
@@ -164,6 +169,7 @@ public class MainPanel extends Composite {
                 contentPanel.clear();
                 loadingPopup.hide();
 
+                profileSidePanel.setTabInstructions(event.getTabIndex());
                 switch (event.getTabIndex()) {
                     case 0: {
                         contentPanel.add(new SettingsPanel());
@@ -241,6 +247,7 @@ public class MainPanel extends Composite {
         //Redirect the user to the gateway page if there are not gateways assigned to the system
         if (Aggredata.GLOBAL.getShowActivation()) {
             profileDashboardPanel.setSelectedTab(3);
+            profileSidePanel.setTabInstructions(3);
             adminNavigationPanel.setSelectedValue(0);
             tabNavigationPanel.add(profileDashboardPanel, 0, 0);
             contentPanel.add(new ActivationPanel());
