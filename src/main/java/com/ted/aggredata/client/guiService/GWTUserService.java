@@ -41,6 +41,8 @@ public interface GWTUserService extends RemoteService {
     
     public void deleteUser(User user);
 
+    public User getUserByUserName(String username);
+
     /**
      * Used to find a list of users based on a substring. We match on name and email address.
      * @param substring
