@@ -22,7 +22,7 @@
     <ui:with field='res' type='com.ted.aggredata.client.resources.DashboardImageResource'/>
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.LogonConstants'/>
 
-    <g:FocusPanel ui:field="mainPanel">
+    <g:FocusPanel ui:field="mainPanel" stylePrimaryName="{style.noOutline}">
         <g:VerticalPanel styleName='{style.mainBody}' horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
             <g:Label ui:field="formErrorLabel" styleName="{style.errorTextTitle}" height="12px"/>
             <my:widgets.ClearImage width="1px" height="10px"/>
