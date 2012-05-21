@@ -87,8 +87,11 @@ public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements G
     @Override
     public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, int interval) {
         User user = getCurrentUser();
-        if (user.getId().equals(group.getOwnerUserId())) {
+        //Check group history
+        Group userGroup = groupService.getGroup(user, group.getId());
+        if (userGroup == null) logger.error("User group is null");
 
+        if (userGroup != null && (userGroup.getRole()== Group.Role.OWNER || userGroup.getRole() == Group.Role.READONLY || userGroup.getRole() == Group.Role.MEMBER)) {
             if (logger.isInfoEnabled()) logger.info("retrieving " + historyType +" history for  " + group + " " + startTime+"-"+endTime);
             EnergyDataHistoryQueryResult result = historyService.getHistory(historyType, user, group, startTime, endTime, interval);
             return result;
