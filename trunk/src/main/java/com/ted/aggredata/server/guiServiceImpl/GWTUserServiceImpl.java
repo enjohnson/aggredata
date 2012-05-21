@@ -103,4 +103,10 @@ public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GW
         if (logger.isInfoEnabled()) logger.info("Looking up users with substring " + substring);
         return userService.findUsers(substring);
     }
+    
+    @Override
+    public User getUserByUserName(String username){
+        if (logger.isInfoEnabled()) logger.info("Looking up user by username" + username);
+        return userService.getUserByUserName(username);
+    }
 }

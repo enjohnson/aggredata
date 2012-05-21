@@ -34,6 +34,8 @@ public interface GWTUserServiceAsync {
     void deleteUser(User user, AsyncCallback<Void> async );
     
     void createUser(User user, AsyncCallback<User> async);
+    
+    void getUserByUserName(String username, AsyncCallback<User> async);
 
 
     /**
