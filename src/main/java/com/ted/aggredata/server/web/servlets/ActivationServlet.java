@@ -101,7 +101,7 @@ public class ActivationServlet extends HttpServlet {
                 if (logger.isDebugEnabled()) logger.debug("Reactivating gateway " + gatewayIdString + " for " + user);
             } else {
                 if (logger.isDebugEnabled()) logger.debug("Creating gateway " + gatewayIdString + " for " + user);
-                List<Group> groupList = groupService.getByUser(user);
+                List<Group> groupList = groupService.getOwnedByUser(user);
 
                 if (groupList.size() == 0) {
                     logger.info(user + " does not have any groups. Creating a default group.");

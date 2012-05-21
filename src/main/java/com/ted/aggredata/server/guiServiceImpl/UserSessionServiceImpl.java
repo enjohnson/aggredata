@@ -192,7 +192,10 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
         globalPlaceholder.setUserCustomFields(usersCustomFields);
         globalPlaceholder.setGatewayCustomFields(gatewaysCustomFields);
         globalPlaceholder.setGroupCustomFields(groupsCustomFields);
-        globalPlaceholder.setShowActivation(gatewayService.countByUser(user) == 0);
+
+        //Check to see if the user has any gateways activated OR belongs to a group w/ an activated gateway
+       globalPlaceholder.setShowActivation(gatewayService.countByUser(user) == 0);
+
         return globalPlaceholder;
     }
 

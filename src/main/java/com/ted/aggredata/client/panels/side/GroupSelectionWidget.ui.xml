@@ -19,7 +19,7 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:my='urn:import:com.ted.aggredata.client'
         >
-    <ui:style src="../Global.css"/>
+    <ui:style src="../Global.css" type="com.ted.aggredata.client.panels.Global.Style" />
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
     <g:VerticalPanel>

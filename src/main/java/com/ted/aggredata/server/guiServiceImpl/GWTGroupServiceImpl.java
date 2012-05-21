@@ -49,11 +49,19 @@ public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements G
     }
 
     @Override
-    public List<Group> findGroups() {
+    public List<Group> findOwnedGroups() {
         User user = getCurrentUser();
         if (logger.isInfoEnabled()) logger.info("Looking up groups for " + user);
-        return groupService.getByUser(user);
+        return groupService.getOwnedByUser(user);
     }
+
+    @Override
+    public List<Group> findGroupsWithGateways() {
+        User user = getCurrentUser();
+        if (logger.isInfoEnabled()) logger.info("Looking up groups for " + user);
+        return groupService.getByUserWithGateways(user);
+    }
+
 
     @Override
     public Group createGroup(String description) {
@@ -87,11 +95,15 @@ public class GWTGroupServiceImpl extends SpringRemoteServiceServlet implements G
     @Override
     public EnergyDataHistoryQueryResult getHistory(Enums.HistoryType historyType, Group group, long startTime, long endTime, int interval) {
         User user = getCurrentUser();
+        if (group == null || group.getId() == null) {
+            logger.debug("No group specified");
+            return new EnergyDataHistoryQueryResult();
+        }
         //Check group history
         Group userGroup = groupService.getGroup(user, group.getId());
         if (userGroup == null) logger.error("User group is null");
 
-        if (userGroup != null && (userGroup.getRole()== Group.Role.OWNER || userGroup.getRole() == Group.Role.READONLY || userGroup.getRole() == Group.Role.MEMBER)) {
+        if (userGroup != null && (userGroup.getRole()== Group.Role.OWNER || userGroup.getRole() == Group.Role.READONLY)) {
             if (logger.isInfoEnabled()) logger.info("retrieving " + historyType +" history for  " + group + " " + startTime+"-"+endTime);
             EnergyDataHistoryQueryResult result = historyService.getHistory(historyType, user, group, startTime, endTime, interval);
             return result;

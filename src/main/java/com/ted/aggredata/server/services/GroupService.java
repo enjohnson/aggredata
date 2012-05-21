@@ -65,7 +65,17 @@ public interface GroupService {
      * @param user
      * @return
      */
-    public List<Group> getByUser(User user);
+    public List<Group> getOwnedByUser(User user);
+
+
+    /**
+     * Returns all groups for the specified user
+     *
+     * @param user
+     * @return
+     */
+    public List<Group> getByUserWithGateways(User user);
+
 
     /**
      * Adds a user w/ the specified role in the group;

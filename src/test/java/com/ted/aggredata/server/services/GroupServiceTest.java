@@ -17,6 +17,7 @@
 
 package com.ted.aggredata.server.services;
 
+import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
 import org.junit.After;
@@ -40,6 +41,8 @@ public class GroupServiceTest {
     @Autowired
     protected GroupService groupService;
 
+    @Autowired
+    protected GatewayService gatewayService;
 
     public static User testUser;
     public static User testUserMember;
@@ -50,6 +53,10 @@ public class GroupServiceTest {
     public void setUp() throws Exception {
         User oldDataUser = userService.getUserByUserName("grouptestuser@theenergydetective.com");
         if (oldDataUser != null) userService.deleteUser(oldDataUser);
+
+        Gateway g = new Gateway();
+        g.setId(Long.parseLong("AAAAA1", 16));
+        gatewayService.deleteGateway(g);
 
 
         testUser = new User();
@@ -67,8 +74,9 @@ public class GroupServiceTest {
         testUserMember  = userService.createUser(testUserMember);
 
 
-        testGroup = groupService.createGroup(testUser, "Test Group");
 
+        testGroup = groupService.createGroup(testUser, "Test Group");
+        gatewayService.createGateway(testGroup, testUser, "AAAAA1", "AAAAA1");
     }
 
     @After
@@ -81,24 +89,20 @@ public class GroupServiceTest {
 
     @Test
     public void testAddMember() {
-        groupService.addUserToGroup(testUserMember, testGroup, Group.Role.MEMBER);
 
-        Group testGroup2 = groupService.getByUser(testUserMember).get(0);
+
+        groupService.addUserToGroup(testUserMember, testGroup, Group.Role.READONLY);
+
+        Group testGroup2 = groupService.getOwnedByUser(testUserMember).get(0);
         Assert.assertEquals(testGroup2.getDescription(), "Default Group");
         Assert.assertEquals(testGroup2.getRole(), Group.Role.OWNER);
 
-        Group testGroup2b = groupService.getByUser(testUserMember).get(1);
+        Group testGroup2b = groupService.getByUserWithGateways(testUserMember).get(0);
         Assert.assertEquals(testGroup2b.getDescription(), "Test Group");
-        Assert.assertEquals(testGroup2b.getRole(), Group.Role.MEMBER);
-
-
-        groupService.changeUserRole(testUserMember, testGroup, Group.Role.READONLY);
-        Group testGroup3 = groupService.getByUser(testUserMember).get(1);
-        Assert.assertEquals(testGroup3.getDescription(), "Test Group");
-        Assert.assertEquals(testGroup3.getRole(), Group.Role.READONLY);
+        Assert.assertEquals(testGroup2b.getRole(), Group.Role.READONLY);
 
         groupService.removeUserFromGroup(testUserMember, testGroup);
-        Assert.assertEquals(groupService.getByUser(testUserMember).size(), 1);
+        Assert.assertEquals(groupService.getByUserWithGateways(testUserMember).size(), 0);
     }
 
 }

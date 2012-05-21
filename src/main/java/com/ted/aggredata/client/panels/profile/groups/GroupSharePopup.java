@@ -86,7 +86,7 @@ public class GroupSharePopup extends PopupPanel {
 
         setWidget(uiBinder.createAndBindUi(this));
 
-        //TODO: Figure out if this style can be moved to Global.css
+        //TODO: Figure out if this style can be moved to Global.css. The error we are seeing is that the .item-selected css subclass isn't being loaded properly (GWT Bug)
         ((SuggestBox.DefaultSuggestionDisplay)userSuggestBox.getSuggestionDisplay()).setPopupStyleName("userSelectionPopup");
 
 

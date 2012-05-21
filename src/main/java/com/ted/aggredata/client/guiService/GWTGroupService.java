@@ -30,11 +30,19 @@ import java.util.List;
 public interface GWTGroupService extends RemoteService {
 
     /**
-     * Finds groups for the specific user
+     * Finds owned groups for the specific user
      *
      * @return
      */
-    public List<Group> findGroups();
+    public List<Group> findOwnedGroups();
+
+    /**
+     * Finds groups with gateways the specific user
+     *
+     * @return
+     */
+    public List<Group> findGroupsWithGateways();
+
 
     /**
      * Creates a new group

@@ -37,7 +37,7 @@ public class GatewayDAO extends AbstractDAO<Gateway> {
     public static String CREATE_GATEWAY_QUERY = "insert into aggredata.gateway (id, weatherLocationId, userAccountId,  state, securityKey, description,custom1,custom2,custom3,custom4,custom5) values (?,?,?,?,?,?,?,?,?,?,?)";
     public static String SAVE_GATEWAY_QUERY = "update aggredata.gateway set weatherLocationId=?, userAccountId=?,  state=?, securityKey=?, description=?,custom1=?,custom2=?,custom3=?,custom4=?,custom5=? where id=?";
     public static String GET_BY_USER_ACCOUNT_QUERY = "select id, weatherLocationId, userAccountId,  state, securityKey, description,custom1,custom2,custom3,custom4,custom5 from aggredata.gateway where userAccountId=?";
-    public static String COUNT_BY_USER_ACCOUNT_QUERY = "select count(*) from aggredata.gateway where userAccountId=?";
+    public static String COUNT_BY_USER_ACCOUNT_QUERY = "select count(*) from aggredata.gatewaygroup gg, aggredata.usergroup ug where gg.groupId = ug.groupId and ug.userId=?";
     public static String GET_BY_GROUP_QUERY = "select g.id, weatherLocationId, userAccountId,  state, securityKey, description, custom1,custom2,custom3,custom4,custom5 from aggredata.gateway g, aggredata.gatewaygroup gg where g.id = gg.gatewayId and gg.groupId=?";
 
     public static String ADD_GATEWAY_TO_GROUP_QUERY = "insert into aggredata.gatewaygroup (groupId, gatewayId) values (?,?)";

@@ -41,7 +41,9 @@ public class GroupDAO extends AbstractDAO<Group> {
     public static String COUNT_GROUP_QUERY = "select count(*) from aggredata.group where ownerUserId=? and description=?";
     public static String SAVE_GROUP_QUERY = "update aggredata.group set ownerUserId=?, description=?,custom1=?,custom2=?,custom3=?,custom4=?,custom5=? where id=?";
     public static String GET_GROUP_QUERY = "select g.id, g.ownerUserId, g.description, g.custom1,g.custom2,g.custom3,g.custom4,g.custom5, ? as role from aggredata.group g where g.description=? and g.ownerUserId=?";
-    public static String GET_GROUPS_BY_USER_QUERY = "select g.id, g.ownerUserId, g.description, g.custom1,g.custom2,g.custom3,g.custom4,g.custom5, ug.role from aggredata.group g, aggredata.usergroup ug where ug.groupId = g.id and ug.userId=?";
+    public static String GET_GROUPS_BY_USER_QUERY = "select g.id, g.ownerUserId, g.description, g.custom1,g.custom2,g.custom3,g.custom4,g.custom5, ug.role from aggredata.group g, aggredata.usergroup ug where ug.groupId = g.id and ug.userId=? and ug.role=?";
+    public static String GET_GROUPS_WITH_GATEWAYS_BY_USER_QUERY = "select distinct g.id, g.ownerUserId, g.description, g.custom1,g.custom2,g.custom3,g.custom4,g.custom5, ug.role from aggredata.group g, aggredata.usergroup ug, aggredata.gatewaygroup gg where ug.groupId = g.id  and gg.groupId = ug.groupId and ug.userId=? order by ug.role, g.description";
+
     public static String GET_GROUP_BY_USER_QUERY = "select g.id, g.ownerUserId, g.description, g.custom1,g.custom2,g.custom3,g.custom4,g.custom5, ug.role from aggredata.group g, aggredata.usergroup ug where ug.groupId = g.id and ug.userId=? and g.id=?";
     public static String ADD_GROUP_MEMBERSHIP_QUERY = "insert into aggredata.usergroup(userId, groupId, role) values (?,?,?)";
     public static String ADD_GROUP_MEMBERSHIP_COUNT_QUERY = "select count(*) from aggredata.usergroup where userId=? and groupId=?";
@@ -173,9 +175,24 @@ public class GroupDAO extends AbstractDAO<Group> {
      * @param user
      * @return
      */
-    public List<Group> findGroupsByUser(User user) {
+    public List<Group> findGroupsByUser(User user, Group.Role role) {
         try {
-            return getJdbcTemplate().query(GET_GROUPS_BY_USER_QUERY, new Object[]{user.getId()}, getRowMapper());
+            return getJdbcTemplate().query(GET_GROUPS_BY_USER_QUERY, new Object[]{user.getId(), role.ordinal()}, getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return null;
+        }
+    }
+
+    /**
+     * Returns a group list based on the user's role.
+     *
+     * @param user
+     * @return
+     */
+    public List<Group> findGroupsWithGatewaysByUser(User user) {
+        try {
+            return getJdbcTemplate().query(GET_GROUPS_WITH_GATEWAYS_BY_USER_QUERY, new Object[]{user.getId()}, getRowMapper());
         } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");
             return null;

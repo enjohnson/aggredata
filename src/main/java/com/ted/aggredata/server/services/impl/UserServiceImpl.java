@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
         }
 
         //Check to see at least one group is create
-        List<Group> groupList = groupService.getByUser(user);
+        List<Group> groupList = groupService.getOwnedByUser(user);
         if (groupList == null || groupList.size() == 0) {
             if (logger.isDebugEnabled()) logger.debug("adding default group for " + user);
             groupService.createGroup(user, "Default Group");

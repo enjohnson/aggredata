@@ -311,4 +311,6 @@ public interface DashboardConstants extends Constants {
     String graphNoDataTitle();
 
     String graphNoDataText();
+
+    String otherGroups();
 }
