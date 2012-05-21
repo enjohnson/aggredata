@@ -42,6 +42,7 @@ public class GroupDAO extends AbstractDAO<Group> {
     public static String SAVE_GROUP_QUERY = "update aggredata.group set ownerUserId=?, description=?,custom1=?,custom2=?,custom3=?,custom4=?,custom5=? where id=?";
     public static String GET_GROUP_QUERY = "select g.id, g.ownerUserId, g.description, g.custom1,g.custom2,g.custom3,g.custom4,g.custom5, ? as role from aggredata.group g where g.description=? and g.ownerUserId=?";
     public static String GET_GROUPS_BY_USER_QUERY = "select g.id, g.ownerUserId, g.description, g.custom1,g.custom2,g.custom3,g.custom4,g.custom5, ug.role from aggredata.group g, aggredata.usergroup ug where ug.groupId = g.id and ug.userId=?";
+    public static String GET_GROUP_BY_USER_QUERY = "select g.id, g.ownerUserId, g.description, g.custom1,g.custom2,g.custom3,g.custom4,g.custom5, ug.role from aggredata.group g, aggredata.usergroup ug where ug.groupId = g.id and ug.userId=? and g.id=?";
     public static String ADD_GROUP_MEMBERSHIP_QUERY = "insert into aggredata.usergroup(userId, groupId, role) values (?,?,?)";
     public static String ADD_GROUP_MEMBERSHIP_COUNT_QUERY = "select count(*) from aggredata.usergroup where userId=? and groupId=?";
     public static String UPDATE_GROUP_MEMBERSHIP_QUERY = "update aggredata.usergroup set role = ? where userId=? and groupId=?";
@@ -175,6 +176,19 @@ public class GroupDAO extends AbstractDAO<Group> {
     public List<Group> findGroupsByUser(User user) {
         try {
             return getJdbcTemplate().query(GET_GROUPS_BY_USER_QUERY, new Object[]{user.getId()}, getRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            logger.debug("No Results returned");
+            return null;
+        }
+    }
+
+    /**
+     * Returns the group for the specified user (used for Role checking)
+     * @return
+     */
+    public Group findGroupByUser(User user, Long groupId) {
+        try {
+            return getJdbcTemplate().queryForObject(GET_GROUP_BY_USER_QUERY,new Object[]{user.getId(), groupId}, getRowMapper());
         } catch (EmptyResultDataAccessException ex) {
             logger.debug("No Results returned");
             return null;

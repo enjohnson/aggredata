@@ -29,6 +29,13 @@ import java.util.List;
 public interface GroupService {
 
     /**
+     * Loads the group w/the specified id
+     * @param groupId
+     * @return
+     */
+    public Group getGroup(User user, Long groupId);
+
+    /**
      * Creates a new group
      *
      * @param user        The user creating the group. This user will be added as a OWNER of the group.

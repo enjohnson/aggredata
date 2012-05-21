@@ -46,6 +46,11 @@ public class GroupServiceImpl implements GroupService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Override
+    public Group getGroup(User user, Long groupId) {
+        return groupDAO.findGroupByUser(user, groupId);
+    }
+
     public Group createGroup(User user, String description) {
         if (logger.isDebugEnabled()) logger.debug("Creating new group w/ description " + description + " for user " + user);
         return groupDAO.create(user, description);
@@ -86,7 +91,7 @@ public class GroupServiceImpl implements GroupService {
         //Check user permissions first
         List<Group> groupList = groupDAO.findGroupsByUser(user);
         for (Group userGroup : groupList) {
-            if (userGroup.getId() == group.getId() && (userGroup.getRole() == Group.Role.OWNER || userGroup.getRole() == Group.Role.MEMBER)) {
+            if (userGroup.getId().equals(group.getId()) && (userGroup.getRole() == Group.Role.OWNER || userGroup.getRole() == Group.Role.MEMBER)) {
                 if (logger.isInfoEnabled()) logger.info("Adding " + gateway + " from " + group);
                 gatewayDAO.addGatewayToGroup(gateway, group);
                 return;
@@ -103,7 +108,7 @@ public class GroupServiceImpl implements GroupService {
         //Check user permissions first
         List<Group> groupList = groupDAO.findGroupsByUser(user);
         for (Group userGroup : groupList) {
-            if (userGroup.getId() == group.getId() && (userGroup.getRole() == Group.Role.OWNER || userGroup.getRole() == Group.Role.MEMBER)) {
+            if (userGroup.getId().equals(group.getId()) && (userGroup.getRole() == Group.Role.OWNER || userGroup.getRole() == Group.Role.MEMBER)) {
                 if (logger.isInfoEnabled()) logger.info("Adding " + gateway + " from " + group);
                 gatewayDAO.removeGatewayFromGroup(gateway, group);
                 return;
