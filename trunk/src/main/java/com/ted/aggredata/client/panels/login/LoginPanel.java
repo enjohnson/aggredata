@@ -39,6 +39,7 @@ public class LoginPanel extends Composite {
 
     public LoginPanel() {
         initWidget(uiBinder.createAndBindUi(this));
+
         contentPanel.setSize("550px", "280px");
         contentPanel.add(new Image(DashboardImageResource.INSTANCE.smallPanel()), 0, 25);
         contentPanel.add(new Image(DashboardImageResource.INSTANCE.tedLogo()), 20, 0);
