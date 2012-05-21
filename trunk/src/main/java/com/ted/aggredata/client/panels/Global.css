@@ -312,4 +312,12 @@
 
     }
 
+    .sideBarInstructionsLeft {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: #FFF;
+        text-align: left;
+        font-size: 8pt;
+        vertical-align: middle;
+    }
+
 
