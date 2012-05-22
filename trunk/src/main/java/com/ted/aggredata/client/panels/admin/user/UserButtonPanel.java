@@ -38,6 +38,8 @@ import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.LargeButton;
 import com.ted.aggredata.model.User;
+
+import java.util.List;
 import java.util.logging.Logger;
 
 public class UserButtonPanel extends Composite {
@@ -86,8 +88,7 @@ public class UserButtonPanel extends Composite {
         createUser.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                String pass = addUser();
-                newUserPass(pass);
+                addUser();
             }
         });
 
@@ -100,21 +101,21 @@ public class UserButtonPanel extends Composite {
         });
     }
 
-    private String addUser()
+    private void addUser()
     {
-        user = new User();
+        final User newUser = new User();
         final CreateUserPopup createUserPopup = new CreateUserPopup();
         createUserPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
             @Override
             public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
                 if (createUserPopup.getValue() == CreateUserPopup.OK){
-                    user.setFirstName(createUserPopup.getFirstName());
-                    user.setLastName(createUserPopup.getLastName());
-                    user.setUsername(createUserPopup.getEmail());
-                    user.setId(UserSelectionPanel.userList.get(UserSelectionPanel.userList.size() - 1).getId() + 1);
-                    boolean confirm = validate(user, createUserPopup.getPassword());
+                    newUser.setFirstName(createUserPopup.getFirstName());
+                    newUser.setLastName(createUserPopup.getLastName());
+                    newUser.setUsername(createUserPopup.getEmail());
+                    newUser.setId(UserSelectionPanel.userList.get(UserSelectionPanel.userList.size() - 1).getId() + 1);
+                    boolean confirm = validate(newUser, createUserPopup.getPassword());
                     if (confirm == true){
-                        gwtUserService.createUser(user, new TEDAsyncCallback<User>() {
+                        gwtUserService.createUser(newUser, new TEDAsyncCallback<User>() {
                             @Override
                             public void onSuccess(User result) {
                                 UserSelectionPanel.userList.add(result);
@@ -128,7 +129,6 @@ public class UserButtonPanel extends Composite {
                 }
             }
         });
-        return createUserPopup.getPassword();
     }
     
     private boolean validate(User user, String pass){
@@ -146,10 +146,10 @@ public class UserButtonPanel extends Composite {
         return confirm;
     }
 
-    private void newUserPass(String password2)
+    private void newUserPass(final String password2, User userNew)
     {
         if (password2.length() > 0){
-            gwtUserService.changePassword(user, password2, new TEDAsyncCallback<User>() {
+            gwtUserService.changePassword(userNew, password2, new TEDAsyncCallback<User>() {
                 @Override
                 public void onSuccess(User result) {
                     final OKPopup okPopup = new OKPopup("Change Password", "Password has been changed.");
@@ -171,7 +171,10 @@ public class UserButtonPanel extends Composite {
                     gwtUserService.deleteUser(user, new TEDAsyncCallback<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            UserSelectionPanel.userList.remove(user);
+                            for (int i = 0; i < UserSelectionPanel.userList.size(); i++) {
+                                if (UserSelectionPanel.userList.get(i) == user)
+                                    UserSelectionPanel.userList.remove(i);
+                            }
                             if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
                             else UserSelectionPanel.userListBox.setSelectedIndex(0);
                             UserSelectionPanel.redrawUserList();
