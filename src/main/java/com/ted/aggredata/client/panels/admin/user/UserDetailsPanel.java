@@ -155,11 +155,11 @@ public class UserDetailsPanel extends Composite {
      */
     public void setEnabled(boolean enabled) {
 
-        firstNameField.setEnabled(enabled);
+        firstNameField.setEnabled(false);
         custom1Field.setEnabled(enabled);
-        lastNameField.setEnabled(enabled);
+        lastNameField.setEnabled(false);
         custom3Field.setEnabled(enabled);
-        usernameField.setEnabled(enabled);
+        usernameField.setEnabled(false);
         custom2Field.setEnabled(enabled);
         custom4Field.setEnabled(enabled);
         custom5Field.setEnabled(enabled);

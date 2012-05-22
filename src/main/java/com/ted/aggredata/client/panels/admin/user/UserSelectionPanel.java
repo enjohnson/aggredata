@@ -81,8 +81,8 @@ public class UserSelectionPanel extends Composite {
         });
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setUserList(List<User> userListNew) {
+        this.userList = userListNew;
         redrawUserList();
         if (userListBox.getItemCount() > 0) {
             userListBox.setSelectedIndex(0);
