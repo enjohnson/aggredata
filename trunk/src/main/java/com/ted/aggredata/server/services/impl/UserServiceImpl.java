@@ -45,10 +45,11 @@ public class UserServiceImpl implements UserService {
 
 
 
-    public User createUser(User entity) {
+    public User createUser(User entity, int accountState) {
         logger.debug("creating user " + entity);
+        if (entity.getTimezone() == null || entity.getTimezone().length() == 0) entity.setTimezone("US/Eastern");
         User user = userDao.create(entity);
-        user.setAccountState(User.STATE_WAITING_ACTIVATION);
+        user.setAccountState(accountState);
         checkUserConfig(user);
         return user;
     }
