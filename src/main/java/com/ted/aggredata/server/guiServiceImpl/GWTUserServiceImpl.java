@@ -82,7 +82,7 @@ public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GW
         if (user.getRole() == null) user.setRole(User.ROLE_USER);
         if (logger.isInfoEnabled()) logger.info(requestingUser + " is creating a new user");
         if (requestingUser != null && requestingUser.getRole().equals(User.ROLE_ADMIN)) {
-            return userService.createUser(user);
+            return userService.createUser(user, User.STATE_ENABLED);
         } else {
             logger.warn(requestingUser + " is attempting to create a user but is not an admin!");
             return null;

@@ -32,9 +32,10 @@ public interface UserService {
      * Creates a new entity in the database
      *
      * @param entity
+     * @param accountstate
      * @return
      */
-    public User createUser(User entity);
+    public User createUser(User entity, int accountstate);
 
 
     /**

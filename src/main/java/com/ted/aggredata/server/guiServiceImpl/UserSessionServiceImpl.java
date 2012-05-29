@@ -175,7 +175,7 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
 
         logger.info("Creating new user " + user);
         if (user.getRole() == null) user.setRole(User.ROLE_USER);
-        User savedUser = userService.createUser(user);
+        User savedUser = userService.createUser(user, User.STATE_WAITING_ACTIVATION);
         userService.changePassword(savedUser, password);
 
         //Send the activation

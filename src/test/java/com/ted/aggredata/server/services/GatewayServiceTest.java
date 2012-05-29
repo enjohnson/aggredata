@@ -73,7 +73,7 @@ public class GatewayServiceTest {
         testUser.setDefaultGroupId(0);
         testUser.setRole(User.ROLE_USER);
         testUser.setAccountState(User.STATE_ENABLED);
-        userService.createUser(testUser);
+        userService.createUser(testUser, User.STATE_ENABLED);
         testUser = userService.getUserByUserName(userEmailAddress);
         Assert.assertNotNull(testUser);
         groupService.createGroup(testUser, groupName);

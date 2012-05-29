@@ -86,7 +86,7 @@ public class UserServiceTest {
         testUser.setActivationKey(TestUtil.getUniqueKey());
 
         //Save the user
-        userService.createUser(testUser);
+        userService.createUser(testUser, User.STATE_WAITING_ACTIVATION);
 
         //Load the user
         testUser = userService.getUserByUserName(testUser.getUsername());
