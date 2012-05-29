@@ -85,6 +85,16 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`mtu` (
 ENGINE = InnoDB;
 
 
+CREATE  TABLE `aggredata`.`demandCharge` (
+  `userId` INT NOT NULL ,
+  `gatewayId` INT NOT NULL ,
+  `timestamp` INT NOT NULL ,
+  `peak` DECIMAL(10,5) NULL ,
+  `cost` DECIMAL(10,5) NULL ,
+  PRIMARY KEY (`userId`, `gatewayId`, `timestamp`) )
+COMMENT = 'Table used for storing demand charges';
+
+
 -- -----------------------------------------------------
 -- Table `aggredata`.`energydata`
 -- -----------------------------------------------------
@@ -96,6 +106,11 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`energydata` (
   `energy` DECIMAL(25,4) NULL ,
   `energyDifference` DECIMAL(25,4) NULL ,
   `minuteCost` DECIMAL(8,5) NULL ,
+  `meterReadDay` INT UNSIGNED NOT NULL ,
+  `meterReadMonth` INT UNSIGNED NOT NULL ,
+  `meterReadYear` INT UNSIGNED NOT NULL,
+  `fixedCost` DECIMAL(8,5) NULL ,
+  `minCost` DECIMAL(8,5) NULL ,
   PRIMARY KEY (`gatewayId`, `mtuId`, `timestamp`) ,
   INDEX `timestamp` (`timestamp` ASC, `gatewayId` ASC, `mtuID` ASC))
 ENGINE = InnoDB

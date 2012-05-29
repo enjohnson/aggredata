@@ -30,6 +30,13 @@ public class EnergyData implements Serializable {
     private Double energy;
     private Double minuteCost;
     private Double energyDifference;
+    private Integer meterReadDay;
+    private Integer meterReadMonth;
+    private Integer meterReadYear;
+    private Double fixedCost;
+    private Double minCost;
+
+
 
     public EnergyData() {
 
@@ -109,6 +116,46 @@ public class EnergyData implements Serializable {
 
     public void setEnergyDifference(Double energyDifference) {
         this.energyDifference = energyDifference;
+    }
+
+    public Integer getMeterReadDay() {
+        return meterReadDay;
+    }
+
+    public void setMeterReadDay(Integer meterReadDay) {
+        this.meterReadDay = meterReadDay;
+    }
+
+    public Integer getMeterReadMonth() {
+        return meterReadMonth;
+    }
+
+    public void setMeterReadMonth(Integer meterReadMonth) {
+        this.meterReadMonth = meterReadMonth;
+    }
+
+    public Integer getMeterReadYear() {
+        return meterReadYear;
+    }
+
+    public void setMeterReadYear(Integer meterReadYear) {
+        this.meterReadYear = meterReadYear;
+    }
+
+    public Double getFixedCost() {
+        return fixedCost;
+    }
+
+    public void setFixedCost(Double fixedCost) {
+        this.fixedCost = fixedCost;
+    }
+
+    public Double getMinCost() {
+        return minCost;
+    }
+
+    public void setMinCost(Double minCost) {
+        this.minCost = minCost;
     }
 
     @Override
