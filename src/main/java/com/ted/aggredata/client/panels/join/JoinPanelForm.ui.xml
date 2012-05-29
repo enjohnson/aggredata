@@ -25,7 +25,7 @@
     <ui:with field='dashRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
 
-    <g:FocusPanel ui:field="mainPanel">
+    <g:FocusPanel ui:field="mainPanel" stylePrimaryName="{style.noOutline}">
         <g:VerticalPanel styleName='{style.mainBody}' horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
             <g:Label text="{txtRes.joinHeader}" styleName="{style.joinHeaderText}" height="12px" width="980px"/>
             <my:widgets.ClearImage width="1px" height="20px"/>

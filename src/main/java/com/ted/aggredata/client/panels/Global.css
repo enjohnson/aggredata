@@ -320,4 +320,7 @@
         vertical-align: middle;
     }
 
+    .noOutline {
+        outline : none;
+    }
 

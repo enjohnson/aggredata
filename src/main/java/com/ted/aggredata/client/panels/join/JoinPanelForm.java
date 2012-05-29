@@ -236,6 +236,8 @@ public class JoinPanelForm extends Composite {
         firstNameFieldError.setText("");
 
         //Do the validation checks
+        boolean passwordTooShort = checkLength(passwordField, passwordFieldError,5) && passValidation;;
+        boolean passValidaion = passwordTooShort;
         passValidation = checkRequired(usernameField, usernameFieldError) && passValidation;
         passValidation = checkRequired(passwordField, passwordFieldError) && passValidation;
         passValidation = checkRequired(confirmUsernameField, confirmUsernameFieldError) && passValidation;
@@ -247,7 +249,7 @@ public class JoinPanelForm extends Composite {
 
         passValidation = checkEmail(usernameField, usernameFieldError)  && passValidation;
 
-
+        if (!passwordTooShort) formErrorLabel.setText(joinConstants.passwordShortError());
         if (!passValidation) logger.severe("Validation failed");
         return passValidation;
     }
@@ -258,6 +260,16 @@ public class JoinPanelForm extends Composite {
         if (!textBox1.getValue().equals(textBox2.getValue())) {
             errorLabel.setText(joinConstants.noMatch());
             errorLabel2.setText(joinConstants.noMatch());
+            formErrorLabel.setText(joinConstants.formErrors());
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    private boolean checkLength(TextBox textBox, Label errorLabel, int minLength) {
+        boolean isValid = true;
+        if (textBox.getValue().trim().length() < minLength) {
+            errorLabel.setText(joinConstants.tooShort());
             formErrorLabel.setText(joinConstants.formErrors());
             isValid = false;
         }
