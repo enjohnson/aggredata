@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -76,7 +77,8 @@ public class EnergyDataDAOTest {
         mtu.setDescription(TestUtil.getUniqueKey());
         mtu.setType(MTU.MTUType.LOAD);
         mtu = mtuDAO.create(gateway, mtu);
-        
+
+        Date testDate = new Date(10001);
 
         //Create 10 rows of data
         for (int i=0; i < 10; i++)
@@ -86,7 +88,10 @@ public class EnergyDataDAOTest {
             energyData.setMtuId(mtu.getId());
             energyData.setEnergy(10000d);
             energyData.setRate(1.0000d);
-            energyData.setTimestamp(10000+i);
+            energyData.setTimestamp(10000 + i);
+            energyData.setMeterReadDay(1);
+            energyData.setMeterReadMonth(testDate.getMonth());
+            energyData.setMeterReadYear(testDate.getYear());
             energyDataDAO.create(energyData);
         }
 

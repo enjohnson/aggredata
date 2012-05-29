@@ -34,14 +34,12 @@ import java.util.List;
 public class EnergyDataDAO extends AbstractDAO<EnergyData> {
 
     public static String DELETE_ENERGY_DATA = "delete from  aggredata.energydata where gatewayId= ? and mtuId=?";
-    public static String POST_ENERGY_DATA = "insert into aggredata.energydata (gatewayId, mtuId, timestamp, rate, energy, minuteCost, energyDifference) values (?,?,?,?,?,?,?)";
+    public static String POST_ENERGY_DATA = "insert into aggredata.energydata (gatewayId, mtuId, timestamp, rate, energy, minuteCost, energyDifference, meterReadDay, meterReadMonth, meterReadYear, fixedCost, minCost) values (?,?,?,?,?,?,?,?,?,?,?,?)";
     public static String SAVE_ENERGY_DATA = "update aggredata.energydata set rate=?, energy=?, minuteCost=?, energyDifference=? where gatewayId=?, mtuId=?, timestamp=?";
 
-    public static String FIND_BY_DATE_RANGE = "select  gatewayId, mtuId, timestamp, rate, energy , minuteCost, energyDifference from aggredata.energydata where mtuId=? and gatewayId=? and timestamp>=? and timestamp < ?";
-    public static String FIND_LAST_BY_MTU = "select  gatewayId, mtuId, timestamp, rate, energy, minuteCost, energyDifference from aggredata.energydata where gatewayId= ? and mtuId=? and timestamp < ? order by timestamp desc limit 1";
-    public static String FIND_BY_TIMESTAMP = "select  gatewayId, mtuId, timestamp, rate, energy, minuteCost, energyDifference from aggredata.energydata where gatewayId= ? and mtuId=? and timestamp = ?";
-
-
+    public static String FIND_BY_DATE_RANGE = "select  gatewayId, mtuId, timestamp, rate, energy , minuteCost, energyDifference,meterReadDay, meterReadMonth, meterReadYear, fixedCost, minCost from aggredata.energydata where mtuId=? and gatewayId=? and timestamp>=? and timestamp < ?";
+    public static String FIND_LAST_BY_MTU = "select  gatewayId, mtuId, timestamp, rate, energy, minuteCost, energyDifference,meterReadDay, meterReadMonth, meterReadYear, fixedCost, minCost from aggredata.energydata where gatewayId= ? and mtuId=? and timestamp < ? order by timestamp desc limit 1";
+    public static String FIND_BY_TIMESTAMP = "select  gatewayId, mtuId, timestamp, rate, energy, minuteCost, energyDifference,meterReadDay, meterReadMonth, meterReadYear, fixedCost, minCost from aggredata.energydata where gatewayId= ? and mtuId=? and timestamp = ?";
 
 
 
@@ -60,6 +58,12 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
             energyData.setEnergy(rs.getDouble("energy"));
             energyData.setMinuteCost(rs.getDouble("minuteCost"));
             energyData.setEnergyDifference(rs.getDouble("energyDifference"));
+            energyData.setMeterReadDay(rs.getInt("meterReadDay"));
+            energyData.setMeterReadMonth(rs.getInt("meterReadMonth"));
+            energyData.setMeterReadYear(rs.getInt("meterReadYear"));
+            energyData.setFixedCost(rs.getDouble("fixedCost"));
+            energyData.setMinCost(rs.getDouble("minCost"));
+
             return energyData;
         }
     };
@@ -125,9 +129,9 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
     public void create(EnergyData energyData) {
         EnergyData oldEnergyData = findByTimestamp(energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp());
         if (oldEnergyData == null) {
-            getJdbcTemplate().update(POST_ENERGY_DATA, energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp(), energyData.getRate(), energyData.getEnergy(), energyData.getMinuteCost(), energyData.getEnergyDifference());
+            getJdbcTemplate().update(POST_ENERGY_DATA, energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp(), energyData.getRate(), energyData.getEnergy(), energyData.getMinuteCost(), energyData.getEnergyDifference(), energyData.getMeterReadDay(), energyData.getMeterReadMonth(), energyData.getMeterReadYear(), energyData.getFixedCost(), energyData.getMinCost());
         } else {
-            getJdbcTemplate().update(SAVE_ENERGY_DATA, energyData.getRate(), energyData.getEnergy(), energyData.getMinuteCost(), energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp(), energyData.getEnergyDifference());
+            getJdbcTemplate().update(SAVE_ENERGY_DATA, energyData.getRate(), energyData.getEnergy(), energyData.getMinuteCost(), energyData.getGatewayId(), energyData.getMtuId(), energyData.getTimestamp(), energyData.getEnergyDifference(), energyData.getMeterReadDay(), energyData.getMeterReadMonth(), energyData.getMeterReadYear(), energyData.getFixedCost(), energyData.getMinCost());
         }
     }
 
