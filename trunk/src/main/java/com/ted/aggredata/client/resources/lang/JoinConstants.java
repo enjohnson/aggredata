@@ -63,4 +63,8 @@ public interface JoinConstants extends Constants {
     String activationTitle();
 
     String activationDescription();
+
+    String tooShort();
+
+    String passwordShortError();
 }
