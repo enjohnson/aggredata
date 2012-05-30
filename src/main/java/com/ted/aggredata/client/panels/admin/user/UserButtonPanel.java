@@ -32,9 +32,7 @@ import com.ted.aggredata.client.dialogs.ChangePasswordPopup;
 import com.ted.aggredata.client.dialogs.OKPopup;
 import com.ted.aggredata.client.dialogs.YesNoPopup;
 import com.ted.aggredata.client.dialogs.CreateUserPopup;
-import com.ted.aggredata.client.guiService.GWTUserService;
-import com.ted.aggredata.client.guiService.GWTUserServiceAsync;
-import com.ted.aggredata.client.guiService.TEDAsyncCallback;
+import com.ted.aggredata.client.guiService.*;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.LargeButton;
 import com.ted.aggredata.model.User;
@@ -45,6 +43,7 @@ import java.util.logging.Logger;
 public class UserButtonPanel extends Composite {
     User user;
     static Logger logger = Logger.getLogger(UserButtonPanel.class.toString());
+    final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
 
     interface MyUiBinder extends UiBinder<Widget, UserButtonPanel> {
     }
@@ -130,6 +129,7 @@ public class UserButtonPanel extends Composite {
 
     private void addUser()
     {
+        final DashboardConstants dc = DashboardConstants.INSTANCE;
         final User newUser = new User();
         final CreateUserPopup createUserPopup = new CreateUserPopup();
         createUserPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
@@ -142,14 +142,19 @@ public class UserButtonPanel extends Composite {
                     newUser.setId(UserSelectionPanel.userList.get(UserSelectionPanel.userList.size() - 1).getId() + 1);
                     newUser.setPassword(createUserPopup.getPassword());
                     newUser.setTimezone(createUserPopup.getTimezone());
-                    gwtUserService.createUser(newUser, new TEDAsyncCallback<User>() {
+                    userSessionService.newUser(createUserPopup.getEmail(), createUserPopup.getPassword(), newUser, new TEDAsyncCallback<User>() {
                         @Override
                         public void onSuccess(User result) {
-                            UserSelectionPanel.userList.add(result);
-                            if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
-                            else UserSelectionPanel.userListBox.setSelectedIndex(0);
-                            UserSelectionPanel.redrawUserList();
-                            UserSelectionPanel.fireSelectedGroup();
+                            if (result.getUsername() != "") {
+                                logger.info("User creation successful. Redirecting to success link");
+                                UserSelectionPanel.userList.add(result);
+                                if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
+                                else UserSelectionPanel.userListBox.setSelectedIndex(0);
+                                UserSelectionPanel.redrawUserList();
+                                UserSelectionPanel.fireSelectedGroup();
+                            } else {
+                                logger.severe("Unexpected result. User was not created.");
+                            }
                         }
                     });
                 }

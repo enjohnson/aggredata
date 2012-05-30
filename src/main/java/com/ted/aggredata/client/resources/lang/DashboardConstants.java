@@ -24,6 +24,8 @@ public interface DashboardConstants extends Constants {
 
     public static final DashboardConstants INSTANCE = GWT.create(DashboardConstants.class);
 
+    String alreadyExists();
+
     String month();
 
     String day();

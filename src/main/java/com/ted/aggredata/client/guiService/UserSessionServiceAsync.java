@@ -49,4 +49,6 @@ public interface UserSessionServiceAsync {
      * @return
      */
     void validateCaptcha(String captchaString, String username, String password, User user, AsyncCallback<Integer> async);
+
+    void newUser(String username, String password, User user, AsyncCallback<User> async);
 }

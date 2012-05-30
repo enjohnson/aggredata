@@ -71,5 +71,5 @@ public interface UserSessionService extends RemoteService {
      */
     public int validateCaptcha(String captchaString, String username, String password, User user);
 
-
+    public User newUser(String username, String password, User user);
 }

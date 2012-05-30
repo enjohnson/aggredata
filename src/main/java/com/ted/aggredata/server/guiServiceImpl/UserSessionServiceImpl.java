@@ -200,4 +200,20 @@ public class UserSessionServiceImpl extends SpringRemoteServiceServlet implement
     }
 
 
+    @Override
+    public User newUser(String username, String password, User user) {
+        User savedUser = new User();
+        //Check dupe email
+        User dupeUser = userService.getUserByUserName(user.getUsername());
+        //Check to make sure the user doesn't exist and hasn't already been activated.
+        if (dupeUser != null && dupeUser.getAccountState() != User.STATE_WAITING_ACTIVATION) return savedUser;
+
+        logger.info("Creating new user " + user);
+        if (user.getRole() == null) user.setRole(User.ROLE_USER);
+        savedUser = userService.createUser(user, User.STATE_WAITING_ACTIVATION);
+        userService.changePassword(savedUser, password);
+        
+        return savedUser;
+
+    }
 }
