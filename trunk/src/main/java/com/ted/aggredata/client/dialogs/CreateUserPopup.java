@@ -22,10 +22,16 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
+import com.ted.aggredata.client.guiService.GWTUserService;
+import com.ted.aggredata.client.guiService.GWTUserServiceAsync;
+import com.ted.aggredata.client.guiService.TEDAsyncCallback;
+import com.ted.aggredata.client.panels.admin.user.UserSelectionPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.SmallButton;
 import com.ted.aggredata.model.Enums;
+import com.ted.aggredata.model.User;
 import org.w3c.css.sac.ElementSelector;
 import com.google.gwt.user.client.Window;
 
@@ -36,6 +42,7 @@ public class CreateUserPopup extends PopupPanel {
 
     static Logger logger = Logger.getLogger(CreateUserPopup.class.toString());
 
+    final GWTUserServiceAsync gwtUserService = (GWTUserServiceAsync) GWT.create(GWTUserService.class);
 
     interface MyUiBinder extends UiBinder<Widget, CreateUserPopup> {
     }
@@ -88,6 +95,10 @@ public class CreateUserPopup extends PopupPanel {
         return lastName.getText().trim();
     }
     
+    public void setEmailFieldError(String Error){
+        emailFieldError.setText(Error);
+    }
+    
     public String getTimezone(){
         int si = timeZoneField.getSelectedIndex();
         String tz = timeZoneField.getItemText(si);
@@ -129,6 +140,7 @@ public class CreateUserPopup extends PopupPanel {
                 emailFieldError.setText("");
                 firstNameFieldError.setText("");
                 lastNameFieldError.setText("");
+
                 if (getPassword().trim().length() <= 4 || getEmail().trim().length() <= 4 || getFirstName().trim().length() == 0 || getLastName().trim().length() == 0)
                 {
                     if (getPassword().trim().length() <= 4) {
@@ -148,7 +160,14 @@ public class CreateUserPopup extends PopupPanel {
                         lastNameFieldError.setText("Field is required.");
                     }
                 }
+
                 else {
+                    gwtUserService.getUserByUserName(getEmail(), new TEDAsyncCallback<User>() {
+                        @Override
+                        public void onSuccess(User result) {
+
+                        }
+                    });
                     logger.fine("YES clicked");
                     value = OK;
                     hide();
