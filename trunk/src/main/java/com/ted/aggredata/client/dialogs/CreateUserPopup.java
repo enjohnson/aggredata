@@ -22,13 +22,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.SmallButton;
+import com.ted.aggredata.model.Enums;
 import org.w3c.css.sac.ElementSelector;
+import com.google.gwt.user.client.Window;
 
 import java.util.logging.Logger;
 
@@ -62,7 +61,16 @@ public class CreateUserPopup extends PopupPanel {
     TextBox firstName;
     @UiField
     TextBox lastName;
-
+    @UiField
+    Label firstNameFieldError;
+    @UiField
+    Label lastNameFieldError;
+    @UiField
+    Label emailFieldError;
+    @UiField
+    Label passwordFieldError;
+    @UiField
+    ListBox timeZoneField;
 
     public String getEmail() {
       return email.getText().trim();
@@ -79,6 +87,12 @@ public class CreateUserPopup extends PopupPanel {
     public String getLastName() {
         return lastName.getText().trim();
     }
+    
+    public String getTimezone(){
+        int si = timeZoneField.getSelectedIndex();
+        String tz = timeZoneField.getItemText(si);
+        return tz;
+    }
 
     public CreateUserPopup() {
         setWidget(uiBinder.createAndBindUi(this));
@@ -86,12 +100,20 @@ public class CreateUserPopup extends PopupPanel {
         this.getElement().getStyle().setBackgroundColor("#1c1c1c");
         captionPanel.setCaptionHTML("<span style='color:white'>" + DashboardConstants.INSTANCE.createUser() + "</span>");
 
+        int index = 0;
+        for (String tz: Enums.timezones) {
+            timeZoneField.addItem(tz);
+            if (tz.equals("US/Eastern")) {
+                timeZoneField.setSelectedIndex(index);
+            }
+            index++;
+        }
+
 
         this.center();
         int top = this.getAbsoluteTop() - 100;
         int left = this.getAbsoluteLeft();
         this.setPopupPosition(left, top);
-
 
         cancelButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
@@ -103,27 +125,29 @@ public class CreateUserPopup extends PopupPanel {
 
         okButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                if (getPassword().trim().length() == 0 || getEmail().trim().length() == 0 || getFirstName().trim().length() == 0 || getLastName().trim().length() == 0)
-                    if (getPassword().trim().length() == 0) {
+                passwordFieldError.setText("");
+                emailFieldError.setText("");
+                firstNameFieldError.setText("");
+                lastNameFieldError.setText("");
+                if (getPassword().trim().length() <= 4 || getEmail().trim().length() <= 4 || getFirstName().trim().length() == 0 || getLastName().trim().length() == 0)
+                {
+                    if (getPassword().trim().length() <= 4) {
                         logger.fine("OK clicked w/ no password specified");
-                        value = 0;
-                        hide();
+                        passwordFieldError.setText("Password must be at least 5 characters in length.");
                     }
-                    if (getEmail().trim().length() == 0){
+                    if (getEmail().trim().length() <= 4){
                         logger.fine("OK Clicked w/ no email specified");
-                        value = 0;
-                        hide();
+                        emailFieldError.setText("Email must be at least 5 characters in length.");
                     }
                     if (getFirstName().trim().length() == 0){
                         logger.fine("OK clicked w/ no first name specified");
-                        value = 0;
-                        hide();
+                        firstNameFieldError.setText("Field is required.");
                     }
                     if (getLastName().trim().length() == 0){
                         logger.fine("OK clicked w/ no last name specified");
-                        value = 0;
-                        hide();
+                        lastNameFieldError.setText("Field is required.");
                     }
+                }
                 else {
                     logger.fine("YES clicked");
                     value = OK;

@@ -25,7 +25,7 @@
     <g:CaptionPanel ui:field="captionPanel" width="220px" styleName="{style.captionHeader}">
         <g:VerticalPanel horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_TOP" width="200px">
             <my:widgets.ClearImage width="220px" height="2px"/>
-            <g:ListBox width="200px" ui:field="userListBox" visibleItemCount="25" styleName="{style.formListBox}"/>
+            <g:ListBox width="200px" ui:field="userListBox" visibleItemCount="28" styleName="{style.formListBox}"/>
             <my:widgets.ClearImage width="220px" height="2px"/>
         </g:VerticalPanel>
     </g:CaptionPanel>

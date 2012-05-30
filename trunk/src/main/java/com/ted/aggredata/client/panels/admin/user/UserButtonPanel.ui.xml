@@ -23,7 +23,7 @@
     <ui:with field='txtRes' type='com.ted.aggredata.client.resources.lang.DashboardConstants'/>
 
     <g:CaptionPanel ui:field="captionPanel" width="320px" styleName="{style.captionHeader}">
-        <g:ScrollPanel width="320px" height="75px">
+        <g:ScrollPanel width="320px" height="115px">
             <g:HorizontalPanel ui:field="userButtonPanel" horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_TOP">
 
                 <g:VerticalPanel horizontalAlignment="ALIGN_LEFT">
@@ -38,6 +38,14 @@
                     <g:HorizontalPanel ui:field="createUserPanel" horizontalAlignment="ALIGN_LEFT">
                         <my:widgets.ClearImage width="15px" height="30px"/>
                         <my:widgets.LargeButton ui:field="createUser" buttonString="Create User"/>
+                        <my:widgets.ClearImage width="15px" height="30px"/>
+                    </g:HorizontalPanel>
+
+                    <my:widgets.ClearImage width="2px" height="5px"/>
+
+                    <g:HorizontalPanel ui:field="disablePanel" horizontalAlignment="ALIGN_LEFT">
+                        <my:widgets.ClearImage width="15px" height="30px"/>
+                        <my:widgets.LargeButton ui:field="disableButton" buttonString="Disable User"/>
                         <my:widgets.ClearImage width="15px" height="30px"/>
                     </g:HorizontalPanel>
 
@@ -60,7 +68,16 @@
                         <my:widgets.ClearImage width="15px" height="30px"/>
                     </g:HorizontalPanel>
 
+                    <my:widgets.ClearImage width="2px" height="5px"/>
+
+                    <g:HorizontalPanel ui:field="enablePanel" horizontalAlignment="ALIGN_LEFT">
+                        <my:widgets.ClearImage width="15px" height="30px"/>
+                        <my:widgets.LargeButton ui:field="enableButton" buttonString="Enable User"/>
+                        <my:widgets.ClearImage width="15px" height="30px"/>
+                    </g:HorizontalPanel>
+
                 </g:VerticalPanel>
+
             </g:HorizontalPanel>
         </g:ScrollPanel>
     </g:CaptionPanel>
