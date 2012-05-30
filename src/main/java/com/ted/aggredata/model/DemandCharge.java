@@ -24,7 +24,6 @@ import java.io.Serializable;
  */
 public class DemandCharge implements Serializable {
     private Long gatewayId;
-    private Long userId;
     private Integer timestamp;
     private Double peak;
     private Double cost;
@@ -35,7 +34,7 @@ public class DemandCharge implements Serializable {
 
 
     /**
-     * unix epoch timestamp of the entr
+     * unix epoch timestamp of the entry
      *
      * @return
      */
@@ -56,13 +55,6 @@ public class DemandCharge implements Serializable {
         this.gatewayId = gatewayId;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public Double getPeak() {
         return peak;
@@ -85,7 +77,6 @@ public class DemandCharge implements Serializable {
         StringBuilder b = new StringBuilder();
         b.append("EnergyData{");
         b.append("gatewayId:" + gatewayId);
-        b.append(", userId:" + userId);
         b.append(",timestamp:" + timestamp);
         b.append(", peak:" + peak);
         b.append(", cost:" + cost);

@@ -89,9 +89,6 @@ public class EnergyDataDAOTest {
             energyData.setEnergy(10000d);
             energyData.setRate(1.0000d);
             energyData.setTimestamp(10000 + i);
-            energyData.setMeterReadDay(1);
-            energyData.setMeterReadMonth(testDate.getMonth());
-            energyData.setMeterReadYear(testDate.getYear());
             energyDataDAO.create(energyData);
         }
 

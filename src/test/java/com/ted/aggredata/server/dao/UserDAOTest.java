@@ -108,18 +108,20 @@ public class UserDAOTest {
         //Check the various queries
         if (userDAO.findUsers().size() < 10) Assert.fail("Not enough users returned");
 
-        if (userDAO.findUsers("@theenergydetective").size() < 10) Assert.fail("Not enough users returned");
-        if (userDAO.findUsers("Company A").size() == 5) Assert.fail("Not enough users returned");
-        if (userDAO.findUsers("Company B").size() == 5) Assert.fail("Not enough users returned");
-
-
-
+        int allSize = userDAO.findUsers("@theenergydetective").size();
+        int compASize = userDAO.findUsers("Company A").size();
+        int compBSize = userDAO.findUsers("Company B").size();
 
 
         //Clean up
         for (User user: userList) {
             userDAO.delete(user);
         }
+
+        if (allSize < 10) Assert.fail("Not enough @energydetective users returned:" + allSize);
+        if (compASize != 5) Assert.fail("Not enough Company A users returned:" + compASize);
+        if (compBSize != 5) Assert.fail("Not enough Company B users returned:" + compBSize);
+
 
     }
 
