@@ -67,6 +67,10 @@ public class UserButtonPanel extends Composite {
     LargeButton changePassword;
     @UiField
     LargeButton changeEmail;
+    @UiField
+    LargeButton enableButton;
+    @UiField
+    LargeButton disableButton;
 
     public UserButtonPanel() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -93,10 +97,33 @@ public class UserButtonPanel extends Composite {
         });
 
         deleteUser.addClickHandler(new ClickHandler() {
-            final DashboardConstants dc = DashboardConstants.INSTANCE;
             @Override
             public void onClick(ClickEvent clickEvent) {
                 deleteUser();
+            };
+        });
+
+        enableButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                gwtUserService.changeUserStatus(UserSelectionPanel.getSelectedUser(), true, new TEDAsyncCallback<User>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        final OKPopup okPopup = new OKPopup("Enable User", UserSelectionPanel.getSelectedUser().getUsername() + " has been enabled.");
+                    }
+                });
+            };
+        });
+
+        disableButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                gwtUserService.changeUserStatus(UserSelectionPanel.getSelectedUser(), false, new TEDAsyncCallback<User>() {
+                    @Override
+                    public void onSuccess(User result) {
+                        final OKPopup okPopup = new OKPopup("Disable User", UserSelectionPanel.getSelectedUser().getUsername() + " has been disabled.");
+                    }
+                });
             };
         });
     }
@@ -113,57 +140,28 @@ public class UserButtonPanel extends Composite {
                     newUser.setLastName(createUserPopup.getLastName());
                     newUser.setUsername(createUserPopup.getEmail());
                     newUser.setId(UserSelectionPanel.userList.get(UserSelectionPanel.userList.size() - 1).getId() + 1);
-                    boolean confirm = validate(newUser, createUserPopup.getPassword());
-                    if (confirm == true){
-                        gwtUserService.createUser(newUser, new TEDAsyncCallback<User>() {
-                            @Override
-                            public void onSuccess(User result) {
-                                UserSelectionPanel.userList.add(result);
-                                if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
-                                else UserSelectionPanel.userListBox.setSelectedIndex(0);
-                                UserSelectionPanel.redrawUserList();
-                                UserSelectionPanel.fireSelectedGroup();
-                            }
-                        });
-                    }
+                    newUser.setPassword(createUserPopup.getPassword());
+                    newUser.setTimezone(createUserPopup.getTimezone());
+                    gwtUserService.createUser(newUser, new TEDAsyncCallback<User>() {
+                        @Override
+                        public void onSuccess(User result) {
+                            UserSelectionPanel.userList.add(result);
+                            if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
+                            else UserSelectionPanel.userListBox.setSelectedIndex(0);
+                            UserSelectionPanel.redrawUserList();
+                            UserSelectionPanel.fireSelectedGroup();
+                        }
+                    });
                 }
             }
         });
-    }
-    
-    private boolean validate(User user, String pass){
-        boolean confirm = true;
-        if (user.getUsername().length() < 5)
-        {
-            final OKPopup okPopup = new OKPopup("Error", "Email must be 5 characters or greater.");
-            confirm = false;
-        }
-        if (pass.length() < 5)
-        {
-            final OKPopup okPopup = new OKPopup("Error", "Password must be 5 characters or greater.");
-            confirm = false;
-        }        
-        return confirm;
-    }
-
-    private void newUserPass(final String password2, User userNew)
-    {
-        if (password2.length() > 0){
-            gwtUserService.changePassword(userNew, password2, new TEDAsyncCallback<User>() {
-                @Override
-                public void onSuccess(User result) {
-                    final OKPopup okPopup = new OKPopup("Change Password", "Password has been changed.");
-                }
-            });
-        }
     }
 
     private  void deleteUser()
     {
         final DashboardConstants dc = DashboardConstants.INSTANCE;
         user = UserSelectionPanel.getSelectedUser();
-        Window.alert(user.toString());
-        final YesNoPopup popup = new YesNoPopup(dc.deleteUser(), dc.deleteUserVerification());
+        final YesNoPopup popup = new YesNoPopup(dc.deleteUser(), user.getUsername() + ": " + dc.deleteUserVerification());
         popup.addCloseHandler(new CloseHandler<PopupPanel>() {
             @Override
             public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
@@ -185,7 +183,7 @@ public class UserButtonPanel extends Composite {
             }
         });
     }
-    
+
     private void changeEmail() {
         user = UserSelectionPanel.getSelectedUser();
         logger.fine("Change Email Clicked");
@@ -208,8 +206,6 @@ public class UserButtonPanel extends Composite {
                                         @Override
                                         public void onSuccess(User result) {
                                             final OKPopup okPopup = new OKPopup(dc.changeEmail(), "Email has been changed");
-                                            UserSelectionPanel.redrawUserList();
-                                            UserSelectionPanel.fireSelectedGroup();
                                         }
                                     });
                                 }

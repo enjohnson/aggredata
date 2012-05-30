@@ -49,4 +49,6 @@ public interface GWTUserService extends RemoteService {
      * @return
      */
     public List<User> findUsers(String substring);
+
+    public User changeUserStatus(User entity, boolean enabled);
 }

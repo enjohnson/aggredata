@@ -28,6 +28,8 @@
             <g:Label text="{txtRes.firstNameMessage}"/>
             <my:widgets.ClearImage width="350px" height="10px"/>
             <g:TextBox ui:field="firstName" width="200px"/>
+            <my:widgets.ClearImage width="2" height="5px"/>
+            <g:Label ui:field="firstNameFieldError" styleName="{style.formError}" width="200px"/>
             <my:widgets.ClearImage width="350px" height="10px"/>
 
             <my:widgets.ClearImage width="350px" height="5px"/>
@@ -35,11 +37,15 @@
             <my:widgets.ClearImage width="350px" height="10px"/>
             <g:TextBox ui:field="lastName" width="200px"/>
             <my:widgets.ClearImage width="350px" height="10px"/>
+            <g:Label ui:field="lastNameFieldError" styleName="{style.formError}" width="200px"/>
+            <my:widgets.ClearImage width="350px" height="10px"/>
 
             <my:widgets.ClearImage width="350px" height="5px"/>
             <g:Label text="{txtRes.emailMessage}"/>
             <my:widgets.ClearImage width="350px" height="10px"/>
             <g:TextBox ui:field="email" width="200px"/>
+            <my:widgets.ClearImage width="350px" height="10px"/>
+            <g:Label ui:field="emailFieldError" styleName="{style.formError}" width="200px"/>
             <my:widgets.ClearImage width="350px" height="10px"/>
 
             <my:widgets.ClearImage width="350px" height="5px"/>
@@ -47,6 +53,15 @@
             <my:widgets.ClearImage width="350px" height="10px"/>
             <g:TextBox ui:field="password" width="200px"/>
             <my:widgets.ClearImage width="350px" height="10px"/>
+            <g:Label ui:field="passwordFieldError" styleName="{style.formError}" width="200px"/>
+            <my:widgets.ClearImage width="350px" height="10px"/>
+
+            <my:widgets.ClearImage width="100px" height="1px"/>
+            <g:Label styleName='{style.formLabel}' text='{txtRes.profileSettingsTimezone}' width="100px"/>
+            <my:widgets.ClearImage width="2px" height="1px"/>
+            <g:ListBox ui:field="timeZoneField" width="150px" styleName="{style.formField}"/>
+            <my:widgets.ClearImage width="2px" height="1px"/>
+            <g:Label ui:field="timeZoneError" styleName="{style.formError}"/>
 
             <g:HorizontalPanel>
                 <g:HorizontalPanel>

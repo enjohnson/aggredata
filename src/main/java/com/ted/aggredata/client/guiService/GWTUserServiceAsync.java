@@ -37,7 +37,7 @@ public interface GWTUserServiceAsync {
     
     void getUserByUserName(String username, AsyncCallback<User> async);
 
-
+    void changeUserStatus(User user, boolean enabled, AsyncCallback<User> async);
     /**
      * Used to find a list of users based on a substring. We match on name and email address.
      *
