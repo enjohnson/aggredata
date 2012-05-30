@@ -122,6 +122,7 @@
     <bean name="gatewayDAO" class=" com.ted.aggredata.server.dao.GatewayDAO"/>
     <bean name="energyDataDAO" class=" com.ted.aggredata.server.dao.EnergyDataDAO"/>
     <bean name="costDataDAO" class=" com.ted.aggredata.server.dao.CostDataDAO"/>
+    <bean name="demandChargeDAO" class=" com.ted.aggredata.server.dao.DemandChargeDAO"/>
     <bean name="energyDataHistoryDAO" class=" com.ted.aggredata.server.dao.EnergyDataHistoryDAO"/>
 
     <!-- Spring Services -->

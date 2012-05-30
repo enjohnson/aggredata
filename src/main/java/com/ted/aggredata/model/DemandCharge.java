@@ -75,7 +75,7 @@ public class DemandCharge implements Serializable {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
-        b.append("EnergyData{");
+        b.append("DemandCharge{");
         b.append("gatewayId:" + gatewayId);
         b.append(",timestamp:" + timestamp);
         b.append(", peak:" + peak);
