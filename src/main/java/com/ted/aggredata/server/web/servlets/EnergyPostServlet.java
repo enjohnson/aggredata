@@ -232,7 +232,7 @@ public class EnergyPostServlet extends HttpServlet {
                         costData.setFixedCost(fixedCharge);
                         //Set the month and year based on the user's timezone.
                         //Do the timezone conversion
-                        Calendar tzCalendar  = EnergyPostUtil.getTime(gatewayUser.getTimezone(), timestamp);
+                        Calendar tzCalendar  = EnergyPostUtil.getMeterMonth(meterReadDay, gatewayUser.getTimezone(), timestamp);
                         costData.setMeterReadYear(tzCalendar.get(Calendar.YEAR));
                         costData.setMeterReadMonth(tzCalendar.get(Calendar.MONTH)+1);
 
