@@ -36,9 +36,7 @@ public interface GWTUserService extends RemoteService {
     public User changeUsername(User user, String username);
 
     public List<User> findUsers();
-    
-    public User createUser(User user);
-    
+
     public void deleteUser(User user);
 
     public User getUserByUserName(String username);
@@ -51,4 +49,13 @@ public interface GWTUserService extends RemoteService {
     public List<User> findUsers(String substring);
 
     public User changeUserStatus(User entity, boolean enabled);
+
+    /**
+     * Creates a new user with the specified password. The user is enabled by default.
+     * @param username
+     * @param password
+     * @param user
+     * @return
+     */
+    public User newUser(String username, String password, User user);
 }

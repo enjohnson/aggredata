@@ -24,8 +24,9 @@ import com.ted.aggredata.model.User;
 
 
 /**
- * Client Side Interface for the service to check user sessions.
+ * Client Side Interface for the service to check user sessions.  This is intended for users BEFORE they are authenticated.
  */
+
 @RemoteServiceRelativePath("UserSessionService")
 public interface UserSessionService extends RemoteService {
 
@@ -71,5 +72,5 @@ public interface UserSessionService extends RemoteService {
      */
     public int validateCaptcha(String captchaString, String username, String password, User user);
 
-    public User newUser(String username, String password, User user);
+
 }

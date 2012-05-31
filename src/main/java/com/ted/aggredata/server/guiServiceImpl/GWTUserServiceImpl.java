@@ -76,18 +76,7 @@ public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GW
 
     }
 
-    @Override
-    public User createUser(User user){
-        User requestingUser = (User)getThreadLocalRequest().getSession().getAttribute(USER_SESSION_KEY);
-        if (user.getRole() == null) user.setRole(User.ROLE_USER);
-        if (logger.isInfoEnabled()) logger.info(requestingUser + " is creating a new user");
-        if (requestingUser != null && requestingUser.getRole().equals(User.ROLE_ADMIN)) {
-            return userService.createUser(user, User.STATE_ENABLED);
-        } else {
-            logger.warn(requestingUser + " is attempting to create a user but is not an admin!");
-            return null;
-        }
-    }
+
 
     @Override
     public void deleteUser(User user){
@@ -114,5 +103,32 @@ public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GW
     public User changeUserStatus(User entity, boolean enabled){
         if (logger.isInfoEnabled()) logger.info("Changing user status for " + entity.getUsername());
         return userService.changeUserStatus(entity, enabled);
+    }
+
+    @Override
+    public User newUser(String username, String password, User user) {
+
+        User requestingUser = (User)getThreadLocalRequest().getSession().getAttribute(USER_SESSION_KEY);
+        if (logger.isInfoEnabled()) logger.info(requestingUser + " is requesting a list of all users");
+        if (requestingUser != null && requestingUser.getRole().equals(User.ROLE_ADMIN)){
+
+            User savedUser = new User();
+            //Check dupe email
+            User dupeUser = userService.getUserByUserName(user.getUsername());
+            //Check to make sure the user doesn't exist and hasn't already been activated.
+            if (dupeUser != null && dupeUser.getAccountState() != User.STATE_WAITING_ACTIVATION) return savedUser;
+
+            logger.info("Creating new user " + user);
+            if (user.getRole() == null) user.setRole(User.ROLE_USER);
+            savedUser = userService.createUser(user, User.STATE_ENABLED);
+            userService.changePassword(savedUser, password);
+
+            return savedUser;
+        } else {
+            logger.error(requestingUser + " is attempting to create a new user but is not an ADMIN");
+            return null;
+        }
+
+
     }
 }
