@@ -43,7 +43,6 @@ import java.util.logging.Logger;
 public class UserButtonPanel extends Composite {
     User user;
     static Logger logger = Logger.getLogger(UserButtonPanel.class.toString());
-    final UserSessionServiceAsync userSessionService = (UserSessionServiceAsync) GWT.create(UserSessionService.class);
 
     interface MyUiBinder extends UiBinder<Widget, UserButtonPanel> {
     }
@@ -142,7 +141,7 @@ public class UserButtonPanel extends Composite {
                     newUser.setId(UserSelectionPanel.userList.get(UserSelectionPanel.userList.size() - 1).getId() + 1);
                     newUser.setPassword(createUserPopup.getPassword());
                     newUser.setTimezone(createUserPopup.getTimezone());
-                    userSessionService.newUser(createUserPopup.getEmail(), createUserPopup.getPassword(), newUser, new TEDAsyncCallback<User>() {
+                    gwtUserService.newUser(createUserPopup.getEmail(), createUserPopup.getPassword(), newUser, new TEDAsyncCallback<User>() {
                         @Override
                         public void onSuccess(User result) {
                             if (result.getUsername() != "") {

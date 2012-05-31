@@ -32,9 +32,7 @@ public interface GWTUserServiceAsync {
     void findUsers(AsyncCallback<List<User>> async);
     
     void deleteUser(User user, AsyncCallback<Void> async );
-    
-    void createUser(User user, AsyncCallback<User> async);
-    
+
     void getUserByUserName(String username, AsyncCallback<User> async);
 
     void changeUserStatus(User user, boolean enabled, AsyncCallback<User> async);
@@ -45,4 +43,14 @@ public interface GWTUserServiceAsync {
      * @return
      */
     void findUsers(String substring, AsyncCallback<List<User>> async);
+
+    /**
+     * Creates a new user with the specified password. The user is enabled by default.
+     *
+     * @param username
+     * @param password
+     * @param user
+     * @return
+     */
+    void newUser(String username, String password, User user, AsyncCallback<User> async);
 }
