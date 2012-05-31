@@ -202,6 +202,12 @@ public class UserDAO extends AbstractDAO<User> {
             }
         }
 
+        groupList = groupDAO.findGroupsByUser(user, Group.Role.READONLY);
+        for (Group group : groupList) {
+                groupDAO.removeGroupMembership(user, group);
+        }
+
+
         for (Gateway gateway : gatewayList) gatewayDAO.delete(gateway);
 
         if (logger.isDebugEnabled()) logger.debug("removing " + user + " from user table");
