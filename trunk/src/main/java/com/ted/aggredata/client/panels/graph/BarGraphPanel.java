@@ -40,6 +40,7 @@ import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
+import com.ted.aggredata.client.util.DateUtil;
 import com.ted.aggredata.client.util.NumberUtil;
 import com.ted.aggredata.client.util.StringUtil;
 import com.ted.aggredata.model.*;
@@ -138,8 +139,10 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
 
         if (logger.isLoggable(Level.FINE)) logger.fine("Graph Option Change Called: " + event + " " + event.getStartDate() + " " + event.getEndDate() + " " + event.getGraphType());
 
+        long startDate = fixStartDate(event.getStartDate()).getTime()/1000;
+        long endDate = fixEndDate(event.getEndDate()).getTime()/1000;
 
-        groupService.getHistory(getHistoryType(), event.getGroup(), event.getStartDate().getTime() / 1000, event.getEndDate().getTime() / 1000, 1, new TEDAsyncCallback<EnergyDataHistoryQueryResult>() {
+        groupService.getHistory(getHistoryType(), event.getGroup(),startDate, endDate, 1, new TEDAsyncCallback<EnergyDataHistoryQueryResult>() {
             @Override
             public void onSuccess(EnergyDataHistoryQueryResult energyDataHistoryQueryResult) {
                 logger.fine("history data returned. Drawing");
