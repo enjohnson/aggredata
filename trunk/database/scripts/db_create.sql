@@ -88,7 +88,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `aggredata`.`demandCharge'
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `aggredata`.`demandCharge` (
+CREATE  TABLE IF NOT EXISTS `aggredata`.`demandcharge` (
   `gatewayId` INT NOT NULL ,
   `timestamp` INT NOT NULL ,
   `peak` DECIMAL(10,5) NULL ,
