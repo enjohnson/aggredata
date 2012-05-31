@@ -26,7 +26,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 @Transactional
 public class GatewayServiceImpl implements GatewayService {
@@ -50,6 +52,12 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Autowired
     protected EnergyDataHistoryDAO energyDataHistoryDAO;
+
+    @Autowired
+    protected DemandChargeDAO demandChargeDAO;
+
+    @Autowired
+    protected CostDataDAO costDataDAO;
 
     static Logger logger = LoggerFactory.getLogger(GatewayServiceImpl.class);
 
@@ -140,6 +148,23 @@ public class GatewayServiceImpl implements GatewayService {
         energyData.setEnergyDifference(energyDifference);
         energyDataDAO.create(energyData);
         return energyData;
+    }
+
+    @Override
+    public CostData postCostData(CostData costData) {
+        costDataDAO.create(costData);
+        return costData;
+    }
+
+    @Override
+    public DemandCharge postDemandCharge(Gateway gateway, Integer timestamp, Double peak, Double cost) {
+        DemandCharge demandCharge = new DemandCharge();
+        demandCharge.setGatewayId(gateway.getId());
+        demandCharge.setTimestamp(timestamp);
+        demandCharge.setPeak(peak);
+        demandCharge.setCost(cost);
+        demandChargeDAO.create(demandCharge);
+        return  demandCharge;
     }
 
     @Override

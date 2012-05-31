@@ -17,13 +17,11 @@
 
 package com.ted.aggredata.server.web.servlets;
 
-import com.ted.aggredata.model.EnergyData;
-import com.ted.aggredata.model.Gateway;
-import com.ted.aggredata.model.MTU;
-import com.ted.aggredata.model.ServerInfo;
+import com.ted.aggredata.model.*;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.services.GroupService;
 import com.ted.aggredata.server.services.UserService;
+import com.ted.aggredata.server.util.EnergyPostUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Calendar;
+import java.util.HashMap;
 
 
 /**
@@ -67,6 +67,7 @@ public class EnergyPostServlet extends HttpServlet {
     ServerInfo serverInfo;
 
 
+
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
@@ -85,6 +86,7 @@ public class EnergyPostServlet extends HttpServlet {
             NamedNodeMap ted5000Attributes = doc.getElementsByTagName("ted5000").item(0).getAttributes();
 
 
+
             String gatewayIdString = ted5000Attributes.getNamedItem("GWID").getNodeValue();
             String securityKey = ted5000Attributes.getNamedItem("auth").getNodeValue();
             if (logger.isDebugEnabled()) logger.debug("Received post from Gateway " + gatewayIdString + " with key " + securityKey);
@@ -98,6 +100,17 @@ public class EnergyPostServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 PrintWriter out = response.getWriter();
                 out.write("Gateway Not Found.");
+                out.close();
+                return;
+            }
+
+            //Check the user
+            User gatewayUser = userService.findUser(gateway.getUserAccountId());
+            if (gatewayUser == null || gatewayUser.getAccountState() != User.STATE_ENABLED){
+                if (logger.isWarnEnabled()) logger.warn("Attempted post to gateway " + gatewayIdString + " with an invalid or disabled user: " + gatewayUser);
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                PrintWriter out = response.getWriter();
+                out.write("Unauthorized.");
                 out.close();
                 return;
             }
@@ -123,6 +136,35 @@ public class EnergyPostServlet extends HttpServlet {
             }
 
             if (logger.isInfoEnabled()) logger.info("gateway " + gatewayIdString + " is authenticated. recording data.");
+
+
+            //Default values in case cost segment is not defined.
+            Integer meterReadDay = 1;
+            Double fixedCharge = 0d;
+            Double minCharge = 0d;
+
+
+            //We keep a local hashmap to track unique cost data entries (limiting number of db hits used to update
+            //and more efficient than an array list contains check.
+            HashMap<Integer, CostData> costDataCache = new HashMap<Integer, CostData>();
+
+
+            //Process cost data
+            //If the packet has COST data, enter it
+            NodeList costList = doc.getElementsByTagName("COST");
+            if ( costList!= null && costList.getLength() > 0) {
+                logger.debug("Processing COST Packet");
+                try {
+                    NamedNodeMap costAttributes = costList.item(0).getAttributes();
+                    meterReadDay = Integer.parseInt(costAttributes.getNamedItem("mrd").getNodeValue());
+                    fixedCharge = Double.parseDouble(costAttributes.getNamedItem("fixed").getNodeValue());
+                    minCharge = Double.parseDouble(costAttributes.getNamedItem("min").getNodeValue());
+                } catch (Exception ex) {
+                    logger.error("Exception parsing cost data:" + ex.getMessage(), ex );
+                }
+
+
+            }
 
 
             //Process each MTU
@@ -153,6 +195,8 @@ public class EnergyPostServlet extends HttpServlet {
 
                 for (int c = 0; c < cumulativeDataListCount; c++) {
                     Element cumulativeNode = (Element) cumulativeDataList.item(c);
+
+
                     Integer timestamp = Integer.parseInt(cumulativeNode.getAttribute("timestamp"));
                     Double rate = Double.parseDouble(cumulativeNode.getAttribute("rate"));
                     Double energy = Double.parseDouble(cumulativeNode.getAttribute("watts"));
@@ -177,11 +221,59 @@ public class EnergyPostServlet extends HttpServlet {
 
                     lastCumulativeValue = gatewayService.postEnergyData(gateway, mtu, timestamp, energy, rate, minuteCost, energyDifference);
                     if (logger.isDebugEnabled()) logger.debug("Posted " + lastCumulativeValue);
+
+                    //Make sure there is a cost data element for this gateway and timestamp.
+                    if (costDataCache.get(timestamp) == null) {
+                        CostData costData = new CostData();
+                        costData.setGatewayId(gateway.getId());
+                        costData.setTimestamp(timestamp);
+                        costData.setMeterReadDay(meterReadDay);
+                        costData.setMinCost(minCharge);
+                        costData.setFixedCost(fixedCharge);
+                        //Set the month and year based on the user's timezone.
+                        //Do the timezone conversion
+                        Calendar tzCalendar  = EnergyPostUtil.getTime(gatewayUser.getTimezone(), timestamp);
+                        costData.setMeterReadYear(tzCalendar.get(Calendar.YEAR));
+                        costData.setMeterReadMonth(tzCalendar.get(Calendar.MONTH)+1);
+
+                        //Add it to the hashmap as a unique timestamp.
+                        costDataCache.put(timestamp, costData);
+                    }
                 }
 
 
             }
 
+
+            //Update the costdata in the database
+            for (CostData costData:costDataCache.values()){
+                gatewayService.postCostData(costData);
+            }
+
+
+            NodeList demandList = doc.getElementsByTagName("DEMAND");
+
+            //If the packet has DEMAND data, enter it
+            if (demandList != null && demandList.getLength() > 0) {
+                logger.debug("Processing Demand Packet");
+                Element demandNode = (Element) demandList.item(0);
+                NodeList demandCostList = demandNode.getElementsByTagName("demandCost");
+                int demandCostListCount = demandCostList.getLength();
+                if (logger.isDebugEnabled()) logger.debug("Posting " + demandCostListCount + " demand cost entries");
+
+                for (int c = 0; c < demandCostListCount; c++) {
+                    Element demandCostNode = (Element) demandCostList.item(c);
+                    try
+                    {
+                        Integer timestamp = Integer.parseInt(demandCostNode.getAttribute("timestamp"));
+                        Double cost = Double.parseDouble(demandCostNode.getAttribute("cost"));
+                        Double peak = Double.parseDouble(demandCostNode.getAttribute("peak"));
+                        gatewayService.postDemandCharge(gateway, timestamp, peak, cost);
+                    } catch (Exception ex){
+                        logger.error("Exception parsing demand cost data:" + ex.getMessage(), ex);
+                    }
+                }
+            }
 
             if (logger.isDebugEnabled()) logger.debug("Writing success response");
             response.setContentType("text/xml");

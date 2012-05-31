@@ -134,4 +134,10 @@ public interface UserService {
      * @return
      */
     public List<User>findUsers(Group group);
+
+    /***
+     * Finds a user by its id
+     */
+    public User findUser(Long userId);
+
 }
