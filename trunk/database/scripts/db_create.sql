@@ -17,7 +17,7 @@
  */
  
  /*
-  * mySQL scrupt to create the support tables for Aggredata
+  * mySQL script to create the support tables for Aggredata
   * Script for Version: 1.0
   *
   */
@@ -25,7 +25,7 @@
 
 CREATE SCHEMA IF NOT EXISTS aggredata;
 
-DROP user 'aggredata'@'localhost';  /*Uncomment this line if re-rerunning the script*/
+//DROP user 'aggredata'@'localhost';  /*Uncomment this line if re-rerunning the script*/
 
 CREATE user 'aggredata'@'localhost' IDENTIFIED BY 'aggredata';
 GRANT ALL PRIVILEGES ON aggredata.* TO 'aggredata'@'localhost' WITH GRANT OPTION;
