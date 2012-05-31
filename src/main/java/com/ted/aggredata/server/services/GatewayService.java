@@ -122,6 +122,29 @@ public interface GatewayService {
      */
     EnergyData postEnergyData(Gateway gateway, MTU mtu, Integer timestamp, Double watts, Double rate, Double minCost, Double energyDifference);
 
+
+    /**
+     * Posts cost data for a specified gateway
+     * @param gateway
+     * @param timestamp
+     * @param meterReadDate
+     * @param fixedPrice
+     * @param minPrice
+     * @return
+     */
+    CostData postCostData(CostData costData);
+
+
+    /***
+     * Posts a demand charge
+     * @param gateway
+     * @param timestamp
+     * @param peak
+     * @param cost
+     * @return
+     */
+    DemandCharge postDemandCharge(Gateway gateway, Integer timestamp, Double peak, Double cost);
+
     /**
      * Finds the most recently posted entry for the gateway/mtu
      *

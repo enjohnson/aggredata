@@ -174,4 +174,9 @@ public class UserServiceImpl implements UserService {
     public List<User> findUsers(Group group) {
         return userDao.findUsers(group);
     }
+
+    @Override
+    public User findUser(Long userId) {
+        return userDao.findById(userId);
+    }
 }
