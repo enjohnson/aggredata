@@ -33,8 +33,6 @@ public class User extends AggredataModel implements Serializable {
     public static int STATE_ENABLED = 1;
     public static int STATE_DISABLED = 99;
 
-
-    private String password;
     private String username;
     private String role;
     private int accountState;
@@ -231,15 +229,7 @@ public class User extends AggredataModel implements Serializable {
     public void setAccountState(int accountState) {
         this.accountState = accountState;
     }   
-    
-    public  String getPassword(){
-        return password;
-    }
-    
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
+
 
     @Override
     public String toString() {

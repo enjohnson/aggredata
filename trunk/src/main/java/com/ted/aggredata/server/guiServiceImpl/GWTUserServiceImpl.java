@@ -56,10 +56,8 @@ public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GW
     @Override
     public User changeUsername(User user, String username) {
         logger.info("Updating username");
-        getThreadLocalRequest().getSession().removeAttribute(USER_SESSION_KEY);
-        userService.changeUserName(user, username);
-        getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
-        return user;
+        User newUser = userService.changeUserName(user, username);
+        return newUser;
     }
 
     @Override
