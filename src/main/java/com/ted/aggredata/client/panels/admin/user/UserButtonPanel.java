@@ -139,7 +139,6 @@ public class UserButtonPanel extends Composite {
                     newUser.setLastName(createUserPopup.getLastName());
                     newUser.setUsername(createUserPopup.getEmail());
                     newUser.setId(UserSelectionPanel.userList.get(UserSelectionPanel.userList.size() - 1).getId() + 1);
-                    newUser.setPassword(createUserPopup.getPassword());
                     newUser.setTimezone(createUserPopup.getTimezone());
                     gwtUserService.newUser(createUserPopup.getEmail(), createUserPopup.getPassword(), newUser, new TEDAsyncCallback<User>() {
                         @Override
@@ -209,6 +208,16 @@ public class UserButtonPanel extends Composite {
                                     gwtUserService.changeUsername(user, changeEmailPopup.getEmail(), new TEDAsyncCallback<User>() {
                                         @Override
                                         public void onSuccess(User result) {
+                                            for (int i = 0; i < UserSelectionPanel.userList.size(); i++) {
+                                                if (UserSelectionPanel.userList.get(i).getId() == user.getId()){
+                                                    UserSelectionPanel.userList.remove(i);
+                                                    UserSelectionPanel.userList.add(result);
+                                                }
+                                            }
+                                            if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
+                                            else UserSelectionPanel.userListBox.setSelectedIndex(0);
+                                            UserSelectionPanel.redrawUserList();
+                                            UserSelectionPanel.fireSelectedGroup();
                                             final OKPopup okPopup = new OKPopup(dc.changeEmail(), "Email has been changed");
                                         }
                                     });
