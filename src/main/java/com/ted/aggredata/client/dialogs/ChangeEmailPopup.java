@@ -22,10 +22,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.widgets.SmallButton;
 
@@ -33,9 +30,9 @@ import java.util.logging.Logger;
 
 
 public class ChangeEmailPopup extends PopupPanel {
-
+    public static int EMAIL_LENGTH = 5;
     static Logger logger = Logger.getLogger(ChangeEmailPopup.class.toString());
-
+    final DashboardConstants dc = DashboardConstants.INSTANCE;
 
     interface MyUiBinder extends UiBinder<Widget, ChangeEmailPopup> {
     }
@@ -55,6 +52,8 @@ public class ChangeEmailPopup extends PopupPanel {
     SmallButton yesButton;
     @UiField
     TextBox emailBox;
+    @UiField
+    Label emailFieldError;
 
 
     public String getEmail() {
@@ -85,11 +84,12 @@ public class ChangeEmailPopup extends PopupPanel {
 
         yesButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                if (getEmail().trim().length() == 0) {
-                    logger.fine("YES clicked w/ no username specified");
+                if(getEmail().trim().length() < EMAIL_LENGTH){
+                    emailFieldError.setText(dc.emailError());
+                    logger.fine("Length of the email did not meet length requirements.");
                     value = 0;
-                    hide();
-                } else {
+                }
+                else {
                     logger.fine("YES clicked");
                     value = OK;
                     hide();

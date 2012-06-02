@@ -17,6 +17,7 @@
 
 package com.ted.aggredata.server.guiServiceImpl;
 
+import com.google.gwt.user.client.Window;
 import com.ted.aggredata.client.guiService.GWTUserService;
 import com.ted.aggredata.model.User;
 import com.ted.aggredata.server.services.UserService;
@@ -38,18 +39,14 @@ public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GW
     @Override
     public User saveUser(User user) {
         logger.info("Saving user information");
-        getThreadLocalRequest().getSession().removeAttribute(USER_SESSION_KEY);
         user = userService.saveUser(user);
-        getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
         return user;
     }
 
     @Override
     public User changePassword(User user, String Password) {
         logger.info("Updating Password");
-        getThreadLocalRequest().getSession().removeAttribute(USER_SESSION_KEY);
         userService.changePassword(user, Password);
-        getThreadLocalRequest().getSession().setAttribute(USER_SESSION_KEY, user);
         return user;
     }
 
@@ -80,7 +77,7 @@ public class GWTUserServiceImpl extends SpringRemoteServiceServlet implements GW
     public void deleteUser(User user){
         User requestingUser = (User)getThreadLocalRequest().getSession().getAttribute(USER_SESSION_KEY);
         if (logger.isInfoEnabled()) logger.info(requestingUser + " is deleting user " + user);
-        if (requestingUser != null && requestingUser.getRole().equals(User.ROLE_ADMIN)) {
+        if (requestingUser != null && requestingUser.getRole().equals(User.ROLE_ADMIN) && requestingUser.getId() != user.getId()) {
             userService.deleteUser(user);
         }
     }

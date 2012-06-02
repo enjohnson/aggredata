@@ -22,10 +22,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.resources.lang.LogonConstants;
 import com.ted.aggredata.client.widgets.SmallButton;
@@ -36,11 +33,11 @@ import java.util.logging.Logger;
 public class ChangePasswordPopup extends PopupPanel {
 
     static Logger logger = Logger.getLogger(ChangePasswordPopup.class.toString());
-
+    public static int PASSWORD_LENGTH = 5;
 
     interface MyUiBinder extends UiBinder<Widget, ChangePasswordPopup> {
     }
-
+    final DashboardConstants dc = DashboardConstants.INSTANCE;
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
     int value = 0;
@@ -48,8 +45,8 @@ public class ChangePasswordPopup extends PopupPanel {
 
     @UiField
     CaptionPanel captionPanel;
-
-
+    @UiField
+    Label passwordFieldError;
     @UiField
     SmallButton noButton;
     @UiField
@@ -86,11 +83,12 @@ public class ChangePasswordPopup extends PopupPanel {
 
         yesButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                if (getPassword().trim().length() == 0) {
-                    logger.fine("YES clicked w/ no password specified");
+                if(getPassword().trim().length() < PASSWORD_LENGTH){
+                    passwordFieldError.setText(dc.passwordError());
+                    logger.fine("Length of the password did not meet length requirements.");
                     value = 0;
-                    hide();
-                } else {
+                }
+                else {
                     logger.fine("YES clicked");
                     value = OK;
                     hide();

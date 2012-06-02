@@ -315,4 +315,23 @@ public interface DashboardConstants extends Constants {
     String graphNoDataText();
 
     String otherGroups();
+    
+    // popups
+    String emailError();
+    
+    String passwordError();
+    
+    String required();
+    
+    String passwordChanged();
+    
+    String emailChanged();
+    
+    String enableUser();
+    
+    String disableUser();
+    
+    String disableUserMsg();
+    
+    String enableUserMsg();
 }

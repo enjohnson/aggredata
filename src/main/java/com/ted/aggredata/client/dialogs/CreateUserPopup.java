@@ -41,14 +41,15 @@ import java.util.logging.Logger;
 public class CreateUserPopup extends PopupPanel {
 
     static Logger logger = Logger.getLogger(CreateUserPopup.class.toString());
-
+    public static int EMAIL_LENGTH = 5;
+    public static int PASSWORD_LENGTH = 5;
     final GWTUserServiceAsync gwtUserService = (GWTUserServiceAsync) GWT.create(GWTUserService.class);
 
     interface MyUiBinder extends UiBinder<Widget, CreateUserPopup> {
     }
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-
+    final DashboardConstants dc = DashboardConstants.INSTANCE;
     int value = 0;
     public static int OK = 1;
 
@@ -141,23 +142,23 @@ public class CreateUserPopup extends PopupPanel {
                 firstNameFieldError.setText("");
                 lastNameFieldError.setText("");
 
-                if (getPassword().trim().length() <= 4 || getEmail().trim().length() <= 4 || getFirstName().trim().length() == 0 || getLastName().trim().length() == 0)
+                if (getPassword().trim().length() < PASSWORD_LENGTH || getEmail().trim().length() < EMAIL_LENGTH || getFirstName().trim().length() == 0 || getLastName().trim().length() == 0)
                 {
-                    if (getPassword().trim().length() <= 4) {
+                    if (getPassword().trim().length() < PASSWORD_LENGTH) {
                         logger.fine("OK clicked w/ no password specified");
-                        passwordFieldError.setText("Password must be at least 5 characters in length.");
+                        passwordFieldError.setText(dc.passwordError());
                     }
-                    if (getEmail().trim().length() <= 4){
+                    if (getEmail().trim().length() < EMAIL_LENGTH){
                         logger.fine("OK Clicked w/ no email specified");
-                        emailFieldError.setText("Email must be at least 5 characters in length.");
+                        emailFieldError.setText(dc.emailError());
                     }
                     if (getFirstName().trim().length() == 0){
                         logger.fine("OK clicked w/ no first name specified");
-                        firstNameFieldError.setText("Field is required.");
+                        firstNameFieldError.setText(dc.required());
                     }
                     if (getLastName().trim().length() == 0){
                         logger.fine("OK clicked w/ no last name specified");
-                        lastNameFieldError.setText("Field is required.");
+                        lastNameFieldError.setText(dc.required());
                     }
                 }
 
