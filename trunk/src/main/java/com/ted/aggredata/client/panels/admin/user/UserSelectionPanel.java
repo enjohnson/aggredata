@@ -54,7 +54,7 @@ public class UserSelectionPanel extends Composite {
 
     private static HandlerManager handlerManager;
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    final GWTUserServiceAsync gwtUserService = (GWTUserServiceAsync) GWT.create(GWTUserService.class);
+    final static GWTUserServiceAsync gwtUserService = (GWTUserServiceAsync) GWT.create(GWTUserService.class);
     @UiField
     static ListBox userListBox;
     @UiField
@@ -81,8 +81,12 @@ public class UserSelectionPanel extends Composite {
         });
     }
 
-    public void setUserList(List<User> userListNew) {
-        this.userList = userListNew;
+    /**
+     * Set the current user list
+     * @param userListNew
+     */
+    public static void setUserList(List<User> userListNew) {
+        userList = userListNew;
         redrawUserList();
         if (userListBox.getItemCount() > 0) {
             userListBox.setSelectedIndex(0);
@@ -90,6 +94,9 @@ public class UserSelectionPanel extends Composite {
         }
     }
 
+    /**
+     * redraw the current user list
+     */
     public static void redrawUserList() {
         int selectedIndex = userListBox.getSelectedIndex();
         userListBox.clear();
@@ -99,7 +106,10 @@ public class UserSelectionPanel extends Composite {
         }
         userListBox.setSelectedIndex(selectedIndex);
     }
-    
+
+    /**
+     * get the current selected user and set it as the selected user.
+     */
     public static void fireSelectedGroup() {
         int index = userListBox.getSelectedIndex();
         if (logger.isLoggable(Level.FINE)) logger.fine("Row " + index + " selected");
@@ -118,6 +128,32 @@ public class UserSelectionPanel extends Composite {
         }
     }
 
+    /**
+     * Update the current list. This is a call meant for the UserButtonPanel buttons. This will clear a list,
+     * set a new userlist and redraw.
+     */
+    public static void updateList(final int index){
+        logger.fine("Looking up users");
+        final Long userID = new Long(userListBox.getValue(index));
+        gwtUserService.findUsers(new TEDAsyncCallback<List<User>>() {
+            @Override
+            public void onSuccess(List<User> users) {
+                int i = -1;
+                userList.clear();
+                setUserList(users);
+                for (User user : userList) {
+                    i += 1;
+                    if (user.getId().equals(userID)) {
+                        selectedUser = user;
+                        userListBox.setSelectedIndex(i);
+                        break;
+                    }
+                }
+                redrawUserList();
+                fireSelectedGroup();
+            }
+        });
+    }
     public HandlerRegistration addUserSelectedHandler(UserSelectedHandler handler) {
         return handlerManager.addHandler(UserSelectedEvent.TYPE, handler);
     }

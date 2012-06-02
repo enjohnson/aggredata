@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     public void deleteUser(User entity) {
         logger.debug("deleting user " + entity);
-        userDao.delete(userDao.findById(entity.getId()));
+        userDao.delete(entity);
     }
 
     public User changeUserStatus(User entity, boolean enabled) {

@@ -43,14 +43,10 @@ import java.util.logging.Logger;
 public class UserButtonPanel extends Composite {
     User user;
     static Logger logger = Logger.getLogger(UserButtonPanel.class.toString());
-
+    final DashboardConstants dc = DashboardConstants.INSTANCE;
     interface MyUiBinder extends UiBinder<Widget, UserButtonPanel> {
     }
-    //List<User> userList = UserPanel.getUserList();
-    private String uname = "";
-    private int unameLength = 5;
-    private String password = "";
-    private int passLength = 5;
+
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     final GWTUserServiceAsync gwtUserService = (GWTUserServiceAsync) GWT.create(GWTUserService.class);
     @UiField
@@ -73,6 +69,7 @@ public class UserButtonPanel extends Composite {
     public UserButtonPanel() {
         initWidget(uiBinder.createAndBindUi(this));
         captionPanel.setCaptionHTML("<span style='color:white'>Options</span>");
+
         changePassword.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
@@ -104,36 +101,65 @@ public class UserButtonPanel extends Composite {
         enableButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                gwtUserService.changeUserStatus(UserSelectionPanel.getSelectedUser(), true, new TEDAsyncCallback<User>() {
-                    @Override
-                    public void onSuccess(User result) {
-                        final OKPopup okPopup = new OKPopup("Enable User", UserSelectionPanel.getSelectedUser().getUsername() + " has been enabled.");
-                    }
-                });
+                enableUser();
             };
         });
 
         disableButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                gwtUserService.changeUserStatus(UserSelectionPanel.getSelectedUser(), false, new TEDAsyncCallback<User>() {
-                    @Override
-                    public void onSuccess(User result) {
-                        final OKPopup okPopup = new OKPopup("Disable User", UserSelectionPanel.getSelectedUser().getUsername() + " has been disabled.");
-                    }
-                });
+                disableUser();
             };
         });
     }
 
+    /**
+     * Disable the user if the button is clicked
+     */
+    private void disableUser()
+    {
+        //get the current index
+        final int index = UserSelectionPanel.userListBox.getSelectedIndex();
+        gwtUserService.changeUserStatus(UserSelectionPanel.getSelectedUser(), false, new TEDAsyncCallback<User>() {
+            @Override
+            public void onSuccess(User result) {
+                //redraw the list on success
+                UserSelectionPanel.updateList(index);
+                final OKPopup okPopup = new OKPopup(dc.disableUser(), UserSelectionPanel.getSelectedUser().getUsername() + ": " + dc.disableUserMsg());
+            }
+        });
+    }
+
+    /**
+     * Enable the user if the button is clicked
+     */
+    private void enableUser()
+    {
+        //Get the current index to redraw the list
+        final int index = UserSelectionPanel.userListBox.getSelectedIndex();
+        gwtUserService.changeUserStatus(UserSelectionPanel.getSelectedUser(), true, new TEDAsyncCallback<User>() {
+            @Override
+            public void onSuccess(User result) {
+                //redraw the list
+                UserSelectionPanel.updateList(index);
+                final OKPopup okPopup = new OKPopup(dc.enableUser(), UserSelectionPanel.getSelectedUser().getUsername() + ": " + dc.enableUserMsg());
+            }
+        });
+    }
+
+    /**
+     * Add the user if the button is clicked.
+     */
     private void addUser()
     {
-        final DashboardConstants dc = DashboardConstants.INSTANCE;
+        //create a new user
         final User newUser = new User();
         final CreateUserPopup createUserPopup = new CreateUserPopup();
         createUserPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
             @Override
+            //if the data is filled in correctly on the popup, then create the new user.
             public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                final int index = UserSelectionPanel.userListBox.getSelectedIndex();
                 if (createUserPopup.getValue() == CreateUserPopup.OK){
                     newUser.setFirstName(createUserPopup.getFirstName());
                     newUser.setLastName(createUserPopup.getLastName());
@@ -144,12 +170,9 @@ public class UserButtonPanel extends Composite {
                         @Override
                         public void onSuccess(User result) {
                             if (result.getUsername() != "") {
-                                logger.info("User creation successful. Redirecting to success link");
-                                UserSelectionPanel.userList.add(result);
-                                if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
-                                else UserSelectionPanel.userListBox.setSelectedIndex(0);
-                                UserSelectionPanel.redrawUserList();
-                                UserSelectionPanel.fireSelectedGroup();
+                                logger.info("User creation successful.");
+                                //redraw the list
+                                UserSelectionPanel.updateList(index);
                             } else {
                                 logger.severe("Unexpected result. User was not created.");
                             }
@@ -160,26 +183,24 @@ public class UserButtonPanel extends Composite {
         });
     }
 
+    /**
+     * Delete the user if the button is clicked.
+     */
     private  void deleteUser()
     {
-        final DashboardConstants dc = DashboardConstants.INSTANCE;
         user = UserSelectionPanel.getSelectedUser();
+        // Send the user name to the verification screen so that the user can verify which one they will delete.
         final YesNoPopup popup = new YesNoPopup(dc.deleteUser(), user.getUsername() + ": " + dc.deleteUserVerification());
         popup.addCloseHandler(new CloseHandler<PopupPanel>() {
             @Override
             public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                final int index = UserSelectionPanel.userListBox.getSelectedIndex();
                 if (popup.getValue() == YesNoPopup.YES) {
                     gwtUserService.deleteUser(user, new TEDAsyncCallback<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            for (int i = 0; i < UserSelectionPanel.userList.size(); i++) {
-                                if (UserSelectionPanel.userList.get(i) == user)
-                                    UserSelectionPanel.userList.remove(i);
-                            }
-                            if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
-                            else UserSelectionPanel.userListBox.setSelectedIndex(0);
-                            UserSelectionPanel.redrawUserList();
-                            UserSelectionPanel.fireSelectedGroup();
+                            //update the list with the user in the list prior to the one deleted.
+                            UserSelectionPanel.updateList(index - 1);
                         }
                     });
                 }
@@ -187,98 +208,95 @@ public class UserButtonPanel extends Composite {
         });
     }
 
+    /**
+     * Change the user's email if the button is clicked.
+     */
     private void changeEmail() {
         user = UserSelectionPanel.getSelectedUser();
         logger.fine("Change Email Clicked");
         final ChangeEmailPopup changeEmailPopup = new ChangeEmailPopup();
-        final DashboardConstants dc = DashboardConstants.INSTANCE;
         changeEmailPopup.center();
         changeEmailPopup.setPopupPosition(changeEmailPopup.getAbsoluteLeft(), 100);
         changeEmailPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+            //If the data is filled in correct, and the user verifies, then change the email.
             @Override
             public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                final int index = UserSelectionPanel.userListBox.getSelectedIndex();
                 if (changeEmailPopup.getValue() == changeEmailPopup.OK){
                     logger.fine("Changing Email to  " + changeEmailPopup.getEmail());
-                    if (changeEmailPopup.getEmail().length() >= passLength){
-                        final YesNoPopup popup = new YesNoPopup(dc.changeEmail(), dc.changeEmailVerification());
-                        popup.addCloseHandler(new CloseHandler<PopupPanel>() {
-                            @Override
-                            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
-                                if (popup.getValue() == YesNoPopup.YES) {
-                                    gwtUserService.changeUsername(user, changeEmailPopup.getEmail(), new TEDAsyncCallback<User>() {
-                                        @Override
-                                        public void onSuccess(User result) {
-                                            for (int i = 0; i < UserSelectionPanel.userList.size(); i++) {
-                                                if (UserSelectionPanel.userList.get(i).getId() == user.getId()){
-                                                    UserSelectionPanel.userList.remove(i);
-                                                    UserSelectionPanel.userList.add(result);
-                                                }
-                                            }
-                                            if (UserSelectionPanel.userList.size() == 0) UserSelectionPanel.userListBox.setSelectedIndex(-1);
-                                            else UserSelectionPanel.userListBox.setSelectedIndex(0);
-                                            UserSelectionPanel.redrawUserList();
-                                            UserSelectionPanel.fireSelectedGroup();
-                                            final OKPopup okPopup = new OKPopup(dc.changeEmail(), "Email has been changed");
-                                        }
-                                    });
-                                }
+                    final YesNoPopup popup = new YesNoPopup(dc.changeEmail(), dc.changeEmailVerification());
+                    popup.addCloseHandler(new CloseHandler<PopupPanel>() {
+                        @Override
+                        public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                            if (popup.getValue() == YesNoPopup.YES) {
+                                gwtUserService.changeUsername(user, changeEmailPopup.getEmail(), new TEDAsyncCallback<User>() {
+                                    @Override
+                                    public void onSuccess(User result) {
+
+                                        //redraw the list
+                                        UserSelectionPanel.updateList(index);
+                                        final OKPopup okPopup = new OKPopup(dc.changeEmail(), dc.emailChanged());
+                                    }
+                                });
                             }
-                        });
-                    }
-                    else if (changeEmailPopup.getEmail().length() < unameLength & changeEmailPopup.getEmail().length() > 0 )
-                    {
-                        final OKPopup okPopup = new OKPopup(dc.changeEmail(), "Email must be " + unameLength + " characters long.");
-                    }
-                    else
-                    {
-                        final OKPopup okPopup = new OKPopup(dc.changeEmail(), "No email was entered.");
-                    }
+                        }
+                    });
                 }
             }
         });
         changeEmailPopup.show();
     }
 
+    /**
+     * Change the user's password if the button is clicked.
+     */
     private void changePword() {
+        //Get the current user
         user = UserSelectionPanel.getSelectedUser();
         logger.fine("Change Password Clicked");
+
+        //Set up the change password popup
         final ChangePasswordPopup changePasswordPopup = new ChangePasswordPopup();
         changePasswordPopup.center();
         changePasswordPopup.setPopupPosition(changePasswordPopup.getAbsoluteLeft(), 100);
         changePasswordPopup.addCloseHandler(new CloseHandler<PopupPanel>() {
             @Override
             public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                final int index = UserSelectionPanel.userListBox.getSelectedIndex();
+
+                //If the password is of the right length and the user clicks OK then change the password
                 if (changePasswordPopup.getValue() == changePasswordPopup.OK){
                     logger.fine("Changing Password to  " + changePasswordPopup.getPassword());
-                    if (changePasswordPopup.getPassword().length() >= passLength){
-                        final DashboardConstants dc = DashboardConstants.INSTANCE;
-                        final YesNoPopup popup = new YesNoPopup(dc.changePassword(), dc.changePassVerification());
-                        popup.addCloseHandler(new CloseHandler<PopupPanel>() {
-                            @Override
-                            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
-                                if (popup.getValue() == YesNoPopup.YES) {
-                                    gwtUserService.changePassword(user, changePasswordPopup.getPassword(), new TEDAsyncCallback<User>() {
-                                        @Override
-                                        public void onSuccess(User result) {
-                                            final OKPopup okPopup = new OKPopup("Change Password", "Password has been changed.");
-                                        }
-                                    });
-                                }
+                    final YesNoPopup popup = new YesNoPopup(dc.changePassword(), dc.changePassVerification());
+                    popup.addCloseHandler(new CloseHandler<PopupPanel>() {
+                        @Override
+                        public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                            if (popup.getValue() == YesNoPopup.YES) {
+                                gwtUserService.changePassword(user, changePasswordPopup.getPassword(), new TEDAsyncCallback<User>() {
+                                    @Override
+                                    public void onSuccess(User result) {
+
+                                        //redraw the list
+                                        UserSelectionPanel.updateList(index);
+                                        final OKPopup okPopup = new OKPopup(dc.changePassword(), dc.passwordChanged());
+                                    }
+                                });
                             }
-                        });
-                    }
-                    else if (changePasswordPopup.getPassword().length() < passLength & changePasswordPopup.getPassword().length() > 0 )
-                    {
-                        final OKPopup okPopup = new OKPopup("Change Password", "Password must be " + passLength + " characters long.");
-                    }
-                    else
-                    {
-                        final OKPopup okPopup = new OKPopup("Change Password", "No password was entered.");
-                    }
+                        }
+                    });
                 }
             }
         });
         changePasswordPopup.show();
+    }
+
+    /**
+     * call for the refresh button to update the current user list.
+     */
+    private void refreshList(){
+        final int index = UserSelectionPanel.userListBox.getSelectedIndex();
+        UserSelectionPanel.updateList(index);
     }
 
 

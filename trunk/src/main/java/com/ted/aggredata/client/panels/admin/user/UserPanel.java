@@ -49,17 +49,12 @@ public class UserPanel extends Composite {
     UserSelectionPanel UserSelectionPanel;
     static List<User> userList;
 
-    public static List<User> getUserList()
-    {
-        return userList;
-    }
-
     public UserPanel() {
         initWidget(uiBinder.createAndBindUi(this));
 
         UserDetailsPanel.setEnabled(false);
 
-        //Add a handler to update the details section when a gateway is selected
+        // set the current user's details in the detail panel.
         UserSelectionPanel.addUserSelectedHandler(new UserSelectedHandler() {
             @Override
             public void onUserSelected(UserSelectedEvent event) {
@@ -69,12 +64,12 @@ public class UserPanel extends Composite {
             }
         });
 
+        // initialize the users list with the current users and send to the selection panel.
         logger.fine("Looking up users");
         userService.findUsers(new TEDAsyncCallback<List<User>>() {
             @Override
             public void onSuccess(List<User> users) {
                 userList = users;
-                UserDetailsPanel.setUserList(users);
                 UserSelectionPanel.setUserList(users);
             }
         });

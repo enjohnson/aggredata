@@ -49,35 +49,19 @@ public class UserDetailsPanel extends Composite {
     @UiField
     TextBox firstNameField;
     @UiField
-    Label firstNameFieldError;
-    @UiField
     TextBox lastNameField;
-    @UiField
-    Label lastNameFieldError;
     @UiField
     TextBox custom1Field;
     @UiField
-    Label custom1FieldError;
-    @UiField
     TextBox custom2Field;
-    @UiField
-    Label custom2FieldError;
     @UiField
     TextBox custom4Field;
     @UiField
-    Label custom4FieldError;
-    @UiField
     TextBox custom5Field;
-    @UiField
-    Label custom5FieldError;
     @UiField
     TextBox custom3Field;
     @UiField
-    Label custom3FieldError;
-    @UiField
     TextBox usernameField;
-    @UiField
-    Label usernameFieldError;
     @UiField
     UserButtonPanel UserButtonPanel;
     @UiField
@@ -143,14 +127,9 @@ public class UserDetailsPanel extends Composite {
 
     }
 
-    public void setUserList(List<User> userList1) {
-        this.userList = userList1;
-    }
-
-
     /**
      * Sets all the fields of this panel to be enabled or disabled
-     *
+     * Make the email, first name, and last name fields non-editable.
      * @param enabled
      */
     public void setEnabled(boolean enabled) {
@@ -165,68 +144,43 @@ public class UserDetailsPanel extends Composite {
         custom5Field.setEnabled(enabled);
     }
 
-
-    public boolean validate() {
-        boolean valid = true;
-        firstNameFieldError.setText("");
-        lastNameFieldError.setText("");
-        usernameFieldError.setText("");
-
-        if (user == null) return true;
-        if (firstNameField.getText().trim().length() == 0) {
-            valid = false;
-            firstNameFieldError.setText("Required");
-        }
-
-        if (lastNameField.getText().trim().length() == 0) {
-            valid = false;
-            lastNameFieldError.setText("Required");
-        }
-
-        if (usernameField.getText().trim().length() == 0) {
-            valid = false;
-            lastNameFieldError.setText("Required");
-        }
-
-        return valid;
-    }
-
+    /**
+     * Save the user custom fields as the user changes them. 
+     */
     private void doSave() {
-        if (validate()) {
-            user.setFirstName(firstNameField.getText().trim());
-            user.setLastName(lastNameField.getText().trim());
-            user.setUsername(usernameField.getText().trim());
-            user.setCustom3(custom3Field.getText().trim());
-            user.setCustom1(custom1Field.getText().trim());
-            user.setCustom2(custom2Field.getText().trim());
-            user.setCustom4(custom4Field.getText().trim());
-            user.setCustom5(custom5Field.getText().trim());
-            if (user.hashCode() != userHashCode) {
-                logger.info("user is dirty. Saving " + user);
-                userService.saveUser(user, new TEDAsyncCallback<User>() {
-                    @Override
-                    public void onSuccess(User user) {
-                        userHashCode = user.hashCode();
-                    }
-                });
-            }
+        user.setCustom3(custom3Field.getText().trim());
+        user.setCustom1(custom1Field.getText().trim());
+        user.setCustom2(custom2Field.getText().trim());
+        user.setCustom4(custom4Field.getText().trim());
+        user.setCustom5(custom5Field.getText().trim());
+        if (user.hashCode() != userHashCode) {
+            logger.info("user is dirty. Saving " + user);
+            userService.saveUser(user, new TEDAsyncCallback<User>() {
+                @Override
+                public void onSuccess(User user) {
+                    userHashCode = user.hashCode();
+                }
+            });
         }
     }
 
+    /**
+     * Set the current user's info in the panels.
+     * @param user
+     */
     public void setUser(final User user) {
         if (logger.isLoggable(Level.FINE)) logger.fine("Setting user " + user);
         setEnabled(user != null);
         firstNameField.setValue(user.getFirstName());
         lastNameField.setValue(user.getLastName());
+        usernameField.setValue(user.getUsername());
         custom1Field.setValue(user.getCustom1());
         custom2Field.setValue(user.getCustom2());
         custom4Field.setValue(user.getCustom4());
         custom5Field.setValue(user.getCustom5());
-        usernameField.setValue(user.getUsername());
         custom3Field.setValue(user.getCustom3());
         this.user = user;
         userHashCode = user.hashCode();
-        validate();
     }
 
 
