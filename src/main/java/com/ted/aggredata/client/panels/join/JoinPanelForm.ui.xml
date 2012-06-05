@@ -264,6 +264,7 @@
 
 
 
+
                 </g:VerticalPanel>
 
 
@@ -272,7 +273,16 @@
 
             <my:widgets.ClearImage width="850px" height="20px"/>
             <g:HorizontalPanel>
-                <my:widgets.ClearImage width="850px" height="60px"/>
+                <g:VerticalPanel>
+                    <my:widgets.ClearImage width="300px" height="7px"/>
+                    <g:HorizontalPanel>
+                        <my:widgets.ClearImage width="300px" height="60px"/>
+                        <g:Label text="{txtRes.submitInstructions}" styleName="{style.formLabel}" width="300px"/>
+                        <my:widgets.ClearImage width="7px" height="10px"/>
+                        <g:Label text="{txtRes.touPolicy}" styleName="{style.formLink}" width="180px" ui:field="touPolicyLink"/>
+                        <my:widgets.ClearImage width="30px" height="10px"/>
+                    </g:HorizontalPanel>
+                </g:VerticalPanel>
                 <my:widgets.LargeButton ui:field="submitButton" buttonString="Submit"/>
             </g:HorizontalPanel>
 
