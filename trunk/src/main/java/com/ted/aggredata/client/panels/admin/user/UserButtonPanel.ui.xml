@@ -43,9 +43,9 @@
 
                     <my:widgets.ClearImage width="2px" height="5px"/>
 
-                    <g:HorizontalPanel ui:field="disablePanel" horizontalAlignment="ALIGN_LEFT">
+                    <g:HorizontalPanel ui:field="toggleStatusPanel" horizontalAlignment="ALIGN_LEFT">
                         <my:widgets.ClearImage width="15px" height="30px"/>
-                        <my:widgets.LargeButton ui:field="disableButton" buttonString="Disable User"/>
+                        <my:widgets.LargeButton ui:field="toggleStatusButton" buttonString="Disable User"/>
                         <my:widgets.ClearImage width="15px" height="30px"/>
                     </g:HorizontalPanel>
 
@@ -70,9 +70,9 @@
 
                     <my:widgets.ClearImage width="2px" height="5px"/>
 
-                    <g:HorizontalPanel ui:field="enablePanel" horizontalAlignment="ALIGN_LEFT">
+                    <g:HorizontalPanel ui:field="refreshPanel" horizontalAlignment="ALIGN_LEFT">
                         <my:widgets.ClearImage width="15px" height="30px"/>
-                        <my:widgets.LargeButton ui:field="enableButton" buttonString="Enable User"/>
+                        <my:widgets.LargeButton ui:field="refreshButton" buttonString="Refresh List"/>
                         <my:widgets.ClearImage width="15px" height="30px"/>
                     </g:HorizontalPanel>
 
