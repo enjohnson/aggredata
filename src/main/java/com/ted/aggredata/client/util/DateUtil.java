@@ -36,6 +36,7 @@ public class DateUtil {
         if (type.equals(Enums.HistoryType.MONTHLY)) {
             Date theDate = new Date(startDate.getTime());
             theDate.setDate(1);
+            CalendarUtil.addMonthsToDate(theDate, -1);
             return theDate;
         }
 
@@ -76,7 +77,7 @@ public class DateUtil {
         if (type.equals(Enums.HistoryType.MONTHLY)) {
             Date theDate = new Date(endDate.getTime());
             theDate.setDate(1);
-            CalendarUtil.addMonthsToDate(theDate, 1);
+            CalendarUtil.addMonthsToDate(theDate, 2);
             return theDate;
         }
 
