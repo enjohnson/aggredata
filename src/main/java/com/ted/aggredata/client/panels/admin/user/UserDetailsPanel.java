@@ -179,6 +179,7 @@ public class UserDetailsPanel extends Composite {
         custom4Field.setValue(user.getCustom4());
         custom5Field.setValue(user.getCustom5());
         custom3Field.setValue(user.getCustom3());
+        //TODO: Add style sets to change text color of data fields red if user is disabled.
         this.user = user;
         userHashCode = user.hashCode();
         UserButtonPanel.setUser(user);

@@ -87,7 +87,7 @@ public class LoginFormPanel extends Composite {
 
     }
 
-
+    //TODO: Replace static strings with dashboard constants for language compatibility
     private void attemptLogon() {
 //Reset any old messages
         completionLabel1.setText("");

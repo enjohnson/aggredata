@@ -39,7 +39,8 @@ import com.ted.aggredata.model.User;
 
 import java.util.List;
 import java.util.logging.Logger;
-
+//TODO: Make buttons a bit wider to accommodate "EDIT PASSWORD" better, and balance buttons in frame
+//TODO: Add interface for changing user roles (ROLE_USER versus ROLE_ADMIN)
 public class UserButtonPanel extends Composite {
     User user;
     static Logger logger = Logger.getLogger(UserButtonPanel.class.toString());
@@ -112,7 +113,7 @@ public class UserButtonPanel extends Composite {
             };
         });
     }
-
+    //TODO: Add client side check to prevent the current session user from disabling their own account.
     /**
      * Enable or disable the user (context specific) if the button is clicked
      */
@@ -178,7 +179,7 @@ public class UserButtonPanel extends Composite {
             }
         });
     }
-
+    //TODO: Add client side check to prevent the current session user from deleting their own account.
     /**
      * Delete the user if the button is clicked.
      */
