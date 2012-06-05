@@ -74,6 +74,20 @@
 
     }
 
+    .formLink {
+        font-family: Arial, Verdana, Trebuchet, sans-serif;
+        color: red;
+        text-align: left;
+        font-size: 10pt;
+        vertical-align: middle;
+        text-decoration: underline;
+        width: 100px;
+        cursor: pointer;
+        cursor: hand;
+
+    }
+
+
     .formField {
         font-family: Arial, Verdana, Trebuchet, sans-serif;
         color: #000;

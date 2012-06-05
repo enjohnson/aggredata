@@ -67,4 +67,8 @@ public interface JoinConstants extends Constants {
     String tooShort();
 
     String passwordShortError();
+
+    String submitInstructions();
+
+    String touPolicy();
 }

@@ -91,3 +91,39 @@ body {
 {
     background: #e70034;
 }
+
+.tosTitle{
+    color:white;
+    font-family : Helvetica, Verdana, Arial,  sans-serif;
+    text-align:left;
+    font-size:16pt;
+    text-align: center;
+}
+
+.tosHeader{
+    color:white;
+    font-family : Helvetica, Verdana, Arial,  sans-serif;
+    text-align:left;
+    font-size:12pt;
+    text-align: left;
+    margin-left: 20px;
+}
+
+.tosBody{
+    color:white;
+    font-family : Helvetica, Verdana, Arial,  sans-serif;
+    text-align:left;
+    font-size:10pt;
+    text-align: left;
+    margin-left: 40px;
+}
+
+.tosBody ul{
+    color:white;
+    font-family : Helvetica, Verdana, Arial,  sans-serif;
+    text-align:left;
+    font-size:10pt;
+    text-align: left;
+    margin-left: 60px;
+}
+

@@ -22,6 +22,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.ted.aggredata.client.Aggredata;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
@@ -143,6 +144,8 @@ public class JoinPanelForm extends Composite {
     ListBox timeZoneField;
     @UiField
     CaptchaPanel captchaWidget;
+    @UiField
+    Label touPolicyLink;
 
 
     public JoinPanelForm() {
@@ -174,6 +177,12 @@ public class JoinPanelForm extends Composite {
         }
         timeZoneField.setSelectedIndex(5);
 
+        touPolicyLink.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                Window.open("/aggredata/tos.html", "_blank", "");
+            }
+        });
 
         submitButton.addClickHandler(new ClickHandler() {
             @Override
