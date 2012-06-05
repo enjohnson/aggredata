@@ -62,9 +62,9 @@ public class UserButtonPanel extends Composite {
     @UiField
     LargeButton changeEmail;
     @UiField
-    LargeButton enableButton;
+    LargeButton refreshButton;
     @UiField
-    LargeButton disableButton;
+    LargeButton toggleStatusButton;
 
     public UserButtonPanel() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -98,53 +98,49 @@ public class UserButtonPanel extends Composite {
             };
         });
 
-        enableButton.addClickHandler(new ClickHandler() {
+        refreshButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                enableUser();
+                refreshList();
             };
         });
 
-        disableButton.addClickHandler(new ClickHandler() {
+        toggleStatusButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                disableUser();
+                toggleUserStatus();
             };
         });
     }
 
     /**
-     * Disable the user if the button is clicked
+     * Enable or disable the user (context specific) if the button is clicked
      */
-    private void disableUser()
-    {
-        //get the current index
-        final int index = UserSelectionPanel.userListBox.getSelectedIndex();
-        gwtUserService.changeUserStatus(UserSelectionPanel.getSelectedUser(), false, new TEDAsyncCallback<User>() {
-            @Override
-            public void onSuccess(User result) {
-                //redraw the list on success
-                UserSelectionPanel.updateList(index);
-                final OKPopup okPopup = new OKPopup(dc.disableUser(), UserSelectionPanel.getSelectedUser().getUsername() + ": " + dc.disableUserMsg());
-            }
-        });
-    }
-
-    /**
-     * Enable the user if the button is clicked
-     */
-    private void enableUser()
+    private void toggleUserStatus()
     {
         //Get the current index to redraw the list
         final int index = UserSelectionPanel.userListBox.getSelectedIndex();
-        gwtUserService.changeUserStatus(UserSelectionPanel.getSelectedUser(), true, new TEDAsyncCallback<User>() {
-            @Override
-            public void onSuccess(User result) {
-                //redraw the list
-                UserSelectionPanel.updateList(index);
-                final OKPopup okPopup = new OKPopup(dc.enableUser(), UserSelectionPanel.getSelectedUser().getUsername() + ": " + dc.enableUserMsg());
-            }
-        });
+        user = UserSelectionPanel.getSelectedUser();
+        if (user.getAccountState() != User.STATE_ENABLED)
+        {
+            gwtUserService.changeUserStatus(user, true, new TEDAsyncCallback<User>() {
+                @Override
+                public void onSuccess(User result) {
+                    //redraw the list
+                    UserSelectionPanel.updateList(index);
+                    final OKPopup okPopup = new OKPopup(dc.enableUser(), UserSelectionPanel.getSelectedUser().getUsername() + ": " + dc.enableUserMsg());
+                }
+            });
+        } else {
+            gwtUserService.changeUserStatus(user, false, new TEDAsyncCallback<User>() {
+                @Override
+                public void onSuccess(User result) {
+                    //redraw the list
+                    UserSelectionPanel.updateList(index);
+                    final OKPopup okPopup = new OKPopup(dc.disableUser(), UserSelectionPanel.getSelectedUser().getUsername() + ": " + dc.disableUserMsg());
+                }
+            });
+        }
     }
 
     /**
@@ -299,5 +295,18 @@ public class UserButtonPanel extends Composite {
         UserSelectionPanel.updateList(index);
     }
 
+    /**
+     * Method to update buttons for newly selected user
+     */
+    public void setUser(final User user) {
+        if (user.getAccountState() != User.STATE_ENABLED)
+        {
+            toggleStatusButton.setText("Enable User");
+        }
+        else
+        {
+            toggleStatusButton.setText("Disable User");
+        }
+    }
 
 }

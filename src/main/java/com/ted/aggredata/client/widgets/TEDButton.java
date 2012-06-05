@@ -84,5 +84,9 @@ public class TEDButton extends Composite {
         label.setVisible(visible);
     }
 
+    public void setText(String text) {
+        label.setText(text);
+    }
+
 
 }

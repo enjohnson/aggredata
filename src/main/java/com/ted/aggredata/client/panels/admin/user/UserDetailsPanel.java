@@ -181,6 +181,7 @@ public class UserDetailsPanel extends Composite {
         custom3Field.setValue(user.getCustom3());
         this.user = user;
         userHashCode = user.hashCode();
+        UserButtonPanel.setUser(user);
     }
 
 
