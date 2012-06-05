@@ -39,6 +39,7 @@ import com.ted.aggredata.client.events.GraphOptionsChangedEvent;
 import com.ted.aggredata.client.guiService.GWTGroupService;
 import com.ted.aggredata.client.guiService.GWTGroupServiceAsync;
 import com.ted.aggredata.client.guiService.TEDAsyncCallback;
+import com.ted.aggredata.client.panels.graph.month.MonthPanel;
 import com.ted.aggredata.client.resources.lang.DashboardConstants;
 import com.ted.aggredata.client.util.DateUtil;
 import com.ted.aggredata.client.util.NumberUtil;
@@ -187,7 +188,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         title.append(dateTimeFormat.format(event.getStartDate())).append(" ").append(dashboardConstants.graphTo()).append(" ");
 
         Date titleEndDate = new Date(event.getEndDate().getTime());
-        CalendarUtil.addDaysToDate(titleEndDate, -1);
+        //CalendarUtil.addDaysToDate(titleEndDate, -1);
         title.append(dateTimeFormat.format(titleEndDate));
         logger.fine("TITLE:" + title);
 
@@ -312,8 +313,29 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
         if (logger.isLoggable(Level.FINE)) logger.fine("Total Results:" + rowCount);
         data.addRows(rowCount);
 
+        int startYear = event.getStartDate().getYear() + 1900;
+        int endYear = event.getEndDate().getYear() + 1900;
+        int startMonth = event.getStartDate().getMonth() + 1;
+        int endMonth = event.getEndDate().getMonth() + 1;
+
+
+
+
         for (int i = 0; i < rowCount; i++) {
-            String title = getDateTimeFormat().format(historyResult.getNetHistoryList().get(i).getHistoryDate().getTime());
+            EnergyDataHistoryDate historyDate =  historyResult.getNetHistoryList().get(i).getHistoryDate();
+            if (logger.isLoggable(Level.FINE)) logger.fine("history date:" + historyDate + " startMonth:" + startMonth);
+
+
+            if (this instanceof MonthPanel) {
+                logger.info("Month panel found. Filtering out edge months");
+                if (historyDate.getYear() == startYear && historyDate.getMonth() < startMonth) continue;
+                if (historyDate.getYear() == endYear && historyDate.getMonth() > endMonth) continue;
+                if (historyDate.getYear() > endYear) continue;
+                if (historyDate.getYear() < startYear) continue;
+            }
+
+
+            String title = getDateTimeFormat().format(historyDate.getTime());
 
             //Set the month
             int col = 0;
