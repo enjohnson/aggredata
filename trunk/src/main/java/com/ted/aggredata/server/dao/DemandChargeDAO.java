@@ -33,9 +33,9 @@ import java.sql.SQLException;
 public class DemandChargeDAO extends AbstractDAO<DemandCharge> {
 
     public static String DELETE_DEMAND_CHARGE_DATA = "delete from  aggredata.demandcharge where gatewayId=?";
-    public static String POST_DEMAND_CHARGE_DATA = "insert into aggredata.demandcharge (gatewayId, timestamp, peak, cost) values (?,?,?,?)";
-    public static String SAVE_DEMAND_CHARGE_DATA = "update aggredata.demandcharge set peak=?, cost=? where gatewayId=? and timestamp=?";
-    public static String FIND_BY_TIMESTAMP = "select  gatewayId, timestamp, peak, cost from aggredata.demandcharge where gatewayId= ? and timestamp = ?";
+    public static String POST_DEMAND_CHARGE_DATA = "insert into aggredata.demandcharge (gatewayId, timestamp, peak, cost, type) values (?,?,?,?,?)";
+    public static String SAVE_DEMAND_CHARGE_DATA = "update aggredata.demandcharge set peak=?, cost=?, type=? where gatewayId=? and timestamp=?";
+    public static String FIND_BY_TIMESTAMP = "select  gatewayId, timestamp, peak, cost, type from aggredata.demandcharge where gatewayId= ? and timestamp = ?";
 
 
     public DemandChargeDAO() {
@@ -49,6 +49,7 @@ public class DemandChargeDAO extends AbstractDAO<DemandCharge> {
             demandCharge.setTimestamp(rs.getInt("timestamp"));
             demandCharge.setPeak(rs.getDouble("peak"));
             demandCharge.setCost(rs.getDouble("cost"));
+            demandCharge.setType(rs.getInt("type"));
             return demandCharge;
         }
     };
@@ -77,9 +78,9 @@ public class DemandChargeDAO extends AbstractDAO<DemandCharge> {
     public void create(DemandCharge demandCharge) {
         DemandCharge oldDemandCharge = findByTimestamp(demandCharge.getGatewayId(), demandCharge.getTimestamp());
         if (oldDemandCharge == null) {
-            getJdbcTemplate().update(POST_DEMAND_CHARGE_DATA, demandCharge.getGatewayId(), demandCharge.getTimestamp(), demandCharge.getPeak(), demandCharge.getCost());
+            getJdbcTemplate().update(POST_DEMAND_CHARGE_DATA, demandCharge.getGatewayId(), demandCharge.getTimestamp(), demandCharge.getPeak(), demandCharge.getCost(), demandCharge.getType());
         } else {
-            getJdbcTemplate().update(SAVE_DEMAND_CHARGE_DATA, demandCharge.getPeak(), demandCharge.getCost(), demandCharge.getGatewayId(), demandCharge.getTimestamp());
+            getJdbcTemplate().update(SAVE_DEMAND_CHARGE_DATA, demandCharge.getPeak(), demandCharge.getCost(), demandCharge.getType(), demandCharge.getGatewayId(), demandCharge.getTimestamp());
         }
     }
 

@@ -27,6 +27,10 @@ public class DemandCharge implements Serializable {
     private Integer timestamp;
     private Double peak;
     private Double cost;
+    private int type;
+
+    public static int TYPE_KW = 0;
+    public static int TYPE_KVA = 1;
 
     public DemandCharge() {
 
@@ -70,6 +74,14 @@ public class DemandCharge implements Serializable {
 
     public void setCost(Double cost) {
         this.cost = cost;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override

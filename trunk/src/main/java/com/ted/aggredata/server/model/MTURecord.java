@@ -29,7 +29,7 @@ import java.util.List;
 public class MTURecord implements Serializable {
     static Logger logger = LoggerFactory.getLogger(MTURecord.class);
 
-    private final Long id;
+    private final String id;
     private final Integer type;
     private final List<CumulativeCostRecord> cumulativeCostRecordList = new ArrayList<CumulativeCostRecord>();
 
@@ -39,8 +39,7 @@ public class MTURecord implements Serializable {
      */
     public MTURecord(Element mtuElement){
 
-        String mtuIdString = mtuElement.getAttribute("ID");
-        id = Long.parseLong(mtuIdString, 16);
+        id = mtuElement.getAttribute("ID");
         type = Integer.parseInt(mtuElement.getAttribute("type"));
 
         //Iterate over the cumulative values of this node
@@ -55,7 +54,7 @@ public class MTURecord implements Serializable {
 
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

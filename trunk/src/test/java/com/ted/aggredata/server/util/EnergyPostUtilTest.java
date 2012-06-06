@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class EnergyPostServletTest {
+public class EnergyPostUtilTest {
 
     class TestData{
         int timestamp;
