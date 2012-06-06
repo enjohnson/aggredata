@@ -18,6 +18,7 @@
 package com.ted.aggredata.server.web.servlets;
 
 import com.ted.aggredata.model.*;
+import com.ted.aggredata.server.services.EnergyPostService;
 import com.ted.aggredata.server.services.GatewayService;
 import com.ted.aggredata.server.services.GroupService;
 import com.ted.aggredata.server.services.UserService;
@@ -61,11 +62,14 @@ public class EnergyPostServlet extends HttpServlet {
     GatewayService gatewayService;
 
     @Autowired
+    EnergyPostService energyPostService;
+
+
+    @Autowired
     GroupService groupService;
 
     @Autowired
     ServerInfo serverInfo;
-
 
 
     public void init(ServletConfig config) throws ServletException {
@@ -84,7 +88,6 @@ public class EnergyPostServlet extends HttpServlet {
 
             //Validate security token
             NamedNodeMap ted5000Attributes = doc.getElementsByTagName("ted5000").item(0).getAttributes();
-
 
 
             String gatewayIdString = ted5000Attributes.getNamedItem("GWID").getNodeValue();
@@ -106,7 +109,7 @@ public class EnergyPostServlet extends HttpServlet {
 
             //Check the user
             User gatewayUser = userService.findUser(gateway.getUserAccountId());
-            if (gatewayUser == null || gatewayUser.getAccountState() != User.STATE_ENABLED){
+            if (gatewayUser == null || gatewayUser.getAccountState() != User.STATE_ENABLED) {
                 if (logger.isWarnEnabled()) logger.warn("Attempted post to gateway " + gatewayIdString + " with an invalid or disabled user: " + gatewayUser);
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 PrintWriter out = response.getWriter();
@@ -152,7 +155,7 @@ public class EnergyPostServlet extends HttpServlet {
             //Process cost data
             //If the packet has COST data, enter it
             NodeList costList = doc.getElementsByTagName("COST");
-            if ( costList!= null && costList.getLength() > 0) {
+            if (costList != null && costList.getLength() > 0) {
                 logger.debug("Processing COST Packet");
                 try {
                     NamedNodeMap costAttributes = costList.item(0).getAttributes();
@@ -160,7 +163,7 @@ public class EnergyPostServlet extends HttpServlet {
                     fixedCharge = Double.parseDouble(costAttributes.getNamedItem("fixed").getNodeValue());
                     minCharge = Double.parseDouble(costAttributes.getNamedItem("min").getNodeValue());
                 } catch (Exception ex) {
-                    logger.error("Exception parsing cost data:" + ex.getMessage(), ex );
+                    logger.error("Exception parsing cost data:" + ex.getMessage(), ex);
                 }
 
 
@@ -194,17 +197,21 @@ public class EnergyPostServlet extends HttpServlet {
                 EnergyData lastCumulativeValue = null;
 
                 for (int c = 0; c < cumulativeDataListCount; c++) {
+
+
                     Element cumulativeNode = (Element) cumulativeDataList.item(c);
 
 
                     Integer timestamp = Integer.parseInt(cumulativeNode.getAttribute("timestamp"));
                     Double rate = Double.parseDouble(cumulativeNode.getAttribute("rate"));
                     Double energy = Double.parseDouble(cumulativeNode.getAttribute("watts"));
+
+
                     Double energyDifference = 0d;
                     Double minuteCost = 0d;
 
                     if (lastCumulativeValue == null) {
-                        lastCumulativeValue = gatewayService.findByLastPost(gateway, mtu, timestamp);
+                        lastCumulativeValue = energyPostService.findByLastPost(gateway, mtu, timestamp);
                         if (logger.isDebugEnabled()) logger.debug("Last Post:" + lastCumulativeValue);
                     }
 
@@ -219,25 +226,41 @@ public class EnergyPostServlet extends HttpServlet {
 
                     }
 
-                    lastCumulativeValue = gatewayService.postEnergyData(gateway, mtu, timestamp, energy, rate, minuteCost, energyDifference);
-                    if (logger.isDebugEnabled()) logger.debug("Posted " + lastCumulativeValue);
+                    //Calculate the number of minutes since the last post.
+                    Integer minutes = 1;
+                    if (lastCumulativeValue != null) {
+                        minutes = (timestamp - lastCumulativeValue.getTimestamp()) / 60;
+                    }
+                    if (logger.isDebugEnabled()) logger.debug("Posting " + minutes + " minutes worth of data");
 
-                    //Make sure there is a cost data element for this gateway and timestamp.
-                    if (costDataCache.get(timestamp) == null) {
-                        CostData costData = new CostData();
-                        costData.setGatewayId(gateway.getId());
-                        costData.setTimestamp(timestamp);
-                        costData.setMeterReadDay(meterReadDay);
-                        costData.setMinCost(minCharge);
-                        costData.setFixedCost(fixedCharge);
-                        //Set the month and year based on the user's timezone.
-                        //Do the timezone conversion
-                        Calendar tzCalendar  = EnergyPostUtil.getMeterMonth(meterReadDay, gatewayUser.getTimezone(), timestamp);
-                        costData.setMeterReadYear(tzCalendar.get(Calendar.YEAR));
-                        costData.setMeterReadMonth(tzCalendar.get(Calendar.MONTH)+1);
+                    for (int min = 0; min < minutes; min++) {
+                        int ts = timestamp - ((minutes - min) * 60);
 
-                        //Add it to the hashmap as a unique timestamp.
-                        costDataCache.put(timestamp, costData);
+                        if (logger.isDebugEnabled() && lastCumulativeValue != null) {
+                            logger.debug("Posting " + ts + " between " + lastCumulativeValue.getTimestamp()  + " and " + timestamp);
+                        }
+
+                        lastCumulativeValue = energyPostService.postEnergyData(gateway, mtu, ts, energy, rate, minuteCost/(double)minutes, energyDifference/(double)minutes);
+
+                        if (logger.isDebugEnabled()) logger.debug("Posted " + lastCumulativeValue);
+
+                        //Make sure there is a cost data element for this gateway and timestamp.
+                        if (costDataCache.get(timestamp) == null) {
+                            CostData costData = new CostData();
+                            costData.setGatewayId(gateway.getId());
+                            costData.setTimestamp(timestamp);
+                            costData.setMeterReadDay(meterReadDay);
+                            costData.setMinCost(minCharge);
+                            costData.setFixedCost(fixedCharge);
+                            //Set the month and year based on the user's timezone.
+                            //Do the timezone conversion
+                            Calendar tzCalendar = EnergyPostUtil.getMeterMonth(meterReadDay, gatewayUser.getTimezone(), timestamp);
+                            costData.setMeterReadYear(tzCalendar.get(Calendar.YEAR));
+                            costData.setMeterReadMonth(tzCalendar.get(Calendar.MONTH) + 1);
+
+                            //Add it to the hashmap as a unique timestamp.
+                            costDataCache.put(timestamp, costData);
+                        }
                     }
                 }
 
@@ -245,11 +268,13 @@ public class EnergyPostServlet extends HttpServlet {
             }
 
 
-            //Update the costdata in the database
-            for (CostData costData:costDataCache.values()){
-                gatewayService.postCostData(costData);
+            //------------------POST ACCUMULATED COST DATA------------------------------------
+            for (CostData costData : costDataCache.values()) {
+                energyPostService.postCostData(costData);
             }
 
+
+            //--------------------POST DEMAND CHARGES----------------------------------------------
 
             NodeList demandList = doc.getElementsByTagName("DEMAND");
 
@@ -263,13 +288,12 @@ public class EnergyPostServlet extends HttpServlet {
 
                 for (int c = 0; c < demandCostListCount; c++) {
                     Element demandCostNode = (Element) demandCostList.item(c);
-                    try
-                    {
+                    try {
                         Integer timestamp = Integer.parseInt(demandCostNode.getAttribute("timestamp"));
                         Double cost = Double.parseDouble(demandCostNode.getAttribute("cost"));
                         Double peak = Double.parseDouble(demandCostNode.getAttribute("peak"));
-                        gatewayService.postDemandCharge(gateway, timestamp, peak, cost);
-                    } catch (Exception ex){
+                        energyPostService.postDemandCharge(gateway, timestamp, peak, cost);
+                    } catch (Exception ex) {
                         logger.error("Exception parsing demand cost data:" + ex.getMessage(), ex);
                     }
                 }

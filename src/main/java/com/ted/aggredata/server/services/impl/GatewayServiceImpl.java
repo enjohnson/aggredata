@@ -48,16 +48,7 @@ public class GatewayServiceImpl implements GatewayService {
     protected MTUDAO mtuDAO;
 
     @Autowired
-    protected EnergyDataDAO energyDataDAO;
-
-    @Autowired
     protected EnergyDataHistoryDAO energyDataHistoryDAO;
-
-    @Autowired
-    protected DemandChargeDAO demandChargeDAO;
-
-    @Autowired
-    protected CostDataDAO costDataDAO;
 
     static Logger logger = LoggerFactory.getLogger(GatewayServiceImpl.class);
 
@@ -136,41 +127,6 @@ public class GatewayServiceImpl implements GatewayService {
         return null;
     }
 
-    @Override
-    public EnergyData postEnergyData(Gateway gateway, MTU mtu, Integer timestamp, Double watts, Double rate, Double minCost, Double energyDifference) {
-        EnergyData energyData = new EnergyData();
-        energyData.setGatewayId(gateway.getId());
-        energyData.setMtuId(mtu.getId());
-        energyData.setTimestamp(timestamp);
-        energyData.setEnergy(watts);
-        energyData.setRate(rate);
-        energyData.setMinuteCost(minCost);
-        energyData.setEnergyDifference(energyDifference);
-        energyDataDAO.create(energyData);
-        return energyData;
-    }
-
-    @Override
-    public CostData postCostData(CostData costData) {
-        costDataDAO.create(costData);
-        return costData;
-    }
-
-    @Override
-    public DemandCharge postDemandCharge(Gateway gateway, Integer timestamp, Double peak, Double cost) {
-        DemandCharge demandCharge = new DemandCharge();
-        demandCharge.setGatewayId(gateway.getId());
-        demandCharge.setTimestamp(timestamp);
-        demandCharge.setPeak(peak);
-        demandCharge.setCost(cost);
-        demandChargeDAO.create(demandCharge);
-        return  demandCharge;
-    }
-
-    @Override
-    public EnergyData findByLastPost(Gateway gateway, MTU mtu, Integer timestamp) {
-        return energyDataDAO.findByLastPost(gateway, mtu, timestamp);
-    }
 
     @Override
     public Integer countByUser(User user) {
