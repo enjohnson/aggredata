@@ -246,7 +246,7 @@ public class User extends AggredataModel implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = username != null ? username.hashCode() : 0;
+        long result = username != null ? username.hashCode() : 0;
         result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + accountState;
         result = 31 * result + (activationKey != null ? activationKey.hashCode() : 0);
@@ -267,6 +267,6 @@ public class User extends AggredataModel implements Serializable {
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (timezone != null ? timezone.hashCode() : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);
-        return result;
+        return (int)result;
     }
 }
