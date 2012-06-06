@@ -17,22 +17,9 @@
 
 package com.ted.aggredata.server.services;
 
+public class EnergyPostException extends Exception {
 
-import com.ted.aggredata.model.*;
-import com.ted.aggredata.server.model.EnergyPostRecord;
-
-/***
- * Service for posting energy data
- */
-public interface EnergyPostService {
-
-    /**
-     * Posts an energy record to the database
-     * @param postingUser
-     * @param gateway
-     * @param energyPostRecord
-     */
-    void postEnergyData(User postingUser, Gateway gateway, EnergyPostRecord energyPostRecord) throws EnergyPostException;
-
-
+    public EnergyPostException(String message, Throwable cause){
+        super(message,cause);
+    }
 }

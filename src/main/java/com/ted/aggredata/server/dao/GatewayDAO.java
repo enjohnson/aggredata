@@ -20,6 +20,7 @@ package com.ted.aggredata.server.dao;
 import com.ted.aggredata.model.Gateway;
 import com.ted.aggredata.model.Group;
 import com.ted.aggredata.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -32,6 +33,11 @@ import java.util.List;
  */
 public class GatewayDAO extends AbstractDAO<Gateway> {
 
+    @Autowired
+    DemandChargeDAO demandChargeDAO;
+
+    @Autowired
+    CostDataDAO costDataDAO;
 
     public static String DELETE_GATEWAY_QUERY = "delete from aggredata.gateway where id=?";
     public static String CREATE_GATEWAY_QUERY = "insert into aggredata.gateway (id, weatherLocationId, userAccountId,  state, securityKey, description,custom1,custom2,custom3,custom4,custom5) values (?,?,?,?,?,?,?,?,?,?,?)";
@@ -110,7 +116,10 @@ public class GatewayDAO extends AbstractDAO<Gateway> {
     }
 
     public void delete(Gateway gateway) {
-
+        if (logger.isDebugEnabled()) logger.debug("Deleting demand charge data for gateway " + gateway);
+        demandChargeDAO.deleteEnergyData(gateway);
+        if (logger.isDebugEnabled()) logger.debug("Deleting cost data for gateway " + gateway);
+        costDataDAO.deleteEnergyData(gateway);
         if (logger.isDebugEnabled()) logger.debug("removing energy data for gateway  " + gateway);
         getJdbcTemplate().update(DELETE_GATEWAY_ENERGY_DATA_QUERY, gateway.getId());
         if (logger.isDebugEnabled()) logger.debug("removing mtu's for gateway  " + gateway);

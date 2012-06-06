@@ -37,7 +37,7 @@ public class EnergyDataDAO extends AbstractDAO<EnergyData> {
     public static String POST_ENERGY_DATA = "insert into aggredata.energydata (gatewayId, mtuId, timestamp, rate, energy, minuteCost, energyDifference) values (?,?,?,?,?,?,?)";
     public static String SAVE_ENERGY_DATA = "update aggredata.energydata set rate=?, energy=?, minuteCost=?, energyDifference=? where gatewayId=? and mtuId=? and timestamp=?";
 
-    public static String FIND_BY_DATE_RANGE = "select  gatewayId, mtuId, timestamp, rate, energy , minuteCost, energyDifference from aggredata.energydata where mtuId=? and gatewayId=? and timestamp>=? and timestamp < ?";
+    public static String FIND_BY_DATE_RANGE = "select  gatewayId, mtuId, timestamp, rate, energy , minuteCost, energyDifference from aggredata.energydata where gatewayId=? and mtuId=? and timestamp>=? and timestamp < ? order by timestamp";
     public static String FIND_LAST_BY_MTU = "select  gatewayId, mtuId, timestamp, rate, energy, minuteCost, energyDifference from aggredata.energydata where gatewayId= ? and mtuId=? and timestamp < ? order by timestamp desc limit 1";
     public static String FIND_BY_TIMESTAMP = "select  gatewayId, mtuId, timestamp, rate, energy, minuteCost, energyDifference from aggredata.energydata where gatewayId= ? and mtuId=? and timestamp = ?";
 

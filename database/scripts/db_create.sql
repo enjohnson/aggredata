@@ -93,6 +93,7 @@ CREATE  TABLE IF NOT EXISTS `aggredata`.`demandcharge` (
   `timestamp` INT NOT NULL ,
   `peak` DECIMAL(10,5) NULL ,
   `cost` DECIMAL(10,5) NULL ,
+  `type` INT NULL ,
   PRIMARY KEY (`gatewayId`, `timestamp`),
   INDEX `timestamp` (`timestamp` ASC, `gatewayId` ASC)
   )
