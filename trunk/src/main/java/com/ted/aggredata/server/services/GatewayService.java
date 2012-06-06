@@ -108,52 +108,6 @@ public interface GatewayService {
      */
     MTU getMTU(Gateway gateway, Long mtuId);
 
-    /**
-     * Creates a new EnergyData entry in the system
-     *
-     * @param gateway
-     * @param mtu
-     * @param timestamp
-     * @param watts
-     * @param rate
-     * @param minCost
-     * @param energyDifference
-     * @return
-     */
-    EnergyData postEnergyData(Gateway gateway, MTU mtu, Integer timestamp, Double watts, Double rate, Double minCost, Double energyDifference);
-
-
-    /**
-     * Posts cost data for a specified gateway
-     * @param gateway
-     * @param timestamp
-     * @param meterReadDate
-     * @param fixedPrice
-     * @param minPrice
-     * @return
-     */
-    CostData postCostData(CostData costData);
-
-
-    /***
-     * Posts a demand charge
-     * @param gateway
-     * @param timestamp
-     * @param peak
-     * @param cost
-     * @return
-     */
-    DemandCharge postDemandCharge(Gateway gateway, Integer timestamp, Double peak, Double cost);
-
-    /**
-     * Finds the most recently posted entry for the gateway/mtu
-     *
-     * @param gateway
-     * @param mtu
-     * @param timestamp
-     * @return
-     */
-    EnergyData findByLastPost(Gateway gateway, MTU mtu, Integer timestamp);
 
 
     /**
