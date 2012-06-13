@@ -6,7 +6,7 @@ The Energy Detective's AggreData is an open-source data platform that will allow
 
 = Building AggreData = 
 
-AggreData can be built using maven 3.0.x available here: http://http://maven.apache.org/
+TED AggreData can be built using maven 3.0.x available here: http://http://maven.apache.org/
 
 *mvn -Dmaven.test.skip=true clean install*
 
