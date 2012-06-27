@@ -231,8 +231,8 @@ public class EnergyDataHistoryResultFactory {
             totalEnergyLoad = bucket.loadMap.get(key).getEnergy();
             totalCostLoad = bucket.loadMap.get(key).getCost();
 
-            if (totalEnergyGen < 0) totalEnergyGen = totalEnergyLoad * -1;
-            if (totalCostGen < 0) totalCostGen = totalCostLoad * -1;
+            if (totalEnergyLoad < 0) totalEnergyLoad = totalEnergyLoad * -1;
+            if (totalCostLoad < 0) totalCostLoad = totalCostLoad * -1;
 
         }
         if (bucket.genMap.get(key) != null) {
