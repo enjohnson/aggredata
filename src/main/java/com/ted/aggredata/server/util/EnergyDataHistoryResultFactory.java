@@ -230,10 +230,18 @@ public class EnergyDataHistoryResultFactory {
         if (bucket.loadMap.get(key) != null) {
             totalEnergyLoad = bucket.loadMap.get(key).getEnergy();
             totalCostLoad = bucket.loadMap.get(key).getCost();
+
+            if (totalEnergyGen < 0) totalEnergyGen = totalEnergyLoad * -1;
+            if (totalCostGen < 0) totalCostGen = totalCostLoad * -1;
+
         }
         if (bucket.genMap.get(key) != null) {
             totalEnergyGen = bucket.genMap.get(key).getEnergy();
             totalCostGen = bucket.genMap.get(key).getCost();
+
+            //CT reverse clamp fix
+            if (totalEnergyGen > 0) totalEnergyGen = totalEnergyGen * -1;
+            if (totalCostGen > 0) totalCostGen = totalCostGen * -1;
         }
         if (bucket.netMap.get(key) != null) {
             totalEnergyNetMeter = bucket.netMap.get(key).getEnergy();
