@@ -34,7 +34,7 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
 
     static Logger logger = LoggerFactory.getLogger(EnergyDataHistoryDAO.class);
 
-    public static String MONTHLY_SUMMARY = "select ed.gatewayId, ed.mtuId, " +
+    public static String MONTHLY_SUMMARY = "select  0 as type, ed.gatewayId, ed.mtuId, " +
             "sum(ed.minuteCost) + max(cd.fixedCost) as cost, max(cd.minCost) as minCharge, " +
             "sum(ed.energyDifference) as energy, " +
             "cd.meterReadMonth as theMonth, cd.meterReadYear as theYear, 1 as theDay, 0 as theHour, 0 as theMinute " +
@@ -45,7 +45,7 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
             "group by ed.gatewayId, ed.mtuId, theMonth, theYear, theDay, theHour, theMinute " +
             "order by theYear, theMonth ";
 
-    public static String DAILY_SUMMARY = "select gatewayId, mtuId, sum(minuteCost) as cost, 0 as minCharge, sum(energyDifference) as energy, " +
+    public static String DAILY_SUMMARY = "select 1 as type, gatewayId, mtuId, sum(minuteCost) as cost, 0 as minCharge, sum(energyDifference) as energy, " +
             " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth, " +
             " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear, " +
             " DAY(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theDay, " +
@@ -54,7 +54,7 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
             " where gatewayId=? and mtuId=? and timestamp>=? and timestamp<?" +
             " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour, theMinute" ;
 
-    public static String HOURLY_SUMMARY = "select gatewayId, mtuId, sum(minuteCost) as cost,  0 as minCharge,  sum(energyDifference) as energy, " +
+    public static String HOURLY_SUMMARY = "select 2 as type, gatewayId, mtuId, sum(minuteCost) as cost,  0 as minCharge,  sum(energyDifference) as energy, " +
             " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth, " +
             " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear, " +
             " DAY(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theDay, " +
@@ -64,7 +64,7 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
             " where gatewayId=? and mtuId=? and timestamp>=? and timestamp<?" +
             " group by gatewayId, mtuId, theMonth, theYear, theDay, theHour, theMinute" ;
 
-    public static String MINUTE_SUMMARY = "select gatewayId, mtuId, sum(minuteCost)*? as cost,  0 as minCharge,  sum(energyDifference)*? as energy, " +
+    public static String MINUTE_SUMMARY = "select 3 as type, gatewayId, mtuId, sum(minuteCost)*? as cost,  0 as minCharge,  sum(energyDifference)*? as energy, " +
             " FLOOR(MINUTE(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?))/?)*? as theMinute," +
             " MONTH(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theMonth, " +
             " YEAR(CONVERT_TZ(FROM_UNIXTIME(timestamp),?, ?)) as theYear, " +
@@ -89,11 +89,16 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
             logger.debug("query returned: " + rs.getInt("theMinute") + " " + energyDataHistoryDate);
             energyDataHistory.setHistoryDate(energyDataHistoryDate);
 
-            //Minimum charge check.
-            energyDataHistory.setCost(rs.getDouble("cost"));
-            Double minCharge = rs.getDouble("minCharge");
-            if (minCharge.doubleValue() > energyDataHistory.getCost().doubleValue()){
-                energyDataHistory.setCost(minCharge);
+            //Only worry about the min charge check on Monthly graphs. Zero values are ignored.
+            if (rs.getInt("type") == 0)
+            {
+                //Minimum charge check.
+                energyDataHistory.setCost(rs.getDouble("cost"));
+                Double minCharge = rs.getDouble("minCharge");
+
+                if (minCharge != 0 && minCharge.doubleValue() > energyDataHistory.getCost().doubleValue()){
+                    energyDataHistory.setCost(minCharge);
+                }
             }
 
             energyDataHistory.setEnergy(rs.getDouble("energy"));

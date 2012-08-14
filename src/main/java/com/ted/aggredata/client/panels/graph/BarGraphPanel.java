@@ -348,6 +348,7 @@ public abstract class BarGraphPanel extends Composite implements GraphOptionChan
                         double energy = NumberUtil.round(historyResult.getNetHistoryList().get(i).getEnergy() / 1000, 3);
                         data.setCell(i, col++, energy, energy + " kWh", null);
                     } else {
+
                         double cost = NumberUtil.round(historyResult.getNetHistoryList().get(i).getCost(), 2);
                         data.setCell(i, col++, cost, currencyFormat.format(cost), null);
                     }
