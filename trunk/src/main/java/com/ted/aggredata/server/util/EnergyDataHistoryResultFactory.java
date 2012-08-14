@@ -116,21 +116,31 @@ public class EnergyDataHistoryResultFactory {
             }
 
             EnergyDataHistory gwHistory = null;
-            //Get the map we are supposed to be using.
+
+            //Get the map we are supposed to be using. If one does not exist, create one.
             if (mtu.getType() == MTU.MTUType.LOAD) {
+                logger.debug("MTU Type: Load");
                 gwHistory = bucket.loadMap.get(key);
                 if (gwHistory == null) bucket.loadMap.put(key, history);
             } else if (mtu.getType() == MTU.MTUType.GENERATION) {
+                logger.debug("MTU Type: Generation");
                 gwHistory = bucket.genMap.get(key);
                 if (gwHistory == null) bucket.genMap.put(key, history);
             } else if (mtu.getType() == MTU.MTUType.ADJUSTED_NET) {
+                logger.debug("MTU Type: Adjusted net");
                 bucket.hasNet = true;
                 gwHistory = bucket.netMap.get(key);
                 if (gwHistory == null) bucket.netMap.put(key, history);
+            } else {
+                if (logger.isDebugEnabled()) logger.debug("MTU Type:" + mtu.getType());
             }
+
             if (gwHistory != null) {
+                logger.debug("COST:" + history.getCost());
                 gwHistory.setEnergy(gwHistory.getEnergy() + history.getEnergy());
                 gwHistory.setCost(gwHistory.getCost() + history.getCost());
+            } else {
+                if (logger.isDebugEnabled()) logger.debug("No map for MTU type " + mtu.getType() + ". Using " + history);
             }
         }
     }
