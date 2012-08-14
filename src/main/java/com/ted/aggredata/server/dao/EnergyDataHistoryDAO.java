@@ -88,14 +88,13 @@ public class EnergyDataHistoryDAO extends AbstractDAO<EnergyDataHistory> {
             EnergyDataHistoryDate energyDataHistoryDate = new EnergyDataHistoryDate(rs.getInt("theYear"),rs.getInt("theMonth"),rs.getInt("theDay"),rs.getInt("theHour"), rs.getInt("theMinute"));
             logger.debug("query returned: " + rs.getInt("theMinute") + " " + energyDataHistoryDate);
             energyDataHistory.setHistoryDate(energyDataHistoryDate);
+            energyDataHistory.setCost(rs.getDouble("cost"));
 
             //Only worry about the min charge check on Monthly graphs. Zero values are ignored.
             if (rs.getInt("type") == 0)
             {
                 //Minimum charge check.
-                energyDataHistory.setCost(rs.getDouble("cost"));
                 Double minCharge = rs.getDouble("minCharge");
-
                 if (minCharge != 0 && minCharge.doubleValue() > energyDataHistory.getCost().doubleValue()){
                     energyDataHistory.setCost(minCharge);
                 }
