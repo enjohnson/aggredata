@@ -46,7 +46,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>3.1.1.RELEASE</spring.version>
         <spring.security.version>3.1.0.RELEASE</spring.security.version>
-        <gwt.version>2.4.0</gwt.version>
+        <gwt.version>2.5.1</gwt.version>
     </properties>
 
 
@@ -285,7 +285,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>2.4.0</version>
+                <version>${gwt.version}</version>
                 <executions>
                     <execution>
                         <goals>

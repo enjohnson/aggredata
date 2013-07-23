@@ -36,8 +36,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
 
 /**
@@ -48,6 +53,8 @@ import java.io.PrintWriter;
 public class EnergyPostServlet extends HttpServlet {
 
     static Logger logger = LoggerFactory.getLogger(EnergyPostServlet.class);
+    static Logger xmlLogger = LoggerFactory.getLogger("raw.xml.out");
+
     static DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
     @Autowired
@@ -77,16 +84,35 @@ public class EnergyPostServlet extends HttpServlet {
             DocumentBuilder db = documentBuilderFactory.newDocumentBuilder();
             Document doc = db.parse(request.getInputStream());
 
+
+
             EnergyPostRecord energyPostRecord = new EnergyPostRecord(doc);
 
-            if (logger.isDebugEnabled()) logger.debug("Received post from Gateway " + energyPostRecord.getGatewayId() + " with key " + energyPostRecord.getAuthToken());
+            if (logger.isDebugEnabled())
+                logger.debug("Received post from Gateway " + energyPostRecord.getGatewayId() + " with key " + energyPostRecord.getAuthToken());
 
             //Verify this gateway exists, has the correct key, and is enabled to receive posts.
             Gateway gateway = gatewayService.getById(Long.parseLong(energyPostRecord.getGatewayId(), 16));
 
+            if (xmlLogger.isTraceEnabled()) {
+                try {
+                    DOMSource domSource = new DOMSource(doc);
+                    StringWriter writer = new StringWriter();
+                    StreamResult result = new StreamResult(writer);
+                    TransformerFactory tf = TransformerFactory.newInstance();
+                    Transformer transformer = tf.newTransformer();
+                    transformer.transform(domSource, result);
+                    xmlLogger.trace("XML IN String format is: \n" + writer.toString());
+                    writer.close();
+                } catch (Exception ex) {
+                    xmlLogger.error("Error printing XML");
+                }
+            }
+
             //Check to see if gateway exists
             if (gateway == null) {
-                if (logger.isWarnEnabled()) logger.warn("Gateway with id " + energyPostRecord.getGatewayId() + " not found in database");
+                if (logger.isWarnEnabled())
+                    logger.warn("Gateway with id " + energyPostRecord.getGatewayId() + " not found in database");
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 PrintWriter out = response.getWriter();
                 out.write("Gateway Not Found.");
@@ -98,7 +124,8 @@ public class EnergyPostServlet extends HttpServlet {
 
             //Check security key
             if (!gateway.getSecurityKey().equals(energyPostRecord.getAuthToken())) {
-                if (logger.isWarnEnabled()) logger.warn("Attempted post to gateway " + energyPostRecord.getGatewayId() + " with an invalid authentication key");
+                if (logger.isWarnEnabled())
+                    logger.warn("Attempted post to gateway " + energyPostRecord.getGatewayId() + " with an invalid authentication key");
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 PrintWriter out = response.getWriter();
                 out.write("Unauthorized.");
@@ -108,7 +135,8 @@ public class EnergyPostServlet extends HttpServlet {
 
             //Check to see if its enabled
             if (!gateway.getState()) {
-                if (logger.isWarnEnabled()) logger.warn("Gateway with id " + energyPostRecord.getGatewayId() + " is not enabled to receive posts.");
+                if (logger.isWarnEnabled())
+                    logger.warn("Gateway with id " + energyPostRecord.getGatewayId() + " is not enabled to receive posts.");
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 PrintWriter out = response.getWriter();
                 out.write("Unauthorized.");
@@ -119,7 +147,8 @@ public class EnergyPostServlet extends HttpServlet {
             //Check the user
             User gatewayUser = userService.findUser(gateway.getUserAccountId());
             if (gatewayUser == null || gatewayUser.getAccountState() != User.STATE_ENABLED) {
-                if (logger.isWarnEnabled()) logger.warn("Attempted post to gateway " + energyPostRecord.getGatewayId() + " with an invalid or disabled user: " + gatewayUser);
+                if (logger.isWarnEnabled())
+                    logger.warn("Attempted post to gateway " + energyPostRecord.getGatewayId() + " with an invalid or disabled user: " + gatewayUser);
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 PrintWriter out = response.getWriter();
                 out.write("Unauthorized.");
@@ -128,9 +157,10 @@ public class EnergyPostServlet extends HttpServlet {
             }
 
 
-            if (logger.isInfoEnabled()) logger.info("gateway " + energyPostRecord.getGatewayId()  + " is authenticated. recording data.");
+            if (logger.isInfoEnabled())
+                logger.info("gateway " + energyPostRecord.getGatewayId() + " is authenticated. recording data.");
 
-            energyPostService.postEnergyData(gatewayUser, gateway,  energyPostRecord);
+            energyPostService.postEnergyData(gatewayUser, gateway, energyPostRecord);
             if (logger.isDebugEnabled()) logger.debug("Writing success response");
 
             response.setContentType("text/xml");

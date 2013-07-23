@@ -115,6 +115,11 @@ public class EnergyPostServiceImpl implements EnergyPostService {
                     for (int min = 0; min < minutes; min++) {
                         int ts = ccr.getTimestamp() - ((minutes - (1+min)) * 60);
 
+                        if (minutes > 1)
+                        {
+                            logger.warn("Smoothing algorithm applied to MTU:" + mtu.toString() +" for GW:" + gateway.toString() + ": " + minutes);
+                        }
+
                         if (logger.isDebugEnabled() && lastCumulativeValue != null) {
                             logger.debug("Posting " + ts + " between " + lastCumulativeValue.getTimestamp() + " and " + ccr.getTimestamp());
                         }

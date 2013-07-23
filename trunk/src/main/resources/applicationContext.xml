@@ -36,7 +36,7 @@
         <property name="valueSeparator" value="?" />
 
     </bean>
-    
+
     <bean id="serverInfo" class="com.ted.aggredata.model.ServerInfo">
         <property name="serverName" value="${server.name?aggredata.theenergydetective.com}"/>
         <property name="serverPort" value="${server.port?80}"/>
