@@ -1,0 +1,23 @@
+To deploy an existing application:
+
+1. Configure a MySQL instance
+2. Run database/scripts/db_create.sql on the MySQL instance.
+3. MySQL must be configured for timezone support. On most linux systems the command is:
+        mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -p mysql
+
+   Please refer to the following page for more information regarding timezone configuration:
+    http://dev.mysql.com/doc/refman/4.1/en/mysql-tzinfo-to-sql.html
+
+4. Read config/README.txt regarding the configuration files.
+5. Copy aggredata.log4j.xml to your application container's home directory
+6. If you need to change the default JDBC settings, copy aggredata.properties
+    to your application container's home directory.
+7. Deploy aggredata.war to you application container
+8. Go to http://<container ip address>:<port>/aggredata to access the
+   application (e.g. http://127.0.0.1:8080/aggredata
+9. The default username/password is admin/admin
+
+
+
+
+
